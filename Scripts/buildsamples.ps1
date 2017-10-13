@@ -214,6 +214,7 @@ function buildSolution($file, $config, $platform, $logPlatform)
     if (SkipThisFile $file)
     {
          write-host "skipping $filename $config $platform"
+		 Add-Content $logPath "Build skipped."
          return;
     }
 	
@@ -240,12 +241,14 @@ foreach ($f in $files)
     buildSolution $f "Release" '"Any CPU"' "AnyCPU"
 }
 
-$succeeded = Get-ChildItem -Recurse -Path $LogsPath -Include *.log | select-string "Build [sf][ua][~ ]*"
+$succeeded = Get-ChildItem -Recurse -Path $LogsPath -Include *.log | select-string "Build [sf][kua][~ ]*"
 foreach ($bs in $succeeded) {
 	$out = $bs -split ":[0-9]*:"
 	$color = "Green"
 	if ($out[1].Equals("Build FAILED.")) {
 		$color = "Red"
-	}
+	} elseif ($out[1].Equals("Build skipped.")) {
+		$color = "Cyan"
+	} 
 	write-host -ForegroundColor $color $out[0] - $out[1]
 }
