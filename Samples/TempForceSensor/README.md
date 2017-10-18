@@ -1,6 +1,6 @@
 ---
 layout: sample
-title: Temperature and force sensor
+title: Temperature and Force Sensor
 description: Control a basic temperature and force sensor.
 keyword: iot, wiring, uwp
 permalink:

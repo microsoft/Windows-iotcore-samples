@@ -10,7 +10,7 @@ lang: en-US
 kit:
 step:
 ---
-# “Hello, blinky!”
+# Digital Sign
 
 These are the available versions of this Windows 10 IoT Core sample:
 

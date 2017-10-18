@@ -10,7 +10,7 @@ lang: en-US
 kit:
 step:
 ---
-# “Hello, blinky!”
+# RGB LED Sample
 
 ```$1 of this Windows 10 IoT Core sample:
 

@@ -10,7 +10,7 @@ lang: en-US
 kit:
 step:
 ---
-# “Hello, blinky!”
+# “Hello, world!”
 
 These are the available versions of this Windows 10 IoT Core sample:
 
