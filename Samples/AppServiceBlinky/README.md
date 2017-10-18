@@ -12,7 +12,7 @@ step:
 ---
 # AppServiceBlinky
 
-There are multiple versions of this Windows 10 IoT Core sample:
+These are the available versions of this Windows 10 IoT Core sample:
 
 *	[C#](./CS/README.md)
 *	[C++](./Cpp/README.md)

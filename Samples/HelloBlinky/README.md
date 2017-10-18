@@ -1,7 +1,7 @@
 ---
 layout: sample
 title: Hello Blinky
-description: An sample that shows how to make an LED attached to a GPIO pin blink on and off.
+description: A sample that shows how to make an LED attached to a GPIO pin blink on and off.
 keyword: iot, wiring, uwp
 permalink:
 samplelink:
@@ -12,7 +12,7 @@ step:
 ---
 # “Hello, blinky!”
 
-There are multiple versions of this Windows 10 IoT Core sample:
+These are the available versions of this Windows 10 IoT Core sample:
 
 *	[C#](./CS/README.md)
 *	[C++](./Cpp/README.md)
