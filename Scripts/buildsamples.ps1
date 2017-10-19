@@ -91,12 +91,15 @@ function TestFullPathEndsWith($path, $list)
 
 function restoreConfigs($filename, $solutionDir)
 {
+	write-host -ForegroundColor Cyan "nuget.exe restore $filename"
+	&"c:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\ReadyRoll\OctoPack\build\NuGet.exe restore $filename"
+	
     $configFiles = Get-ChildItem packages.config -Recurse
     foreach($c in $configFiles)
     {
         $fullname = $c.FullName
-        write-host -ForegroundColor Cyan "fullname=$fullname"
-        nuget restore $fullname "-SolutionDirectory" $path
+        write-host -ForegroundColor Cyan "nuget.exe restore $fullname -SolutionDirectory $path"
+        &"c:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\ReadyRoll\OctoPack\build\NuGet.exe restore $fullname"
     }
 }
 
@@ -218,27 +221,28 @@ function buildSolution($file, $config, $platform, $logPlatform)
          return;
     }
 	
-    $logCommand = "/logger:FileLogger,Microsoft.Build.Engine;logfile=$LogsPath\$filename.$config$language.$logPlatform.log"
+    $logCommand = "/logger:FileLogger,Microsoft.Build.Engine;logfile=$logPath"
     write-host -ForegroundColor Cyan "${msbuildpath} $file `"/t:clean;restore;build /verbosity:normal`" `"/p:Configuration=$config`" `"/p:Platform=$platform`" $logCommand"
     &"$msbuildpath" $file "/t:clean;restore;build" /verbosity:normal /p:Configuration=$config /p:Platform=$platform ${logCommand}
 
-    #$errors = findstr "Error\(s\)" "$LogsPath\$filename.$config$language.$platform.log"
+    #$errors = findstr "Error\(s\)" "$logPath"
     #write-host -ForegroundColor Red $errors
 }
 
 # del $LogsPath\*
 $files = Get-ChildItem "*.sln" -Recurse
-foreach ($f in $files)
-{
-    restoreNuget $f
-}
 
 foreach ($f in $files)
 {
+    restoreNuget $f
     buildSolution $f "Release" "x86" "x86"
+    buildSolution $f "Debug" "x86" "x86"
     buildSolution $f "Release" "x64" "x64"
+    buildSolution $f "Debug" "x64" "x64"
     buildSolution $f "Release" "ARM" "ARM"
+    buildSolution $f "Debug" "ARM" "ARM"
     buildSolution $f "Release" '"Any CPU"' "AnyCPU"
+    buildSolution $f "Debug" '"Any CPU"' "AnyCPU"
 }
 
 $succeeded = Get-ChildItem -Recurse -Path $LogsPath -Include *.log | select-string "Build [sf][kua][~ ]*"
