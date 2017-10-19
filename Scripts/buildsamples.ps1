@@ -148,7 +148,7 @@ function Get-MSBuild-Path {
         $key = Get-ItemProperty $vs15key
         $subkey = $key."15.0"
         if ($subkey) {
-            $msbuildPath = Join-Path $subkey "MSBuild\15.0\bin\amd64\msbuild.exe"
+            $msbuildPath = Join-Path $subkey "MSBuild\15.0\bin\msbuild.exe"
         }
     }
 
