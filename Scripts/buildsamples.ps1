@@ -4,59 +4,26 @@ Param(
     )
 
 $blocked_Arm = @(
-    "ReadDeviceToCloudMessages.sln",
-    "TpmDeviceSample.sln",
-    "BACnetAdapter.sln"
 )
 
 $blocked_x86 = @(
-    "ReadDeviceToCloudMessages.sln",
-    "TpmDeviceSample.sln",
-    "ArduinoLibraryLcdDisplay.sln"
 )
 
 $blocked_x64 = @(
-    "ReadDeviceToCloudMessages.sln",
-    "TpmDeviceSample.sln",
-    "ArduinoLibraryLcdDisplay.sln",
     "BlinkyApp.sln"
 )
 
 $allowed_AnyCpu = @(
-    "ReadDeviceToCloudMessages.sln",
-    "TpmDeviceSample.sln"
 )
 
 $blocked_always = @(
-    "AllJoyn.JS.sln",
-    "BACnet Stack Development.sln",
-    "bacnet.sln",
-    "Microsoft Visual Studio 2005.sln",
-    "MyLivingRoom.sln",
-    "ptransfer.sln",
-    "readrange.sln",
     "CompanionAppClient.sln",
     "CustomAdapter.sln",
-    "DeviceSystemBridgeTemplate_2015.sln",
-    "DeviceSystemBridgeTemplate_2017.sln",
-    "GoPiGoXboxWebService.sln",
-    "hidapi.sln",
     "IoTConnector.sln",
     "IoTConnectorClient.sln",
-    "XamarinIoTViewer.sln",
-    "PythonAccelerometer.sln",
-    "PythonBlinkyHeadless.sln",
-    "PythonBlinkyServer.sln",
-    "PythonWeatherStation.sln",
     "NodeBlinkyServer.sln",
     "NodeJsBlinky.sln",
-    "NodeWeatherStation.sln",
-    "IoTOnboarding.sln",
-    "ManagedCustomAdapter.sln",
-    "MinOZW.sln",
-    "OpenCVExample.sln",
-    "WindowsIotCoreTemplatesDev14.sln",
-    "WindowsIotCoreTemplatesDev15.sln"
+    "IoTOnboarding.sln"
 )
 
 $blocked_endswith = @(
@@ -65,10 +32,6 @@ $blocked_endswith = @(
 )
 
 $drivers = @(
-    "gpiokmdfdemo.sln",
-    "DriverSamples\consoleapp\BlinkyApp\BlinkyApp.sln",
-    "HidInjector.sln",
-    "VirtualAudioMicArray.sln"
 )
 
 function PressAnyKey()
@@ -92,14 +55,14 @@ function TestFullPathEndsWith($path, $list)
 function restoreConfigs($filename, $solutionDir)
 {
 	write-host -ForegroundColor Cyan "nuget.exe restore $filename"
-	&"c:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\ReadyRoll\OctoPack\build\NuGet.exe restore $filename"
+	&"c:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\ReadyRoll\OctoPack\build\NuGet.exe" restore $filename
 	
     $configFiles = Get-ChildItem packages.config -Recurse
     foreach($c in $configFiles)
     {
         $fullname = $c.FullName
         write-host -ForegroundColor Cyan "nuget.exe restore $fullname -SolutionDirectory $path"
-        &"c:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\ReadyRoll\OctoPack\build\NuGet.exe restore $fullname"
+        &"c:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\ReadyRoll\OctoPack\build\NuGet.exe" restore $fullname
     }
 }
 
@@ -204,6 +167,8 @@ function buildSolution($file, $config, $platform, $logPlatform)
 		$language = ".CPP";
 	} elseif ($file.FullName.ToLower().Contains("cs")) {
 		$language = ".CS";
+	} elseif ($file.FullName.ToLower().Contains("vb")) {
+		$language = ".VB";
 	} elseif ($file.FullName.ToLower().Contains("node.js")) {
 		$language = ".Node-js";
 	} elseif ($file.FullName.ToLower().Contains("python")) {
@@ -228,6 +193,8 @@ function buildSolution($file, $config, $platform, $logPlatform)
     #$errors = findstr "Error\(s\)" "$logPath"
     #write-host -ForegroundColor Red $errors
 }
+
+$StartTime = $(get-date)
 
 # del $LogsPath\*
 $files = Get-ChildItem "*.sln" -Recurse
@@ -256,3 +223,7 @@ foreach ($bs in $succeeded) {
 	} 
 	write-host -ForegroundColor $color $out[0] - $out[1]
 }
+
+$elapsedTime = $(get-date) - $StartTime
+
+#write-host "Duration {0:HH:mm:ss}" -f ([datetime]$elapsedTime.Ticks)
