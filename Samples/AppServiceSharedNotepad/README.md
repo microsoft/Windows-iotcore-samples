@@ -3,12 +3,8 @@ layout: sample
 title: App Service Shared Notepad
 description: An app service that provides clients the ability to share a notepad-like editing experience.
 keyword: iot, uwp
-permalink:
-samplelink:
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
-kit:
-step:
 ---
 # AppServiceSharedNotepad
 

@@ -3,12 +3,8 @@ layout: sample
 title: Digital Sign
 description: Create a basic digital sign similar to screen saver with slideshow images and audio.
 keyword: iot, uwp
-permalink:
-samplelink:
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
-kit:
-step:
 ---
 # Digital Sign
 

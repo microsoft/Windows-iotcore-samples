@@ -3,12 +3,8 @@ layout: sample
 title: Shift Register
 description:  Connect an 8-bit serial-in, parallel-out shift register to your device to toggle eight LED's
 keyword: iot, wiring, uwp
-permalink:
-samplelink:
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
-kit:
-step:
 ---
 # Shift Register
 

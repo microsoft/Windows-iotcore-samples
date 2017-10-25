@@ -3,12 +3,8 @@ layout: sample
 title: Temperature and Force Sensor
 description: Control a basic temperature and force sensor.
 keyword: iot, wiring, uwp
-permalink:
-samplelink:
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
-kit:
-step:
 ---
 # “Temperature and force sensor”
 

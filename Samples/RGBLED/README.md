@@ -3,12 +3,8 @@ layout: sample
 title: RGB LED Sample
 description: A sample that Makes an LED blink red, green, and blue.
 keyword: iot, wiring, uwp
-permalink:
-samplelink:
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
-kit:
-step:
 ---
 # RGB LED Sample
 

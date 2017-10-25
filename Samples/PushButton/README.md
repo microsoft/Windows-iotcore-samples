@@ -3,12 +3,8 @@ layout: sample
 title: Push Button
 description: Make an LED blink with the push of a button
 keyword: iot, wiring, uwp
-permalink:
-samplelink:
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
-kit:
-step:
 ---
 # Push Button Sample
 

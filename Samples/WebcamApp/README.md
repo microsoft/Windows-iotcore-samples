@@ -3,12 +3,8 @@ layout: sample
 title: Basic webcam app
 description: Create an app that initializes a web cam, takes pictures, and records video and audio.
 keyword: iot, uwp
-permalink:
-samplelink:
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
-kit:
-step:
 ---
 # Webcam App Sample
 

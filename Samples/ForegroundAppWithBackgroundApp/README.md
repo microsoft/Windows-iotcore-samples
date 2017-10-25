@@ -3,12 +3,8 @@ layout: sample
 title: Foreground App with Background App
 description: An example of building a foreground app and background app within the same APPX file.
 keyword: iot, uwp
-permalink:
-samplelink:
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
-kit:
-step:
 ---
 # “Foreground App with Background App”
 
