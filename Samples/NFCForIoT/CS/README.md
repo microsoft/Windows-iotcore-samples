@@ -9,7 +9,7 @@ In order to build and test this sample, you will need the following:
 
   * [Visual Studio 2015 Update 3](http://go.microsoft.com/fwlink/?LinkId=691129).
   * [NXP Explore-NFC Kit](http://www.digikey.com/products/en?mpart=OM5577&v=568).
-  * Download the [ms-iot Samples repository](https://github.com/ms-iot/samples/archive/develop.zip) from GitHub, then expand it.
+  * Download the [ms-iot Samples repository](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) from GitHub, then expand it.
   * [BullsEye NFC NTAG216 Sticker](https://dangerousthings.com/shop/bullseye/) or [xNTi NFC Implant Kit](https://dangerousthings.com/shop/xnti/)
   * The Windows On Devices sample repository.
 

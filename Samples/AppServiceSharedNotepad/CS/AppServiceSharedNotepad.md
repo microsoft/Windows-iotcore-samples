@@ -4,7 +4,7 @@ We’ll create a simple notepad [app service](https://docs.microsoft.com/en-us/w
 ## Load the projects in Visual Studio
 ___
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\AppServiceSharedNotepad`.  Make a copy of the folder on your disk and open the projects from Visual Studio.  NotepadService.sln implements the app service and must be started first.  NotepadClientBackgroundApplication.sln implements a client that writes messages to the app service.  NotepadServiceClientApp.sln implements a windows that retrieves messages from the client and displays them.
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\AppServiceSharedNotepad`.  Make a copy of the folder on your disk and open the projects from Visual Studio.  NotepadService.sln implements the app service and must be started first.  NotepadClientBackgroundApplication.sln implements a client that writes messages to the app service.  NotepadServiceClientApp.sln implements a windows that retrieves messages from the client and displays them.
 
 {% include samples/AppDeploymentCS.md %}
 

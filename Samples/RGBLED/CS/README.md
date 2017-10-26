@@ -1,8 +1,6 @@
 # RGB LED Sample
 
-
-
-[View the code on Github](https://github.com/ms-iot/samples/blob/develop/RGBLED/CS/MainPage.xaml.cs)
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
 
 In this sample, we will connect a Tri-color LED to Raspberry Pi 2 or 3. The LED will blink changing colors from Red, Blue, and Green.
 
@@ -68,7 +66,7 @@ Here is the pinout of the Raspberry Pi 2 and 3:
 
 ### Deploy your app
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\RGBLED`.  This sample is written in C#. Make a copy of the folder on your disk and open the project from Visual Studio.
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\RGBLED`.  This sample is written in C#. Make a copy of the folder on your disk and open the project from Visual Studio.
 
 Follow the instructions to [setup remote debugging and deploy the app]({{site.baseurl}}/{{page.lang}}/Docs/AppDeployment.htm#csharp). The RGBLED app will deploy and start on the Windows IoT device, and you should see the LED blink in sync with the simulation on the screen.
 

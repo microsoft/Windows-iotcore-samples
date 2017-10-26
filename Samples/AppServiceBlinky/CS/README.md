@@ -9,7 +9,7 @@ Note that the app will not run successfully if it cannot find any available GPIO
 ## Load the projects in Visual Studio
 ___
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\AppServiceBlinky`.  Make a copy of the folder on your disk and open the projects from Visual Studio.  BlinkyService.sln implements the app service and must be started first.  BlinkyClient.sln implements the app service client.
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\AppServiceBlinky`.  Make a copy of the folder on your disk and open the projects from Visual Studio.  BlinkyService.sln implements the app service and must be started first.  BlinkyClient.sln implements the app service client.
 
 {% include samples/AppDeploymentCS.md %}
 

@@ -126,7 +126,7 @@ We need to hook up power, ground, and the I2C lines from on the Raspberry Pi 2 o
 
 ### Create the Sample App
 
-When everything is set up, power your device back on. You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\ShiftRegister`, 
+When everything is set up, power your device back on. You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\ShiftRegister`, 
 but as an exercise, this tutorial will take you through the complete steps to create this app from scratch. 
 Open up Visual Studio and create a new C# Windows Universal Blank App. Click **File -> New -> Project** then select **Templates -> Visual C# -> Windows -> Universal -> Blank App (Universal Windows)**. 
 For this sample, we cleverly named ours **ShiftRegisterSample**.

@@ -60,7 +60,7 @@
     - Make note of *either* Key 1 or Key 2, you will need to add this key to the sample source before rebuilding.
     
 ### Setup your sample
-1. Download the sample from [here](https://github.com/ms-iot/samples/archive/develop.zip) to your local PC.
+1. Download the sample from [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) to your local PC.
 2. Open the solution file in visual studio.
 3. Open the constantParam.cs file.
 4. Replace the subscriptionKey with either Key 1 or Key 2 [from instructions above](#Setup-Azure-with-Cognitive-Services).

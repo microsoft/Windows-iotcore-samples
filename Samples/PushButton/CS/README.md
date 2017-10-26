@@ -1,6 +1,6 @@
 # Push button
 
-[View the code on GitHub](https://github.com/ms-iot/samples/tree/develop/PushButton/CS){:target="_blank"}
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
 
 In this sample, we connect a push button to your Raspberry Pi 2 or 3, MinnowBoard Max, or the DragonBoard 410c and use it to control an LED. We use GPIO interrupts to detect when the button is pressed and toggle the LED in response.
 
@@ -119,7 +119,7 @@ private const int BUTTON_PIN = 36;
 
 ### Building and running the sample
 
-1. Download a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip).
+1. Download a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
 1. Open `samples-develop\PushButton\CS\PushButton.csproj` in Visual Studio.
 1. If you have **Raspberry Pi 2 or 3** or **DragonBoard 410c**, Select `ARM` for the target architecture. Otherwise, for **MinnowBoard Max** select `x86`
 1. Go to `Build -> Build Solution`

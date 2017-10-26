@@ -102,7 +102,9 @@ Below is an image of our USB-to-TTL module connected to a USB port in our RPi2 o
 
 Now that our PC and RPi2, RPi3 or MBM are connected, let's setup and deploy the app. If you are not familiar with how to set the target device and target architecture in Visual Studio see [this section]({{site.baseurl}}/{{page.lang}}/Samples/HelloWorld.htm#deploy-the-app-to-your-windows-iot-core-device) for details.
 
-1. Download the Visual Studio 2017 [SerialSample source project](https://github.com/ms-iot/samples/tree/develop/SerialUART/){:target="_blank"}. 
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
+
+1. Navigate to the SerialSample source project. 
 
 2. Make two separate copies of the app. We'll refer to them as the 'Device copy' and 'PC copy'.
 

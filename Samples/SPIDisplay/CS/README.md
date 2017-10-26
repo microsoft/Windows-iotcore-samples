@@ -7,7 +7,7 @@ This is a headed sample.  To better understand what headed mode is and how to co
 
 ### Load the project in Visual Studio
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\SPIDisplay`.  Make a copy of the folder on your disk and open the project from Visual Studio. 
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\SPIDisplay`.  Make a copy of the folder on your disk and open the project from Visual Studio. 
 Note that this app requires a device with a physical SPI port and will not work if running in an emulated environment.
 
 ### Connect the SPI Display to your device

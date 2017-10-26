@@ -124,7 +124,7 @@ If you chose to use the **MCP3008**, you can switch the MCP3208 for the MCP3008 
 
 ### Building and running the sample
 
-1. Download a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip).
+1. Download a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
 2. Open `samples-develop\PotentiometerSensor\CS\PotentiometerSensor.csproj` in Visual Studio.
 3. Find the `ADC_DEVICE` variable in **MainPage.xaml.cs** and change it to either **AdcDevice.MCP3002**, **AdcDevice.MCP3208** or **AdcDevice.MCP3008** depending on the ADC you wired up above
 4. Verify the GPIO pin number is correct for your board. (GPIO 5 for Raspberry Pi 2 or 3 and MinnowBoard Max. GPIO 12 for DragonBoard)

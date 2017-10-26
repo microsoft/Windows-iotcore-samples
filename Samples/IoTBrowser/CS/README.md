@@ -11,7 +11,7 @@ As this sample uses just standard Windows UWP features, it can also run on your 
 
 ### Load the project in Visual Studio
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\IoTBrowser`. The sample code is C#. Make a copy of the folder on your disk and open the project from Visual Studio.
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\IoTBrowser`. The sample code is C#. Make a copy of the folder on your disk and open the project from Visual Studio.
 
 {% include samples/AppDeploymentCS.md %}
 
