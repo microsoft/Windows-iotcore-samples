@@ -191,7 +191,7 @@ You can add this by opening the **Package.appxmanifest** file in an XML editor (
 
     Visual Studio 2017 has a known bug in the Manifest Designer (the visual editor for appxmanifest files) that affects the serialcommunication capability. If your appxmanifest adds the serialcommunication capability, modifying your appxmanifest with the designer will corrupt your appxmanifest (the Device xml child will be lost). You can workaround this problem by hand editing the appxmanifest by right-clicking your appxmanifest and selecting View Code from the context menu.
 
-{% highlight xml %}
+``` xml
   <Capabilities>
     <DeviceCapability Name="serialcommunication">
       <Device Id="any">
@@ -199,13 +199,13 @@ You can add this by opening the **Package.appxmanifest** file in an XML editor (
       </Device>
     </DeviceCapability>
   </Capabilities>
-{% endhighlight %}
+```
 
 ### Connect to selected serial device
 
 This sample app enumerates all serial devices connected to the device and displays the list in the **ListBox** ConnectDevices. The following code connects and configure the selected device ID and creates a **SerialDevice** object. 
 
-{% highlight C# %}
+``` C#
 private async void comPortInput_Click(object sender, RoutedEventArgs e)
 {
     var selection = ConnectDevices.SelectedItems; // Get selected items from ListBox
@@ -235,7 +235,7 @@ private async void comPortInput_Click(object sender, RoutedEventArgs e)
         // ...
     }
 }
-{% endhighlight %}
+```
 
 ### Perform a read on the serial port
 
@@ -245,7 +245,7 @@ Due to differences in handling concurrent tasks, the implementations of **Listen
 
 * C# allows awaiting **ReadAsync()**. All we do is keep reading the serial port in an infinite loop interrupted only when an exception is thrown (triggered by the cancellation token).
 
-{% highlight C# %}
+``` C#
 
 private async void Listen()
 {
@@ -295,11 +295,11 @@ private async Task ReadAsync(CancellationToken cancellationToken)
         status.Text = "bytes read successfully!";
     }            
 }
-{% endhighlight %}
+```
 
 * C++ does not allow awaiting **ReadAsync()** in Windows Runtime STA (Single Threaded Apartment) threads due to blocking the UI. In order to chain continuation reads from the serial port, we dynamically generate repeating tasks via "recursive" task creation - "recursively" call **Listen()** at the end of the continuation chain. The "recursive" call is not a true recursion. It will not accumulate stack since every recursive is made in a new task.
 
-{% highlight C++ %}
+``` c++
 
 void MainPage::Listen()
 {
@@ -338,13 +338,13 @@ Concurrency::task<void> MainPage::ReadAsync(Concurrency::cancellation_token canc
         }
     });
 }
-{% endhighlight %}
+```
 
 ### Perform a write to the serial port
 
 When the bytes are ready to be sent, we write asynchronously to the **OutputStream** of the **SerialDevice** object using the **DataWriter** object.
 
-{% highlight C# %}
+``` C#
 private async void sendTextButton_Click(object sender, RoutedEventArgs e)
 {	
     // ...
@@ -375,13 +375,13 @@ private async Task WriteAsync()
 
     // ...    
 }
-{% endhighlight %}
+```
 
 ### Cancelling Read
 
 You can cancel the read operation by using **CancellationToken** on the Task. Initialize the **CancellationToken** object and pass that as an argument to the read task.
 
-{% highlight C# %}
+``` C#
 
 private async void comPortInput_Click(object sender, RoutedEventArgs e)
 {
@@ -424,7 +424,7 @@ private void CancelReadTask()
         }
     }         
 }
-{% endhighlight %}
+```
 
 ### Closing the device
 
@@ -432,7 +432,7 @@ When closing the connection with the device, we cancel all pending I/O operation
 
 In this sample, we proceed to also refresh the list of devices connected.
 
-{% highlight C# %}
+``` C#
 private void closeDevice_Click(object sender, RoutedEventArgs e)
 {
     try
@@ -456,7 +456,7 @@ private void CloseDevice()
 
     // ...
 }    
-{% endhighlight %}
+```
 
 
 To summarize:

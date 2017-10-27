@@ -32,29 +32,29 @@ Since the IoT extension SDK is not added to projects by default, we'll need to a
 ___
 Let's add some content to the MainPage. From Solution Explorer, select the **MainPage.xaml** file. We want to add a TextBox and a Button, to show some interaction. So we will edit the XAML file to add these elements. Locate the **&lt;Grid&gt;** tag in the XAML section of the designer, and add the following markup.  
 
-{% highlight XML %}
+``` xml
 <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
     <TextBox x:Name="HelloMessage" Text="Hello, World!" Margin="10" IsReadOnly="True"/>
     <Button x:Name="ClickMe" Content="Click Me!"  Margin="10" HorizontalAlignment="Center"/>
     </StackPanel>
 </Grid>
-{% endhighlight %}
+```
 
 Now that we have a TextBox and a Button, we can add some code which will be executed when the Button is pressed. Double click on the Button in the design surface: Visual Studio will add a **Click** property to the Button XAML tag and generate the **ClickMe_Click** method in **MainPage.xaml.cs**. Let's add a simple line of code in this method.
 
 *MainPage.xaml:*
-{% highlight XML %}
+``` xml
 <Button x:Name="ClickMe" Content="Click Me!"  Margin="10" HorizontalAlignment="Center" Click="ClickMe_Click"/>
-{% endhighlight %}
+```
   
 *MainPage.xaml.cs:*
-{% highlight C# %}
+``` C#
 private void ClickMe_Click(object sender, RoutedEventArgs e)
 {
     this.HelloMessage.Text = "Hello, Windows 10 IoT Core!";
 }
-{% endhighlight %}
+```
 
 ## Build and test the app locally
 ___

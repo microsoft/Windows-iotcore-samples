@@ -61,7 +61,7 @@ Accessing the `Windows.System.ProcessLauncher` API from your code requires the `
 
 **NOTE:** While you can add other capabilities directly by double clicking and opening the **Package.appxmanifest** file in the UI editor, **systemManagement** capability can only be added via the XML editor (Right Click on the file -> Open with -> XML (Text) Editor) and adding the capability below:
  
-{% highlight xml %}  
+``` xml  
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
@@ -75,7 +75,7 @@ Accessing the `Windows.System.ProcessLauncher` API from your code requires the `
 	<!-- Add the capability here -->
     <iot:Capability Name="systemManagement" />
   </Capabilities>
-{% endhighlight %}  
+```  
  
 ### Launching a process
 
@@ -83,11 +83,11 @@ The `ProcessLauncher` API providers a number of static method overloads to launc
 
 Here's the part of the sample that launches the new process. After the process is launched, we `await` its return to get the exit code.
 
-{% highlight C# %}   
+``` C#   
 var result = await ProcessLauncher.RunToCompletionAsync(cmd.Text, args.Text == null ? string.Empty : args.Text, options);
 
 ProcessExitCode.Text += "Process Exit Code: " + result.ExitCode;
-{% endhighlight %} 
+``` 
 
 ### Using standard streams 
 
@@ -104,23 +104,23 @@ To be able to both read and write data to strams, we create the streams as `Wind
 
 Here's the relavant code from the sample. First, we initialize the stream objects:
 
-{% highlight C# %}   
+``` C#   
 var options = new ProcessLauncherOptions();
 var standardOutput = new InMemoryRandomAccessStream();
 var standardError = new InMemoryRandomAccessStream();
 options.StandardOutput = standardOutput;
 options.StandardError = standardError;
-{% endhighlight %} 
+``` 
 
 Then, we pass the options to the `RunToCompletionAsync()` method:
 
-{% highlight C# %}   
+``` C#   
 var result = await ProcessLauncher.RunToCompletionAsync(cmd.Text, args.Text == null ? string.Empty : args.Text, options);
-{% endhighlight %} 
+``` 
 
 Finally, we read the data from the `InMemoryRandomAccessStream` after getting it as an input stream:
 
-{% highlight C# %}   
+``` C#   
 using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
 {
     var size = standardOutput.Size;
@@ -131,7 +131,7 @@ using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
         StdOutputText.Text += stringRead;
     }
 }
-{% endhighlight %} 
+``` 
 
 **Note**, while not used in the sample, the standard input stream can be used with the `ProcessLauncher` API as well.
 
@@ -143,7 +143,7 @@ The program itself is quite simple, but it demonstrates the various aspects of t
 
 Here's the main method of the sample console app:
 
-{% highlight C++ %}  
+``` c++  
 int main(int argc, char **argv)
 {
     std::cout << "Hi there!" << std::endl;
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 
     return 100;
 }
-{% endhighlight %}  
+```  
 
 The application has been added to the solution as a *console application*. To create your own console application, please refer to the [Console Application Sample]({{site.baseurl}}/{{page.lang}}/Samples/memorystatus).
 

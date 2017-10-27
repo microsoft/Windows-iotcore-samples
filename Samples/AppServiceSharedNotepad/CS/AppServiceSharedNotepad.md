@@ -24,7 +24,7 @@ The code is in 3 projects NotepadService, NotepadClientBackgroundApplication and
 ___
 To add an appservice to our background application first we need to open appxmanifest.xml in a text editor and add an extension with Category="windows.AppService"
 
-{% highlight XML %}
+``` xml
 <Extensions>
   <Extension Category="windows.backgroundTasks" EntryPoint="NotepadService.StartupTask">
     <BackgroundTasks>
@@ -36,11 +36,11 @@ To add an appservice to our background application first we need to open appxman
     <uap:AppService Name="NotepadService" />
   </uap:Extension>
 </Extensions>
-{% endhighlight %}
+```
 
 Next we'll add a check in the StartupTask::Run method to see if the application is being started as an appservice
 
-{% highlight C# %}
+``` C#
 //Check to determine whether this activation was caused by an incoming app service connection
 var appServiceTrigger = taskInstance.TriggerDetails as AppServiceTriggerDetails;
 if (appServiceTrigger != null)
@@ -57,18 +57,18 @@ if (appServiceTrigger != null)
         serviceDeferral.Complete();
     }
 }
-{% endhighlight %}
+```
 
 At the beginning of NotepadService's StartupTask::Run get the deferral object and set up a Canceled event handler to clean up the deferral on exit.
 
-{% highlight C# %}
+``` C#
 serviceDeferral = taskInstance.GetDeferral();
 taskInstance.Canceled += TaskInstance_Canceled;
-{% endhighlight %}
+```
 
 When the Canceled event handler is called Complete the deferral for this instance of the app service if one exists.  If the deferral is not completed then the app service process will be killed by the operating system even if other clients still have connections open to the app service.
 
-{% highlight C# %}
+``` C#
 private void TaskInstance_Canceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
 {
     if (deferral != null)
@@ -77,11 +77,11 @@ private void TaskInstance_Canceled(IBackgroundTaskInstance sender, BackgroundTas
         deferral = null;
     }
 }
-{% endhighlight %}
+```
 
 Finally we need to handle service requests:
 
-{% highlight C# %}
+``` C#
 // This AppService supports recieving two types of request: "postNote" and "getMessages"
 // When a note is sent from the clients the service will pass it to the shared notepad
 // and send a confirmation response to the client.
@@ -109,13 +109,13 @@ private async void AppServiceConnection_RequestReceived(AppServiceConnection sen
 
     messageDefferal.Complete();
 }
-{% endhighlight %}
+```
 
 ## Writing messages in NotepadClientBackgroundApplication
 ___
 When the client starts it opens a connection to the client.  The string assigned to connection.PackageFamilyName uniquely identifies the service we want to connect to.
 
-{% highlight C# %}
+``` C#
 AppServiceConnection connection;
 BackgroundTaskDeferral deferral;
 ThreadPoolTimer timer;
@@ -158,11 +158,11 @@ private void TaskInstance_Canceled(IBackgroundTaskInstance sender, BackgroundTas
         deferral = null;
     }
 }
-{% endhighlight %}
+```
 
 If everything connects without an error then the timer callback will post a new note every 30 seconds.
 
-{% highlight C# %}
+``` C#
 public async void Tick(ThreadPoolTimer sender)
 {
     count++;
@@ -176,14 +176,14 @@ public async void Tick(ThreadPoolTimer sender)
         System.Diagnostics.Debug.WriteLine(result);
     }
 }
-{% endhighlight %}
+```
 
 ## Receiving new message notificiations and showing messages in NotepadServiceClient
 ___
 In the NotepadServiceClient application add a TextBlock named **Messages** to contain the messages from the NotepadService.
 Also, add a button called **GetNewMessagesButton** to get messages from NotepadServiceClient and store them in the **Messages** TextBlock.
 
-{% highlight XML %}
+``` xml
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Orientation="Vertical">
             <TextBlock FontSize="26">Messages</TextBlock>
@@ -193,11 +193,11 @@ Also, add a button called **GetNewMessagesButton** to get messages from NotepadS
             </StackPanel>
         </StackPanel>
     </Grid>
-{% endhighlight %}
+```
 
 In the **MainPage** constructor add an event handler for the **Loaded** event.  In the **Loaded** event handler connect to the **NotepadService** app service.
 
-{% highlight C# %}
+``` C#
 AppServiceConnection connection;
 
 public MainPage()
@@ -228,11 +228,11 @@ private async void MainPage_Loaded(object sender, RoutedEventArgs e)
     }
 
 }
-{% endhighlight %}
+```
 
 When the NotepadService receives a new message it will call the connection's  **RequestReceived** event handler to notify the client application.  When a new message is received enable  **GetNewMessagesButton**.
 
-{% highlight C# %}
+``` C#
 //When the service notifies us of new messages, enable the button to allow the user to request messages
 private async void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
 {
@@ -249,11 +249,11 @@ private async void Connection_RequestReceived(AppServiceConnection sender, AppSe
     }
 
 }
-{% endhighlight %}
+```
 
 When the **GetNewMessagesButton** is clicked request the message from **NotepadService** and display them in the **Messages** TextBlock.
 
-{% highlight C# %}
+``` C#
 //When the user requests new messages, send a request to the server and print them out
 private async void GetNewMessagesButton_Click(object sender, RoutedEventArgs e)
 {
@@ -275,4 +275,4 @@ private async void GetNewMessagesButton_Click(object sender, RoutedEventArgs e)
     }
     GetNewMessagesButton.IsEnabled = false;
 }
-{% endhighlight %}
+```

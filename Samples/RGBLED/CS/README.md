@@ -76,7 +76,7 @@ First, we get the default GPIO controller and check that it's not null.
 `GpioController.GetDefault()` will return null on platforms that do not contain
 a GPIO controller.
 
-{% highlight C# %}
+``` C#
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             var gpio = GpioController.GetDefault();
@@ -87,7 +87,7 @@ a GPIO controller.
                 GpioStatus.Text = "There is no GPIO controller on this device.";
                 return;
             }
-{% endhighlight %}
+```
 
 Next, we open the pins we'll be using later in the program. The RGB LED
 requires 3 gpio pins - one to drive each color channel of the LED.
@@ -97,7 +97,7 @@ located next to each other physically on the header. If we're not running on
 Raspberry Pi, we take the first 3 available pins. There is also logic to skip
 pins connected to onboard functions on known hardware platforms.
 
-{% highlight C# %}
+``` C#
             var deviceModel = GetDeviceModel();
             if (deviceModel == DeviceModel.RaspberryPi2)
             {
@@ -147,13 +147,13 @@ pins connected to onboard functions on known hardware platforms.
                 greenpin = pins[1];
                 bluepin = pins[2];
             }
-{% endhighlight %}
+```
 
 Next, we initialize the pins as outputs driven HIGH, which causes the LED
 to be OFF. We also display which pin numbers are in use. If you're
 not using Raspberry Pi, hook up the RGB LED to the pins shown on the display.
 
-{% highlight C# %}
+``` C#
             redpin.Write(GpioPinValue.High);
             redpin.SetDriveMode(GpioPinDriveMode.Output);
             greenpin.Write(GpioPinValue.High);
@@ -166,7 +166,7 @@ not using Raspberry Pi, hook up the RGB LED to the pins shown on the display.
                 redpin.PinNumber,
                 greenpin.PinNumber,
                 bluepin.PinNumber);
-{% endhighlight %}
+```
 
 Finally, we start a periodic timer which we will use to rotate through the colors
 of the LED. We use a `DispatcherTimer` because we'll be updating the UI
@@ -174,17 +174,17 @@ on the timer callback. If we did not need to update the UI, it would be better
 to use a `System.Threading.Timer` which runs on a separate thread. The less we
 can do on the UI thread, the more responsive the UI will be.
 
-{% highlight C# %}
+``` C#
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += Timer_Tick;
             timer.Start();
         }
-{% endhighlight %}
+```
 
 In the timer callback, we light up the currently active LED and update the UI.
 
-{% highlight C# %}
+``` C#
         private void FlipLED()
         {
             Debug.Assert(redpin != null && bluepin != null && greenpin != null);
@@ -226,4 +226,4 @@ In the timer callback, we light up the currently active LED and update the UI.
         {
             FlipLED();
         }
-{% endhighlight %}
+```

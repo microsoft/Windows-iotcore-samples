@@ -151,7 +151,7 @@ The code here performs two main tasks:
 
 Let's start by digging into the initializations. The first thing we initialize is the GPIO LED pin in **InitGPIO()**.
 
-{% highlight C# %}
+``` C#
 private void InitGpio()
 {
 	var gpio = GpioController.GetDefault();
@@ -168,7 +168,7 @@ private void InitGpio()
 	ledPin.Write(GpioPinValue.High);        
 	ledPin.SetDriveMode(GpioPinDriveMode.Output);
 }
-{% endhighlight %}
+```
 
 * We start by retrieving the default GPIO controller on the device with the **GpioController.GetDefault()** function.
 
@@ -178,7 +178,7 @@ private void InitGpio()
 
 Next, we initialize the SPI bus. This allows the RPi2 or RPi3 to communicate with the ADC to read in potentiometer positions.
 
-{% highlight C# %}
+``` C#
 private async Task InitSPI()
 {
 	try
@@ -198,7 +198,7 @@ private async Task InitSPI()
 		throw new Exception("SPI Initialization Failed", ex);
 	}
 }
-{% endhighlight %}
+```
 
 * We start by specifying some configuration settings for our SPI bus:
 1. We specify which chip select line we want to use. We wired the ADC into chip select line 0, so that's what we use here.
@@ -211,7 +211,7 @@ private async Task InitSPI()
 
 After the initializations are complete, we create a periodic timer to read data every 100mS.
 
-{% highlight C# %}
+``` C#
 private async void InitAll()
 {
 	// ...
@@ -221,11 +221,11 @@ private async void InitAll()
 
 	StatusText.Text = "Status: Running";
 }
-{% endhighlight %}
+```
 
 This timer calls the **Timer_Tick()** function. Which starts by reading from the ADC:
 
-{% highlight C# %}
+``` C#
 public void ReadADC()
 {
 	byte[] readBuffer = new byte[3]; /* Buffer to hold read data*/
@@ -251,7 +251,7 @@ public void ReadADC()
 		textPlaceHolder.Text = adcValue.ToString();         /* Display the value on screen                      */
 	});
 }
-{% endhighlight %}
+```
 
 * We first setup the **writeBuffer** with some configuration data to send to the ADC
 
@@ -263,7 +263,7 @@ public void ReadADC()
 
 Next, we control the LED based on the ADC result
 
-{% highlight C# %}
+``` C#
 /* Turn on/off the LED depending on the potentiometer position    */
 private void LightLED()
 {
@@ -290,7 +290,7 @@ private void LightLED()
 		ledPin.Write(GpioPinValue.High);
 	}
 }
-{% endhighlight %}
+```
 
 * If the potentiometer is rotated more than halfway through its range, we turn on the LED. Otherwise it's turned off.
 

@@ -162,7 +162,7 @@ Let's begin.
 * Locate the `<Grid>` tag in the XAML section of the designer, and add the following markup:
 
 <UL>
-{% highlight XML %}
+``` xml
 <Grid Background="Black">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock x:Name="DelayText" Text="500ms" Margin="10" TextAlignment="Center" FontSize="26.667" />
@@ -171,7 +171,7 @@ Let's begin.
         <TextBlock x:Name="GpioStatus" Text="Waiting to initialize GPIO..." Margin="10,50,10,10" TextAlignment="Center" FontSize="26.667" />
     </StackPanel>
 </Grid>
-{% endhighlight %}
+```
 </UL>
 
 #### Add code to MainPage.xaml.cs
@@ -188,15 +188,15 @@ Before we add any code to MainPage.xaml.cs, we need to add a reference to the Wi
 
  * Add the following line at the top of MainPage.xaml.cs
 
-{% highlight C# %}
+``` C#
 using Windows.Devices.Gpio;
-{% endhighlight %}
+```
 
 With the references added, let's start adding code. The complete code we implemented for MainPage.xaml.cs is located at end of this section. Below are some key parts of the code with explanations
 
 Variables and Constants
 
-{% highlight C# %}
+``` C#
 // use these constants for controlling how the initial time interval for clocking in serial data to the shift register.
 private const double TIMER_INTERVAL = 100; // value is milliseconds and denotes the timer interval
 private const double TIME_DELAY = 1;
@@ -229,7 +229,7 @@ private bool areLedsInverted = true;
 
 private SolidColorBrush redBrush = new SolidColorBrush(Windows.UI.Colors.Red);
 private SolidColorBrush grayBrush = new SolidColorBrush(Windows.UI.Colors.LightGray);
-{% endhighlight %}
+```
 
 Here are what some of these constants and variables represent
 
@@ -247,7 +247,7 @@ The method `InitializeSystem()`
 
  * Sets up the timer used control the frequency at which the RPi2 or RPi3 sends one bit of data to the shift register
 
-{% highlight C# %}
+``` C#
 private void InitializeSystem()
 {
     // initialize the GPIO pins we will use for bit-banging our serial data to the shift register
@@ -305,7 +305,7 @@ private void InitializeSystem()
         return;
     }
 }
-{% endhighlight %}
+```
 
 The method `SendDataBit()`
 
@@ -314,7 +314,7 @@ The method `SendDataBit()`
  in the shift register. The toggling of the serial clock pin by the RPi2 or RPi3 to clock in the data bit also causes the previous eight bits of data in the shift register to shift one bit position with the bit in the last position being lost.
  After clocking in the data bit, all bits in `pinMask` are left shifted one bit position. The value of `pinMask` is then checked and, depending on whether the LED lighting pattern is set as inverted, the least significant bit (LSB) of 'pinMask' is set to either a '1' or '0'.
 
-{% highlight C# %}
+``` C#
 private void SendDataBit()
 {
     if ((pinMask & 0x80) > 0)
@@ -351,12 +351,12 @@ private void SendDataBit()
         }
     }
 }
-{% endhighlight %}
+```
 
 `ToggleButtonClicked()` is triggered when the app user clicks on the button on the display screen to invert the LEDs. This method inverts all the bits in `pinMask`, sets or clears the flag `areLedsInverted` depending on what the previous state was.
  Finally, it changes the color of the button - red when the LEDs are inverted and gray when they are not.
 
-{% highlight C# %}
+``` C#
 private void ToggleButtonClicked(object sender, RoutedEventArgs e)
 {
     pinMask ^= 0xFF;
@@ -371,7 +371,7 @@ private void ToggleButtonClicked(object sender, RoutedEventArgs e)
         ToggleButton.Background = redBrush;
     }
 }
-{% endhighlight %}
+```
 
 ### Build, Deploy and Run the App
 
@@ -389,7 +389,7 @@ Congratulations! You've successfully connected an 8-bit serial-in, parallel-out 
 
 ### The complete MainPage.xaml.cs code
 
-{% highlight C# %}
+``` C#
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -602,4 +602,4 @@ namespace ShiftRegisterSample
         }
     }
 }
-{% endhighlight %}
+```

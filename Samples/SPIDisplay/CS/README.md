@@ -117,7 +117,7 @@ A schematic for the circuit is:
 
 When everything is set up, power your device back on, and open up the sample app in Visual Studio. Configure the code depending on which device you are using.
 
-{% highlight C# %}
+``` C#
 public sealed partial class MainPage : Page
 {
         /* Important! Uncomment the code below corresponding to your target device */
@@ -142,7 +142,7 @@ public sealed partial class MainPage : Page
         
         //...
 }
-{% endhighlight %}
+```
 
 Next, right-click on the **SPIDisplay** project in **Solution Explorer** and select **"Set as StartUp Project"**.
 Follow the instructions to [setup remote debugging and deploy the app]({{site.baseurl}}/{{page.lang}}/Docs/AppDeployment.htm#csharp). The SPIDisplay app will deploy and start, and you should see text data show up on OLED display.
@@ -164,7 +164,7 @@ Let's start by digging into the initialization code first.
 ### Initialization Code
 Here is the C# code for the top-level initialization function.
 
-{% highlight C# %}
+``` C#
 using Windows.Devices.Enumeration;
 using Windows.Devices.Spi;
 using Windows.Devices.Gpio;
@@ -201,7 +201,7 @@ private async void InitAll()
 
     Text_Status.Text = "Status: Initialized";
 }
-{% endhighlight %}
+```
 
 * The SPI display requires the use of GPIO and SPI, so we initialize the following in sequence:
 1. Initialize GPIO controller and pins
@@ -223,7 +223,7 @@ Next, let's take a closer look at what each of the initialization functions is d
 There are two pins on the SPI OLED display we need to control, the Data/Command pin and the Reset pin. To communicate with these,
 we need to initialize the GPIO controller and configure the pins as outputs.
 
-{% highlight C# %}
+``` C#
 /* Initialize the GPIO */
 private void InitGpio()
 {
@@ -247,7 +247,7 @@ private void InitGpio()
         throw new Exception("GPIO initialization failed", ex);
     }
 }
-{% endhighlight %}
+```
 
 * We start by retrieving the default GPIO controller on the device with the **GpioController.GetDefault()** function.
 
@@ -261,7 +261,7 @@ private void InitGpio()
 Following the GPIO initialization, we initialize the SPI bus. The bus is used to send graphics data and commands to the OLED screen for display,
 and needs to be configured before we can talk to the display.
 
-{% highlight C# %}
+``` C#
 /* Initialize the SPI bus */
 private async Task InitSpi()
 {
@@ -284,7 +284,7 @@ private async Task InitSpi()
         throw new Exception("SPI Initialization Failed", ex);
     }
 }
-{% endhighlight %}
+```
 
 * We start by specifying some configuration settings for our SPI bus:
 1. We specify which chip select line we want to use. This line is connected to the **CS** pin on the display, and lets the display controller know when we're about to start a SPI bus transaction.
@@ -300,7 +300,7 @@ private async Task InitSpi()
 #### InitDisplay()
 Now that we have initialized GPIO and SPI, we can communicate with display. Before we can send graphics data however, we first need to configure some settings on the display controller.
 
-{% highlight C# %}
+``` C#
 /* Send SPI commands to power up and initialize the display */
 private async Task InitDisplay()
 {
@@ -320,7 +320,7 @@ private async Task InitDisplay()
         throw new Exception("Display Initialization Failed", ex);
     }
 }
-{% endhighlight %}
+```
 
 * We start by performing a hardware reset by calling **ResetDisplay()**. The function simply toggles the hardware Reset pin to reset the display.
 
@@ -334,7 +334,7 @@ These commands turn the display on and put it into a state where it's ready to a
 Now that the display is initialized, we can send text to the screen. Previously in the initialization function, we registered **Display_TextBox_TextChanged()** to trigger any time the user changes the textbox.
 This function calls the **DisplayTextBoxContents()** function below which runs through the process of writing text out to the screen:
 
-{% highlight C# %}
+``` C#
 /* Update the SPI display to mirror the textbox contents */
 private void DisplayTextBoxContents()
 {
@@ -360,7 +360,7 @@ private void Display_TextBox_TextChanged(object sender, TextChangedEventArgs e)
 {
     DisplayTextBoxContents();
 }
-{% endhighlight %}
+```
 
 * **ClearDisplayBuf()** simply sets all bytes in our local display buffer to '0' so we start with a blank slate.
 
@@ -375,7 +375,7 @@ In the following sections, we'll detail the **WriteCharDisplayBuf()** and **Disp
 The **WriteCharDisplayBuf()** function performs the work to convert a single character into an array of bytes representing the character image data.
 This function is frequently called by **WriteLineDisplayBuf()** to render individual characters in a string. Lets take a look at how it works.
 
-{% highlight C# %}
+``` C#
 /*
  * NAME:        WriteCharDisplayBuf
  * DESCRIPTION: Writes one character to the display screen buffer (DisplayUpdate() needs to be called subsequently to output the buffer to the screen)
@@ -439,7 +439,7 @@ private UInt32 WriteCharDisplayBuf(Char Chr, UInt32 Col, UInt32 Row)
     /* Return the number of horizontal pixels used by the character */
     return CurrentCol - StartCol;
 }
-{% endhighlight %}
+```
 
 * We start by searching for a given character in our font table **DisplayFontTable[]**. This table contains pixel data for commonly used ASCII characters.
 Note that special characters such as the newline character are not supported in this sample, and are ignored by **WriteCharDisplayBuf()**.
@@ -456,7 +456,7 @@ Again, all of this is happening in our local screen buffer. No data has been sen
 #### DisplayUpdate()
 After all of our data has been written to our local buffer. We're ready to write it out over SPI to the screen. For this, we call **DisplayUpdate()**:
 
-{% highlight C# %}
+``` C#
 /* Writes the Display Buffer out to the physical screen for display */
 private void DisplayUpdate()
 {
@@ -476,7 +476,7 @@ private void DisplayUpdate()
     DisplaySendCommand(CMD_RESETPAGEADDR);        /* Reset the page address pointer back to 0   */
     DisplaySendData(SerializedDisplayBuffer);     /* Send the data over SPI                     */
 }
-{% endhighlight %}
+```
 
 * We start by iterating through our display buffer to convert our 2-dimensional buffer array into a single serialized array of data to be sent over SPI. Since we configured the display in "horizontal mode" previously,
 we take horizontal "slices" of our display buffer and store them sequentially in the serialized buffer.
@@ -485,7 +485,7 @@ we take horizontal "slices" of our display buffer and store them sequentially in
 
 * Finally, we call **DisplaySendData()** to send our buffer contents over SPI. This function is a wrapper around **SpiDevice.Write()**, which sends the entire buffer out over SPI.
 
-{% highlight C# %}
+``` C#
 /* Send graphics data to the screen */
 private void DisplaySendData(byte[] Data)
 {
@@ -493,4 +493,4 @@ private void DisplaySendData(byte[] Data)
     DataCommandPin.Write(GpioPinValue.High);
     SpiDisplay.Write(Data);
 }
-{% endhighlight %}
+```
