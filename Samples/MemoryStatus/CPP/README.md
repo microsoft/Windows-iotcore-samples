@@ -176,7 +176,7 @@ int main(int argc, char **argv)
 
 * Congratulations! You just deployed your first console application to a device running Windows IoT Core!
 
-* You can now run the application as you would any other application.  Simply open a PowerShell/SSH connection (instructions can be found [here for powershell]({{site.baseurl}}/{{page.lang}}/Docs/PowerShell) and [here for SSH]({{site.baseurl}}/{{page.lang}}/Docs/SSH)) and enter the Remote Command you specified above.
+* You can now run the application as you would any other application.  Simply open a PowerShell/SSH connection (instructions can be found [here for powershell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) and [here for SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/SSH) and enter the Remote Command you specified above.
 
 * Once you are done debugging Console Applications, remember to stop the remote debugger on the Windows IoT Core device. You can do this by navigating to Debug settings section of Windows Device Portal and clicking on the Stop Remote Debugger button.
 
