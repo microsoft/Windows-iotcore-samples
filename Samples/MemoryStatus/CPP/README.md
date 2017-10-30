@@ -180,6 +180,12 @@ int main(int argc, char **argv)
 
 * Once you are done debugging Console Applications, remember to stop the remote debugger on the Windows IoT Core device. You can do this by navigating to Debug settings section of Windows Device Portal and clicking on the Stop Remote Debugger button.
 
+## Additional resources
+* [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
+* [Documentation for all samples](https://developer.microsoft.com/en-us/windows/iot/samples)
+
+This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+
 
 
 
