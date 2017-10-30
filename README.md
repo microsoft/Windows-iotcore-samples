@@ -115,4 +115,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <td><a href="Samples/SerialUART">SerialUART</a></td>
   <td><a href="Samples/ShiftRegister">ShiftRegister</a></td>
  </tr>
+  <tr>
+  <td><a href="Samples/MemoryStatus">MemoryStatus</a></td>
+ </tr>
 </table>
