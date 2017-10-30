@@ -1,36 +1,29 @@
----
-layout: sample  
-title: Memory status monitor
-description: A simple console application that can be used to query the memory usage on your device
-keyword: Windows 10 IoT Core 
-permalink: /en-US/Samples/MemoryStatus.htm
-samplelink: https://github.com/ms-iot/samples/tree/develop/MemoryStatus/MemoryStatus
-lang: en-US
----  
+Windows 10 IoT Core sample code
+===============
 
-# Memory status monitor
+[Documentation for this sample](https://developer.microsoft.com/en-us/windows/iot/samples/memorystatus) 
 
-We'll create a simple console application that can be used to query the memory usage on your Windows IoT Core device (Raspberry Pi 2 or 3, MinnowBoard Max, or a DragonBoard). Please note that you need to compile the project for ARM for Raspberry Pi 2 or 3 or DragonBoard and x86 for MinnowBoard Max.
+## How to download:
 
-### Load the project in Visual Studio
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\MemoryStatus`.  Make a copy of the folder on your disk and open the project from Visual Studio.
+### Design
 
-### To create your own project in Visual Studio
+This sample is intended to show how to create a console application that can be used to query the memory usage on your Windows IoT Core device (Raspberry Pi 2 or 3, MinnowBoard Max, or a DragonBoard). Please note that you need to compile the project for ARM for Raspberry Pi 2 or 3 or DragonBoard and x86 for MinnowBoard Max.
 
-* Create a new project (File \| New Project...). In the 'New Project' dialog, navigate to 'Windows IoT Core' as shown below (in the left pane in the dialog: Templates \| Visual C++ \| Windows \| Windows IoT Core).<br/>
-Select the template 'Blank Windows IoT Core Console Application'<br/>
+### Usage
+
+1. Download this sample
+2. Open the project in Visual Studio
+
+## To create you own project
+* Create a new project (File | New Project...). In the 'New Project' dialog, navigate to 'Windows IoT Core' as shown below (in the left pane in the dialog: Templates | Visual C++ | Windows | Windows IoT Core).
+Select the template 'Blank Windows IoT Core Console Application'
 Remember to give a good name to your first app! In this example, we called the project 'MemoryStatus'.
-
-    ![Console Application Template Location]({{site.baseurl}}/Resources/images/Console/new_cpp_console_proj.png)
-
 * Let's add some content to the console application. From Solution Explorer, select the 'ConsoleApplication.cpp' file.
-
-    ![ConsoleApplication File]({{site.baseurl}}/Resources/images/Console/console_application.png)
-
 * To add some functionality to our console, add the following memory status query and display code:
-<UL>
-{% highlight C++ %}
+
+```C++
 #include "pch.h"
 
 #include <windows.h>
@@ -151,8 +144,8 @@ int main(int argc, char **argv)
     ::CloseHandle(exitEvent);
     printMessageLine("No longer monitoring memory consumption!");
 }
-{% endhighlight %}
-</UL>
+```
+
 * Make sure the app builds correctly invoking the Build \| Build Solution menu command.
 
 * This application can be run in either headed or headless mode.  To better understand what headed and headless mode are and how to configure your device, follow the instructions [here]({{site.baseurl}}/{{page.lang}}/Docs/HeadlessMode).
