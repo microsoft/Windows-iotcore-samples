@@ -1,9 +1,7 @@
 # I2C Accelerometer
 
-
-
 We'll connect an I2C accelerometer to your Raspberry Pi 2 or 3/MinnowBoard Max/DragonBoard and create a simple app to read data from it. We'll walk you through step-by-step, so no background knowledge of I2C is needed.
-However, if you're curious, SparkFun provides a great [tutorial on I2C](https://learn.sparkfun.com/tutorials/i2c){:target="_blank"}.
+However, if you're curious, SparkFun provides a great [tutorial on I2C](https://learn.sparkfun.com/tutorials/i2c).
 
 This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/HeadlessMode).
 
@@ -15,7 +13,7 @@ You can find the source code for this sample by downloading a zip of all of our 
 
 You'll need a few components:
 
-* <a name="I2C_Accelerometer"></a>an [ADXL345 accelerometer board from Sparkfun](https://www.sparkfun.com/products/9836){:target="_blank"} with pin headers soldered on
+* <a name="I2C_Accelerometer"></a>an [ADXL345 accelerometer board from Sparkfun](https://www.sparkfun.com/products/9836) with pin headers soldered on
 
 * a breadboard and a couple of male-to-female connector wires
 
@@ -36,10 +34,10 @@ The ADXL345 breakout board has 8 IO pins, connect them as follows:
 
 1. **GND:**  Connect to ground on the RPi2 or RPi3 (Pin 6)
 2. **VCC:**  Connect to 3.3V on the RPi2 or RPi3 (Pin 1)
-3. **CS:**   Connect to 3.3V (The ADXL345 actually supports both SPI and I2C protocols. To select I2C, we keep this pin tied to 3.3V. The [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf){:target="_blank"} contains much more information about the pin functions)
+3. **CS:**   Connect to 3.3V (The ADXL345 actually supports both SPI and I2C protocols. To select I2C, we keep this pin tied to 3.3V. The [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf) contains much more information about the pin functions)
 4. **INT1:** Leave unconnected, we're not using this pin
 5. **INT2:** Leave unconnected, we're not using this pin
-6. **SDO:**  Connect to ground (In I2C mode, this pin is used to select the device address. You can attach two ADXL345 to the same I2C bus if you connect this pin to 3.3V on the second device. See the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf){:target="_blank"} for more details)
+6. **SDO:**  Connect to ground (In I2C mode, this pin is used to select the device address. You can attach two ADXL345 to the same I2C bus if you connect this pin to 3.3V on the second device. See the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf) for more details)
 7. **SDA:**  Connect to SDA on the RPi2 or RPi3 (Pin 3). This is the data line for the I2C bus.
 8. **SCL:**  Connect to SCL on the RPi2 or RPi3 (Pin 5). This is the clock line for the I2C bus.
 
@@ -63,7 +61,7 @@ The ADXL345 breakout board has 8 IO pins, connect them as follows:
 
 1. **GND:**  Connect to ground on the MBM (Pin 2)
 2. **VCC:**  Connect to 3.3V on the MBM (Pin 4)
-3. **CS:**   Connect to 3.3V (The ADXL345 actually supports both SPI and I2C protocols. To select I2C, we keep this pin tied to 3.3V. The [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf){:target="_blank"} contains much more information about the pin functions)
+3. **CS:**   Connect to 3.3V (The ADXL345 actually supports both SPI and I2C protocols. To select I2C, we keep this pin tied to 3.3V. The [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf) contains much more information about the pin functions)
 4. **INT1:** Leave unconnected, we're not using this pin
 5. **INT2:** Leave unconnected, we're not using this pin
 6. **SDO:**  Connect to ground (In I2C mode, this pin is used to select the device address. You can attach two ADXL345 to the same I2C bus if you connect this pin to 3.3V on the second device. See the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf) for more details)
@@ -100,7 +98,7 @@ The ADXL345 breakout board has 8 IO pins which are connected to the DragonBoard 
 
 1. **GND:**  Connect to ground on the DragonBoard (Pin 2)
 2. **VCC:**  Connect to the LM317 2.5v output rail
-3. **CS:**   Connect to 2.5V (The ADXL345 actually supports both SPI and I2C protocols. To select I2C, we keep this pin tied to 2.5V. The [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf){:target="_blank"} contains much more information about the pin functions)
+3. **CS:**   Connect to 2.5V (The ADXL345 actually supports both SPI and I2C protocols. To select I2C, we keep this pin tied to 2.5V. The [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf) contains much more information about the pin functions)
 4. **INT1:** Leave unconnected, we're not using this pin
 5. **INT2:** Leave unconnected, we're not using this pin
 6. **SDO:**  Connect to ground (In I2C mode, this pin is used to select the device address. You can attach two ADXL345 to the same I2C bus if you connect this pin to 3.3V on the second device. See the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf) for more details)
@@ -191,10 +189,10 @@ Here's an overview of what's happening:
 Now that we have the **I2cDevice** accelerometer instance, we're done with the I2C bus initialization. We can now write data over I2C to start up the accelerometer. We do this with the **Write()** function.
 For this particular accelerometer, there are two internal registers we need to configure before we can start using the device: The data format register, and the power control register.
 
-1. We first write a 0x01 to the data format register. This configures the device range into +-4G mode. If you consult the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf){:target="_blank"}, you'll see that the device can be configured in a variety of measurement modes ranging from 2G to 16G.
+1. We first write a 0x01 to the data format register. This configures the device range into +-4G mode. If you consult the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf), you'll see that the device can be configured in a variety of measurement modes ranging from 2G to 16G.
 Higher G settings provide you with greater range at the expense of reduced resolution. We choose 4G as a reasonable trade off between the two.
 
-2. We write a 0x08 to the power control register, which wakes the device from standby and starts measuring acceleration. Again, the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf){:target="_blank"} contains additional information about the device settings and capabilities.
+2. We write a 0x08 to the power control register, which wakes the device from standby and starts measuring acceleration. Again, the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf) contains additional information about the device settings and capabilities.
 
 ```C#
 private async void InitI2CAccel()
