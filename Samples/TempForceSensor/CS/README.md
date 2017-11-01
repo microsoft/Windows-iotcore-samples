@@ -75,7 +75,7 @@ But the pin connection with MCP3208 should be as below:
 
 ## Look at the code
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\TempSensor`.  
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\TempSensor`.  
 
 Let's go through the code. We use a timer in the sample, and each time the 'Tick' event is called,
 we read the sensor data through ADC, and the value will be displayed on the screen.
