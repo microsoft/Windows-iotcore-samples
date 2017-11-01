@@ -58,7 +58,7 @@ The code for this sample uses the [Windows.Media.Capture](https://msdn.microsoft
  
 For accessing the web cam, the microphone, and the default storage folders, you must add the following capabilities to the **Package.appxmanifest** file in your project:  
 
-<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PMWebCamOptions.png">
+<img src="../../../Resources/images/PMWebCamOptions.png">
 
 **NOTE:** You can also add capabilities directly by opening the **Package.appxmanifest** file in an XML editor (Right Click on the file -> Open with -> XML (Text) Editor) and adding the capabilities below:
  

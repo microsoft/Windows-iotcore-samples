@@ -38,7 +38,7 @@ kit: Adafruit Starter Pack for Windows 10 IoT Core on Raspberry Pi2
 
 <div class="row projectRow">
   <div class="col-md-12 col-xs-24">
-    <img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/AdafruitStarterPack/WeatherStation.jpg">
+    <img src="../../../Resources/images/AdafruitStarterPack/WeatherStation.jpg">
   </div>
   <div class="col-md-12 col-xs-24">
     <h2>There are two versions of this project.</h2>

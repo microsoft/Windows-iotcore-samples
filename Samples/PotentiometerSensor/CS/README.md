@@ -26,13 +26,13 @@ Below are the pinouts of the MCP3002 and MCP3208 ADCs.
 
 | MCP3002                                                              | MCP3008 or MCP3208                                                              |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| ![MCP3002 Pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/MCP3002.PNG) | ![MCP3208 Pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/MCP3208.PNG) |
+| ![MCP3002 Pinout](../../../Resources/images/Potentiometer/MCP3002.PNG) | ![MCP3208 Pinout](../../../Resources/images/Potentiometer/MCP3208.PNG) |
 
 ### Raspberry Pi
 
 #### Raspbery Pi 2 and 3 Pinout
 
-![Raspberry Pi 2 and 3 pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PinMappings/RP2_Pinout.png)
+![Raspberry Pi 2 and 3 pinout](../../../Resources/images/PinMappings/RP2_Pinout.png)
 
 #### Wiring & Connections
 
@@ -41,7 +41,7 @@ If you chose to use the **MCP3002**, assemble the circuit as follows. Note that 
 
 Detailed connection:
 
-![Overall Schematics](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/OverallCon-3002.PNG)
+![Overall Schematics](../../../Resources/images/Potentiometer/OverallCon-3002.PNG)
 
 The MCP3002 should be connected as follows:
 
@@ -59,7 +59,7 @@ If you chose to use the **MCP3208** or **MCP3008**, assemble the circuit as foll
 
 Detailed connection:
 
-![Overall Schematics](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/OverallCon-3208.PNG)
+![Overall Schematics](../../../Resources/images/Potentiometer/OverallCon-3208.PNG)
 
 The MCP3208 should be connected as follows:
 
@@ -79,7 +79,7 @@ For the DragonBoard 410c, you will require a [Voltage-Level Translator Breakout]
 
 #### DragonBoard Pinout
 
-![DragonBoard Pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PinMappings/DB_Pinout.png)
+![DragonBoard Pinout](../../../Resources/images/PinMappings/DB_Pinout.png)
 
 #### Wiring & Connections
 
@@ -110,7 +110,7 @@ Connect the MCP3208 to the Voltage-Level Translator breakout as follows:
 
 Here is an illustration of what your breadboard might look like with the circuit assembled:
 
-![DragonBoard Potentiometer Breadboard](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/breadboard_db410c.png)
+![DragonBoard Potentiometer Breadboard](../../../Resources/images/Potentiometer/breadboard_db410c.png)
 
 Finally, the LED_PIN variable of the **MainPage.xaml.cs** file of the sample code will need the following modification:
 
@@ -138,8 +138,8 @@ When you turn the potentiometer knob, you will see the number change on the scre
 When the number is larger than half the ADC resolution (For **MCP3002**, this number is **512**. For **MCP3008** or **MCP3208**, it's **2048**) the LED will turn ON. Otherwise, it turns OFF.
 
 | ----------------------------------------------------------------------------------------- |-| ---------------------------------------------------------------------------------- |
-| ![App Running LED Off](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/AppRunning-LEDOff.png)       | | ![App Running LED On](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/AppRunning-LEDOn.png)  |
-| ![Breadboard LED Off](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/Breadboard-LEDOff.png)        | | ![Breadboard LED On](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/Potentiometer/Breadboard-LEDOn.png)   |
+| ![App Running LED Off](../../../Resources/images/Potentiometer/AppRunning-LEDOff.png)       | | ![App Running LED On](../../../Resources/images/Potentiometer/AppRunning-LEDOn.png)  |
+| ![Breadboard LED Off](../../../Resources/images/Potentiometer/Breadboard-LEDOff.png)        | | ![Breadboard LED On](../../../Resources/images/Potentiometer/Breadboard-LEDOn.png)   |
 
 ## Let's look at the code
 

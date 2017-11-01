@@ -22,7 +22,7 @@ First, we need to wire up the display to your device. You'll need a few componen
 
 Visit the **Raspberry Pi 2 or 3, MinnowBoard Max, or DragonBoard 410c** sections below depending on which device you have:
 
-![Electrical Components](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SPIDisplay/components.png)
+![Electrical Components](../../../Resources/images/SPIDisplay/components.png)
 
 #### Raspberry Pi 2 or 3
 For the Raspberry Pi 2 or 3, we need to hook up power, ground, SPI, and a few GPIO pins to the OLED display. For additional information on the Raspberry Pi 2 or 3 pins, visit the [Raspberry Pi 2 pin mapping page](/Samples/PinMappingsRPi2)
@@ -42,13 +42,13 @@ The OLED display has 8 IO pins, connect them as follows:
 
 Here are the connections shown on a breadboard:
 
-![Breadboard connections](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SPIDisplay/breadboard_assembled_rpi2.png)
+![Breadboard connections](../../../Resources/images/SPIDisplay/breadboard_assembled_rpi2.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here are the schematics:
 
-![SPI schematics](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SPIDisplay/schematics_rpi2.png)
+![SPI schematics](../../../Resources/images/SPIDisplay/schematics_rpi2.png)
 
 #### MinnowBoard Max
 For the MinnowBoard Max, we need to hook up power, ground, SPI, and a few GPIO pins to the OLED display. See the [MBM pin mapping page](/Samples/PinMappingsMBM) for more details on the MBM IO pins.
@@ -68,13 +68,13 @@ The OLED display has 8 IO pins, connect them as follows:
 
 Here are the connections shown on a breadboard:
 
-![Breadboard connections](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SPIDisplay/breadboard_assembled_mbm.png)
+![Breadboard connections](../../../Resources/images/SPIDisplay/breadboard_assembled_mbm.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here are the schematics:
 
-![SPI schematics](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SPIDisplay/schematics_mbm.png)
+![SPI schematics](../../../Resources/images/SPIDisplay/schematics_mbm.png)
 
 #### DragonBoard 410c
 
@@ -106,11 +106,11 @@ The logic level converter is connected to the DragonBoard as follows:
 
 The following diagram shows what your breadboard might resemble with the circuit assembled:
 
-![DragonBoard SPI Display Breadboard](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SPIDisplay/breadboard_assembled_db410c.png)
+![DragonBoard SPI Display Breadboard](../../../Resources/images/SPIDisplay/breadboard_assembled_db410c.png)
 
 A schematic for the circuit is:
 
-![DragonBoard SPI Display Schematic](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SPIDisplay/schematics_db410c.png)
+![DragonBoard SPI Display Schematic](../../../Resources/images/SPIDisplay/schematics_db410c.png)
 
 
 ### Deploy and run the app
@@ -148,7 +148,7 @@ Next, right-click on the **SPIDisplay** project in **Solution Explorer** and sel
 Follow the instructions to [setup remote debugging and deploy the app](/Docs/AppDeployment.htm#csharp). The SPIDisplay app will deploy and start, and you should see text data show up on OLED display.
  You can now type into the app and have the text mirrored on the attached OLED display.
 
-![SPI running](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SPIDisplay/spidisplay_screenshot.png)
+![SPI running](../../../Resources/images/SPIDisplay/spidisplay_screenshot.png)
 
 Congratulations! You've connected a SPI graphics display.
 

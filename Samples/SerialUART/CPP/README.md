@@ -35,7 +35,7 @@ Make the following connections:
 
 *Note: Leave the power wire of the USB-to-TTL cable unconnected.*
 
-<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SerialSample/SiLabs-UART.png">
+<img src="../../../Resources/images/SerialSample/SiLabs-UART.png">
 
 #### <a name="RPi2_UART"></a>On-board UART (Rasperry Pi2)
 
@@ -52,7 +52,7 @@ Make the following connections:
 
 *Note: Leave the power wire of the USB-to-TTL cable unconnected.*
 
-<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SerialSample/RPi2_UART.png">
+<img src="../../../Resources/images/SerialSample/RPi2_UART.png">
 
 #### On-Board UART (DragonBoard 410c)
 
@@ -96,7 +96,7 @@ Leave the power pin of the USB-to-TTL cable unconnected. It is not needed.
 
 Below is an image of our USB-to-TTL module connected to a USB port in our RPi2 or RPi3. The GND, TX, and RX pins of the module are connected to the GND, RX, TX wires of the USB-to-TTL cable that is connected to our PC.
 
-<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SerialSample/CP2102_Connections_500.png">
+<img src="../../../Resources/images/SerialSample/CP2102_Connections_500.png">
 
 ### Deploy and Launch the SerialSample App
 
@@ -130,7 +130,7 @@ You can find the source code for this sample by downloading a zip of all of our 
 
 When the SerialSample app is launched on the PC, a window will open with the user interface similar to the screenshot shown below. When launched on the RPi2 or RPi3 and MBM, the SerialSample will display the user interface shown below on the entire screen.
 
-<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SerialSample/SerialSampleRunningPC.PNG">
+<img src="../../../Resources/images/SerialSample/SerialSampleRunningPC.PNG">
 
 #### Selecting a Serial Device
 
@@ -152,7 +152,7 @@ Select and connect to a serial device on the PC and RPi2 or RPi3 or MBM by doing
 
 The app will attempt to connect and configure the selected serial device. When the app has successfully connected to the attached serial device it will display the configuration of the serial device. By default, the app configures the serial device for 9600 Baud, eight data bits, no parity bits and one stop bit (no handshaking).
 
-<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SerialSample/SerialSampleRunningPC_ConnectDevice.PNG">
+<img src="../../../Resources/images/SerialSample/SerialSampleRunningPC_ConnectDevice.PNG">
 
 #### Sending and Receiving Data
 
@@ -166,7 +166,7 @@ To send data from one device to the other connected device do the following:
 
 The app on the transmitting device will display the sent message and "bytes written successfully!" in the status text box in the bottom of the app display.
 
-<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/SerialSample/SendMessageB.PNG">
+<img src="../../../Resources/images/SerialSample/SendMessageB.PNG">
 
 The device that is receiving the message will automatically display the text in the 'Read Data:' window.
 

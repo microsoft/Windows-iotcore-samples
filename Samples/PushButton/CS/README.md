@@ -4,7 +4,7 @@ You can find the source code for this sample by downloading a zip of all of our 
 
 In this sample, we connect a push button to your Raspberry Pi 2 or 3, MinnowBoard Max, or the DragonBoard 410c and use it to control an LED. We use GPIO interrupts to detect when the button is pressed and toggle the LED in response.
 
-![Push Button Image](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PushButton/PushButtonSample.png)
+![Push Button Image](../../../Resources/images/PushButton/PushButtonSample.png)
 
 This is a headed sample, so please ensure that your device is in headed
 mode by running this command: `setbootoption.exe headed` (changing the headed/headless state will require a reboot).
@@ -32,7 +32,7 @@ Let's start by wiring up the components on a breadboard. Visit the corresponding
 
 | Breadboard Diagram                                                                        | Schematic                                                                          |
 | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| ![Breadboard connections](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PushButton/RPi2_PushButton_bb.png)      | ![Circuit Schematic](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PushButton/RPi2_PushButton_schem.png) |
+| ![Breadboard connections](../../../Resources/images/PushButton/RPi2_PushButton_bb.png)      | ![Circuit Schematic](../../../Resources/images/PushButton/RPi2_PushButton_schem.png) |
 
 <sub>*Images made with [Fritzing](http://fritzing.org/)*</sub>
 
@@ -52,7 +52,7 @@ Let's start by wiring up the components on a breadboard. Visit the corresponding
 
 Here is the pinout of the RPi2 and RPi3:
 
-![Raspberry Pi 2 and 3 pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PinMappings/RP2_Pinout.png)
+![Raspberry Pi 2 and 3 pinout](../../../Resources/images/PinMappings/RP2_Pinout.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
@@ -60,7 +60,7 @@ Here is the pinout of the RPi2 and RPi3:
 
 | Breadboard Diagram                                                                        | Schematic                                                                          |
 | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| ![Breadboard connections](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PushButton/MBM_PushButton_bb.png)       | ![Circuit Schematic](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PushButton/MBM_PushButton_schem.png)  |
+| ![Breadboard connections](../../../Resources/images/PushButton/MBM_PushButton_bb.png)       | ![Circuit Schematic](../../../Resources/images/PushButton/MBM_PushButton_schem.png)  |
 
 <sub>*Images made with [Fritzing](http://fritzing.org/)*</sub>
 
@@ -80,7 +80,7 @@ Here is the pinout of the RPi2 and RPi3:
 
 Here is the pinout of the MBM:
 
-![MinnowBoard Max pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PinMappings/MBM_Pinout.png)
+![MinnowBoard Max pinout](../../../Resources/images/PinMappings/MBM_Pinout.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
@@ -88,7 +88,7 @@ Here is the pinout of the MBM:
 
 For reference, the functionality of the low-speed expansion connector is outlined in the following diagram
 
-![DragonBoard Low-Speed Expansion Connector](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PinMappings/DB_pinout.png)
+![DragonBoard Low-Speed Expansion Connector](../../../Resources/images/PinMappings/DB_pinout.png)
 
 Perform the following steps to connect the LED:
 
@@ -103,11 +103,11 @@ Perform the following steps to connect the push button:
 
 The breadboard might look similar to the following with the circuit assembled:
 
-![DragonBoard Push Button Breadboard](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PushButton/DB_PushButton_bb.png)
+![DragonBoard Push Button Breadboard](../../../Resources/images/PushButton/DB_PushButton_bb.png)
 
 A schematic for the circuit is shown in the diagram below:
 
-![DragonBoard Push Button Schematic](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PushButton/DB_PushButton_schem.png)
+![DragonBoard Push Button Schematic](../../../Resources/images/PushButton/DB_PushButton_schem.png)
 
 Finally, the LED_PIN and BUTTON_PIN variables of the **MainPage.xml.cs** file of the sample code will need the following modification:
 

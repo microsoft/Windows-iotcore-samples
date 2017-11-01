@@ -16,7 +16,7 @@ You need to make sure you have installed the Windows 10 IoT Core Project Templat
 
     Remember to give a good name to your first app! In this example, we called the project 'HelloWorld'.
 
-    ![App Template Location](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/HelloWorld/new-cs-project-dialog.PNG)
+    ![App Template Location](../../../Resources/images/HelloWorld/new-cs-project-dialog.PNG)
 
 If this is the first project you create, Visual Studio will likely prompt you to enable [developer mode for Windows 10](https://msdn.microsoft.com/library/windows/apps/xaml/dn706236.aspx).
      
@@ -26,7 +26,7 @@ If this is the first project you create, Visual Studio will likely prompt you to
 ___
 Since the IoT extension SDK is not added to projects by default, we'll need to add a reference so that namespaces like **Windows.Devices.Gpio** will be available in the project.  To do so, just right-click on the References entry under the project, Select "Add Reference" then navigate the resulting dialog to **Universal Windows->Extensions->Windows IoT Extensions for the UWP**, check the box, and click OK.
 
-![Add Extension SDK](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/HelloWorld/Add_IoT_Extension_Reference.PNG)
+![Add Extension SDK](../../../Resources/images/HelloWorld/Add_IoT_Extension_Reference.PNG)
 
 ### Add content to MainPage.xaml
 ___
@@ -62,7 +62,7 @@ ___
 
 1. Since this is a Universal Windows Platform (UWP) application, you can test the app on your Visual Studio machine as well: Just press F5, and the app will run inside your machine. You should see something like this:
 
-    ![HelloWorld Running](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/HelloWorld/HelloWorldAppLocal.PNG)
+    ![HelloWorld Running](../../../Resources/images/HelloWorld/HelloWorldAppLocal.PNG)
 
     Close the app after you're done validating it.
     
@@ -75,11 +75,11 @@ ___
 
     Next, in the Visual Studio toolbar, click on the **Local Machine** dropdown and select **Remote Machine**<br/>
 
-    ![RemoteMachine Target](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/HelloWorld/cs-remote-machine-debugging.png)
+    ![RemoteMachine Target](../../../Resources/images/HelloWorld/cs-remote-machine-debugging.png)
 
 1. At this point, Visual Studio will present the 'Remote Connections' dialog. Put the IP address or name of your IoT Core device (in this example, we're using 'my-device') and select **Universal (Unencrypted Protocol)** for Authentication Mode. Then click **Select**.
 
-    ![Remote Machine Debugging](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/HelloWorld/cs-remote-connections.PNG)
+    ![Remote Machine Debugging](../../../Resources/images/HelloWorld/cs-remote-connections.PNG)
 
     > Couple of notes:
     >
@@ -87,7 +87,7 @@ ___
     >
     > 2. You can verify and/or modify these values navigating to the project properties (select 'Properties' in the Solution Explorer) and choose the 'Debug' tab on the left:
     >
-    > ![Project Properties Debug Tab](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/HelloWorld/cs-debug-project-properties.PNG)
+    > ![Project Properties Debug Tab](../../../Resources/images/HelloWorld/cs-debug-project-properties.PNG)
 
 1. Now we're ready to deploy to the remote IoT Core device. Simply press F5 (or select **Debug \| Start Debugging**) to start debugging our app. You should see the app come up in IoT Core device screen, and you should be able to click on the button.
 
