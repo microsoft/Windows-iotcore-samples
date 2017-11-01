@@ -75,6 +75,9 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <td><a href="Samples/TempForceSensor">TempForceSensor</a></td>
   <td><a href="Samples/VideoCaptureSample">VideoCaptureSample</a></td>
  </tr>
+  <tr>
+  <td><a href="Samples/I2CCompass">I2CCompass</a></td>
+ </tr>
 </table>
 
 ### Samples that demonstrate Universal Windows Application Features 
