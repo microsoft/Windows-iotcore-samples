@@ -1,12 +1,12 @@
 ---
 layout: sample
-title: IC Accelerometer
+title: I2C Accelerometer
 description: An app to read data from the I2C Accelerometer attached to RPI2/RPI3/MinnowBoradMax/DragonBoard
 keyword: iot, wiring, uwp
 deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
 lang: en-US
 ---
-# AppServiceBlinky
+# I2CAccelerometer
 
 These are the available versions of this Windows 10 IoT Core sample:
 
