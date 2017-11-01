@@ -17,7 +17,7 @@ You'll need a few components:
 
 * a breadboard and a couple of male-to-female connector wires
 
-* If you are using a MinnowBoard Max, you'll need a 100 &#x2126; resistor (this is a workaround for a [known I2C hardware issue](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/pinmappings/pinmappingsmbm)
+* If you are using a MinnowBoard Max, you'll need a 100 &#x2126; resistor (this is a workaround for a [known I2C hardware issue](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/pinmappings/pinmappingsmbm))
 
 Visit the **Raspberry Pi 2 or 3/MinnowBoard Max** sections below depending on which device you have:
 
@@ -43,13 +43,13 @@ The ADXL345 breakout board has 8 IO pins, connect them as follows:
 
 Here are the connections shown on a breadboard:
 
-![Breadboard connections](https://az835927.vo.msecnd.net/sites/iot/Resources/images/I2CAccelerometer/breadboard_assembled_rpi2.png)
+![Breadboard connections](../../../Resources/images/I2CAccelerometer/breadboard_assembled_rpi2.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here are the schematics:
 
-![Accelerometer schematics](https://az835927.vo.msecnd.net/sites/iot/Resources/images/I2CAccelerometer/schematics_rpi2.png)
+![Accelerometer schematics](../../../Resources/images/I2CAccelerometer/schematics_rpi2.png)
 
 #### MinnowBoard Max
 If you have a MinnowBoard Max, we need to hook up power, ground, and the I2C lines to the accelerometer. Those familiar with I2C know that normally pull-up resistors need to be installed. However, the MBM already has 10K pull-up resistors on its IO pins, so we don't need to add any additional external pull-ups here.
@@ -70,13 +70,13 @@ The ADXL345 breakout board has 8 IO pins, connect them as follows:
 
 Here are the connections shown on a breadboard:
 
-![Breadboard connections](https://az835927.vo.msecnd.net/sites/iot/Resources/images/I2CAccelerometer/breadboard_assembled_mbm.png)
+![Breadboard connections](../../../Resources/images/I2CAccelerometer/breadboard_assembled_mbm.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here are the schematics:
 
-![Accelerometer schematics](https://az835927.vo.msecnd.net/sites/iot/Resources/images/I2CAccelerometer/schematics_mbm.png)
+![Accelerometer schematics](../../../Resources/images/I2CAccelerometer/schematics_mbm.png)
 
 #### DragonBoard 410c
 
@@ -107,7 +107,7 @@ The ADXL345 breakout board has 8 IO pins which are connected to the DragonBoard 
 
 Here is a diagram showing what your breadboard might look like with the circuit assembled:
 
-![DragonBoard I2C Accelerometer Breadboard](https://az835927.vo.msecnd.net/sites/iot/Resources/images/I2CAccelerometer/breadboard_assembled_db410c.png)
+![DragonBoard I2C Accelerometer Breadboard](../../../Resources/images/I2CAccelerometer/breadboard_assembled_db410c.png)
 
 ### Deploy and run the app
 
@@ -128,7 +128,7 @@ Follow the instructions to [setup remote debugging and deploy the app](https://d
  This is normal and is due to minute vibrations and electrical noise. If you tilt or shake the sensor, you should see the values change in response. Note that this sample configures the device in 4G mode,
 so you wont be able to see G readings higher than 4Gs.
 
-![I2C Accelerometer running](https://az835927.vo.msecnd.net/sites/iot/Resources/images/I2CAccelerometer/i2caccelerometer_screenshot.png)
+![I2C Accelerometer running](../../../Resources/images/I2CAccelerometer/i2caccelerometer_screenshot.png)
 
 Congratulations! You've connected an I2C accelerometer.
 
