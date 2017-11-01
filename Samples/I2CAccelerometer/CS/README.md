@@ -21,7 +21,7 @@ You'll need a few components:
 
 Visit the **Raspberry Pi 2 or 3/MinnowBoard Max** sections below depending on which device you have:
 
-![Electrical Components](https://az835927.vo.msecnd.net/sites/iot/Resources/images/I2CAccelerometer/components.png)
+![Electrical Components](../../../Resources/images/I2CAccelerometer/components.png)
 
 #### Raspberry Pi 2 or 3
 If you have a Raspberry Pi 2 or 3, we need to hook up power, ground, and the I2C lines to the accelerometer.
