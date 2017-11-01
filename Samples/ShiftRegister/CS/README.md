@@ -1,6 +1,6 @@
 # Shift register
 
-![Shift Register Sample Image]({{site.baseurl}}/Resources/images/ShiftRegister/ShiftRegisterProjectPicture_480.png)
+![Shift Register Sample Image](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/ShiftRegister/ShiftRegisterProjectPicture_480.png)
 
 In this sample, we'll connect an 8-bit serial-in, parallel-out shift register to your Raspberry Pi 2 or 3* and create a simple app that uses the shift register to control eight LEDs.
 
@@ -31,14 +31,14 @@ Let's start by wiring up the components on the breadboard as shown in the diagra
 
 **Note: Make sure to power off the RPi2 or RPi3 when connecting your circuit. This is good practice to reduce the chance of an accidental short circuit during construction.**
 
-![Breadboard connections]({{site.baseurl}}/Resources/images/ShiftRegister/ShiftRegisterSampleDrawing_bb_50.png)
+![Breadboard connections](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/ShiftRegister/ShiftRegisterSampleDrawing_bb_50.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
 
 Here is the schematic:
 
-![Circuit Schematic]({{site.baseurl}}/Resources/images/ShiftRegister/ShiftRegisterSampleDrawing_schem_75.png)
+![Circuit Schematic](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/ShiftRegister/ShiftRegisterSampleDrawing_schem_75.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
@@ -47,20 +47,20 @@ Here is the schematic:
 
 Place the Shift Register on your breadboard such that it straddles the center gap of the breadboard.
 
-![Breadboard IC Placement]({{site.baseurl}}/Resources/images/BreadBoardICPlacement.png)
+![Breadboard IC Placement](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/BreadBoardICPlacement.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
 
 Locate pin 1 of the 74HC595N shift register by finding the notch on the IC. If you orient the IC so that the end with the notch is facing left, pin 1 will be the first pin in the lower left below the notch.
 
-![74HC595N PinLocations]({{site.baseurl}}/Resources/images/ShiftRegister/FindNotchPin1.png)
+![74HC595N PinLocations](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/ShiftRegister/FindNotchPin1.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
 The pinout of the 74HC595N is shown below and can be found in the [datasheet](http://www.ti.com/lit/ds/symlink/sn74hc595.pdf).
 
-![74HC595N Pinout]({{site.baseurl}}/Resources/images/ShiftRegister/ShiftRegister74HC595_pinout.png)
+![74HC595N Pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/ShiftRegister/ShiftRegister74HC595_pinout.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
@@ -108,7 +108,7 @@ When done, you should have a row (or as close to a row as possible) of blue and 
 
 We need to hook up power, ground, and the I2C lines from on the Raspberry Pi 2 or 3 to the 74HC595N shift register and the breadboard.
 
-![Raspberry Pi 2 and 3 pinout]({{site.baseurl}}/Resources/images/PinMappings/RP2_Pinout.png)
+![Raspberry Pi 2 and 3 pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PinMappings/RP2_Pinout.png)
 
 * Pin 2 **5V PWR** Connect to the voltage supply rail on the side of the breadboard (red stripe)
 
@@ -379,11 +379,11 @@ Let's build, deploy and run the app on our Raspberry Pi 2 or 3.
 
 * If not already open, open in Visual Studio the app you created with the code above.
 
-* Follow the instructions to [setup remote debugging and deploy the app]({{site.baseurl}}/{{page.lang}}/Docs/AppDeployment.htm#csharp).
+* Follow the instructions to [setup remote debugging and deploy the app](/Docs/AppDeployment.htm#csharp).
 
 After several moments, you will see the screen attached to the RPi2 or RPi3 change to show a slider, some text, and a button. The LEDs will light up and follow the pattern set in 'pinMask'.
 
-![ShiftRegister Screenshot]({{site.baseurl}}/Resources/images/ShiftRegister/ScreenShotA.png)
+![ShiftRegister Screenshot](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/ShiftRegister/ScreenShotA.png)
 
 Congratulations! You've successfully connected an 8-bit serial-in, parallel-out shift register to your Raspberry Pi 2 or 3.
 

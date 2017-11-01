@@ -36,19 +36,19 @@ needs to be compiled in order to apply it to your Raspberry PI.
   1. Copy the ```ACPITABL.dat``` from the explorer window you opened in the previous section, and copy it to the folder in on the network share you opened in the previous step.
   1. On the network share, navigate to ```c:\data```.
   1. From the Explorer Window which contains the ```ACPITabl.dat```, there is also a file ```pn71x0.inf```. Copy this to ```c:\data``` on the network share.
-  1. Use [SSH]({{site.baseurl}}/{{page.lang}}/Docs/SSH) or [Powershell]({{site.baseurl}}/{{page.lang}}/Docs/PowerShell) to connect to your device. 
+  1. Use [SSH](/Docs/SSH) or [Powershell](/Docs/PowerShell) to connect to your device. 
   1. Change directory to ```c:\data``` in the connected session.
   1. Run the command ```devcon dp_add pn71x0.inf```.
   1. Run the command ```shutdown -r -t 0``` to restart the Rasberry PI for the hardware changes to take effect.
 
   
 ## Configure the NFC Service to start automatically
-In order to minimize the number of resources used by IoT Core, the NFC Service does not start by default. To make it start automatically, use [SSH]({{site.baseurl}}/{{page.lang}}/Docs/SSH) to connect to the device and then
+In order to minimize the number of resources used by IoT Core, the NFC Service does not start by default. To make it start automatically, use [SSH](/Docs/SSH) to connect to the device and then
 
   1. Run ```sc config SEMgrSvc start=auto``` to set this service to autostart on boot.
   1. Run ```sc start SEMgrSvc``` to start it for this session.
   
-If you prefer [Powershell]({{site.baseurl}}/{{page.lang}}/Docs/PowerShell) to connect to your device, run the following commands in PowerShell.
+If you prefer [Powershell](/Docs/PowerShell) to connect to your device, run the following commands in PowerShell.
 
   1. ```Set-Service SEMgrSvc -StartupType "Automatic"``` to set this service to autostart on boot.
   1. ```Start-Service SEMgrSvc``` to start it for this session. 

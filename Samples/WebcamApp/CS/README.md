@@ -2,7 +2,7 @@
 
 Initialize a webcam, take pictures, and record video and audio.  
   
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here]({{site.baseurl}}/{{page.lang}}/Docs/HeadlessMode).  
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).  
   
 ### Load the project in Visual Studio  
   
@@ -30,7 +30,7 @@ devcon remove AUDD\QCOM2451
 devcon remove ADCM\QCOM242E 
 ```  
   
-Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample]({{site.baseurl}}/{{page.lang}}/Samples/HelloWorld){:target="_blank"}. if you need guidance   
+Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample](/Samples/HelloWorld){:target="_blank"}. if you need guidance   
   
 ### Test your app   
   
@@ -58,7 +58,7 @@ The code for this sample uses the [Windows.Media.Capture](https://msdn.microsoft
  
 For accessing the web cam, the microphone, and the default storage folders, you must add the following capabilities to the **Package.appxmanifest** file in your project:  
 
-<img src="{{site.baseurl}}/Resources/images/PMWebCamOptions.png">
+<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PMWebCamOptions.png">
 
 **NOTE:** You can also add capabilities directly by opening the **Package.appxmanifest** file in an XML editor (Right Click on the file -> Open with -> XML (Text) Editor) and adding the capabilities below:
  

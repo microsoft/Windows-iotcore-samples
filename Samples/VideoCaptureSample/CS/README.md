@@ -2,7 +2,7 @@
 
 Initialize a video capture device, record video to a file, preview video feed, and playback recorded video.
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here]({{site.baseurl}}/{{page.lang}}/Docs/HeadlessMode).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
 
 ### Load the project in Visual Studio
 
@@ -30,7 +30,7 @@ devcon remove AUDD\QCOM2451
 devcon remove ADCM\QCOM242E
 ```
 
-Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample]({{site.baseurl}}/{{page.lang}}/Samples/HelloWorld){:target="_blank"} if you need guidance.
+Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample](/Samples/HelloWorld){:target="_blank"} if you need guidance.
 
 ### Test your app
 

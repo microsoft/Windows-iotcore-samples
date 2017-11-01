@@ -11,10 +11,10 @@ Once the project is open and builds, the next step is to [deploy](https://github
 When everything is set up, you should be able to press F5 from each instance of Visual Studio.  The NotepadService app will deploy and start on the Windows IoT device, and you should see the package family name printed the debug output window on Visual Studio.  Before pressing F5 for NotepadClientBackgroundApplication and NotepadServiceClientApp projects verify that the value of connection.PackageFamilyName in StartupTask.cs and MainPage.xaml.cs matches the value output in the output window by BlinkyService.  Next start NotepadServiceClientApp and then NotepadServiceClientApp.
 
 When you run the client app you should see
-![No messages yet]({{site.baseurl}}/Resources/images/AppServiceSharedNotepad-NoMessages.jpg)
+![No messages yet](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/AppServiceSharedNotepad-NoMessages.jpg)
 
 After a 30 seconds or so the text in the button should change to black from gray.  Clicking the button will show the messages from the clipboard service.
-![Message from clipboard service]({{site.baseurl}}/Resources/images/AppServiceSharedNotepad-Messages.jpg)
+![Message from clipboard service](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/AppServiceSharedNotepad-Messages.jpg)
 
 ## Let's look at the code
 ___

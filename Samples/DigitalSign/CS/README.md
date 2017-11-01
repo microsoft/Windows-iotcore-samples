@@ -2,7 +2,7 @@
 
 This sample showcases a Digital Sign UWP running on Windows IoT Core. Here we will demonstrate how the app receives content in different multimedia forms - e.g. video, audio, image, slideshow - from an XML file stored online and displays this content to the user. The digital sign in this sample is interactive and allows web browsing as well as allowing for touch input. 
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here]({{site.baseurl}}/{{page.lang}}/Docs/HeadlessMode).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
 
 ### Prerequisites
 
@@ -18,7 +18,7 @@ You can find the source code for this sample by downloading a zip of all of our 
 
 Make a copy of the DigitalSignageUAP folder on your disk and open the project from Visual Studio.
 
-Make sure you set the 'Remote Debugging' setting to point to your Windows IoT device. Go back to the basic 'Hello World' [sample]({{site.baseurl}}/{{page.lang}}/Samples/HelloWorld) if you need guidance.
+Make sure you set the 'Remote Debugging' setting to point to your Windows IoT device. Go back to the basic 'Hello World' [sample](/Samples/HelloWorld) if you need guidance.
 
 ## Deploy your app
 
@@ -26,7 +26,7 @@ If you're building for Minnowboard Max, select `x86` in the architecture dropdow
 
 When everything is set up, you should be able to press F5 from Visual Studio.  The Digital Signage app will deploy and start on the Windows IoT device, and you should see the main view page as displayed below:
 
-<img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSignage1.png" height="400">
+<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSignage1.png" height="400">
 
 ### Slideshow
 
@@ -34,11 +34,11 @@ The app's slideshow can be likened to a screensaver which displays while the app
 
 1. From the Main page, click (or tap, if your monitor is touch-enabled) "Play Slideshow". 
 
-<img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSign_slideshow.png" height="400">
+<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSign_slideshow.png" height="400">
 
 2. Slideshow begins - various content is displayed, including ads and screensaver visuals with audio.
 
-<img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSign_horses.png" height="400">
+<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSign_horses.png" height="400">
 
 3. End the slideshow by either a) moving your mouse, b) pressing any key or c) tap anywhere on the screen. The main page will return to the screen.
 
@@ -46,7 +46,7 @@ The app's slideshow can be likened to a screensaver which displays while the app
 
 1. From the Main page, click (or tap, if your monitor is touch-enabled) "Internet Explorer". 
 
-<img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSign_web.png" height="400">
+<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSign_web.png" height="400">
 
 2. Tap or click the Address Bar at the top of the page.
 
@@ -54,15 +54,15 @@ The app's slideshow can be likened to a screensaver which displays while the app
 
  When using the on-screen keyboard, you may click characters with your mouse or tap to type if your monitor is touch-enabled.
  
- <img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSign_keyboard2.png" height="400">
+ <img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSign_keyboard2.png" height="400">
  
  4. Click or tap the "Go" button. This navigates the browser to the Microsoft home page
  
- <img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSign_microsoft.png" height="400">
+ <img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSign_microsoft.png" height="400">
 
  5. Navigate to other pages in the browser or return to the main screen by tapping or clicking the "Home" icon on the screen
  
- <img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSign_home.png" height="400">
+ <img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSign_home.png" height="400">
 
 ## Exploring the Code
 
@@ -188,9 +188,9 @@ In the DisplayNext() method, we traverse through our list of media files obtaine
   
   1. From the Main page, click (or tap, if your monitor is touch-enabled) "Settings". 
 
-<img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSign_settings.png" height="400">
+<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSign_settings.png" height="400">
 
  2. Using the physical keyboard or touch screen, you may specify a new config file to read from at the location you specify.
 
-<img src="{{site.baseurl}}/Resources/images/DigitalSignage/DigitalSign_settings1.png" height="400">
+<img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/DigitalSignage/DigitalSign_settings1.png" height="400">
 

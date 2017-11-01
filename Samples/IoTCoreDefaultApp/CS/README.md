@@ -2,7 +2,7 @@
 
 We'll create a default app to demonstrate how to create a simple startup app that has some basic device management for your Windows 10 IoT Core device.
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here]({{site.baseurl}}/{{page.lang}}/Docs/HeadlessMode).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
 
 ### IoT Core Default App contents
 
@@ -12,27 +12,27 @@ The IoT Core Default App provides a good example of creating a user experience f
 
 Upon first boot, you will be taken through a quick set up experience. Set the language and connect to Wi-Fi. If you don't have a USB Wi-Fi adapter, you can always connect later. 
 
-![DefaultApp setup on Windows 10 IoT Core]({{site.baseurl}}/Resources/images/iotcoredefaultapp/defaultapp_oobe.png)
+![DefaultApp setup on Windows 10 IoT Core](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/iotcoredefaultapp/defaultapp_oobe.png)
 
 #### Device Info
 
 This is the main page for you to get started. The default app is intended to help you link your PC to your device. All of the development, debugging and design happens on your PC! 
 
-![DefaultApp on Windows 10 IoT Core]({{site.baseurl}}/Resources/images/iotcoredefaultapp/DefaultAppRpi2.png)
+![DefaultApp on Windows 10 IoT Core](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/iotcoredefaultapp/DefaultAppRpi2.png)
 
 Use the device name and IP address listed here when connecting to you device.
 
 #### Tutorials
 
-A quick set of instructions on how to get your board connected to your PC. If you're on the web, you can find the same set of instructions [here]({{site.baseurl}}/{{page.lang}}/GetStarted)
+A quick set of instructions on how to get your board connected to your PC. If you're on the web, you can find the same set of instructions [here](/GetStarted)
 
-![DefaultApp tutorials on Windows 10 IoT Core]({{site.baseurl}}/Resources/images/iotcoredefaultapp/defaultapp_tutorial.png)
+![DefaultApp tutorials on Windows 10 IoT Core](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/iotcoredefaultapp/defaultapp_tutorial.png)
 
 #### Settings
 
 From settings, you can reconfigure your language, connect via Wi-Fi and connect to a Bluetooth device.
 
-![DefaultApp settings on Windows 10 IoT Core]({{site.baseurl}}/Resources/images/iotcoredefaultapp/defaultapp_settings.png)
+![DefaultApp settings on Windows 10 IoT Core](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/iotcoredefaultapp/defaultapp_settings.png)
 
 ### Load the project in Visual Studio
 
@@ -48,7 +48,7 @@ Note that this is the same code that is shipped as the startup app in Windows Io
 
 1. You can set your app to be the 'Startup App' for your Windows IoT Core device, so that when the device reboot, it will start your app automatically. To do so, you'll need to run a command line utility called iotstartup on the Windows IoT Core device. We will do this using PowerShell.
 
-1. Start a PowerShell (PS) session with your Windows IoT Core device as described [here]({{site.baseurl}}/{{page.lang}}/Docs/PowerShell).
+1. Start a PowerShell (PS) session with your Windows IoT Core device as described [here](/Docs/PowerShell).
 
 1. From the PS session, type (for simplicity, we will assume the app's name is HelloWorld, **please substitute your app's actual name**):
 

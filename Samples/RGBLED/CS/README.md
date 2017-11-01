@@ -26,19 +26,19 @@ You will need the following components :
 
 Let's start by wiring up the components on the breadboard as shown in the diagram below.
 
-![Breadboard connections]({{site.baseurl}}/Resources/images/RGBLED/RGBLED_bb.png)
+![Breadboard connections](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/RGBLED/RGBLED_bb.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here is the schematic:
 
-![Circuit Schematic]({{site.baseurl}}/Resources/images/RGBLED/RGBLED-schematic_schem.png)
+![Circuit Schematic](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/RGBLED/RGBLED-schematic_schem.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 The pinout of the Tri-color LED is shown below and can be found in the [datasheet](http://www.kingbrightusa.com/images/catalog/SPEC/WP154A4SUREQBFZGC.pdf){:target="_blank"}.
 
-![Tri-color LED Pinout]({{site.baseurl}}/Resources/images/RGBLED/RGBLED_Pinout.png)
+![Tri-color LED Pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/RGBLED/RGBLED_Pinout.png)
 
 #### Connecting the Tri-color LED
 
@@ -60,7 +60,7 @@ The pinout of the Tri-color LED is shown below and can be found in the [datashee
 
 Here is the pinout of the Raspberry Pi 2 and 3:
 
-![Raspberry Pi 2 and 3 pinout]({{site.baseurl}}/Resources/images/PinMappings/RP2_Pinout.png)
+![Raspberry Pi 2 and 3 pinout](/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/PinMappings/RP2_Pinout.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
@@ -68,7 +68,7 @@ Here is the pinout of the Raspberry Pi 2 and 3:
 
 You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\RGBLED`.  This sample is written in C#. Make a copy of the folder on your disk and open the project from Visual Studio.
 
-Follow the instructions to [setup remote debugging and deploy the app]({{site.baseurl}}/{{page.lang}}/Docs/AppDeployment.htm#csharp). The RGBLED app will deploy and start on the Windows IoT device, and you should see the LED blink in sync with the simulation on the screen.
+Follow the instructions to [setup remote debugging and deploy the app](/Docs/AppDeployment.htm#csharp). The RGBLED app will deploy and start on the Windows IoT device, and you should see the LED blink in sync with the simulation on the screen.
 
 ### Let's look at the code
 

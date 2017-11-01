@@ -11,7 +11,7 @@ kit: Adafruit Starter Pack for Windows 10 IoT Core on Raspberry Pi2
 <div class="row">
   <div class="col-xs-24">
     <ol class="breadcrumb">
-      <li><a href="{{site.baseurl}}/{{page.lang}}/Docs/AdafruitMakerKit">Overview of Starter Pack</a></li>
+      <li><a href="/Docs/AdafruitMakerKit">Overview of Starter Pack</a></li>
       <li class="active">Weather Station</li>
     </ol>
     <header class="page-title-header remove-top-margin">
@@ -38,7 +38,7 @@ kit: Adafruit Starter Pack for Windows 10 IoT Core on Raspberry Pi2
 
 <div class="row projectRow">
   <div class="col-md-12 col-xs-24">
-    <img src="{{site.baseurl}}/Resources/images/AdafruitStarterPack/WeatherStation.jpg">
+    <img src="/Microsoft/Windows-iotcore-samples/tree/master/Resources/images/AdafruitStarterPack/WeatherStation.jpg">
   </div>
   <div class="col-md-12 col-xs-24">
     <h2>There are two versions of this project.</h2>
@@ -49,6 +49,6 @@ kit: Adafruit Starter Pack for Windows 10 IoT Core on Raspberry Pi2
 
 <div class="row lineTop">
   <div class="col-md-12 col-md-offset-12 col-xs-24 text-right">
-    <h2 class="thin-header">...or <a href="{{site.baseurl}}/{{page.lang}}/Samples/WhatColor"> continue to the next project.</a></h2>
+    <h2 class="thin-header">...or <a href="/Samples/WhatColor"> continue to the next project.</a></h2>
   </div>
 </div>
