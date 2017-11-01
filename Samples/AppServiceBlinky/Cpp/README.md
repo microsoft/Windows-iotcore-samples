@@ -11,7 +11,7 @@ ___
 
 You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\AppServiceBlinky`.  Make a copy of the folder on your disk and open the projects from Visual Studio.  BlinkyService.sln implements the app service and must be started first.  BlinkyClient.sln implements the app service client.
 
-{% include samples/AppDeploymentCS.md %}
+Once the project is open and builds, the next step is to [deploy](https://github.com/MicrosoftDocs/windows-iotcore-docs/blob/master/windows-iotcore/develop-your-app/AppDeployment.md) the application to your device.
 
 When everything is set up, you should be able to press F5 from each instance of Visual Studio.  The BlinkyService app will deploy and start on the Windows IoT device, and you should see the package family name printed the debug output window on Visual Studio.  Before pressing F5 for BlinkyClient app verify that the value of connection.PackageFamilyName matches the value output in the output window by BlinkyService.  When you press F5 for BlinkyClient you should see the attached LED blink.
 

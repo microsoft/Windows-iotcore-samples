@@ -82,7 +82,7 @@ we read the sensor data through ADC, and the value will be displayed on the scre
 
 * Timer Code
 Setup timer in C#:
-{% highlight C# %}
+``` C#
 public MainPage()
 {
 	// ...
@@ -98,10 +98,10 @@ private void Timer_Tick(object sender, object e)
 {
 	DisplayTextBoxContents();
 }
-{% endhighlight %}
+```
 
 * Initialize SPI pin
-{% highlight C# %}
+``` C#
 private async void InitSPI()
 {
     try
@@ -121,11 +121,11 @@ private async void InitSPI()
         throw new Exception("SPI Initialization Failed", ex);
     }
 }
-{% endhighlight %}
+```
 
 * read the sensor data through SPI communication
 
-{% highlight C# %}
+``` C#
 
 /*Raspberry Pi 2 or 3  Parameters*/
 private const string SPI_CONTROLLER_NAME = "SPI0";  /* For Raspberry Pi 2 or 3, use SPI0                             */
@@ -153,11 +153,11 @@ public void DisplayTextBoxContents()
     textPlaceHolder.Text = res.ToString();
 
 }
-{% endhighlight %}
+```
 
 * Convert sensor bit data to a number
 
-{% highlight C# %}
+``` C#
 /* This is the conversion for MCP3208 which is a 12 bits output; Uncomment this if you are using MCP3208 */
 // public int convertToInt(byte[] data)
 // {
@@ -176,7 +176,7 @@ public int convertToInt(byte[] data)
     result += data[1];
     return result;
 }
-{% endhighlight %}
+```
 
 ## Deploy the sample
 Choose `Debug` and `ARM` configuration, choose `Remote Machine`, right click the project, under Property, click Debug tag,

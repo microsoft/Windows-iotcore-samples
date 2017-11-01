@@ -73,13 +73,13 @@ Accessing the WiFi adapter from your code requires a device capability for WiFi 
 
 **NOTE:** While you can add other capabilities directly by double clicking and opening the **Package.appxmanifest** file in the UI editor, the wifiControl can only be added via the XML editor (Right Click on the file -> Open with -> XML (Text) Editor) and adding the device capability below:
 
-{% highlight xml %}
+``` xml
   <Capabilities>
     <Capability Name="internetClient" />
 	<!-- Add the capability here -->
     <DeviceCapability Name="wifiControl" />
   </Capabilities>
-{% endhighlight %}
+```
 
 ### Scenario Code
 
@@ -92,7 +92,7 @@ The first step to access the device is to request access using the static `WiFiA
 
 When access is granted, any of the WiFiAdapter methods can now be used. So, we start by trying to find a WiFi adapter on the current device, using the WiFiAdapter device selector.
 
-{% highlight C# %}
+``` C#
 
     var access = await WiFiAdapter.RequestAccessAsync();
     if (access != WiFiAccessStatus.Allowed)
@@ -117,11 +117,11 @@ When access is granted, any of the WiFiAdapter methods can now be used. So, we s
             rootPage.NotifyUser("No WiFi Adapters detected on this machine.", NotifyType.ErrorMessage);
         }
     }
-{% endhighlight %}
+```
 
 Alternatively, `WiFiAdapter.FindAllAdaptersAsync()` can be used to find all WiFi adapters to achieve the same.
 
-{% highlight C# %}
+``` C#
 // Not part of the sample:
 var result = await WiFiAdapter.FindAllAdaptersAsync();
 if (result.Count >= 1)
@@ -129,14 +129,14 @@ if (result.Count >= 1)
     firstAdapter = result[0];
     // rest of the code
 }
-{% endhighlight %}
+```
 
 
 ### Scanning for WiFi networks
 
 The next step is to scan for available WiFi networks, this can be achieved using the `WiFiAdapter.ScanAsync()` method.
 
-{% highlight C# %}
+``` C#
 private async void Button_Click(object sender, RoutedEventArgs e)
 {
     try
@@ -150,11 +150,11 @@ private async void Button_Click(object sender, RoutedEventArgs e)
     }
     await DisplayNetworkReportAsync(firstAdapter.NetworkReport);
 }
-{% endhighlight %}
+```
 
 When the scan is complete, the `WiFiAdapter.NetworkReport` property is updated which  can then be used to get and display information to identify each of the WiFi networks found using a read-only collection of `WiFiAvailableNetwork`s. We add each to the result collection, so it can then be mapped to Xaml UI using properties of the `WiFiNetworkDisplay` helper class.
 
-{% highlight C# %}
+``` C#
 
     private async Task DisplayNetworkReportAsync(WiFiNetworkReport report)
     {
@@ -181,13 +181,13 @@ When the scan is complete, the `WiFiAdapter.NetworkReport` property is updated w
     ResultsListView.Focus(FocusState.Pointer);
     }
 
-{% endhighlight %}
+```
 
 ### Connecting to a WiFi network
 
 When a WiFi network is selected from the ones displayed, we need to determine if we want to collect the password credential. The WiFi network authentication type is what we need to determine that:
 
-{% highlight C# %}
+``` C#
     
     private void UpdateNetworkKeyVisibility()
     {
@@ -203,11 +203,11 @@ When a WiFi network is selected from the ones displayed, we need to determine if
             NetworkKeyInfoVisibility = true;
         }
     }
-{% endhighlight %}
+```
 
 To determine if the network supports WPS we can check if the current network supports **WiFiWpsKind.PushButton**.
 
-{% highlight C# %}
+``` C#
 
     public async Task<bool> IsWpsPushButtonAvailableAsync()
     {
@@ -217,11 +217,11 @@ To determine if the network supports WPS we can check if the current network sup
 
         return false;
     }
-{% endhighlight %}
+```
 
 And finally, to determine if EAP network support is available we can check to see if the authentication type is **Rsna** or **Wpa**.
 
-{% highlight C# %}
+``` C#
 
     public bool IsEapAvailable
     {
@@ -231,13 +231,13 @@ And finally, to determine if EAP network support is available we can check to se
                 (availableNetwork.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.Wpa));
         }
     }
-{% endhighlight %}
+```
 
 Finally, to connect to the selected network, an overload of `WiFiAdapter.ConnectAsync()` need to be used. The method's overloads allow specifying the available network to connect to, password if needed and whether or not to automatically reconnect to this network when in range.
 
 The status returned in the async result indicates whether the connection was successful or. Only `WiFiConnectionStatus.Success` indicates success. Other returned values indicates the connection failure reason.
 
-{% highlight C# %}
+``` C#
     
     Task<WiFiConnectionResult> didConnect = null;
     WiFiConnectionResult result = null;
@@ -313,11 +313,11 @@ The status returned in the async result indicates whether the connection was suc
         rootPage.NotifyUser(string.Format("Could not connect to {0}. Error: {1}", selectedNetwork.Ssid, result.ConnectionStatus), NotifyType.ErrorMessage);
         SwitchToItemState(selectedNetwork, WifiConnectState, false);
     }
-{% endhighlight %}
+```
 
 If you need to disconnect, `WiFiAdapter.Disconnect()` can be used.
 
-{% highlight C# %}
+``` C#
 
     private void Disconnect_Click(object sender, RoutedEventArgs e)
     {
@@ -331,7 +331,7 @@ If you need to disconnect, `WiFiAdapter.Disconnect()` can be used.
         selectedNetwork.Disconnect();
         SetSelectedItemState(selectedNetwork);
     }
-{% endhighlight %}
+```
 
 ### To summarize:
 

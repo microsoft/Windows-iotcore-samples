@@ -23,12 +23,12 @@ Connect the web cam to one of USB ports on the IoT Device
 If you're building for Minnowboard Max, select `x86` as the architecture. If you're building for Raspberry Pi 2 or 3 or DragonBoard , select `ARM`.
 
 **DragonBoard only:** Before deploying this app, disable the on-board mic and audio drivers. This is required on every reboot when running this app
-{% highlight xml %}
+``` xml
 DragonBoard - Commands to disable audio and mic drivers:
 
 devcon remove AUDD\QCOM2451
 devcon remove ADCM\QCOM242E
-{% endhighlight %}
+```
 
 Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample]({{site.baseurl}}/{{page.lang}}/Samples/HelloWorld){:target="_blank"} if you need guidance.
 
@@ -65,13 +65,13 @@ For accessing the web cam, the microphone, and the default storage folders, you 
 
 **NOTE:** You can add capabilities directly by opening the **Package.appxmanifest** file in an XML editor (Right Click on the file -> Open with -> XML (Text) Editor) and adding the capabilities below:
 
-{% highlight xml %}
+``` xml
  <Capabilities>
    <uap:Capability Name="videosLibrary" />
    <DeviceCapability Name="webcam" />
    <DeviceCapability Name="microphone" />
  </Capabilities>
-{% endhighlight %}
+```
 
 ## Initialize MediaCapture object
 
@@ -79,7 +79,7 @@ When the MainPage is being initialized, sample enumerates all available Video Ca
 Then it initalizes **MediaCapture** object that can be configured to capture video and/or audio only. In the sample, we use AudioAndVideo capture mode.
 
 
-{% highlight C# %}
+``` C#
 private async void EnumerateCameras()
 {
     var devices = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(Windows.Devices.Enumeration.DeviceClass.VideoCapture);
@@ -123,13 +123,13 @@ private async void InitMediaCapture()
 
     // ...
 }
-{% endhighlight %}
+```
 
 ### Start Capture
 
 Once MediaCapture object has been initialized, clicking on `Start Capturing` begins media capture to a file in Videos Library folder for DefaultAccount. Sample also enables preview that is wired to a **CaptureElement** XAML element.
 
-{% highlight C# %}
+``` C#
 private async Task StartMediaCaptureSession()
 {
     await StopMediaCaptureSession();
@@ -141,13 +141,13 @@ private async Task StartMediaCaptureSession()
     await mediaCapture.StartPreviewAsync();
     isRecording = true;
 }
-{% endhighlight %}
+```
 
 ### End Capture
 
 To end capturing and preview, clicking on the `End Capture` button stops preview and stops recording to a file. It may take a few seconds to flush all data to the video file before it can be played back.
 
-{% highlight C# %}
+``` C#
 private async Task StopMediaCaptureSession()
 {
     if (isRecording)
@@ -157,13 +157,13 @@ private async Task StopMediaCaptureSession()
         isRecording = false;
     }
 }
-{% endhighlight %}
+```
 
 ### Play Captured Video
 
 After a file has been recorded, it can be played back by pressing `Play Captured VIdeo` button. This sets up a stream from the file to **MediaElement** XAML control.
 
-{% highlight C# %}
+``` C#
 private async void playVideo(object sender, RoutedEventArgs e)
 {
     Windows.Storage.StorageFile storageFile = await Windows.Storage.KnownFolders.VideosLibrary.GetFileAsync(fileName);
@@ -178,19 +178,19 @@ private async void playVideo(object sender, RoutedEventArgs e)
         }
     }
 }
-{% endhighlight %}
+```
 
 ### Video Preview and Playback controls
 
 This section describes how we render preview and playback of video content in MainPage.
 The preview is rendered in **CaptureElement** control that has its Source pointing to **MediaPlayback** object.
 
-{% highlight xml %}
+``` xml
 <CaptureElement Name="capturePreview" Height="120" Margin="10,0,0,10" Width="120"/>
-{% endhighlight %}
+```
 
 The playback is rendered in **MediaElement** control that has its Source pointing for a file stream from the captured video data file.
-{% highlight xml %}
+``` xml
 <MediaElement Name="media"
               AutoPlay="True"
               AreTransportControlsEnabled="False"
@@ -198,7 +198,7 @@ The playback is rendered in **MediaElement** control that has its Source pointin
               Width="120"
               Margin="0,10,0,10"
               />
-{% endhighlight %}
+```
 
 
 ## To summarize:
