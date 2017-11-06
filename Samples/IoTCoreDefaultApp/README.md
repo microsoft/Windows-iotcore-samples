@@ -1,11 +1,3 @@
----
-layout: sample
-title: IoT Core Default App
-description: A full featured sample app - The current IoT Core default application
-keyword: iot, uwp, bertha
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # IoT Core Default App
 
 These are the available versions of this Windows 10 IoT Core sample:

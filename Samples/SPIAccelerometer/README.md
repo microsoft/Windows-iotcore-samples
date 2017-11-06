@@ -1,11 +1,3 @@
----
-layout: sample
-title: SPI Accelerometer
-description: Connect an accelerometer to your device.
-keyword: iot, wiring, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # “SPI Accelerometer”
 
 These are the available versions of this Windows 10 IoT Core sample:

@@ -1,11 +1,3 @@
----
-layout: sample
-title: Temperature and Force Sensor
-description: Control a basic temperature and force sensor.
-keyword: iot, wiring, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # “Temperature and force sensor”
 
 These are the available versions of this Windows 10 IoT Core sample:

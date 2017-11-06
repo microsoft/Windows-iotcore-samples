@@ -1,11 +1,3 @@
----
-layout: sample
-title: App Service Blinky
-description: An app service to blink an LED and a client app to call it.
-keyword: iot, wiring, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # AppServiceBlinky
 
 These are the available versions of this Windows 10 IoT Core sample:

@@ -1,11 +1,3 @@
----
-layout: sample
-title: Weather Patterns of Makers
-description: Communicate with an I2C/SPI based temperature and pressure sensor.
-keyword: iot, wiring, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # “Weather Patterns of Makers”
 
 These are the available versions of this Windows 10 IoT Core sample:

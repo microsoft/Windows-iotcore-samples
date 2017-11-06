@@ -1,11 +1,3 @@
----
-layout: sample
-title: Video Capture
-description: Initialize a video capture device, record video to a file, preview video feed, and playback recorded video.
-keyword: iot, wiring, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # “Video Capture”
 
 These are the available versions of this Windows 10 IoT Core sample:

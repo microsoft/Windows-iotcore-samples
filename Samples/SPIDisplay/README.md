@@ -1,11 +1,3 @@
----
-layout: sample
-title: SPI Display
-description: Write lines of text to an SPI LED display.
-keyword: iot, wiring, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # “SPI Display”
 
 These are the available versions of this Windows 10 IoT Core sample:

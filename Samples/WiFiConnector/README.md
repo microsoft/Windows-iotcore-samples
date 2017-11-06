@@ -1,11 +1,3 @@
----
-layout: sample
-title: WiFi Connector
-description: Connect your IoT Core device to WiFi
-keyword: iot, uwp, wifi, connectivity
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # WiFi Connector
 
 These are the available versions of this Windows 10 IoT Core sample:

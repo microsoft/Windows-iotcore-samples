@@ -1,11 +1,3 @@
----
-layout: sample
-title: Serial Sample
-description: Communicate between a desktop and an IoT device over a serial interface
-keyword: iot, wiring, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # Serial Sample
 
 These are the available versions of this Windows 10 IoT Core sample:

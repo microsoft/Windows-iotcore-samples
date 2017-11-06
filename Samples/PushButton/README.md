@@ -1,11 +1,3 @@
----
-layout: sample
-title: Push Button
-description: Make an LED blink with the push of a button
-keyword: iot, wiring, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # Push Button Sample
 
 These are the available versions of this Windows 10 IoT Core sample:

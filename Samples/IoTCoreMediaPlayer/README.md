@@ -1,11 +1,3 @@
----
-layout: sample
-title: IoT Core Media Player
-description: A demonstration of how to play music from an IoT device
-keyword: iot, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # IoT Core Media Player
 
 These are the available versions of this Windows 10 IoT Core sample:

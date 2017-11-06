@@ -1,11 +1,3 @@
----
-layout: sample
-title: Basic webcam app
-description: Create an app that initializes a web cam, takes pictures, and records video and audio.
-keyword: iot, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # Webcam App Sample
 
 These are the available versions of this Windows 10 IoT Core sample:

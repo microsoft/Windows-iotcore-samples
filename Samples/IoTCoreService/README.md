@@ -1,11 +1,3 @@
----
-layout: sample
-title: IoT Core Service
-description: A simple shared host service for Windows 10 IoT Core.
-keyword: iot, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # IoT Core Service
 
 These are the available versions of this Windows 10 IoT Core sample:

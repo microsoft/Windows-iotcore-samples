@@ -1,12 +1,4 @@
-﻿---
-layout: sample
-title: I2C Compass
-description: Create and deploy your first IoT Core app
-keyword: iot, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
-# “I2C Compass”
+﻿# “I2C Compass”
 
 These are the available versions of this Windows 10 IoT Core sample:
 
