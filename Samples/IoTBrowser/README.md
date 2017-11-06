@@ -1,15 +1,3 @@
----
-layout: sample
-title: IoT Browser Sample
-description: Build a simple web browser for Windows 10 IoT Core.
-keyword: iot, uwp
-permalink:
-samplelink:
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
-kit:
-step:
----
 # IoT Browser
 
 These are the available versions of this Windows 10 IoT Core sample:

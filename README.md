@@ -51,15 +51,75 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
 
 ## Samples by category
 
-### Devices and sensors
+### Devices, sensors and samples that involve wiring
 
 <table>
  <tr>
-  <td><a href="Samples/HelloBlinky">HelloBlinky</a></td>
   <td><a href="Samples/AppServiceBlinky">AppServiceBlinky</a></td>
-  <td><a href="Samples/AppServiceSharedNotepad">AppServiceSharedNotepad</a></td>
+  <td><a href="Samples/DigitalSign">DigitalSign</a></td>
+  <td><a href="Samples/HelloBlinky">HelloBlinky</a></td>
  </tr>
-<!-- <tr>
-  <td><a href=""></a></td>
-  <td><a href=""></a></td>
- </tr> -->
+ </tr>
+ <tr>
+  <td><a href="Samples/HelloBlinkyBackground">HelloBlinkyBackground</a></td>
+  <td><a href="Samples/NFCForIoT">NFCForIoT</a></td>
+  <td><a href="Samples/PotentiometerSensor">PotentiometerSensor</a></td>
+ </tr>
+ <tr>
+  <td><a href="Samples/PushButton">PushButton</a></td>
+  <td><a href="Samples/RGBLED">RGBLED</a></td>
+  <td><a href="Samples/SPIAccelerometer">SPIAccelerometer</a></td>
+ </tr>
+ <tr>
+  <td><a href="Samples/SPIDisplay">SPIDisplay</a></td>
+  <td><a href="Samples/TempForceSensor">TempForceSensor</a></td>
+  <td><a href="Samples/VideoCaptureSample">VideoCaptureSample</a></td>
+ </tr>
+  <tr>
+  <td><a href="Samples/I2CCompass">I2CCompass</a></td>
+  <td><a href="Samples/I2CAccelerometer">I2CAccelerometer</a></td>
+ </tr>
+</table>
+
+### Samples that demonstrate Universal Windows Application Features 
+
+<table>
+ <tr>
+  <td><a href="Samples/AppServiceSharedNotepad">AppServiceSharedNotepad</a></td>
+  <td><a href="Samples/CompanionApp">CompanionApp</a></td>
+  <td><a href="Samples/ExternalProcessLauncher">ExternalProcessLauncher</a></td>
+ </tr>
+ <tr>
+  <td><a href="Samples/ForegroundAppWithBackgroundApp">ForegroundAppWithBackgroundApp</a></td>
+  <td><a href="Samples/HelloBlinkyBackground">HelloBlinkyBackground</a></td>
+  <td><a href="Samples/HelloWorld">HelloWorld</a></td>
+ </tr>
+ <tr>
+  <td><a href="Samples/IotBrowser">IotBrowser</a></td>
+  <td><a href="Samples/IoTCoreDefaultApp">IoTCoreDefaultApp</a></td>
+  <td><a href="Samples/IoTCoreMediaPlayer">IoTCoreMediaPlayer</a></td>
+ </tr>
+</table>
+
+### Samples that utilize Microsoft Azure features
+
+<table>
+ <tr>
+  <td><a href="Samples/IoTConnector">IoTConnector</a></td>
+  <td><a href="Samples/SpeechTranslator">SpeechTranslator</a></td>
+  <td><a href="Samples/WeatherStation">WeatherStation</a></td>
+ </tr>
+</table>
+
+### Samples that involve device drivers, services, or realtime processing
+
+<table>
+ <tr>
+  <td><a href="Samples/IoTCoreService">IoTCoreService</a></td>
+  <td><a href="Samples/SerialUART">SerialUART</a></td>
+  <td><a href="Samples/ShiftRegister">ShiftRegister</a></td>
+ </tr>
+  <tr>
+  <td><a href="Samples/MemoryStatus">MemoryStatus</a></td>
+ </tr>
+</table>

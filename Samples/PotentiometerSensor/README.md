@@ -1,15 +1,3 @@
----
-layout: sample
-title: Potentiometer Sensor
-description: Connect a rotary potentiometer and LED to your IoT Core device
-keyword: iot, wiring, uwp
-permalink:
-samplelink:
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
-kit:
-step:
----
 # “Potentiometer Sensor”
 
 These are the available versions of this Windows 10 IoT Core sample:

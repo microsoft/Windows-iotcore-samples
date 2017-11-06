@@ -1,15 +1,3 @@
----
-layout: sample
-title: IoT Connector
-description: Demonstrate device to device communication with Azure IoT Hub.
-keyword: iot, uwp
-permalink:
-samplelink:
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
-kit:
-step:
----
 # IoT Connector
 
 These are the available versions of this Windows 10 IoT Core sample:

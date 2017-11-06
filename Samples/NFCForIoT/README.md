@@ -1,15 +1,3 @@
----
-layout: sample
-title: NFC for IoT
-description: Learn how use NFC on IoT Core
-keyword: iot, wiring, uwp
-permalink:
-samplelink:
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
-kit:
-step:
----
 # NFC for IoT
 
 These are the available versions of this Windows 10 IoT Core sample:

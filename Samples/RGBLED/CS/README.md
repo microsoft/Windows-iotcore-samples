@@ -1,8 +1,6 @@
 # RGB LED Sample
 
-
-
-[View the code on Github](https://github.com/ms-iot/samples/blob/develop/RGBLED/CS/MainPage.xaml.cs)
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
 
 In this sample, we will connect a Tri-color LED to Raspberry Pi 2 or 3. The LED will blink changing colors from Red, Blue, and Green.
 
@@ -28,19 +26,19 @@ You will need the following components :
 
 Let's start by wiring up the components on the breadboard as shown in the diagram below.
 
-![Breadboard connections]({{site.baseurl}}/Resources/images/RGBLED/RGBLED_bb.png)
+![Breadboard connections](../../../Resources/images/RGBLED/RGBLED_bb.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here is the schematic:
 
-![Circuit Schematic]({{site.baseurl}}/Resources/images/RGBLED/RGBLED-schematic_schem.png)
+![Circuit Schematic](../../../Resources/images/RGBLED/RGBLED-schematic_schem.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 The pinout of the Tri-color LED is shown below and can be found in the [datasheet](http://www.kingbrightusa.com/images/catalog/SPEC/WP154A4SUREQBFZGC.pdf){:target="_blank"}.
 
-![Tri-color LED Pinout]({{site.baseurl}}/Resources/images/RGBLED/RGBLED_Pinout.png)
+![Tri-color LED Pinout](../../../Resources/images/RGBLED/RGBLED_Pinout.png)
 
 #### Connecting the Tri-color LED
 
@@ -62,15 +60,15 @@ The pinout of the Tri-color LED is shown below and can be found in the [datashee
 
 Here is the pinout of the Raspberry Pi 2 and 3:
 
-![Raspberry Pi 2 and 3 pinout]({{site.baseurl}}/Resources/images/PinMappings/RP2_Pinout.png)
+![Raspberry Pi 2 and 3 pinout](../../../Resources/images/PinMappings/RP2_Pinout.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 ### Deploy your app
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\RGBLED`.  This sample is written in C#. Make a copy of the folder on your disk and open the project from Visual Studio.
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\RGBLED`.  This sample is written in C#. Make a copy of the folder on your disk and open the project from Visual Studio.
 
-Follow the instructions to [setup remote debugging and deploy the app]({{site.baseurl}}/{{page.lang}}/Docs/AppDeployment.htm#csharp). The RGBLED app will deploy and start on the Windows IoT device, and you should see the LED blink in sync with the simulation on the screen.
+Follow the instructions to [setup remote debugging and deploy the app](/Docs/AppDeployment.htm#csharp). The RGBLED app will deploy and start on the Windows IoT device, and you should see the LED blink in sync with the simulation on the screen.
 
 ### Let's look at the code
 
@@ -78,7 +76,7 @@ First, we get the default GPIO controller and check that it's not null.
 `GpioController.GetDefault()` will return null on platforms that do not contain
 a GPIO controller.
 
-{% highlight C# %}
+``` C#
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             var gpio = GpioController.GetDefault();
@@ -89,7 +87,7 @@ a GPIO controller.
                 GpioStatus.Text = "There is no GPIO controller on this device.";
                 return;
             }
-{% endhighlight %}
+```
 
 Next, we open the pins we'll be using later in the program. The RGB LED
 requires 3 gpio pins - one to drive each color channel of the LED.
@@ -99,7 +97,7 @@ located next to each other physically on the header. If we're not running on
 Raspberry Pi, we take the first 3 available pins. There is also logic to skip
 pins connected to onboard functions on known hardware platforms.
 
-{% highlight C# %}
+``` C#
             var deviceModel = GetDeviceModel();
             if (deviceModel == DeviceModel.RaspberryPi2)
             {
@@ -149,13 +147,13 @@ pins connected to onboard functions on known hardware platforms.
                 greenpin = pins[1];
                 bluepin = pins[2];
             }
-{% endhighlight %}
+```
 
 Next, we initialize the pins as outputs driven HIGH, which causes the LED
 to be OFF. We also display which pin numbers are in use. If you're
 not using Raspberry Pi, hook up the RGB LED to the pins shown on the display.
 
-{% highlight C# %}
+``` C#
             redpin.Write(GpioPinValue.High);
             redpin.SetDriveMode(GpioPinDriveMode.Output);
             greenpin.Write(GpioPinValue.High);
@@ -168,7 +166,7 @@ not using Raspberry Pi, hook up the RGB LED to the pins shown on the display.
                 redpin.PinNumber,
                 greenpin.PinNumber,
                 bluepin.PinNumber);
-{% endhighlight %}
+```
 
 Finally, we start a periodic timer which we will use to rotate through the colors
 of the LED. We use a `DispatcherTimer` because we'll be updating the UI
@@ -176,17 +174,17 @@ on the timer callback. If we did not need to update the UI, it would be better
 to use a `System.Threading.Timer` which runs on a separate thread. The less we
 can do on the UI thread, the more responsive the UI will be.
 
-{% highlight C# %}
+``` C#
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += Timer_Tick;
             timer.Start();
         }
-{% endhighlight %}
+```
 
 In the timer callback, we light up the currently active LED and update the UI.
 
-{% highlight C# %}
+``` C#
         private void FlipLED()
         {
             Debug.Assert(redpin != null && bluepin != null && greenpin != null);
@@ -228,4 +226,4 @@ In the timer callback, we light up the currently active LED and update the UI.
         {
             FlipLED();
         }
-{% endhighlight %}
+```

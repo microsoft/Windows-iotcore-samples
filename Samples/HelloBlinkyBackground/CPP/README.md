@@ -6,18 +6,18 @@ only available on Windows IoT Core, so this sample cannot run on your desktop.
 ## Headless mode
 ___
 
-This application is designed for a headless device.  To better understand what Headless mode is and how to configure your device to be headless, follow the instructions [here]({{site.baseurl}}/{{page.lang}}/Docs/HeadlessMode).
+This application is designed for a headless device.  To better understand what Headless mode is and how to configure your device to be headless, follow the instructions [here](/Docs/HeadlessMode).
 
 ## Load the project in Visual Studio
 ___
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\HelloBlinkyBackground`.  The sample code is available in either C++ or C#, however the documentation here only details the C# variant. Make a copy of the folder on your disk and open the project from Visual Studio.
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\HelloBlinkyBackground`.  The sample code is available in either C++ or C#, however the documentation here only details the C# variant. Make a copy of the folder on your disk and open the project from Visual Studio.
 
-Make sure you connect the LED to your board. Go back to the basic 'Blinky' [sample]({{site.baseurl}}/{{page.lang}}/Samples/helloblinky) if you need guidance.
+Make sure you connect the LED to your board. Go back to the basic 'Blinky' [sample](/Samples/helloblinky) if you need guidance.
 
 Note that the app will not run successfully if it cannot find any available GPIO ports.
 
-{% include samples/AppDeploymentCS.md %}
+Once the project is open and builds, the next step is to [deploy](https://github.com/MicrosoftDocs/windows-iotcore-docs/blob/master/windows-iotcore/develop-your-app/AppDeployment.md) the application to your device.
 
 When everything is set up, you should be able to press F5 from Visual Studio.  The Blinky app will deploy and start on the Windows IoT device, and you should see the attached LED blink.
 
@@ -29,7 +29,7 @@ The code for this sample is pretty simple. We use a timer, and each time the 'Ti
 ## Timer code
 ___
 Here is how you set up the timer in C#:
-{% highlight C# %}
+``` C#
 using Windows.System.Threading;
 
 BackgroundTaskDeferral _deferral;
@@ -45,14 +45,14 @@ private void Timer_Tick(ThreadPoolTimer timer)
 {
     . . .
 }
-{% endhighlight %}
+```
 
 
 ## Initialize the GPIO pin
 ___
 To drive the GPIO pin, first we need to initialize it. Here is the C# code (notice how we leverage the new WinRT classes in the Windows.Devices.Gpio namespace):
 
-{% highlight C# %}
+``` C#
 using Windows.Devices.Gpio;
 
 private void InitGPIO()
@@ -75,7 +75,7 @@ private void InitGPIO()
     pin.Write(GpioPinValue.High);
     pin.SetDriveMode(GpioPinDriveMode.Output);
 }
-{% endhighlight %}
+```
 
 Let's break this down a little:
 
@@ -96,14 +96,14 @@ Once we have access to the `GpioOutputPin` instance, it's trivial to change the 
 
 To turn the LED on, simply write the value `GpioPinValue.Low` to the pin:
 
-{% highlight C# %}
+``` C#
 this.pin.Write(GpioPinValue.Low);
-{% endhighlight %}
+```
 
 and of course, write `GpioPinValue.High` to turn the LED off:
 
-{% highlight C# %}
+``` C#
 this.pin.Write(GpioPinValue.High);
-{% endhighlight %}
+```
 
 Remember that we connected the other end of the LED to the 3.3 Volts power supply, so we need to drive the pin to low to have current flow into the LED.

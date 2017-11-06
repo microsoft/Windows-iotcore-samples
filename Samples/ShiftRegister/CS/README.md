@@ -1,6 +1,6 @@
 # Shift register
 
-![Shift Register Sample Image]({{site.baseurl}}/Resources/images/ShiftRegister/ShiftRegisterProjectPicture_480.png)
+![Shift Register Sample Image](../../../Resources/images/ShiftRegister/ShiftRegisterProjectPicture_480.png)
 
 In this sample, we'll connect an 8-bit serial-in, parallel-out shift register to your Raspberry Pi 2 or 3* and create a simple app that uses the shift register to control eight LEDs.
 
@@ -31,14 +31,14 @@ Let's start by wiring up the components on the breadboard as shown in the diagra
 
 **Note: Make sure to power off the RPi2 or RPi3 when connecting your circuit. This is good practice to reduce the chance of an accidental short circuit during construction.**
 
-![Breadboard connections]({{site.baseurl}}/Resources/images/ShiftRegister/ShiftRegisterSampleDrawing_bb_50.png)
+![Breadboard connections](../../../Resources/images/ShiftRegister/ShiftRegisterSampleDrawing_bb_50.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
 
 Here is the schematic:
 
-![Circuit Schematic]({{site.baseurl}}/Resources/images/ShiftRegister/ShiftRegisterSampleDrawing_schem_75.png)
+![Circuit Schematic](../../../Resources/images/ShiftRegister/ShiftRegisterSampleDrawing_schem_75.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
@@ -47,20 +47,20 @@ Here is the schematic:
 
 Place the Shift Register on your breadboard such that it straddles the center gap of the breadboard.
 
-![Breadboard IC Placement]({{site.baseurl}}/Resources/images/BreadBoardICPlacement.png)
+![Breadboard IC Placement](../../../Resources/images/BreadBoardICPlacement.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
 
 Locate pin 1 of the 74HC595N shift register by finding the notch on the IC. If you orient the IC so that the end with the notch is facing left, pin 1 will be the first pin in the lower left below the notch.
 
-![74HC595N PinLocations]({{site.baseurl}}/Resources/images/ShiftRegister/FindNotchPin1.png)
+![74HC595N PinLocations](../../../Resources/images/ShiftRegister/FindNotchPin1.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
 The pinout of the 74HC595N is shown below and can be found in the [datasheet](http://www.ti.com/lit/ds/symlink/sn74hc595.pdf).
 
-![74HC595N Pinout]({{site.baseurl}}/Resources/images/ShiftRegister/ShiftRegister74HC595_pinout.png)
+![74HC595N Pinout](../../../Resources/images/ShiftRegister/ShiftRegister74HC595_pinout.png)
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
@@ -108,7 +108,7 @@ When done, you should have a row (or as close to a row as possible) of blue and 
 
 We need to hook up power, ground, and the I2C lines from on the Raspberry Pi 2 or 3 to the 74HC595N shift register and the breadboard.
 
-![Raspberry Pi 2 and 3 pinout]({{site.baseurl}}/Resources/images/PinMappings/RP2_Pinout.png)
+![Raspberry Pi 2 and 3 pinout](../../../Resources/images/PinMappings/RP2_Pinout.png)
 
 * Pin 2 **5V PWR** Connect to the voltage supply rail on the side of the breadboard (red stripe)
 
@@ -126,7 +126,7 @@ We need to hook up power, ground, and the I2C lines from on the Raspberry Pi 2 o
 
 ### Create the Sample App
 
-When everything is set up, power your device back on. You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/ms-iot/samples/archive/develop.zip) and navigating to the `samples-develop\ShiftRegister`, 
+When everything is set up, power your device back on. You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\ShiftRegister`, 
 but as an exercise, this tutorial will take you through the complete steps to create this app from scratch. 
 Open up Visual Studio and create a new C# Windows Universal Blank App. Click **File -> New -> Project** then select **Templates -> Visual C# -> Windows -> Universal -> Blank App (Universal Windows)**. 
 For this sample, we cleverly named ours **ShiftRegisterSample**.
@@ -162,7 +162,7 @@ Let's begin.
 * Locate the `<Grid>` tag in the XAML section of the designer, and add the following markup:
 
 <UL>
-{% highlight XML %}
+``` xml
 <Grid Background="Black">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock x:Name="DelayText" Text="500ms" Margin="10" TextAlignment="Center" FontSize="26.667" />
@@ -171,7 +171,7 @@ Let's begin.
         <TextBlock x:Name="GpioStatus" Text="Waiting to initialize GPIO..." Margin="10,50,10,10" TextAlignment="Center" FontSize="26.667" />
     </StackPanel>
 </Grid>
-{% endhighlight %}
+```
 </UL>
 
 #### Add code to MainPage.xaml.cs
@@ -188,15 +188,15 @@ Before we add any code to MainPage.xaml.cs, we need to add a reference to the Wi
 
  * Add the following line at the top of MainPage.xaml.cs
 
-{% highlight C# %}
+``` C#
 using Windows.Devices.Gpio;
-{% endhighlight %}
+```
 
 With the references added, let's start adding code. The complete code we implemented for MainPage.xaml.cs is located at end of this section. Below are some key parts of the code with explanations
 
 Variables and Constants
 
-{% highlight C# %}
+``` C#
 // use these constants for controlling how the initial time interval for clocking in serial data to the shift register.
 private const double TIMER_INTERVAL = 100; // value is milliseconds and denotes the timer interval
 private const double TIME_DELAY = 1;
@@ -229,7 +229,7 @@ private bool areLedsInverted = true;
 
 private SolidColorBrush redBrush = new SolidColorBrush(Windows.UI.Colors.Red);
 private SolidColorBrush grayBrush = new SolidColorBrush(Windows.UI.Colors.LightGray);
-{% endhighlight %}
+```
 
 Here are what some of these constants and variables represent
 
@@ -247,7 +247,7 @@ The method `InitializeSystem()`
 
  * Sets up the timer used control the frequency at which the RPi2 or RPi3 sends one bit of data to the shift register
 
-{% highlight C# %}
+``` C#
 private void InitializeSystem()
 {
     // initialize the GPIO pins we will use for bit-banging our serial data to the shift register
@@ -305,7 +305,7 @@ private void InitializeSystem()
         return;
     }
 }
-{% endhighlight %}
+```
 
 The method `SendDataBit()`
 
@@ -314,7 +314,7 @@ The method `SendDataBit()`
  in the shift register. The toggling of the serial clock pin by the RPi2 or RPi3 to clock in the data bit also causes the previous eight bits of data in the shift register to shift one bit position with the bit in the last position being lost.
  After clocking in the data bit, all bits in `pinMask` are left shifted one bit position. The value of `pinMask` is then checked and, depending on whether the LED lighting pattern is set as inverted, the least significant bit (LSB) of 'pinMask' is set to either a '1' or '0'.
 
-{% highlight C# %}
+``` C#
 private void SendDataBit()
 {
     if ((pinMask & 0x80) > 0)
@@ -351,12 +351,12 @@ private void SendDataBit()
         }
     }
 }
-{% endhighlight %}
+```
 
 `ToggleButtonClicked()` is triggered when the app user clicks on the button on the display screen to invert the LEDs. This method inverts all the bits in `pinMask`, sets or clears the flag `areLedsInverted` depending on what the previous state was.
  Finally, it changes the color of the button - red when the LEDs are inverted and gray when they are not.
 
-{% highlight C# %}
+``` C#
 private void ToggleButtonClicked(object sender, RoutedEventArgs e)
 {
     pinMask ^= 0xFF;
@@ -371,7 +371,7 @@ private void ToggleButtonClicked(object sender, RoutedEventArgs e)
         ToggleButton.Background = redBrush;
     }
 }
-{% endhighlight %}
+```
 
 ### Build, Deploy and Run the App
 
@@ -379,17 +379,17 @@ Let's build, deploy and run the app on our Raspberry Pi 2 or 3.
 
 * If not already open, open in Visual Studio the app you created with the code above.
 
-* Follow the instructions to [setup remote debugging and deploy the app]({{site.baseurl}}/{{page.lang}}/Docs/AppDeployment.htm#csharp).
+* Follow the instructions to [setup remote debugging and deploy the app](/Docs/AppDeployment.htm#csharp).
 
 After several moments, you will see the screen attached to the RPi2 or RPi3 change to show a slider, some text, and a button. The LEDs will light up and follow the pattern set in 'pinMask'.
 
-![ShiftRegister Screenshot]({{site.baseurl}}/Resources/images/ShiftRegister/ScreenShotA.png)
+![ShiftRegister Screenshot](../../../Resources/images/ShiftRegister/ScreenShotA.png)
 
 Congratulations! You've successfully connected an 8-bit serial-in, parallel-out shift register to your Raspberry Pi 2 or 3.
 
 ### The complete MainPage.xaml.cs code
 
-{% highlight C# %}
+``` C#
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -602,4 +602,4 @@ namespace ShiftRegisterSample
         }
     }
 }
-{% endhighlight %}
+```
