@@ -10,7 +10,7 @@ This repo contains the samples that demonstrate the usage patterns for the Micro
 > [ZIP file](../../archive/master.zip), but be 
 > sure to unzip everything to access shared dependencies. For more info, see [Get Started](https://go.microsoft.com/fwlink/?linkid=860461). 
 
-## Windows 10 Iot Core development
+## Windows 10 IoT Core development
 
 These samples require Visual Studio 2017 to build and Windows 10 IoT Core to execute.  The setup and installation steps are different based on what hardware device you have.
 
@@ -39,7 +39,7 @@ For more info about the programming models, platforms, languages, and APIs demon
 
 ## Contributions
 
-These samples are direct from the feature teams and we welcome your input on issues and suggestions for new samples. At this time we are not accepting new samples from the public, but check back here as we evolve our contribution model.
+These samples are direct from the feature teams and we welcome your input on issues and suggestions for new samples. If you would like to see new coverage or have feedback, please consider contributing. You can edit the existing content, add new content, or simply create new issues. We’ll take a look at your suggestions and will work together to incorporate them into the docs.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/)
