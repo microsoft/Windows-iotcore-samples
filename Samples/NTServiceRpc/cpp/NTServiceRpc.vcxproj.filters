@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>81d95eea-286c-4a5e-98f1-eef612020bf0</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>85b464d3-9e56-4242-b58b-1f226dd034b4</UniqueIdentifier>
+      <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{33085be2-4c37-4eab-8f6e-6add0cffe2d4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="RpcClient.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include="MainPage.xaml.cpp" />
+    <ClCompile Include="RpcInterface.c" />
+    <ClCompile Include="RpcAsyncWrapper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="RpcClient.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="MainPage.xaml.h" />
+    <ClInclude Include="RpcAsyncWrapper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\SharedContent\media\microsoft-sdk.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\SharedContent\media\smalltile-sdk.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\SharedContent\media\splash-sdk.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\SharedContent\media\squaretile-sdk.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\SharedContent\media\storelogo-sdk.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\SharedContent\media\tile-sdk.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\SharedContent\media\windows-sdk.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Styles.xaml" />
+    <Page Include="MainPage.xaml" />
+  </ItemGroup>
+</Project>
