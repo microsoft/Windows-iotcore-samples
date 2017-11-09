@@ -1,10 +1,10 @@
 # NT Service example
 
-This sample demonstrates the use of a NT service with an UWP app. Communication between the app and the service happens through RPC.
+This sample demonstrates the use of a NT service with an UWP app. Communication between the app and the service is done through RPC.
 
 ## Goal
 
-This sample shows a NT service, which has access to Windows APIs, running alongside an UWP app. Using the service, the UWP app can do privileged actions. In this sample, the UWP app will check the status of services and start/stop them.
+This sample shows how UWP can communicate with a NT service, allowing it to perform privileged actions. In this sample, the UWP app will check the status of services and start/stop them.
 
 ## Security
 
@@ -21,7 +21,7 @@ This sample can run on ARM and x86, on both Windows for IoT and desktop.
 This solution has three projects:
 
 * **RpcInterface**: Has a IDL file ([Interface Definition Language](https://msdn.microsoft.com/en-us/library/windows/desktop/aa367091(v=vs.85).aspx)) with the definition of the RPC interface (functions and its arguments).
-* **RpcServer**: RPC server. Runs as a NT service and receives RPC calls to return the status, start or stop services.
+* **RpcServer**: RPC server. Runs as a NT service and receives RPC calls to return the status, start or stop other NT services.
 * **NTServiceRpc**: Sample UWP app consuming the NT service.
 
 ## Summary
