@@ -22,7 +22,8 @@
 // {BE2E880E-F79F-4C30-9C95-09F003A0A7EA}
 //
 
-namespace {
+namespace
+{
     const GUID SERVICE_STATUS_SERVICE_PROVIDER_GUID = { 0xbe2e880e, 0xf79f, 0x4c30,{ 0x9c, 0x95, 0x9, 0xf0, 0x3, 0xa0, 0xa7, 0xea } };
 }
 

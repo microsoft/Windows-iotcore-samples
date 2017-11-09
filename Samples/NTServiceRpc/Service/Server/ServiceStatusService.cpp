@@ -23,7 +23,8 @@
 // List of service dependencies - "dep1\0dep2\0\0"
 #define SERVICE_DEPENDENCIES     L""
 
-namespace {
+namespace
+{
     bool RunCommand(wchar_t *command)
     {
         if (*command != L'-' && *command != L'/')
@@ -57,7 +58,8 @@ namespace {
         return true;
     }
 
-    void Usage() {
+    void Usage()
+    {
         wprintf(L"Usage:\n");
         wprintf(L"\t-install  Install service.\n");
         wprintf(L"\t-remove   Remove service.\n");
@@ -67,13 +69,15 @@ namespace {
 
 int wmain(int argc, wchar_t **argv)
 {
-    if (argc != 2) {
+    if (argc != 2)
+    {
         fwprintf(stderr, L"Invalid number of command line arguments.\n");
         Usage();
         return -1;
     }
 
-    if (!RunCommand(argv[1])) {
+    if (!RunCommand(argv[1]))
+    {
         Usage();
         return -1;
     }

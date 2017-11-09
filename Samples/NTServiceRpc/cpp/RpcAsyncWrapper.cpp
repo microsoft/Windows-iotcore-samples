@@ -5,7 +5,8 @@
 #include <stdexcept>
 #include <string>
 
-namespace NTServiceRpc {
+namespace NTServiceRpc
+{
     Concurrency::task<bool> RpcAsyncWrapper::Connect()
     {
         running = false;

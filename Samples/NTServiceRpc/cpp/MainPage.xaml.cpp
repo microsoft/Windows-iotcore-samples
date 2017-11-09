@@ -24,7 +24,8 @@ using namespace Windows::UI::Core;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls::Primitives;
 
-namespace {
+namespace
+{
     wstring ServiceStatusString(RpcAsyncWrapper::ServiceStatus status)
     {
         switch (status)
@@ -77,7 +78,8 @@ void MainPage::NotifyUser(String^ message)
 
 void MainPage::ConnectToService()
 {
-    rpc.Connect().then([this](bool success) {
+    rpc.Connect().then([this](bool success)
+    {
         NotifyUser(success ? "Connected to service" : "Connection to service failed");
     });
 }
@@ -89,21 +91,24 @@ void MainPage::Connect_Click(Object^, RoutedEventArgs^)
 
 void MainPage::GetStatus_Click(Object^ sender, RoutedEventArgs^ e)
 {
-    rpc.GetServiceStatus(ServiceNameTextBox->Text->Data()).then([this](RpcAsyncWrapper::ServiceStatus status) {
+    rpc.GetServiceStatus(ServiceNameTextBox->Text->Data()).then([this](RpcAsyncWrapper::ServiceStatus status)
+    {
         NotifyUser(ref new Platform::String((L"Status: " + ServiceStatusString(status)).c_str()));
     });
 }
 
 void MainPage::Start_Click(Object^, RoutedEventArgs^)
 {
-    rpc.RunService(ServiceNameTextBox->Text->Data()).then([this](boolean success) {
+    rpc.RunService(ServiceNameTextBox->Text->Data()).then([this](boolean success)
+    {
         NotifyUser(success ? "Service started" : "Starting service failed");
     });
 }
 
 void MainPage::Stop_Click(Object^, RoutedEventArgs^)
 {
-    rpc.StopService(ServiceNameTextBox->Text->Data()).then([this](boolean success) {
+    rpc.StopService(ServiceNameTextBox->Text->Data()).then([this](boolean success)
+    {
         NotifyUser(success ? "Service stopped" : "Stopping service failed");
     });
 }
