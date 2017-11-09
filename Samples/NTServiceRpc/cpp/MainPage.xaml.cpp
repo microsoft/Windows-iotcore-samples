@@ -57,7 +57,7 @@ MainPage::MainPage()
 void MainPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
     ConnectToService();
-    button_Click_Connect(nullptr, nullptr);
+    Connect_Click(nullptr, nullptr);
 }
 
 void MainPage::NotifyUser(String^ message)
@@ -82,26 +82,26 @@ void MainPage::ConnectToService()
     });
 }
 
-void MainPage::button_Click_Connect(Object^, RoutedEventArgs^)
+void MainPage::Connect_Click(Object^, RoutedEventArgs^)
 {
     ConnectToService();
 }
 
-void MainPage::button_Click_GetStatus(Object^ sender, RoutedEventArgs^ e)
+void MainPage::GetStatus_Click(Object^ sender, RoutedEventArgs^ e)
 {
     rpc.GetServiceStatus(ServiceNameTextBox->Text->Data()).then([this](RpcAsyncWrapper::ServiceStatus status) {
         NotifyUser(ref new Platform::String((L"Status: " + ServiceStatusString(status)).c_str()));
     });
 }
 
-void MainPage::button_Click_Start(Object^, RoutedEventArgs^)
+void MainPage::Start_Click(Object^, RoutedEventArgs^)
 {
     rpc.RunService(ServiceNameTextBox->Text->Data()).then([this](boolean success) {
         NotifyUser(success ? "Service started" : "Starting service failed");
     });
 }
 
-void MainPage::button_Click_Stop(Object^, RoutedEventArgs^)
+void MainPage::Stop_Click(Object^, RoutedEventArgs^)
 {
     rpc.StopService(ServiceNameTextBox->Text->Data()).then([this](boolean success) {
         NotifyUser(success ? "Service stopped" : "Stopping service failed");

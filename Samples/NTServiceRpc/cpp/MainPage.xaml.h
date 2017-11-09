@@ -34,10 +34,10 @@ namespace NTServiceRpc
 
         void ConnectToService();
         void NotifyUser(Platform::String^ message);
-        void button_Click_Connect(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-		void button_Click_GetStatus(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-        void button_Click_Start(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-        void button_Click_Stop(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+        void Connect_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void GetStatus_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+        void Start_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+        void Stop_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 
     private:
         void Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
