@@ -28,19 +28,17 @@ namespace NTServiceRpc
 	{
 	public:
 		MainPage();
-		void NotifyUser(Platform::String^ message);
 
 	private:
         RpcAsyncWrapper rpc;
 
         void ConnectToService();
+        void NotifyUser(Platform::String^ message);
         void button_Click_Connect(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void button_Click_GetStatus(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
         void button_Click_Start(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
         void button_Click_Stop(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 
-	internal:
-		static MainPage^ Current;
     private:
         void Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
     };
