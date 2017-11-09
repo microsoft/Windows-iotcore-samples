@@ -15,6 +15,7 @@
 #include <string>
 
 using namespace NTServiceRpc;
+using namespace std;
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -24,7 +25,7 @@ using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls::Primitives;
 
 namespace {
-    std::wstring ServiceStatusString(RpcAsyncWrapper::ServiceStatus status)
+    wstring ServiceStatusString(RpcAsyncWrapper::ServiceStatus status)
     {
         switch (status)
         {
@@ -43,17 +44,14 @@ namespace {
         case RpcAsyncWrapper::SERVICE_PAUSED:
             return L"Service is paused";
         default:
-            return L"Error getting service status: " + std::to_wstring(status);
+            return L"Error getting service status: " + to_wstring(status);
         }
     }
 }
 
-MainPage^ MainPage::Current = nullptr;
-
 MainPage::MainPage()
 {
 	InitializeComponent();
-	Current = this;
 }
 
 void MainPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
@@ -64,14 +62,13 @@ void MainPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEv
 
 void MainPage::NotifyUser(String^ message)
 {
-    auto dispatcher = Current->Dispatcher;
-    if (dispatcher->HasThreadAccess)
+    if (Dispatcher->HasThreadAccess)
     {
         UserNotification->Text = message;
     }
     else
     {
-        dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, message]
+        Dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([this, message]
         {
             UserNotification->Text = message;
         }));
