@@ -41,5 +41,7 @@ namespace NTServiceRpc
 
     private:
         void Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+        template<typename T> void CatchRpcException(Concurrency::task<T>& task, std::function<void()> callback);
+        template<typename T, typename Callback> void CatchRpcException(Concurrency::task<T>& task, Callback& callback);
     };
 }

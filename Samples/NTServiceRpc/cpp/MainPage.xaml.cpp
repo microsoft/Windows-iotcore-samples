@@ -12,6 +12,8 @@
 #include "pch.h"
 #include "MainPage.xaml.h"
 
+#include <codecvt>
+#include <locale>
 #include <string>
 
 using namespace NTServiceRpc;
@@ -45,8 +47,14 @@ namespace
         case RpcAsyncWrapper::SERVICE_PAUSED:
             return L"Service is paused";
         default:
-            return L"Error getting service status: " + to_wstring(status);
+            return L"Unknown service status: " + to_wstring(status);
         }
+    }
+
+    String^ CharToSystemString(const char *source)
+    {
+        wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
+        return ref new String(converter.from_bytes(source).c_str());
     }
 }
 
@@ -58,7 +66,6 @@ MainPage::MainPage()
 void MainPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
     ConnectToService();
-    Connect_Click(nullptr, nullptr);
 }
 
 void MainPage::NotifyUser(String^ message)
@@ -78,9 +85,11 @@ void MainPage::NotifyUser(String^ message)
 
 void MainPage::ConnectToService()
 {
-    rpc.Connect().then([this](bool success)
+    rpc.Connect().then([this](Concurrency::task<void> t)
     {
-        NotifyUser(success ? "Connected to service" : "Connection to service failed");
+        CatchRpcException(t, static_cast<std::function<void()>>([this]() {
+            NotifyUser("Connected to service");
+        }));
     });
 }
 
@@ -91,24 +100,59 @@ void MainPage::Connect_Click(Object^, RoutedEventArgs^)
 
 void MainPage::GetStatus_Click(Object^ sender, RoutedEventArgs^ e)
 {
-    rpc.GetServiceStatus(ServiceNameTextBox->Text->Data()).then([this](RpcAsyncWrapper::ServiceStatus status)
+    rpc.GetServiceStatus(ServiceNameTextBox->Text->Data()).then([this](Concurrency::task<RpcAsyncWrapper::ServiceStatus> t)
     {
-        NotifyUser(ref new Platform::String((L"Status: " + ServiceStatusString(status)).c_str()));
+        CatchRpcException(t, [this](RpcAsyncWrapper::ServiceStatus status) {
+            NotifyUser(ref new Platform::String((L"Status: " + ServiceStatusString(status)).c_str()));
+        });
     });
 }
 
 void MainPage::Start_Click(Object^, RoutedEventArgs^)
 {
-    rpc.RunService(ServiceNameTextBox->Text->Data()).then([this](boolean success)
+    rpc.RunService(ServiceNameTextBox->Text->Data()).then([this](Concurrency::task<bool> t)
     {
-        NotifyUser(success ? "Service started" : "Starting service failed");
+        CatchRpcException(t, [this](bool success) {
+            NotifyUser(success ? "Service started" : "NT service failed to start service");
+        });
     });
 }
 
 void MainPage::Stop_Click(Object^, RoutedEventArgs^)
 {
-    rpc.StopService(ServiceNameTextBox->Text->Data()).then([this](boolean success)
+    rpc.StopService(ServiceNameTextBox->Text->Data()).then([this](Concurrency::task<bool> t)
     {
-        NotifyUser(success ? "Service stopped" : "Stopping service failed");
+        CatchRpcException(t, [this](bool success) {
+            NotifyUser(success ? "Service stopped" : "NT service failed to stop service");
+        });
     });
+}
+
+/*
+ * Check if a previous task threw an exception and show the error. Else, call the callback.
+ */
+template<typename T> void MainPage::CatchRpcException(Concurrency::task<T>& task, std::function<void()> callback)
+{
+    try
+    {
+        task.get();
+        callback();
+    }
+    catch (RpcCallException& e)
+    {
+        NotifyUser(CharToSystemString(e.what()));
+    }
+}
+
+template<typename T, typename Callback> void MainPage::CatchRpcException(Concurrency::task<T>& task, Callback& callback)
+{
+    try
+    {
+        T result = task.get();
+        callback(result);
+    }
+    catch (RpcCallException& e)
+    {
+        NotifyUser(CharToSystemString(e.what()));
+    }
 }

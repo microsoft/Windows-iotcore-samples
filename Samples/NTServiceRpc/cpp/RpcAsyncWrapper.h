@@ -19,12 +19,11 @@ namespace NTServiceRpc
             SERVICE_PAUSED,
         };
 
-        Concurrency::task<bool> Connect();
+        Concurrency::task<void> Connect();
         Concurrency::task<ServiceStatus> GetServiceStatus(const wchar_t * serviceName);
-        Concurrency::task<boolean> RunService(const wchar_t * serviceName);
-        Concurrency::task<boolean> StopService(const wchar_t * serviceName);
+        Concurrency::task<bool> RunService(const wchar_t * serviceName);
+        Concurrency::task<bool> StopService(const wchar_t * serviceName);
     private:
         std::unique_ptr<RpcClient> rpcClient;
-        bool running;
     };
 }
