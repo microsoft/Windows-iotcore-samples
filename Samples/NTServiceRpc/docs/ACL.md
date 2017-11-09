@@ -1,15 +1,15 @@
 # Using ACLs to limit access to the NT service
 
-In the RPC server of the NT service, we want to allow access only from known applications. We can limit the with access with Access Control Lists.
+In the RPC server of the NT service, we want to allow access only from known applications. We can limit the access with Access Control Lists (ACL).
 
-The ACL can contain, for example, rules to require the existence of a capability (e.g. only applications with the system management capability, or with a custom capability) or a specific Package Family Name (PFN). For an example using a custom capability, see [this Windows universal sample](https://github.com/Microsoft/Windows-universal-samples/tree/master/Samples/CustomCapability) and [documentation to create and reserve a custom capability](https://docs.microsoft.com/en-us/windows-hardware/drivers/devapps/creating-a-custom-capability-to-pair-driver-with-hsa). In this example, only a specific PFN will be able to connect to the service. In [RpcServer.cpp](../Service/Server/RpcServer.cpp), we have a function (`BuildAcl`) to create the ACL:
+The ACL can contain, for example, rules to require the existence of a capability (e.g. only applications with the system management capability, or with a custom capability) or a specific Package Family Name (PFN). For an example using a custom capability, see [this Windows universal sample](https://github.com/Microsoft/Windows-universal-samples/tree/master/Samples/CustomCapability) and [documentation to create and reserve a custom capability](https://docs.microsoft.com/en-us/windows-hardware/drivers/devapps/creating-a-custom-capability-to-pair-driver-with-hsa). In this sample, only a specific PFN will be able to connect to the service. In [RpcServer.cpp](../Service/Server/RpcServer.cpp), we have a function (`BuildAcl`) to create the ACL:
 
 * First, it gets a security identifier for everyone running outside an AppContainer. Non-sandboxed apps will have access to the service.
 * Then, it gets a security identifier for our app name.
 * An ACL is built from these two entries.
 
 ```cpp
-const PWSTR allowedPackageFamilyName = L"Microsoft.SDKSamples.NTServiceRpc.CPP_8wekyb3d8bbwe";
+const PWSTR AllowedPackageFamilyName = L"Microsoft.SDKSamples.NTServiceRpc.CPP_8wekyb3d8bbwe";
 
 PACL BuildAcl()
 {
@@ -46,7 +46,7 @@ PACL BuildAcl()
     // 1) Create a SID for the allowed package family name
     // 2) Create a security descriptor using that SID
     // 3) Create the RPC endpoint using that security descriptor
-    HRESULT hResult = DeriveAppContainerSidFromAppContainerName(allowedPackageFamilyName, &pfnSid);
+    HRESULT hResult = DeriveAppContainerSidFromAppContainerName(AllowedPackageFamilyName, &pfnSid);
     if (hResult != S_OK)
     {
         PrintLastError("DeriveAppContainerSidFromAppContainerName", hResult);

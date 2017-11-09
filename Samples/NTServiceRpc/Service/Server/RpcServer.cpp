@@ -23,20 +23,21 @@
 #include "RpcServer.h"
 
 using namespace RpcServer;
+using namespace std;
 
 namespace
 {
-    const PWSTR allowedPackageFamilyName = L"Microsoft.SDKSamples.NTServiceRpc.CPP_8wekyb3d8bbwe";
+    const PWSTR AllowedPackageFamilyName = L"Microsoft.SDKSamples.NTServiceRpc.CPP_8wekyb3d8bbwe";
     RPC_BINDING_VECTOR* BindingVector = nullptr;
 
-    void PrintLastError(const std::string& functionName)
+    void PrintLastError(const string& functionName)
     {
-        std::cerr << functionName.c_str() << " failed: " << GetLastError() << "\n";
+        cerr << functionName.c_str() << " failed: " << GetLastError() << "\n";
     }
 
-    void PrintLastError(const std::string& functionName, HRESULT result)
+    void PrintLastError(const string& functionName, HRESULT result)
     {
-        std::cerr << functionName.c_str() << " failed: " << result << "\n";
+        cerr << functionName.c_str() << " failed: " << result << "\n";
     }
 
     PACL BuildAcl()
@@ -74,7 +75,7 @@ namespace
         // 1) Create a SID for the allowed package family name
         // 2) Create a security descriptor using that SID
         // 3) Create the RPC endpoint using that security descriptor
-        HRESULT hResult = DeriveAppContainerSidFromAppContainerName(allowedPackageFamilyName, &pfnSid);
+        HRESULT hResult = DeriveAppContainerSidFromAppContainerName(AllowedPackageFamilyName, &pfnSid);
         if (hResult != S_OK)
         {
             PrintLastError("DeriveAppContainerSidFromAppContainerName", hResult);

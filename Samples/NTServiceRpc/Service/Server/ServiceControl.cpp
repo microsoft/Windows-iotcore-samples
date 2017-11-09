@@ -18,12 +18,13 @@
 #include "RpcInterface_h.h" 
 
 using namespace RpcServer;
+using namespace std;
 
 namespace
 {
-    void PrintLastError(const std::string& functionName)
+    void PrintLastError(const string& functionName)
     {
-        std::cerr << functionName.c_str() << " failed: " << GetLastError() << "\n";
+        cerr << functionName.c_str() << " failed: " << GetLastError() << "\n";
     }
 
     /*

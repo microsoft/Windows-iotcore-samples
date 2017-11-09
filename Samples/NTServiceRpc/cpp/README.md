@@ -33,4 +33,4 @@ This solution has three projects:
 
 ## Further information
 
-* [OEM Device Setup](https://github.com/ms-iot/iot-core-azure-dm-client/blob/master/docs/oem-device-setup.md) - For creation of OEM images with your service
+* [Add a service component to Windows Universal OEM Packages](https://docs.microsoft.com/en-us/windows-hardware/manufacture/iot/create-packages#add-a-service-component) - To create an OEM package that includes a service. For a sample of such usage, see [this sample on iot-adk-addonkit](https://github.com/ms-iot/iot-adk-addonkit/blob/26738284601eceeebc9989f884a411ae452d2f3a/Source-arm/Packages/AzureDM.Services/AzureDM.Services.wm.xml)

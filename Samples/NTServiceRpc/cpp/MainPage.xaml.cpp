@@ -87,7 +87,7 @@ void MainPage::ConnectToService()
 {
     rpc.Connect().then([this](Concurrency::task<void> t)
     {
-        CatchRpcException(t, static_cast<std::function<void()>>([this]() {
+        CatchRpcException(t, static_cast<function<void()>>([this]() {
             NotifyUser("Connected to service");
         }));
     });
@@ -131,7 +131,7 @@ void MainPage::Stop_Click(Object^, RoutedEventArgs^)
 /*
  * Check if a previous task threw an exception and show the error. Else, call the callback.
  */
-template<typename T> void MainPage::CatchRpcException(Concurrency::task<T>& task, std::function<void()> callback)
+template<typename T> void MainPage::CatchRpcException(Concurrency::task<T>& task, function<void()> callback)
 {
     try
     {
