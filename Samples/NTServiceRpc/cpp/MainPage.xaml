@@ -20,14 +20,14 @@
     Loaded="Page_Loaded">
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="12,10,12,12" Margin="0,0,0,10">
-        <TextBlock Margin="0,10,0,0" Name="UserNotification" FontWeight="Bold" />
+        <TextBlock Margin="0,10,0,0" x:Name="UserNotification" FontWeight="Bold" />
         <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Service management UWP app - This sample shows communication of an UWP app with a NT service using RPC"/>
-        <TextBox Margin="0,10,0,0" Name="ServiceNameTextBox" PlaceholderText="Service name" />
+        <TextBox Margin="0,10,0,0" x:Name="ServiceNameTextBox" PlaceholderText="Service name" />
         <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-            <Button Margin="0,0,5,0" Content="Connect" Click="button_Click_Connect"/>
-            <Button Margin="0,0,5,0" Content="Get status" Click="button_Click_GetStatus"/>
-            <Button Margin="0,0,5,0" Content="Start" Click="button_Click_Start"/>
-            <Button Margin="0,0,5,0" Content="Stop" Click="button_Click_Stop"/>
+            <Button Margin="0,0,5,0" Content="Connect" Click="Connect_Click"/>
+            <Button Margin="0,0,5,0" Content="Get status" Click="GetStatus_Click"/>
+            <Button Margin="0,0,5,0" Content="Start" Click="Start_Click"/>
+            <Button Margin="0,0,5,0" Content="Stop" Click="Stop_Click"/>
         </StackPanel>
     </StackPanel>
 </Page>
