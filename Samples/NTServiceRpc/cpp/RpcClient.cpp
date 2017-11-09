@@ -19,41 +19,22 @@
 #pragma pop_macro("WINAPI_FAMILY")
 
 #include <string>
+#include <stdexcept>
 
 using namespace NTServiceRpc;
+using namespace std;
 
-namespace
+RpcCallException::RpcCallException(RPC_STATUS status) : std::runtime_error("")
 {
-    RPC_STATUS DoRunService(PCONTEXT_HANDLE_TYPE context, const wchar_t *serviceName)
-    {
-        RpcTryExcept
-        {
-            return !::RunService(context, serviceName);
-        }
-        RpcExcept(1)
-        {
-            return RpcExceptionCode();
-        }
-        RpcEndExcept
-        return 0;
-    }
-
-    RPC_STATUS DoStopService(PCONTEXT_HANDLE_TYPE context, const wchar_t *serviceName)
-    {
-        RpcTryExcept
-        {
-            return !::StopService(context, serviceName);
-        }
-        RpcExcept(1)
-        {
-            return RpcExceptionCode();
-        }
-        RpcEndExcept
-        return 0;
-    }
+    message = "RPC call failed: " + to_string(status);
 }
 
-__int64 RpcClient::Initialize()
+const char* RpcCallException::what() const
+{
+    return message.c_str();
+}
+
+void RpcClient::Initialize()
 {
     RPC_STATUS status;
     RPC_WSTR pszStringBinding = nullptr;
@@ -101,44 +82,49 @@ cleanup:
         }
     }
 
-    return status;
+    if (status)
+    {
+        throw RpcCallException(status);
+    }
 }
 
 DWORD RpcClient::GetServiceStatus(const wchar_t *serviceName)
 {
-    RPC_STATUS status = 0;
     RpcTryExcept
     {
         return ::GetServiceStatus(phContext, serviceName);
     }
     RpcExcept(1)
     {
-        status = RpcExceptionCode();
+        throw RpcCallException(RpcExceptionCode());
     }
     RpcEndExcept
-    return -status;
 }
 
-boolean RpcClient::RunService(const wchar_t *serviceName)
+bool RpcClient::RunService(const wchar_t *serviceName)
 {
-    RPC_STATUS status = DoRunService(phContext, serviceName);
-    if (status)
+    RpcTryExcept
     {
-        OutputDebugString((L"RPC call failed with " + std::to_wstring(status)).c_str());
-        return false;
+        return ::RunService(phContext, serviceName);
     }
-    return true;
+        RpcExcept(1)
+    {
+        throw RpcCallException(RpcExceptionCode());
+    }
+    RpcEndExcept
 }
 
-boolean RpcClient::StopService(const wchar_t *serviceName)
+bool RpcClient::StopService(const wchar_t *serviceName)
 {
-    RPC_STATUS status = DoStopService(phContext, serviceName);
-    if (status)
+    RpcTryExcept
     {
-        OutputDebugString((L"RPC call failed with " + std::to_wstring(status)).c_str());
-        return false;
+        return ::StopService(phContext, serviceName);
     }
-    return true;
+        RpcExcept(1)
+    {
+        throw RpcCallException(RpcExceptionCode());
+    }
+    RpcEndExcept
 }
 
 RpcClient::~RpcClient()

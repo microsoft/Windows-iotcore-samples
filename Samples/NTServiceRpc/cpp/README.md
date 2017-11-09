@@ -8,7 +8,7 @@ This sample shows how UWP can communicate with a NT service, allowing it to perf
 
 ## Security
 
-The NT service must be not open to any application, since an untrusted application would have control of system services. We can limit the access with Access Control Lists on the RPC server.
+The NT service must be not open to any application, since an untrusted application would have control of system services. We can limit the access with Access Control Lists (ACL) on the RPC server.
 
 The ACL can contain, for example, rules to require the existence of a capability (e.g. only applications with the system management capability, or with a custom capability) or a specific Package Family Name (PFN). In this example, only a specific PFN will be able to connect to the service.
 
