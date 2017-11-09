@@ -54,6 +54,11 @@ MainPage::MainPage()
 {
 	InitializeComponent();
 	Current = this;
+}
+
+void MainPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+    ConnectToService();
     button_Click_Connect(nullptr, nullptr);
 }
 
@@ -73,11 +78,16 @@ void MainPage::NotifyUser(String^ message)
     }
 }
 
-void MainPage::button_Click_Connect(Object^, RoutedEventArgs^)
+void MainPage::ConnectToService()
 {
     rpc.Connect().then([this](bool success) {
         NotifyUser(success ? "Connected to service" : "Connection to service failed");
     });
+}
+
+void MainPage::button_Click_Connect(Object^, RoutedEventArgs^)
+{
+    ConnectToService();
 }
 
 void MainPage::button_Click_GetStatus(Object^ sender, RoutedEventArgs^ e)

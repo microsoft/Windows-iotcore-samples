@@ -33,6 +33,7 @@ namespace NTServiceRpc
 	private:
         RpcAsyncWrapper rpc;
 
+        void ConnectToService();
         void button_Click_Connect(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void button_Click_GetStatus(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
         void button_Click_Start(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
@@ -40,5 +41,7 @@ namespace NTServiceRpc
 
 	internal:
 		static MainPage^ Current;
+    private:
+        void Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
     };
 }
