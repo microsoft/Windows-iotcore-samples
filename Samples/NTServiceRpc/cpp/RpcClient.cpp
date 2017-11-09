@@ -24,7 +24,7 @@
 using namespace NTServiceRpc;
 using namespace std;
 
-RpcCallException::RpcCallException(RPC_STATUS status) : std::runtime_error("")
+RpcCallException::RpcCallException(RPC_STATUS status) : runtime_error("")
 {
     message = "RPC call failed: " + to_string(status);
 }
@@ -36,24 +36,23 @@ const char* RpcCallException::what() const
 
 void RpcClient::Initialize()
 {
-    RPC_STATUS status;
-    RPC_WSTR pszStringBinding = nullptr;
+    RPC_WSTR stringBinding = nullptr;
 
-    status = RpcStringBindingCompose(
+    RPC_STATUS status = RpcStringBindingCompose(
         NULL,
         reinterpret_cast<RPC_WSTR>(L"ncalrpc"),
         NULL,
         reinterpret_cast<RPC_WSTR>(RPC_STATIC_ENDPOINT),
         NULL,
-        &pszStringBinding);
+        &stringBinding);
 
-    if (status)
+    if (status == RPC_S_OK)
     {
         goto cleanup;
     }
 
     status = RpcBindingFromStringBinding(
-        pszStringBinding, 
+        stringBinding, 
         &hRpcBinding);
 
     if (status)
@@ -72,10 +71,10 @@ void RpcClient::Initialize()
     RpcEndExcept
 
 cleanup:
-    if (pszStringBinding)
+    if (stringBinding)
     {
         RPC_STATUS freeStatus;
-        freeStatus = RpcStringFree(&pszStringBinding);
+        freeStatus = RpcStringFree(&stringBinding);
         if (!status)
         {
             status = freeStatus;

@@ -32,8 +32,6 @@ namespace NTServiceRpc
         DWORD GetServiceStatus(const wchar_t *serviceName);
         bool RunService(const wchar_t *serviceName);
         bool StopService(const wchar_t *serviceName);
-        int CallbackCount;
-        __int64 MeteringData;
     private:
         handle_t hRpcBinding;
         PCONTEXT_HANDLE_TYPE phContext;
