@@ -19,7 +19,8 @@
 
 using namespace RpcServer;
 
-namespace {
+namespace
+{
     void PrintLastError(const std::string& functionName)
     {
         std::cerr << functionName.c_str() << " failed: " << GetLastError() << "\n";
@@ -52,14 +53,16 @@ namespace {
 DWORD ServiceControl::GetServiceStatus(_In_ const wchar_t *serviceName)
 {
     SC_HANDLE service = GetService(serviceName, 0, SERVICE_QUERY_STATUS);
-    if (service == NULL) {
+    if (service == NULL)
+    {
         return -1;
     }
 
     SERVICE_STATUS_PROCESS stat;
     DWORD needed = 0;
     DWORD status;
-    if (!QueryServiceStatusEx(service, SC_STATUS_PROCESS_INFO, (BYTE*)&stat, sizeof stat, &needed)) {
+    if (!QueryServiceStatusEx(service, SC_STATUS_PROCESS_INFO, (BYTE*)&stat, sizeof stat, &needed))
+    {
         PrintLastError("QueryServiceStatusEx");
         status = -1;
     }
@@ -75,12 +78,14 @@ DWORD ServiceControl::GetServiceStatus(_In_ const wchar_t *serviceName)
 boolean ServiceControl::RunService(_In_ const wchar_t *serviceName)
 {
     SC_HANDLE service = GetService(serviceName, 0, SERVICE_START);
-    if (service == NULL) {
+    if (service == NULL)
+    {
         return false;
     }
 
     boolean status = StartService(service, 0, NULL);
-    if (!status) {
+    if (!status)
+    {
         PrintLastError("StartService");
     }
 
@@ -91,13 +96,15 @@ boolean ServiceControl::RunService(_In_ const wchar_t *serviceName)
 boolean ServiceControl::StopService(_In_ const wchar_t *serviceName)
 {
     SC_HANDLE service = GetService(serviceName, 0, SERVICE_STOP);
-    if (service == NULL) {
+    if (service == NULL)
+    {
         return false;
     }
 
     SERVICE_STATUS serviceStatus;
     boolean status = ControlService(service, SERVICE_CONTROL_STOP, &serviceStatus);
-    if (!status) {
+    if (!status)
+    {
         PrintLastError("ControlService");
     }
 

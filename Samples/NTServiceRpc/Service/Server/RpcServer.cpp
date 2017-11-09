@@ -24,7 +24,8 @@
 
 using namespace RpcServer;
 
-namespace {
+namespace
+{
     const PWSTR allowedPackageFamilyName = L"Microsoft.SDKSamples.NTServiceRpc.CPP_8wekyb3d8bbwe";
     RPC_BINDING_VECTOR* BindingVector = nullptr;
 

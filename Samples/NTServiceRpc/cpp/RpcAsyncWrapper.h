@@ -3,11 +3,13 @@
 #include "RpcClient.h"
 #include <memory>
 
-namespace NTServiceRpc {
+namespace NTServiceRpc
+{
     class RpcAsyncWrapper final
     {
     public:
-        enum ServiceStatus : DWORD {
+        enum ServiceStatus : DWORD
+        {
             SERVICE_STOPPED = 1,
             SERVICE_START_PENDING,
             SERVICE_STOP_PENDING,
