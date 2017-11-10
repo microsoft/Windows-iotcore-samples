@@ -7,7 +7,7 @@ The ACL can contain, for example, rules to require the existence of a capability
 applications with the system management capability, or with a custom capability) or a specific
 Package Family Name (PFN). For an example using a custom capability, see [this Windows universal sample](https://github.com/Microsoft/Windows-universal-samples/tree/master/Samples/CustomCapability)
 and [documentation to create and reserve a custom capability](https://docs.microsoft.com/en-us/windows-hardware/drivers/devapps/creating-a-custom-capability-to-pair-driver-with-hsa).
-In this sample, only a specific PFN will be able to connect to the service. In [RpcServer.cpp](../Service/Server/RpcServer.cpp),
+In this sample, only a specific PFN will be able to connect to the service. In [RpcServer.cpp](../../Service/Server/RpcServer.cpp),
 we have a function (`BuildAcl`) to create the ACL:
 
 * First, it gets a security identifier for everyone running outside an AppContainer. Non-sandboxed
@@ -22,9 +22,7 @@ PACL BuildAcl()
 {
     SID_IDENTIFIER_AUTHORITY SIDAuthWorld = SECURITY_WORLD_SID_AUTHORITY;
     PSID everyoneSid = nullptr;
-    PSID pfnSid = nullptr;
     EXPLICIT_ACCESS ea[2] = {};
-    PACL acl = nullptr;
 
     // Get the SID that represents 'everyone' (this doesn't include AppContainers)
     if (!AllocateAndInitializeSid(
@@ -33,8 +31,7 @@ PACL BuildAcl()
         0, 0, 0, 0, 0, 0, 0,
         &everyoneSid))
     {
-        PrintLastError("AllocateAndInitializeSid");
-        return NULL;
+        ThrowLastError("AllocateAndInitializeSid");
     }
     // Everyone GENERIC_ALL access
     ea[0].grfAccessMode = SET_ACCESS;
@@ -53,11 +50,12 @@ PACL BuildAcl()
     // 1) Create a SID for the allowed package family name
     // 2) Create a security descriptor using that SID
     // 3) Create the RPC endpoint using that security descriptor
+    PSID pfnSid = nullptr;
     HRESULT hResult = DeriveAppContainerSidFromAppContainerName(AllowedPackageFamilyName, &pfnSid);
+    FreeSid(everyoneSid);
     if (hResult != S_OK)
     {
-        PrintLastError("DeriveAppContainerSidFromAppContainerName", hResult);
-        goto cleanup;
+        ThrowLastError("DeriveAppContainerSidFromAppContainerName", hResult);
     }
 
     ea[1].grfAccessMode = SET_ACCESS;
@@ -66,17 +64,12 @@ PACL BuildAcl()
     ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
     ea[1].Trustee.TrusteeType = TRUSTEE_IS_UNKNOWN;
     ea[1].Trustee.ptstrName = static_cast<LPWSTR>(pfnSid);
+    PACL acl = nullptr;
     hResult = SetEntriesInAcl(ARRAYSIZE(ea), ea, nullptr, &acl);
+    FreeSid(pfnSid);
     if (hResult != ERROR_SUCCESS)
     {
-        PrintLastError("DeriveAppContainerSidFromAppContainerName", hResult);
-    }
-
-cleanup:
-    FreeSid(everyoneSid);
-    if (pfnSid)
-    {
-        FreeSid(pfnSid);
+        ThrowLastError("DeriveAppContainerSidFromAppContainerName", hResult);
     }
     return acl;
 }

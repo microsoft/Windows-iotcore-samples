@@ -36,10 +36,10 @@ or stop other NT services.
 
 ## Summary
 
-* [ACLs to limit service access](../docs/ACL.md)
-* [RPC server implementation](../docs/Server.md)
-* [Client connection to RPC](../docs/Client.md)
-* [Deploying in Windows for IoT](../docs/IoT.md)
+* [ACLs to limit service access](docs/ACL.md)
+* [RPC server implementation](docs/Server.md)
+* [Client connection to RPC](docs/Client.md)
+* [Deploying in Windows for IoT](docs/IoT.md)
 
 ## Further information
 

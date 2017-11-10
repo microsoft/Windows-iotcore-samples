@@ -32,7 +32,7 @@ interface RpcInterface
     void RemoteClose([in, out] PPCONTEXT_HANDLE_TYPE pphContext);
 
     //
-    // Metering Interface
+    // Service Interface
     //
     DWORD GetServiceStatus(
         [in] PCONTEXT_HANDLE_TYPE phContext,
