@@ -12,13 +12,16 @@
 
 namespace NTServiceRpc
 {
-    class RpcCallException : std::runtime_error
+    class RpcCallException : public std::runtime_error
     {
     public:
-        RpcCallException(RPC_STATUS status);
-        const char* what() const;
-    private:
-        std::string message;
+        RpcCallException(RPC_STATUS error);
+    };
+
+    class RpcRemoteException : public std::runtime_error
+    {
+    public:
+        RpcRemoteException(DWORD error);
     };
 
     /// <summary>
@@ -30,8 +33,8 @@ namespace NTServiceRpc
         ~RpcClient();
         void Initialize();
         DWORD GetServiceStatus(const wchar_t *serviceName);
-        bool RunService(const wchar_t *serviceName);
-        bool StopService(const wchar_t *serviceName);
+        void RunService(const wchar_t *serviceName);
+        void StopService(const wchar_t *serviceName);
     private:
         handle_t hRpcBinding;
         PCONTEXT_HANDLE_TYPE phContext;

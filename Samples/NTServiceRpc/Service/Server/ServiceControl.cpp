@@ -13,102 +13,85 @@
 #include "ServiceControl.h"
 
 #include <assert.h>
+#include <codecvt>
 #include <iostream>
+#include <locale>
+#include <string>
 
 #include "RpcInterface_h.h" 
 
 using namespace RpcServer;
 using namespace std;
 
-namespace
+WindowsCodeError::WindowsCodeError(const string& function, DWORD code) : std::runtime_error(function + ": " + to_string(code))
 {
-    void PrintLastError(const string& functionName)
-    {
-        cerr << functionName.c_str() << " failed: " << GetLastError() << "\n";
-    }
-
-    /*
-     * Gets a service with given service control manager and service permissions.
-     * For a list of possible permissions, see https://msdn.microsoft.com/en-us/library/windows/desktop/ms685981(v=vs.85).aspx .
-     */
-    SC_HANDLE GetService(_In_ const wchar_t *serviceName, DWORD serviceControlManagerPermissions, DWORD servicePermission)
-    {
-        SC_HANDLE service = NULL;
-        SC_HANDLE serviceControlManager = OpenSCManager(NULL, NULL, serviceControlManagerPermissions);
-        if (serviceControlManager == NULL)
-        {
-            PrintLastError("OpenSCManager");
-            return NULL;
-        }
-
-        service = OpenService(serviceControlManager, serviceName, servicePermission);
-        if (service == NULL)
-        {
-            PrintLastError("OpenService");
-        }
-        CloseServiceHandle(serviceControlManager);
-        return service;
-    }
+    this->code = code;
 }
 
-DWORD ServiceControl::GetServiceStatus(_In_ const wchar_t *serviceName)
+DWORD ServiceControl::GetServiceStatus(const wchar_t *serviceName)
 {
     SC_HANDLE service = GetService(serviceName, 0, SERVICE_QUERY_STATUS);
-    if (service == NULL)
-    {
-        return -1;
-    }
-
     SERVICE_STATUS_PROCESS stat;
     DWORD needed = 0;
-    DWORD status;
-    if (!QueryServiceStatusEx(service, SC_STATUS_PROCESS_INFO, (BYTE*)&stat, sizeof stat, &needed))
-    {
-        PrintLastError("QueryServiceStatusEx");
-        status = -1;
-    }
-    else
-    {
-        status = stat.dwCurrentState;
-    }
-
+    bool success = QueryServiceStatusEx(service, SC_STATUS_PROCESS_INFO, (BYTE*)&stat, sizeof stat, &needed);
     CloseServiceHandle(service);
-    return status;
+    if (!success)
+    {
+        ThrowLastError("QueryServiceStatusEx");
+    }
+    return stat.dwCurrentState;
 }
 
-boolean ServiceControl::RunService(_In_ const wchar_t *serviceName)
+void ServiceControl::RunService(const wchar_t *serviceName)
 {
     SC_HANDLE service = GetService(serviceName, 0, SERVICE_START);
-    if (service == NULL)
-    {
-        return false;
-    }
-
-    boolean status = StartService(service, 0, NULL);
-    if (!status)
-    {
-        PrintLastError("StartService");
-    }
-
+    bool success = StartService(service, 0, NULL);
     CloseServiceHandle(service);
-    return status;
+    if (!success)
+    {
+        ThrowLastError("StartService");
+    }
 }
 
-boolean ServiceControl::StopService(_In_ const wchar_t *serviceName)
+void ServiceControl::StopService(const wchar_t *serviceName)
 {
     SC_HANDLE service = GetService(serviceName, 0, SERVICE_STOP);
-    if (service == NULL)
-    {
-        return false;
-    }
 
     SERVICE_STATUS serviceStatus;
-    boolean status = ControlService(service, SERVICE_CONTROL_STOP, &serviceStatus);
-    if (!status)
+    bool success = ControlService(service, SERVICE_CONTROL_STOP, &serviceStatus);
+    CloseServiceHandle(service);
+    if (!success)
     {
-        PrintLastError("ControlService");
+        ThrowLastError("ControlService");
+    }
+}
+
+void ServiceControl::ThrowLastError(const string& functionName)
+{
+    auto errorCode = GetLastError();
+    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
+    OutputDebugString(converter.from_bytes(functionName + " failed: " + to_string(errorCode) + "\n").c_str());
+    throw WindowsCodeError(functionName, errorCode);
+}
+
+/*
+ * Gets a service with given service control manager and service permissions.
+ * For a list of possible permissions, see https://msdn.microsoft.com/en-us/library/windows/desktop/ms685981(v=vs.85).aspx .
+ */
+SC_HANDLE ServiceControl::GetService(const wchar_t *serviceName, DWORD serviceControlManagerPermissions, DWORD servicePermission)
+{
+    SC_HANDLE service = NULL;
+    SC_HANDLE serviceControlManager = OpenSCManager(NULL, NULL, serviceControlManagerPermissions);
+    if (serviceControlManager == NULL)
+    {
+        ThrowLastError("OpenSCManager");
     }
 
-    CloseServiceHandle(service);
-    return status;
+    service = OpenService(serviceControlManager, serviceName, servicePermission);
+    CloseServiceHandle(serviceControlManager);
+    if (service == NULL)
+    {
+        ThrowLastError("OpenService");
+    }
+    return service;
 }

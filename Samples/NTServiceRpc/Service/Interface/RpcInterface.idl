@@ -36,13 +36,14 @@ interface RpcInterface
     //
     DWORD GetServiceStatus(
         [in] PCONTEXT_HANDLE_TYPE phContext,
+        [out] DWORD *status,
         [in, string] const wchar_t *serviceName);
 
-    boolean RunService(
+    DWORD RunService(
         [in] PCONTEXT_HANDLE_TYPE phContext,
         [in, string] const wchar_t *serviceName);
 
-    boolean StopService(
+    DWORD StopService(
         [in] PCONTEXT_HANDLE_TYPE phContext,
         [in, string] const wchar_t *serviceName);
 }
