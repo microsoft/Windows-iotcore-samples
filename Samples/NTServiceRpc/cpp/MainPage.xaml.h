@@ -17,12 +17,6 @@
 
 namespace NTServiceRpc
 {
-	public enum class NotifyType
-	{
-		StatusMessage,
-		ErrorMessage
-	};
-
 	[Windows::Foundation::Metadata::WebHostHidden]
 	public ref class MainPage sealed
 	{
