@@ -138,7 +138,7 @@ template<typename T> void MainPage::CatchRpcException(Concurrency::task<T>& task
         task.get();
         callback();
     }
-    catch (runtime_error& e)
+    catch (const runtime_error& e)
     {
         NotifyUser(CharToSystemString(e.what()));
     }
@@ -151,7 +151,7 @@ template<typename T, typename Callback> void MainPage::CatchRpcException(Concurr
         T result = task.get();
         callback(result);
     }
-    catch (runtime_error& e)
+    catch (const runtime_error& e)
     {
         NotifyUser(CharToSystemString(e.what()));
     }

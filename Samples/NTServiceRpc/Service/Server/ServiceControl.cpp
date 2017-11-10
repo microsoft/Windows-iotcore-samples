@@ -19,14 +19,10 @@
 #include <string>
 
 #include "RpcInterface_h.h" 
+#include "RpcServer.h"
 
 using namespace RpcServer;
 using namespace std;
-
-WindowsCodeError::WindowsCodeError(const string& function, DWORD code) : std::runtime_error(function + ": " + to_string(code))
-{
-    this->code = code;
-}
 
 DWORD ServiceControl::GetServiceStatus(const wchar_t *serviceName)
 {
@@ -64,14 +60,6 @@ void ServiceControl::StopService(const wchar_t *serviceName)
     {
         ThrowLastError("ControlService");
     }
-}
-
-void ServiceControl::ThrowLastError(const string& functionName)
-{
-    auto errorCode = GetLastError();
-    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
-    OutputDebugString(converter.from_bytes(functionName + " failed: " + to_string(errorCode) + "\n").c_str());
-    throw WindowsCodeError(functionName, errorCode);
 }
 
 /*

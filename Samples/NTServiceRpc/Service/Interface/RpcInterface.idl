@@ -26,7 +26,7 @@ interface RpcInterface
     //
     // RPC methods to retrieve/clean client context
     //
-    void RemoteOpen([in] handle_t hBinding,
+    DWORD RemoteOpen([in] handle_t hBinding,
         [out] PPCONTEXT_HANDLE_TYPE pphContext);
 
     void RemoteClose([in, out] PPCONTEXT_HANDLE_TYPE pphContext);

@@ -36,7 +36,7 @@ namespace NTServiceRpc
         void RunService(const wchar_t *serviceName);
         void StopService(const wchar_t *serviceName);
     private:
-        handle_t hRpcBinding;
+        handle_t _rpcBinding;
         PCONTEXT_HANDLE_TYPE phContext;
     };
 }

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ServiceControl.h"
 
 #define RPC_STATIC_ENDPOINT L"NTServiceSampleRpcEndpoint"
@@ -14,3 +16,15 @@ DWORD RpcServerStart();
 
 // Signal the rpc server to stop listening to incoming rpc calls
 void RpcServerDisconnect();
+
+namespace RpcServer
+{
+    class WindowsCodeError : public std::runtime_error
+    {
+    public:
+        WindowsCodeError(const std::string& function, HRESULT error);
+        HRESULT code;
+    };
+
+    void ThrowLastError(const std::string& functionName, HRESULT errorCode = 0);
+}
