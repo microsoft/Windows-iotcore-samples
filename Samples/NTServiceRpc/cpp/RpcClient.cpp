@@ -24,14 +24,23 @@
 using namespace NTServiceRpc;
 using namespace std;
 
-RpcCallException::RpcCallException(RPC_STATUS status) : runtime_error("")
+namespace
 {
-    message = "RPC call failed: " + to_string(status);
+    void ThrowIfRemoteError(DWORD code)
+    {
+        if (code)
+        {
+            throw new RpcRemoteException(code);
+        }
+    }
 }
 
-const char* RpcCallException::what() const
+RpcCallException::RpcCallException(RPC_STATUS error) : runtime_error("RPC call failed: " + to_string(error))
 {
-    return message.c_str();
+}
+
+RpcRemoteException::RpcRemoteException(DWORD error) : runtime_error("RPC server returned error " + to_string(error))
+{
 }
 
 void RpcClient::Initialize()
@@ -46,7 +55,7 @@ void RpcClient::Initialize()
         NULL,
         &stringBinding);
 
-    if (status == RPC_S_OK)
+    if (status != RPC_S_OK)
     {
         goto cleanup;
     }
@@ -55,7 +64,7 @@ void RpcClient::Initialize()
         stringBinding, 
         &hRpcBinding);
 
-    if (status)
+    if (status != RPC_S_OK)
     {
         goto cleanup;
     }
@@ -91,7 +100,9 @@ DWORD RpcClient::GetServiceStatus(const wchar_t *serviceName)
 {
     RpcTryExcept
     {
-        return ::GetServiceStatus(phContext, serviceName);
+        DWORD status;
+        ThrowIfRemoteError(::GetServiceStatus(phContext, &status, serviceName));
+        return status;
     }
     RpcExcept(1)
     {
@@ -100,24 +111,24 @@ DWORD RpcClient::GetServiceStatus(const wchar_t *serviceName)
     RpcEndExcept
 }
 
-bool RpcClient::RunService(const wchar_t *serviceName)
+void RpcClient::RunService(const wchar_t *serviceName)
 {
     RpcTryExcept
     {
-        return ::RunService(phContext, serviceName);
+        ThrowIfRemoteError(::RunService(phContext, serviceName));
     }
-        RpcExcept(1)
+    RpcExcept(1)
     {
         throw RpcCallException(RpcExceptionCode());
     }
     RpcEndExcept
 }
 
-bool RpcClient::StopService(const wchar_t *serviceName)
+void RpcClient::StopService(const wchar_t *serviceName)
 {
     RpcTryExcept
     {
-        return ::StopService(phContext, serviceName);
+        ThrowIfRemoteError(::StopService(phContext, serviceName));
     }
         RpcExcept(1)
     {

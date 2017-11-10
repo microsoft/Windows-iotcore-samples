@@ -26,7 +26,7 @@ namespace NTServiceRpc
         });
     }
 
-    Concurrency::task<bool> RpcAsyncWrapper::RunService(const wchar_t * serviceName)
+    Concurrency::task<void> RpcAsyncWrapper::RunService(const wchar_t * serviceName)
     {
         return Concurrency::create_task([this, serviceName]
         {
@@ -34,7 +34,7 @@ namespace NTServiceRpc
         });
     }
 
-    Concurrency::task<bool> RpcAsyncWrapper::StopService(const wchar_t * serviceName)
+    Concurrency::task<void> RpcAsyncWrapper::StopService(const wchar_t * serviceName)
     {
         return Concurrency::create_task([this, serviceName]
         {

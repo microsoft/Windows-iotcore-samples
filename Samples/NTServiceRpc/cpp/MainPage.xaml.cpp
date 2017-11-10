@@ -110,21 +110,21 @@ void MainPage::GetStatus_Click(Object^ sender, RoutedEventArgs^ e)
 
 void MainPage::Start_Click(Object^, RoutedEventArgs^)
 {
-    rpc.RunService(ServiceNameTextBox->Text->Data()).then([this](Concurrency::task<bool> t)
+    rpc.RunService(ServiceNameTextBox->Text->Data()).then([this](Concurrency::task<void> t)
     {
-        CatchRpcException(t, [this](bool success) {
-            NotifyUser(success ? "Service started" : "NT service failed to start service");
-        });
+        CatchRpcException(t, static_cast<function<void()>>([this]() {
+            NotifyUser("Service started");
+        }));
     });
 }
 
 void MainPage::Stop_Click(Object^, RoutedEventArgs^)
 {
-    rpc.StopService(ServiceNameTextBox->Text->Data()).then([this](Concurrency::task<bool> t)
+    rpc.StopService(ServiceNameTextBox->Text->Data()).then([this](Concurrency::task<void> t)
     {
-        CatchRpcException(t, [this](bool success) {
-            NotifyUser(success ? "Service stopped" : "NT service failed to stop service");
-        });
+        CatchRpcException(t, static_cast<function<void()>>([this]() {
+            NotifyUser("Service stopped");
+        }));
     });
 }
 
@@ -138,7 +138,7 @@ template<typename T> void MainPage::CatchRpcException(Concurrency::task<T>& task
         task.get();
         callback();
     }
-    catch (RpcCallException& e)
+    catch (runtime_error& e)
     {
         NotifyUser(CharToSystemString(e.what()));
     }
@@ -151,7 +151,7 @@ template<typename T, typename Callback> void MainPage::CatchRpcException(Concurr
         T result = task.get();
         callback(result);
     }
-    catch (RpcCallException& e)
+    catch (runtime_error& e)
     {
         NotifyUser(CharToSystemString(e.what()));
     }

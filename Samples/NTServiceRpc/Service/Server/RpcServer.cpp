@@ -10,17 +10,18 @@
 //*********************************************************
 
 #include "stdafx.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-#include "RpcInterface_h.h"
-#include <windows.h>
-#include <Userenv.h>
+#include "RpcServer.h"
 
+#include <AclAPI.h>
+#include <iostream>
 #include <sddl.h>
 #include <securitybaseapi.h>
-#include <AclAPI.h>
-#include "RpcServer.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <Userenv.h>
+#include <windows.h>
+
+#include "RpcInterface_h.h"
 
 using namespace RpcServer;
 using namespace std;
@@ -207,9 +208,9 @@ end:
 void RpcServerDisconnect()
 {
     RpcServerUnregisterIf(RpcInterface_v1_0_s_ifspec, nullptr, 0);
-    RpcEpUnregister(RpcInterface_v1_0_s_ifspec, BindingVector, nullptr);
     if (BindingVector != nullptr)
     {
+        RpcEpUnregister(RpcInterface_v1_0_s_ifspec, BindingVector, nullptr);
         RpcBindingVectorFree(&BindingVector);
         BindingVector = nullptr;
     }
@@ -219,8 +220,8 @@ void RpcServerDisconnect()
 // Rpc method to retrieve client context handle
 //
 void RemoteOpen(
-    _In_ handle_t hBinding,
-    _Out_ PPCONTEXT_HANDLE_TYPE pphContext)
+    handle_t hBinding,
+    PPCONTEXT_HANDLE_TYPE pphContext)
 {
     *pphContext = static_cast<PCONTEXT_HANDLE_TYPE *>(midl_user_allocate(sizeof(SERVICE_CONTROL_CONTEXT)));
     SERVICE_CONTROL_CONTEXT* serviceControlContext = static_cast<SERVICE_CONTROL_CONTEXT *>(*pphContext);
@@ -230,7 +231,7 @@ void RemoteOpen(
 //
 // Rpc method to close the client context handle
 //
-void RemoteClose(_Inout_ PPCONTEXT_HANDLE_TYPE pphContext)
+void RemoteClose(PPCONTEXT_HANDLE_TYPE pphContext)
 {
     if (*pphContext == nullptr)
     {
@@ -252,45 +253,70 @@ void RemoteClose(_Inout_ PPCONTEXT_HANDLE_TYPE pphContext)
 // connection with server
 //
 void __RPC_USER PCONTEXT_HANDLE_TYPE_rundown(
-    _In_ PCONTEXT_HANDLE_TYPE phContext)
+    PCONTEXT_HANDLE_TYPE phContext)
 {
     RemoteClose(&phContext);
 }
 
 DWORD GetServiceStatus(
-    _In_ PCONTEXT_HANDLE_TYPE phContext,
-    _In_ const wchar_t *serviceName)
+    PCONTEXT_HANDLE_TYPE phContext,
+    DWORD *status,
+    const wchar_t *serviceName)
 {
     SERVICE_CONTROL_CONTEXT* serviceControlContext = static_cast<SERVICE_CONTROL_CONTEXT *>(phContext);
-    return serviceControlContext->serviceControl->GetServiceStatus(serviceName);
+    try
+    {
+        *status = serviceControlContext->serviceControl->GetServiceStatus(serviceName);
+        return 0;
+    }
+    catch (WindowsCodeError& e)
+    {
+        return e.code;
+    }
 }
 
-boolean RunService(
-    _In_ PCONTEXT_HANDLE_TYPE phContext,
-    _In_ const wchar_t *serviceName)
+DWORD RunService(
+    PCONTEXT_HANDLE_TYPE phContext,
+    const wchar_t *serviceName)
 {
     SERVICE_CONTROL_CONTEXT* serviceControlContext = static_cast<SERVICE_CONTROL_CONTEXT *>(phContext);
-    return serviceControlContext->serviceControl->RunService(serviceName);
+    try
+    {
+        serviceControlContext->serviceControl->RunService(serviceName);
+        return 0;
+    }
+    catch (WindowsCodeError& e)
+    {
+        return e.code;
+    }
 }
 
-boolean StopService(
-    _In_ PCONTEXT_HANDLE_TYPE phContext,
-    _In_ const wchar_t *serviceName)
+DWORD StopService(
+    PCONTEXT_HANDLE_TYPE phContext,
+    const wchar_t *serviceName)
 {
     SERVICE_CONTROL_CONTEXT* serviceControlContext = static_cast<SERVICE_CONTROL_CONTEXT *>(phContext);
-    return serviceControlContext->serviceControl->StopService(serviceName);
+    try
+    {
+        serviceControlContext->serviceControl->StopService(serviceName);
+        return 0;
+    }
+    catch (WindowsCodeError& e)
+    {
+        return e.code;
+    }
 }
 
 /******************************************************/
 /*         MIDL allocate and free                     */
 /******************************************************/
 
-void __RPC_FAR * __RPC_USER midl_user_allocate(_In_ size_t len)
+void __RPC_FAR * __RPC_USER midl_user_allocate(size_t len)
 {
     return(malloc(len));
 }
 
-void __RPC_USER midl_user_free(_In_ void __RPC_FAR* ptr)
+void __RPC_USER midl_user_free(void __RPC_FAR* ptr)
 {
     free(ptr);
 }
