@@ -13,7 +13,9 @@
 #include "RpcServer.h"
 
 #include <AclAPI.h>
+#include <codecvt>
 #include <iostream>
+#include <locale>
 #include <sddl.h>
 #include <securitybaseapi.h>
 #include <stdio.h>
@@ -26,28 +28,37 @@
 using namespace RpcServer;
 using namespace std;
 
+namespace RpcServer
+{
+    WindowsCodeError::WindowsCodeError(const string& function, HRESULT code) : std::runtime_error(function + ": " + to_string(code))
+    {
+        this->code = code;
+    }
+
+    void ThrowLastError(const string& functionName, HRESULT errorCode)
+    {
+        if (!errorCode)
+        {
+            errorCode = GetLastError();
+        }
+        string errorMessage = functionName + " failed: " + to_string(errorCode) + "\n";
+        wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
+        OutputDebugString(converter.from_bytes(errorMessage).c_str());
+        cerr << errorMessage;
+        throw WindowsCodeError(functionName, errorCode);
+    }
+}
+
 namespace
 {
     const PWSTR AllowedPackageFamilyName = L"Microsoft.SDKSamples.NTServiceRpc.CPP_8wekyb3d8bbwe";
     RPC_BINDING_VECTOR* BindingVector = nullptr;
 
-    void PrintLastError(const string& functionName)
-    {
-        cerr << functionName.c_str() << " failed: " << GetLastError() << "\n";
-    }
-
-    void PrintLastError(const string& functionName, HRESULT result)
-    {
-        cerr << functionName.c_str() << " failed: " << result << "\n";
-    }
-
     PACL BuildAcl()
     {
         SID_IDENTIFIER_AUTHORITY SIDAuthWorld = SECURITY_WORLD_SID_AUTHORITY;
         PSID everyoneSid = nullptr;
-        PSID pfnSid = nullptr;
         EXPLICIT_ACCESS ea[2] = {};
-        PACL acl = nullptr;
 
         // Get the SID that represents 'everyone' (this doesn't include AppContainers)
         if (!AllocateAndInitializeSid(
@@ -56,8 +67,7 @@ namespace
             0, 0, 0, 0, 0, 0, 0,
             &everyoneSid))
         {
-            PrintLastError("AllocateAndInitializeSid");
-            return NULL;
+            ThrowLastError("AllocateAndInitializeSid");
         }
         // Everyone GENERIC_ALL access
         ea[0].grfAccessMode = SET_ACCESS;
@@ -76,11 +86,12 @@ namespace
         // 1) Create a SID for the allowed package family name
         // 2) Create a security descriptor using that SID
         // 3) Create the RPC endpoint using that security descriptor
+        PSID pfnSid = nullptr;
         HRESULT hResult = DeriveAppContainerSidFromAppContainerName(AllowedPackageFamilyName, &pfnSid);
+        FreeSid(everyoneSid);
         if (hResult != S_OK)
         {
-            PrintLastError("DeriveAppContainerSidFromAppContainerName", hResult);
-            goto cleanup;
+            ThrowLastError("DeriveAppContainerSidFromAppContainerName", hResult);
         }
 
         ea[1].grfAccessMode = SET_ACCESS;
@@ -89,19 +100,82 @@ namespace
         ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
         ea[1].Trustee.TrusteeType = TRUSTEE_IS_UNKNOWN;
         ea[1].Trustee.ptstrName = static_cast<LPWSTR>(pfnSid);
+        PACL acl = nullptr;
         hResult = SetEntriesInAcl(ARRAYSIZE(ea), ea, nullptr, &acl);
+        FreeSid(pfnSid);
         if (hResult != ERROR_SUCCESS)
         {
-            PrintLastError("DeriveAppContainerSidFromAppContainerName", hResult);
-        }
-
-    cleanup:
-        FreeSid(everyoneSid);
-        if (pfnSid)
-        {
-            FreeSid(pfnSid);
+            ThrowLastError("DeriveAppContainerSidFromAppContainerName", hResult);
         }
         return acl;
+    }
+
+    void RegisterAndListen(PACL acl)
+    {
+        // Initialize an empty security descriptor
+        SECURITY_DESCRIPTOR rpcSecurityDescriptor = {};
+        if (!InitializeSecurityDescriptor(&rpcSecurityDescriptor, SECURITY_DESCRIPTOR_REVISION))
+        {
+            ThrowLastError("InitializeSecurityDescriptor");
+        }
+
+        // Assign the ACL to the security descriptor
+        if (!SetSecurityDescriptorDacl(&rpcSecurityDescriptor, TRUE, acl, FALSE))
+        {
+            ThrowLastError("SetSecurityDescriptorDacl");
+        }
+
+        //
+        // Bind to LRPC using dynamic endpoints
+        //
+        RPC_STATUS rpcStatus = RpcServerUseProtseqEp(
+            reinterpret_cast<RPC_WSTR>(L"ncalrpc"),
+            RPC_C_PROTSEQ_MAX_REQS_DEFAULT,
+            reinterpret_cast<RPC_WSTR>(RPC_STATIC_ENDPOINT),
+            &rpcSecurityDescriptor);
+        if (rpcStatus != S_OK)
+        {
+            ThrowLastError("RpcServerUseProtseqEp", rpcStatus);
+        }
+
+        rpcStatus = RpcServerRegisterIf3(
+            RpcInterface_v1_0_s_ifspec,
+            nullptr,
+            nullptr,
+            RPC_IF_AUTOLISTEN | RPC_IF_ALLOW_LOCAL_ONLY,
+            RPC_C_LISTEN_MAX_CALLS_DEFAULT,
+            0,
+            nullptr,
+            &rpcSecurityDescriptor);
+        if (rpcStatus != S_OK)
+        {
+            ThrowLastError("RpcServerRegisterIf3", rpcStatus);
+        }
+
+        rpcStatus = RpcServerInqBindings(&BindingVector);
+        if (rpcStatus != RPC_S_OK)
+        {
+            ThrowLastError("RpcServerRegisterIf3", rpcStatus);
+        }
+
+        rpcStatus = RpcEpRegister(
+            RpcInterface_v1_0_s_ifspec,
+            BindingVector,
+            nullptr,
+            nullptr);
+        if (rpcStatus != RPC_S_OK)
+        {
+            ThrowLastError("RpcEpRegister", rpcStatus);
+        }
+
+        rpcStatus = RpcServerListen(
+            1,
+            RPC_C_LISTEN_MAX_CALLS_DEFAULT,
+            false);
+        if (rpcStatus != RPC_S_OK && rpcStatus != RPC_S_ALREADY_LISTENING)
+        {
+            ThrowLastError("RpcServerListen", rpcStatus);
+        }
     }
 }
 
@@ -110,96 +184,18 @@ namespace
 //
 DWORD RpcServerStart()
 {
-    DWORD hResult = S_OK;
-    WCHAR* protocolSequence = L"ncalrpc";
-
     PACL acl = BuildAcl();
-    if (!acl)
+    HRESULT error = 0;
+    try
     {
-        return -1;
+        RegisterAndListen(acl);
     }
-
-    // Initialize an empty security descriptor
-    SECURITY_DESCRIPTOR rpcSecurityDescriptor = {};
-    if (!InitializeSecurityDescriptor(&rpcSecurityDescriptor, SECURITY_DESCRIPTOR_REVISION))
+    catch (WindowsCodeError& e)
     {
-        hResult = GetLastError();
-        goto end;
+        error = e.code;
     }
-
-    // Assign the ACL to the security descriptor
-    if (!SetSecurityDescriptorDacl(&rpcSecurityDescriptor, TRUE, acl, FALSE))
-    {
-        hResult = GetLastError();
-        goto end;
-    }
-
-    //
-    // Bind to LRPC using dynamic endpoints
-    //
-    hResult = RpcServerUseProtseqEp(
-        reinterpret_cast<RPC_WSTR>(protocolSequence),
-        RPC_C_PROTSEQ_MAX_REQS_DEFAULT,
-        reinterpret_cast<RPC_WSTR>(RPC_STATIC_ENDPOINT),
-        &rpcSecurityDescriptor);
-
-    if (hResult != S_OK)
-    {
-        goto end;
-    }
-
-    hResult = RpcServerRegisterIf3(
-        RpcInterface_v1_0_s_ifspec,
-        nullptr,
-        nullptr,
-        RPC_IF_AUTOLISTEN | RPC_IF_ALLOW_LOCAL_ONLY,
-        RPC_C_LISTEN_MAX_CALLS_DEFAULT,
-        0,
-        nullptr,
-        &rpcSecurityDescriptor);
-
-    if (hResult != S_OK)
-    {
-        goto end;
-    }
-
-    hResult = RpcServerInqBindings(&BindingVector);
-
-    if (hResult != S_OK)
-    {
-        goto end;
-    }
-
-    hResult = RpcEpRegister(
-        RpcInterface_v1_0_s_ifspec,
-        BindingVector,
-        nullptr,
-        nullptr);
-
-    if (hResult != S_OK)
-    {
-        goto end;
-    }
-
-    hResult = RpcServerListen(
-        1,
-        RPC_C_LISTEN_MAX_CALLS_DEFAULT,
-        false);
-
-    if (hResult == RPC_S_ALREADY_LISTENING)
-    {
-        hResult = RPC_S_OK;
-    }
-
-end:
-
-    // cleanup acl
-    if (acl != nullptr)
-    {
-        LocalFree(acl);
-    }
-
-    return hResult;
+    LocalFree(acl);
+    return error;
 }
 
 //
@@ -207,10 +203,18 @@ end:
 //
 void RpcServerDisconnect()
 {
-    RpcServerUnregisterIf(RpcInterface_v1_0_s_ifspec, nullptr, 0);
+    RPC_STATUS rpcStatus = RpcServerUnregisterIf(RpcInterface_v1_0_s_ifspec, nullptr, 0);
+    if (rpcStatus != RPC_S_OK)
+    {
+        OutputDebugString((L"RpcServerUnregisterIf: " + to_wstring(rpcStatus)).c_str());
+    }
     if (BindingVector != nullptr)
     {
-        RpcEpUnregister(RpcInterface_v1_0_s_ifspec, BindingVector, nullptr);
+        rpcStatus = RpcEpUnregister(RpcInterface_v1_0_s_ifspec, BindingVector, nullptr);
+        if (rpcStatus != RPC_S_OK)
+        {
+            OutputDebugString((L"RpcEpUnregister: " + to_wstring(rpcStatus)).c_str());
+        }
         RpcBindingVectorFree(&BindingVector);
         BindingVector = nullptr;
     }
@@ -219,13 +223,18 @@ void RpcServerDisconnect()
 //
 // Rpc method to retrieve client context handle
 //
-void RemoteOpen(
+DWORD RemoteOpen(
     handle_t hBinding,
     PPCONTEXT_HANDLE_TYPE pphContext)
 {
     *pphContext = static_cast<PCONTEXT_HANDLE_TYPE *>(midl_user_allocate(sizeof(SERVICE_CONTROL_CONTEXT)));
+    if (!pphContext)
+    {
+        return -1;
+    }
     SERVICE_CONTROL_CONTEXT* serviceControlContext = static_cast<SERVICE_CONTROL_CONTEXT *>(*pphContext);
     serviceControlContext->serviceControl = new ServiceControl();
+    return 0;
 }
 
 //

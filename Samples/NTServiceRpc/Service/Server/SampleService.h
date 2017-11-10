@@ -29,7 +29,7 @@ public:
     void ConsoleRun();
     bool IsConsoleRun()
     {
-        return m_runningInConsole;
+        return _runningInConsole;
     }
     void WriteEventLogEntry(PWSTR pszMessage, BYTE bLevel) override;
     virtual ~CSampleService(void);
@@ -41,6 +41,6 @@ protected:
 
 
 private:
-    PTP_WORK m_work = nullptr;
-    bool m_runningInConsole = false;
+    PTP_WORK _work = nullptr;
+    bool _runningInConsole = false;
 };

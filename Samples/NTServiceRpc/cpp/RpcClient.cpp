@@ -26,11 +26,19 @@ using namespace std;
 
 namespace
 {
+    void ThrowIfRpcError(RPC_STATUS code)
+    {
+        if (code != RPC_S_OK)
+        {
+            throw RpcCallException(code);
+        }
+    }
+
     void ThrowIfRemoteError(DWORD code)
     {
         if (code)
         {
-            throw new RpcRemoteException(code);
+            throw RpcRemoteException(code);
         }
     }
 }
@@ -47,101 +55,88 @@ void RpcClient::Initialize()
 {
     RPC_WSTR stringBinding = nullptr;
 
-    RPC_STATUS status = RpcStringBindingCompose(
+    ThrowIfRpcError(RpcStringBindingCompose(
         NULL,
         reinterpret_cast<RPC_WSTR>(L"ncalrpc"),
         NULL,
         reinterpret_cast<RPC_WSTR>(RPC_STATIC_ENDPOINT),
         NULL,
-        &stringBinding);
+        &stringBinding));
 
-    if (status != RPC_S_OK)
-    {
-        goto cleanup;
-    }
-
-    status = RpcBindingFromStringBinding(
+    RPC_STATUS status = RpcBindingFromStringBinding(
         stringBinding, 
-        &hRpcBinding);
+        &_rpcBinding);
+    RpcStringFree(&stringBinding);
+    ThrowIfRpcError(status);
 
-    if (status != RPC_S_OK)
-    {
-        goto cleanup;
-    }
-
+    DWORD rpcResult;
     RpcTryExcept
     {
-        ::RemoteOpen(hRpcBinding, &phContext);
+        rpcResult = ::RemoteOpen(_rpcBinding, &phContext);
     }
     RpcExcept(1)
     {
-        status = RpcExceptionCode();
+        throw RpcCallException(RpcExceptionCode());
     }
     RpcEndExcept
-
-cleanup:
-    if (stringBinding)
-    {
-        RPC_STATUS freeStatus;
-        freeStatus = RpcStringFree(&stringBinding);
-        if (!status)
-        {
-            status = freeStatus;
-        }
-    }
-
-    if (status)
-    {
-        throw RpcCallException(status);
-    }
+    ThrowIfRemoteError(rpcResult);
 }
 
 DWORD RpcClient::GetServiceStatus(const wchar_t *serviceName)
 {
+    DWORD rpcResult;
     RpcTryExcept
     {
         DWORD status;
-        ThrowIfRemoteError(::GetServiceStatus(phContext, &status, serviceName));
-        return status;
+        rpcResult = ::GetServiceStatus(phContext, &status, serviceName);
+        if (!rpcResult)
+        {
+            return status;
+        }
     }
     RpcExcept(1)
     {
         throw RpcCallException(RpcExceptionCode());
     }
     RpcEndExcept
+    throw RpcRemoteException(rpcResult);
 }
 
 void RpcClient::RunService(const wchar_t *serviceName)
 {
+    DWORD rpcResult;
     RpcTryExcept
     {
-        ThrowIfRemoteError(::RunService(phContext, serviceName));
+        rpcResult = ::RunService(phContext, serviceName);
     }
     RpcExcept(1)
     {
         throw RpcCallException(RpcExceptionCode());
     }
     RpcEndExcept
+    ThrowIfRemoteError(rpcResult);
 }
 
 void RpcClient::StopService(const wchar_t *serviceName)
 {
+    DWORD rpcResult;
     RpcTryExcept
     {
-        ThrowIfRemoteError(::StopService(phContext, serviceName));
+        rpcResult = ::StopService(phContext, serviceName);
     }
-        RpcExcept(1)
+    RpcExcept(1)
     {
         throw RpcCallException(RpcExceptionCode());
     }
     RpcEndExcept
+    ThrowIfRemoteError(rpcResult);
 }
 
 RpcClient::~RpcClient()
 {
     RPC_STATUS status;
 
-    if (hRpcBinding != NULL) 
+    if (_rpcBinding != NULL)
     {
         RpcTryExcept
         {
@@ -155,8 +150,8 @@ RpcClient::~RpcClient()
         }
         RpcEndExcept
 
-        status = RpcBindingFree(&hRpcBinding);
-        hRpcBinding = NULL;
+        status = RpcBindingFree(&_rpcBinding);
+        _rpcBinding = NULL;
     }
 }
 

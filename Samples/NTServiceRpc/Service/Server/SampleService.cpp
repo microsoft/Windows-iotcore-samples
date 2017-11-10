@@ -95,9 +95,9 @@ void CSampleService::OnStart(
 
     // Queue the main service function for execution in a worker thread.
     PTP_WORK_CALLBACK workcallback = ServiceWorkerThread;
-    m_work = CreateThreadpoolWork(workcallback, this, nullptr);
+    _work = CreateThreadpoolWork(workcallback, this, nullptr);
 
-    if (NULL == m_work)
+    if (NULL == _work)
     {
         // TODO: Capture get last error
         WriteEventLogEntry(L"CreateThreadpoolWork failed", TRACE_LEVEL_ERROR);
@@ -107,7 +107,7 @@ void CSampleService::OnStart(
     // Submit the work to the pool. Because this was a pre-allocated
     // work item (using CreateThreadpoolWork), it is guaranteed to execute.
     //
-    SubmitThreadpoolWork(m_work);
+    SubmitThreadpoolWork(_work);
 }
 
 //
@@ -118,7 +118,7 @@ void CSampleService::OnStart(
 //
 void CSampleService::ConsoleRun()
 {
-    m_runningInConsole = true;
+    _runningInConsole = true;
 
     WriteEventLogEntry(L"Starting Rpc Server..", TRACE_LEVEL_INFORMATION);
     long status = RpcServerStart();
