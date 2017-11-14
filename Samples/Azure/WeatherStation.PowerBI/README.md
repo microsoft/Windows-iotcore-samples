@@ -1,16 +1,8 @@
----
-layout: sample
-title: Azure WeatherStation.PowerBI
-description: 
-keyword: iot, uwp, iothub, azure
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # Azure WeatherStation.PowerBI Sample
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[CS](./CS/README.md)
+*	[C#](./CS/README.md)
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
