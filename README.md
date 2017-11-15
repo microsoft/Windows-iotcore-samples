@@ -78,6 +78,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <tr>
   <td><a href="Samples/I2CCompass">I2CCompass</a></td>
   <td><a href="Samples/I2CAccelerometer">I2CAccelerometer</a></td>
+  <td><a href="Samples/ContainerWebSocket">ContainerWebSocket</a></td>
  </tr>
 </table>
 
