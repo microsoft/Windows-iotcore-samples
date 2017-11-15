@@ -2,7 +2,7 @@
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[CPP](./CPP/README.md)
+*	[C++](./CPP/README.md)
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
