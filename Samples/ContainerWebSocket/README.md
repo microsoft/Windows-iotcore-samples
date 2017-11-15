@@ -1,11 +1,3 @@
----
-layout: sample
-title: WebSocket Docker Interop
-description: Communicating between the docker container and a process that can access hardware.
-keyword: iot, docker, uwp
-deviceName: RPI2, RPI3, MinnowBoardMax, DragonBoard
-lang: en-US
----
 # WebSocket Docker Interop
 
 These are the available versions of this Windows 10 IoT Core sample:
