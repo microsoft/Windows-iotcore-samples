@@ -1,0 +1,33 @@
+<!--
+//*********************************************************
+//
+// Copyright (c) Microsoft. All rights reserved.
+// This code is licensed under the MIT License (MIT).
+// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
+// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
+// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
+// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+//
+//*********************************************************
+-->
+<Page
+    x:Class="NTServiceRpc.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="12,10,12,12" Margin="0,0,0,10">
+        <TextBlock Margin="0,10,0,0" x:Name="UserNotification" FontWeight="Bold" />
+        <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Service management UWP app - This sample shows communication of an UWP app with a NT service using RPC"/>
+        <TextBox Margin="0,10,0,0" x:Name="ServiceNameTextBox" PlaceholderText="Service name" />
+        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+            <Button Margin="0,0,5,0" Content="Connect" Click="Connect_Click"/>
+            <Button Margin="0,0,5,0" Content="Get status" Click="GetStatus_Click"/>
+            <Button Margin="0,0,5,0" Content="Start" Click="Start_Click"/>
+            <Button Margin="0,0,5,0" Content="Stop" Click="Stop_Click"/>
+        </StackPanel>
+    </StackPanel>
+</Page>

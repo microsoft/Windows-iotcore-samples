@@ -18,6 +18,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace IoTCoreDefaultApp
 {
@@ -378,7 +379,8 @@ namespace IoTCoreDefaultApp
             }
             catch (Exception e)
             {
-                //DisplayMessage("Error: " + e.Message);
+                Debug.WriteLine("Error: " + e.Message);
+
                 //Direct to bing.com
                 WebAddressText.Text = Constants.BingHomePageUrl;
             }
