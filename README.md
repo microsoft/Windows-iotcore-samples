@@ -117,10 +117,12 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
 <table>
  <tr>
   <td><a href="Samples/IoTCoreService">IoTCoreService</a></td>
+  <td><a href="Samples/NTServiceRpc">NTServiceRpc</a></td>
   <td><a href="Samples/SerialUART">SerialUART</a></td>
-  <td><a href="Samples/ShiftRegister">ShiftRegister</a></td>
  </tr>
-  <tr>
+ <tr>
+  <td><a href="Samples/ShiftRegister">ShiftRegister</a></td>
   <td><a href="Samples/MemoryStatus">MemoryStatus</a></td>
+  <td></td>
  </tr>
 </table>
