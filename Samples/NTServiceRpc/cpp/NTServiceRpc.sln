@@ -8,9 +8,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NTServiceRpc", "NTServiceRp
 		{3EF84522-EB13-5FE0-8362-89A571063245} = {3EF84522-EB13-5FE0-8362-89A571063245}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RpcInterface", "..\Service\Interface\RpcInterface.vcxproj", "{3EF84522-EB13-5FE0-8362-89A571063245}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RpcInterface", "Service\Interface\RpcInterface.vcxproj", "{3EF84522-EB13-5FE0-8362-89A571063245}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RpcServer", "..\Service\Server\RpcServer.vcxproj", "{ADFC4322-5F0E-5BFD-83DA-19B35EFD513B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RpcServer", "Service\Server\RpcServer.vcxproj", "{ADFC4322-5F0E-5BFD-83DA-19B35EFD513B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3EF84522-EB13-5FE0-8362-89A571063245} = {3EF84522-EB13-5FE0-8362-89A571063245}
 	EndProjectSection

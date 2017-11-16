@@ -7,7 +7,7 @@ The ACL can contain, for example, rules to require the existence of a capability
 applications with the system management capability, or with a custom capability) or a specific
 Package Family Name (PFN). For an example using a custom capability, see [this Windows universal sample](https://github.com/Microsoft/Windows-universal-samples/tree/master/Samples/CustomCapability)
 and [documentation to create and reserve a custom capability](https://docs.microsoft.com/en-us/windows-hardware/drivers/devapps/creating-a-custom-capability-to-pair-driver-with-hsa).
-In this sample, only a specific PFN will be able to connect to the service. In [RpcServer.cpp](../../Service/Server/RpcServer.cpp),
+In this sample, only a specific PFN will be able to connect to the service. In [RpcServer.cpp](../../cpp/Service/Server/RpcServer.cpp),
 we have a function (`BuildAcl`) to create the ACL:
 
 * First, it gets a security identifier for everyone running outside an AppContainer. Non-sandboxed

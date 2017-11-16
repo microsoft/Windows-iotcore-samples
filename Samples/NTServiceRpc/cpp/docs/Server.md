@@ -9,7 +9,7 @@ The Windows API calls to control services are done in file [ServiceControl.cpp](
 
 ## Handling RPC calls
 
-The methods in [RpcServer.cpp](../../Service/Server/RpcServer.cpp) call the functions in ServiceControl.cpp. The `RemoteOpen` method, called by the client to start a connection, is called with a pointer to a pointer where the service can save a context. Our service allocates an instance of `ServiceControl` and saves its pointer. The `RemoteClose` method cleans it up (`delete`s it).
+The methods in [RpcServer.cpp](../Service/Server/RpcServer.cpp) call the functions in ServiceControl.cpp. The `RemoteOpen` method, called by the client to start a connection, is called with a pointer to a pointer where the service can save a context. Our service allocates an instance of `ServiceControl` and saves its pointer. The `RemoteClose` method cleans it up (`delete`s it).
 
 All other calls cast the context and call the corresponding method in the `ServiceControl` instance, catching exceptions and returning them as error codes to the RPC client. For example, method `RunService`:
 
