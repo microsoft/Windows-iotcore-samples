@@ -1,3 +1,9 @@
+---
+title: Speech Translator sample
+ms.author: brian.fjeldstad
+description: Translate your speech to different languages.
+---
+
 # “Speech Translator”
 
 These are the available versions of this Windows 10 IoT Core sample:
