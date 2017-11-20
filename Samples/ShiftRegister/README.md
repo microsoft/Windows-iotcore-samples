@@ -1,3 +1,9 @@
+---
+title: Shift Register sample
+ms.author: brian.fjeldstad
+description: Connect an 8-bit serial-in, parallel-out shift register to your device to toggle eight LED's.
+---
+
 # Shift Register
 
 These are the available versions of this Windows 10 IoT Core sample:
