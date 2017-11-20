@@ -1,5 +1,5 @@
 ---
-title: "Hello, world!" sample
+title: Hello, world! sample
 ms.author: brian.fjeldstad
 description: Create and deploy your first IoT Core app.
 ---
