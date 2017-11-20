@@ -1,7 +1,7 @@
 ---
 title: NFC for IoT sample
 ms.author: lamadio
-description: earn how use NFC on IoT Core.
+description: Learn how use NFC on IoT Core.
 ---
 
 # NFC for IoT
