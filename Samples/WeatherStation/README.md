@@ -1,3 +1,9 @@
+---
+title: Weather Station sample
+ms.author: brian.fjeldstad
+description: Communicate with an I2C/SPI based temperature and pressure sensor.
+---
+
 # “Weather Patterns of Makers”
 
 These are the available versions of this Windows 10 IoT Core sample:
