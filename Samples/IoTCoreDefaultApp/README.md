@@ -1,3 +1,9 @@
+---
+title: IoT Core Default App sample
+ms.author: namkedia
+description: A full featured sample app - The current IoT Core default application.
+---
+
 # IoT Core Default App
 
 These are the available versions of this Windows 10 IoT Core sample:
