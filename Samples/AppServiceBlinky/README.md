@@ -1,3 +1,9 @@
+---
+title: App Service Blinky sample
+ms.author: brian.fjeldstad
+description: An app service to blink an LED and a client app to call it.
+---
+
 # AppServiceBlinky
 
 These are the available versions of this Windows 10 IoT Core sample:
