@@ -1,3 +1,9 @@
+---
+title: Companion App sample
+ms.author: brian.fjeldstad
+description: Create a simple app (for Windows Phone 10 or Android) that can configure your device's Wifi.
+---
+
 # Companion App
 
 These are the available versions of this Windows 10 IoT Core sample:
