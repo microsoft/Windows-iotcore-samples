@@ -1,3 +1,9 @@
+---
+title: Potentiometer Sensor sample
+ms.author: lamadio
+description: Connect a rotary potentiometer and LED to your IoT Core device.
+---
+
 # “Potentiometer Sensor”
 
 These are the available versions of this Windows 10 IoT Core sample:
