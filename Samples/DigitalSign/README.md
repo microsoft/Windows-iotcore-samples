@@ -1,3 +1,9 @@
+---
+title: Digital Sign sample
+ms.author: robsol
+description: Create a basic digital sign similar to screen saver with slideshow images and audio.
+---
+
 # Digital Sign
 
 These are the available versions of this Windows 10 IoT Core sample:

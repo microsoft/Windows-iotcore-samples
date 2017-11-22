@@ -1,3 +1,9 @@
+---
+title: IoT Browser sample
+ms.author: artemz
+description: Build a simple web browser for Windows 10 IoT Core.
+---
+
 # IoT Browser
 
 These are the available versions of this Windows 10 IoT Core sample:

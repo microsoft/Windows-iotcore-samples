@@ -1,3 +1,9 @@
+---
+title: SPI Display sample
+ms.author: lamadio
+description: Write lines of text to an SPI LED display.
+---
+
 # “SPI Display”
 
 These are the available versions of this Windows 10 IoT Core sample:

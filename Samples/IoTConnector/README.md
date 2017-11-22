@@ -1,3 +1,9 @@
+---
+title: IoT Connector sample
+ms.author: artemz
+description: Demonstrate device to device communication with Azure IoT Hub.
+---
+
 # IoT Connector
 
 These are the available versions of this Windows 10 IoT Core sample:

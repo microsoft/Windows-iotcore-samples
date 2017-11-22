@@ -1,3 +1,9 @@
+---
+title: App Service Shared Notepad sample
+ms.author: brian.fjeldstad
+description: An app service that provides clients the ability to share a notepad-like editing experience.
+---
+
 # AppServiceSharedNotepad
 
 Available versions of this Windows 10 IoT Core sample:

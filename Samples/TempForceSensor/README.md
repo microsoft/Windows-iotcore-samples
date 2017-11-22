@@ -1,3 +1,9 @@
+---
+title: Temperature and force sensor
+ms.author: lamadio
+description: Control a basic temperature and force sensor.
+---
+
 # “Temperature and force sensor”
 
 These are the available versions of this Windows 10 IoT Core sample:

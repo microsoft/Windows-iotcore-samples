@@ -69,11 +69,22 @@ namespace
 
 int wmain(int argc, wchar_t **argv)
 {
-    if (argc != 2)
+    if (argc > 2)
     {
         fwprintf(stderr, L"Invalid number of command line arguments.\n");
         Usage();
         return -1;
+    }
+
+    if (argc == 1)
+    {
+        CSampleService service(SERVICE_NAME);
+        if (!CServiceBase::Run(service))
+        {
+            wprintf(L"Service failed: 0x%08lx\n", GetLastError());
+            return -1;
+        }
+        return 0;
     }
 
     if (!RunCommand(argv[1]))

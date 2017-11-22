@@ -1,3 +1,9 @@
+---
+title: Push Button sample
+ms.author: lamadio
+description: Make an LED blink with the push of a button.
+---
+
 # Push Button Sample
 
 These are the available versions of this Windows 10 IoT Core sample:
