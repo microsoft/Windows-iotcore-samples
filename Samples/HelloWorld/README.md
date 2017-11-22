@@ -1,3 +1,9 @@
+---
+title: Hello, world! sample
+ms.author: brian.fjeldstad
+description: Create and deploy your first IoT Core app.
+---
+
 # “Hello, world!”
 
 These are the available versions of this Windows 10 IoT Core sample:

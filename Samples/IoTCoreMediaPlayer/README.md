@@ -1,3 +1,9 @@
+---
+title: IoT Core Media Player sample
+ms.author: namkedia
+description: A demonstration of how to play music from an IoT device.
+---
+
 # IoT Core Media Player
 
 These are the available versions of this Windows 10 IoT Core sample:

@@ -1,3 +1,9 @@
+---
+title: Webcam App sample
+ms.author: lamadio
+description: Create an app that initializes a web cam, takes pictures, and records video and audio.
+---
+
 # Webcam App Sample
 
 These are the available versions of this Windows 10 IoT Core sample:

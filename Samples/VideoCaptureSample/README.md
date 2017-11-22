@@ -1,3 +1,9 @@
+---
+title: Video Capture sample
+ms.author: brian.fjeldstad
+description: Initialize a video capture device, record video to a file, preview video feed, and playback recorded video.
+---
+
 # “Video Capture”
 
 These are the available versions of this Windows 10 IoT Core sample:

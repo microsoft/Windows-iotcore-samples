@@ -1,3 +1,9 @@
+---
+title: Foreground App with Background App sample
+ms.author: brian.fjeldstad
+description: An example of building a foreground app and background app within the same APPX file.
+---
+
 # “Foreground App with Background App”
 
 These are the available versions of this Windows 10 IoT Core sample:

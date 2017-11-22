@@ -1,3 +1,9 @@
+---
+title: Memory Status Monitor sample
+ms.author: brian.fjeldstad
+description: Create a console app that monitors memory usage on devices running Windows 10 IoT Core.
+---
+
 # Memory Status Monitor
 
 These are the available versions of this Windows 10 IoT Core sample:

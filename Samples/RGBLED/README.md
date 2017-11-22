@@ -1,3 +1,9 @@
+---
+title: RGB LED sample
+ms.author: lamadio
+description: A sample that makes an LED blink red, green, and blue.
+---
+
 # RGB LED Sample
 
 These are the available versions of this Windows 10 IoT Core sample:

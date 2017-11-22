@@ -1,3 +1,9 @@
+---
+title: NFC for IoT sample
+ms.author: lamadio
+description: Learn how use NFC on IoT Core.
+---
+
 # NFC for IoT
 
 These are the available versions of this Windows 10 IoT Core sample:
