@@ -68,7 +68,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
  <tr>
   <td><a href="Samples/PushButton">PushButton</a></td>
   <td><a href="Samples/RGBLED">RGBLED</a></td>
-  <td><a href="Samples/SPIAccelerometer">SPIAccelerometer</a></td>
+  <td><a href="Samples/Accelerometer">Accelerometer</a></td>
  </tr>
  <tr>
   <td><a href="Samples/SPIDisplay">SPIDisplay</a></td>
@@ -77,12 +77,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
  </tr>
   <tr>
   <td><a href="Samples/I2CCompass">I2CCompass</a></td>
-  <td><a href="Samples/I2CAccelerometer">I2CAccelerometer</a></td>
   <td><a href="Samples/ContainerWebSocket">ContainerWebSocket</a></td>
- </tr>
-   <tr>
-  <td><a href="Samples/I2CCompass">GpioOneWire</a></td>
-  <td/>
   <td/>
  </tr>
 </table>
