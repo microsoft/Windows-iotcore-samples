@@ -80,6 +80,11 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <td><a href="Samples/I2CAccelerometer">I2CAccelerometer</a></td>
   <td><a href="Samples/ContainerWebSocket">ContainerWebSocket</a></td>
  </tr>
+   <tr>
+  <td><a href="Samples/I2CCompass">GpioOneWire</a></td>
+  <td/>
+  <td/>
+ </tr>
 </table>
 
 ### Samples that demonstrate Universal Windows Application Features 
