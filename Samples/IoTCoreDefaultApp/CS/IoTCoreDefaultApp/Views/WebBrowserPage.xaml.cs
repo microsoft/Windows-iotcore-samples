@@ -18,7 +18,6 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace IoTCoreDefaultApp
 {
@@ -309,7 +308,7 @@ namespace IoTCoreDefaultApp
                 //Do Some action if Failure
                 //Check if need Wifi Connection
                 //TODO: Do action on Redirect behavior
-                DisplayMessage(Common.GetLocalizedText("NetworkNotConnected"), Common.GetLocalizedText("NetworkNotConnected2"), true);
+                DisplayMessage(Common.GetResourceText("NetworkNotConnected"), Common.GetResourceText("NetworkNotConnected2"), true);
                 InProgress = false;
             }
         }
@@ -377,10 +376,9 @@ namespace IoTCoreDefaultApp
                     ContentView.Navigate(new Uri(Constants.WODUrl));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine("Error: " + e.Message);
-
+                //DisplayMessage("Error: " + e.Message);
                 //Direct to bing.com
                 WebAddressText.Text = Constants.BingHomePageUrl;
             }
