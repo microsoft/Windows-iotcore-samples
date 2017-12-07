@@ -1,23 +1,12 @@
-﻿using IoTCoreDefaultApp.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Diagnostics;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Windows.System;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
-using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace IoTCoreDefaultApp
 {
@@ -376,9 +365,10 @@ namespace IoTCoreDefaultApp
                     ContentView.Navigate(new Uri(Constants.WODUrl));
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //DisplayMessage("Error: " + e.Message);
+                Debug.WriteLine("Error: " + e.Message);
+
                 //Direct to bing.com
                 WebAddressText.Text = Constants.BingHomePageUrl;
             }
