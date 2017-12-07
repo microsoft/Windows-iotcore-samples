@@ -1,24 +1,12 @@
-﻿using IoTCoreDefaultApp.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Diagnostics;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Windows.System;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace IoTCoreDefaultApp
 {
@@ -309,7 +297,7 @@ namespace IoTCoreDefaultApp
                 //Do Some action if Failure
                 //Check if need Wifi Connection
                 //TODO: Do action on Redirect behavior
-                DisplayMessage(Common.GetLocalizedText("NetworkNotConnected"), Common.GetLocalizedText("NetworkNotConnected2"), true);
+                DisplayMessage(Common.GetResourceText("NetworkNotConnected"), Common.GetResourceText("NetworkNotConnected2"), true);
                 InProgress = false;
             }
         }
