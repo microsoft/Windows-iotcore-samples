@@ -27,4 +27,7 @@ This project has adopted the Microsoft Open Source Code of Conduct. For more inf
  <tr>
   <td><a href="../Azure/WeatherStation.PowerBI">WeatherStation.PowerBI</a></td>
  </tr>
+ <tr>
+  <td><a href="../Azure/IoTHubClients">IoT Hub Clients</a></td>
+ </tr>
 </table>
