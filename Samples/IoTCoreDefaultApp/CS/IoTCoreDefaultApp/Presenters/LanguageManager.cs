@@ -4,6 +4,7 @@ using IoTCoreDefaultApp.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -118,12 +119,13 @@ namespace IoTCoreDefaultApp
                     GlobalizationPreferences.TrySetLanguages(displayNameToImageLanguageMap.Values);
                 }
             }
-            catch(InvalidCastException)
+            catch(UnauthorizedAccessException)
             {
                 // This is indicitive of EmbeddedMode not being enabled (i.e.
                 // running IotCoreDefaultApp on Desktop or Mobile without 
                 // enabling EmbeddedMode) 
                 //  https://developer.microsoft.com/en-us/windows/iot/docs/embeddedmode
+                Debug.WriteLine("Check to see if Embedded Mode is enabled");
             }
             
         }
