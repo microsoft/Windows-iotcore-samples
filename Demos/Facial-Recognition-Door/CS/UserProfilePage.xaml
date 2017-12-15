@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="FacialRecognitionDoor.UserProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FacialRecognitionDoor"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RequestedTheme="Dark">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="6*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock x:Name="VisitorNameBlock" Text="Visitor Name" Grid.Column="1" FontSize="80" VerticalAlignment="Center"/>
+        
+        <StackPanel Margin="0, 10" Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <CaptureElement x:Name='WebcamFeed'/>
+            <Image x:Name="IdPhotoControl" Visibility="Collapsed" />
+        </StackPanel>
+        
+        <Grid x:Name="UserNameGrid" Grid.Column="1" Grid.Row="1" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width=".75*" />
+                <ColumnDefinition Width=".6*" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="UserNameBox" Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="32" Margin="20,0" PlaceholderText="Photo ID Name (ex: John Doe)"/>
+            <Button x:Name="ConfirmButton" Content="Confirm" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32"/>
+            <Button x:Name="CancelButton" Content="Cancel" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32"/>
+        </Grid>
+        <GridView x:Name="PhotoGrid" Grid.Row="1" Grid.Column="1" Loaded="PhotoGrid_Loaded"/>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar IsOpen="True" IsSticky="True" IsEnabled="True" Foreground="#FF7C3C3C" RequestedTheme="Dark">
+            <AppBarButton x:Name="AddButton" Label="Add Photo" Icon="Add" Foreground="#FFFFFFFF" Width="64" Tapped="AddButton_Tapped"/>
+            <AppBarButton x:Name="DeleteButton" Label="Delete User" Icon="Delete" Foreground="#FFFFFFFF" Width="64" Tapped="DeleteButton_Tapped"/>
+            <AppBarButton x:Name="HomeButton" Label="Go Home" Icon="Home" Foreground="#FFFFFFFF" Width="64" Tapped="HomeButton_Tapped"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>
