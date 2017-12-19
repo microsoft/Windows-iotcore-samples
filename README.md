@@ -105,7 +105,6 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <td></td>
   <td></td>
  </tr>
-< 
 </table>
 
 ### Samples that utilize Microsoft Azure features
