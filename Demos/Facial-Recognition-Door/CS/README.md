@@ -5,13 +5,9 @@ With the introduction of Microsoft's Project Oxford, facial recognition applicat
 
 ## Cloning the project
 
-- Use Command Prompt to navigate to the folder where you want the project:  
-  ```cd <your folder path>```  
-- Run the git clone command:  
-  ```git clone https://github.com/ms-iot/Facial-Recognition-Door.git```  
+Navigate to the root folder [here](https://github.com/Microsoft/Windows-iotcore-samples) and either download the samples as a zip file or clone them using git. 
 
 The step-by-step instruction for building this project can be found on https://microsoft.hackster.io/en-US/windows-iot/windows-iot-facial-recognition-door-e087ce
-
 
 ===
 
