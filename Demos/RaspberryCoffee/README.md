@@ -8,7 +8,7 @@ This project is a coffee maker that can be controlled using your phone's built-i
 - Run the git clone command:  
   ```git clone https://github.com/Microsoft/Windows-iotcore-samples/Demos/RaspberryCoffee.git```  
 
-The step-by-step instruction for building this project can be found on (https://www.hackster.io/windows-iot/raspberry-coffee-955b13)
+The step-by-step instruction for building this project can be found on https://www.hackster.io/windows-iot/raspberry-coffee-955b13
 
 ===
 
