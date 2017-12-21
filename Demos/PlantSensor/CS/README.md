@@ -6,7 +6,7 @@ digiPlant is a Universal Windows Platform app that helps users monitor their pla
 - Use Command Prompt to navigate to the folder where you want the project:  
   ```cd <your folder path>```  
 - Run the git clone command:  
-  ```git clone https://github.com/ms-iot/PlantSensor.git```  
+  ```git clone https://github.com/Microsoft/Windows-iotcore-samples/Demos/PlantSensor.git```  
 
 The step-by-step instruction for building this project can be found on https://www.hackster.io/MasayukiN/plant-app-v-1-0-1167ed?ref=user&ref_id=100482&offset=0
 
