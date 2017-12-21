@@ -1,5 +1,5 @@
 # Windows IoT Plant Sensor
-digiPlant is a Universal Windows Platform app that helps users monitor their plant. The app collects and displays tempoerature, brightness, and soil moisture data from various sensors. It runs on a Raspberry Pi and Windows 10 IoT Core. The Twitter page is currently a work in progress.
+digiPlant is a Universal Windows Platform app that helps users monitor their plant. The app collects and displays tempoerature, brightness, and soil moisture data from various sensors. It runs on a Raspberry Pi and Windows 10 IoT Core. 
 
 ## Cloning the project
 
