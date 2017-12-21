@@ -10,7 +10,6 @@ The Windows IoT Building Navigation Robot is a robot that will navigate a person
 
 The step-by-step instruction for building this project can be found on https://www.hackster.io/54243/iot-core-building-navigation-robot-125856
 
-
-
+===
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments. 
