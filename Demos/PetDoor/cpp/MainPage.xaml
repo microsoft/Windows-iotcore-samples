@@ -1,0 +1,32 @@
+﻿<Page
+    x:Class="PetDoor.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PetDoor"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!--Camera preview-->
+            <CaptureElement Name="PreviewControl" Stretch="Uniform" Grid.Column="0"/>
+
+            <!--Captured preview frame image-->
+            <Image Name="PreviewFrameImage" Grid.Column="1"/>
+        </Grid>
+        <StackPanel Grid.Row="1">
+            <TextBlock Name="FrameInfoTextBlock" VerticalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Page>
