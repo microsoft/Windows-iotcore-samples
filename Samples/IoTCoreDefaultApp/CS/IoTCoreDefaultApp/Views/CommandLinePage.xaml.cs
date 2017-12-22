@@ -28,7 +28,7 @@ namespace IoTCoreDefaultApp
     {
         private const string CommandLineProcesserExe = "c:\\windows\\system32\\cmd.exe";
         private const string EnableCommandLineProcesserRegCommand = "reg ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\EmbeddedMode\\ProcessLauncher\" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d \"c:\\windows\\system32\\cmd.exe\\0\"";
-        private const uint BufSize = 8192;
+        private const uint CmdLineBufSize = 8192;
 
         private string currentDirectory = "C:\\";
         private List<string> commandLineHistory = new List<string>();
@@ -164,15 +164,15 @@ namespace IoTCoreDefaultApp
 
         private async Task ReadText(DataReader dataReader, Run run)
         {
-            StringBuilder textOutput = new StringBuilder((int)BufSize);
+            StringBuilder textOutput = new StringBuilder((int)CmdLineBufSize);
             uint bytesLoaded = 0;
-            while ((bytesLoaded = await dataReader.LoadAsync(BufSize)) > 0)
+            while ((bytesLoaded = await dataReader.LoadAsync(CmdLineBufSize)) > 0)
             {
                 textOutput.Append(dataReader.ReadString(bytesLoaded));
             }
 
             new System.Threading.ManualResetEvent(false).WaitOne(10);
-            if ((bytesLoaded = await dataReader.LoadAsync(BufSize)) > 0)
+            if ((bytesLoaded = await dataReader.LoadAsync(CmdLineBufSize)) > 0)
             {
                 textOutput.Append(dataReader.ReadString(bytesLoaded));
             }
