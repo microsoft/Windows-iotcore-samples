@@ -59,6 +59,8 @@ namespace IoTCoreDefaultApp
 
             this.DataContext = LanguageManager.GetInstance();
 
+            UpdateMakerImageSecurityNotice();
+
             this.Loaded += async (sender, e) =>
             {
                 await MainPageDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
@@ -66,7 +68,6 @@ namespace IoTCoreDefaultApp
                     UpdateBoardInfo();
                     UpdateNetworkInfo();
                     UpdateConnectedDevices();
-                    UpdateMakerImageSecurityNotice();
                 });
             };
 
@@ -78,14 +79,14 @@ namespace IoTCoreDefaultApp
             {
                 await MainPageDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
                 {
-                    SecurityNotieRow.Visibility = Visibility.Visible;
+                    SecurityNoticeRow.Visibility = Visibility.Visible;
                 });
             }
         }
 
         private async Task<bool> IsMakerImager()
         {
-            var cmdOutput = "";
+            var cmdOutput = string.Empty;
 
             var standardOutput = new InMemoryRandomAccessStream();
             var options = new ProcessLauncherOptions
@@ -186,7 +187,7 @@ namespace IoTCoreDefaultApp
 
         private void CloseNoticeButton_Click(object sender, RoutedEventArgs e)
         {
-            SecurityNotieRow.Visibility = Visibility.Collapsed;
+            SecurityNoticeRow.Visibility = Visibility.Collapsed;
         }
 
         private void SecurityNoticeLearnMoreButton_Click(object sender, RoutedEventArgs e)

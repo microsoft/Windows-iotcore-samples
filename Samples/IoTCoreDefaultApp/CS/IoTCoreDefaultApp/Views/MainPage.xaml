@@ -64,7 +64,7 @@
         </Grid>
 
         <!-- Maker image security notice row -->
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="SecurityNotieRow" Background="#FF363636" Visibility="Collapsed" >
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="SecurityNoticeRow" Background="#FF363636" Visibility="Collapsed" >
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -110,7 +110,7 @@
                             </InlineUIContainer>
                             <InlineUIContainer>
                                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource AccentBrush}">
-                                    <Hyperlink NavigateUri="{Binding [WindowsOnDevicesUrlText]}" Click="WindowsOnDevices_Click" ToolTipService.ToolTip="{Binding [WindowsOnDevicesUrlText]}" >
+                                    <Hyperlink Click="WindowsOnDevices_Click" ToolTipService.ToolTip="{Binding [WindowsOnDevicesUrlText]}" >
                                         <Run Text="{Binding [Windows10IoTCoreText]}" />
                                     </Hyperlink>
                                 </TextBlock>

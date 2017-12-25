@@ -838,7 +838,7 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>This language does not support speech.</value>
   </data>
   <data name="SpeechSupportText" xml:space="preserve">
-    <value>This language does support speech.</value>
+    <value>This language supports speech.</value>
   </data>
   <data name="LanguageApplyButtonText" xml:space="preserve">
     <value>Restart this app to apply new settings</value>
@@ -846,5 +846,9 @@ Alternatively, click or tap the button below to enter your Administrator account
   <data name="BluetoothPairingRequestProgress" xml:space="preserve">
     <value>Please wait, pairing inprogress</value>
     <comment>Pairing InProgress Text</comment>
+  </data>
+  <data name="ChangeTimeZoneTitleText" xml:space="preserve">
+    <value>Time zone</value>
+    <comment>Time zone text</comment>
   </data>
 </root>
