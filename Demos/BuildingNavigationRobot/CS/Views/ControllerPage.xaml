@@ -1,0 +1,71 @@
+﻿<!-- Copyright (c) Microsoft. All rights reserved. -->
+
+<Page
+    x:Class="BuildingNavigationRobot.Views.ControllerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BuildingNavigationRobot.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Background="Black" RequestedTheme="Dark">
+
+    <Viewbox>
+        <Grid x:Name="masterGrid" Width="1024" Height="600">
+            <Grid x:Name="controllerGrid" Visibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Viewbox>
+                    <Canvas Grid.Column="0" x:Name="canvas" Width="3000" Height="3000" PointerReleased="canvas_PointerReleased"/>
+                </Viewbox>
+                <TextBlock x:Name="robotStatsTextBlock" Grid.Column="0" Text="Robot Stats" FontWeight="Light" Margin="10"/>
+                <Grid Grid.Column="1" Background="#FF666666" Padding="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="0" Name="scrollViewer" Padding="10" Background="Black">
+                        <TextBlock x:Name="outputTextBlock" Foreground="White" FontSize="20" FontWeight="Light" Text="Output Text" TextWrapping="WrapWholeWords"/>
+                    </ScrollViewer>
+                    <Grid Grid.Row="2" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="47*"/>
+                            <ColumnDefinition Width="18*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="0.5*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="moveButton" Grid.Column="0" Content="Move" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" FontSize="24" FontWeight="Light" Click="moveButton_Click" Background="Green"/>
+                                <Button x:Name="stopButton" Grid.Column="1" Content="Stop" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" FontSize="24" FontWeight="Light" Click="stopButton_Click" Background="Red"/>
+                            </Grid>
+                            <Button x:Name="navButton" Grid.Row="1" Content="Navigate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" FontSize="24" FontWeight="Light" Click="navButton_Click" Background="Blue"/>
+                            <Button x:Name="offButton" Grid.Row="2" Content="Off" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" FontSize="24" FontWeight="Light" Click="offButton_Click"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <StackPanel Orientation="Horizontal">
+                                <Slider x:Name="adjustFovSlider" Orientation="Vertical" Margin="5" Value="101" Maximum="180"/>
+                                <Slider x:Name="adjustDistanceSlider" Orientation="Vertical" Margin="5" Value="101" Maximum="6000"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid x:Name="voiceCommandGrid" Visibility="Collapsed" Background="Black">
+                <Button x:Name="closeVoiceCommandButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="❌" Background="Transparent" Click="closeVoiceCommandButton_Click" FontSize="60" Margin="10"/>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock x:Name="emojiTextBlock" Text="😃" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Light" FontSize="72"/>
+                    <TextBlock x:Name="voiceCommandTextBlock" Text="Getting ready..." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Light" FontSize="48"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Viewbox>
+</Page>

@@ -19,6 +19,9 @@ namespace IoTCoreDefaultApp
         public const string IoTHacksterUrl = "Hackster.io/windowsiot";
         public const string IoTGitHubUrl = "Github.com/ms-iot";
         public const string BingHomePageUrl = "Bing.com";
+        public const string IoTCoreManufacturingGuideUrl = "https://go.microsoft.com/fwlink/?linkid=865702";
+
+        public const string FallbackLang = "en-US";
     }
 }
 

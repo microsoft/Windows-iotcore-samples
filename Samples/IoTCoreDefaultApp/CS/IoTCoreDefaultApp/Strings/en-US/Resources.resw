@@ -164,6 +164,14 @@
     <value>Ethernet</value>
     <comment>Field label</comment>
   </data>
+  <data name="LeanMoreText" xml:space="preserve">
+    <value>Learn More</value>
+    <comment>Learn More Button</comment>
+  </data>
+  <data name="MakerImageNoticeText" xml:space="preserve">
+    <value>If you're looking to commercialize your device, you must use a custom FFU to optimize security for your device.</value>
+    <comment>Maker Imager Security Notice</comment>
+  </data>
   <data name="NetworkConnectingMessageText" xml:space="preserve">
     <value>Checking network requirements</value>
     <comment>Message display during wifi network connect click</comment>
@@ -817,5 +825,30 @@ Alternatively, click or tap the button below to enter your Administrator account
   <data name="Windows10IoTCoreText" xml:space="preserve">
     <value>Windows 10 IoT Core</value>
     <comment>Dont Localize</comment>
+  </data>
+  <data name="LanguagePopupText1" xml:space="preserve">
+    <value>Cortana doesn’t support your current language settings. Do you want to select</value>
+    <comment>Part for PopupText1</comment>
+  </data>
+  <data name="LanguagePopupText3" xml:space="preserve">
+    <value>language to enable Cortana?</value>
+    <comment>Text for PopupText3</comment>
+  </data>
+  <data name="SpeechNotSupportText" xml:space="preserve">
+    <value>This language does not support speech.</value>
+  </data>
+  <data name="SpeechSupportText" xml:space="preserve">
+    <value>This language supports speech.</value>
+  </data>
+  <data name="LanguageApplyButtonText" xml:space="preserve">
+    <value>Restart this app to apply new settings</value>
+  </data>
+  <data name="BluetoothPairingRequestProgress" xml:space="preserve">
+    <value>Please wait, pairing inprogress</value>
+    <comment>Pairing InProgress Text</comment>
+  </data>
+  <data name="ChangeTimeZoneTitleText" xml:space="preserve">
+    <value>Time zone</value>
+    <comment>Time zone text</comment>
   </data>
 </root>
