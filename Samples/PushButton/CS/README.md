@@ -109,7 +109,7 @@ A schematic for the circuit is shown in the diagram below:
 
 ![DragonBoard Push Button Schematic](../../../Resources/images/PushButton/DB_PushButton_schem.png)
 
-Finally, the LED_PIN and BUTTON_PIN variables of the **MainPage.xml.cs** file of the sample code will need the following modification:
+Finally, the LED_PIN and BUTTON_PIN variables of the **MainPage.xaml.cs** file of the sample code will need the following modification:
 
 ~~~
 private const int LED_PIN = 13;
