@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -38,7 +39,14 @@ namespace IoTCoreDefaultApp.Utils
 
         public static void GetMUILanguages()
         {
-            EnumUILanguagesW(UILanguageProc, 0, IntPtr.Zero);
+            try
+            {
+                EnumUILanguagesW(UILanguageProc, 0, IntPtr.Zero);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
     }
 
