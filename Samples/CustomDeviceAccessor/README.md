@@ -8,7 +8,7 @@ description: Use CreateFile() and DeviceIoControl() to access custom devices fro
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[C#](./CS/README.md)
+*	[C++](./CPP/README.md)
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
