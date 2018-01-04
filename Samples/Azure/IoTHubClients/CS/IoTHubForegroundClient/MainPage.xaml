@@ -16,10 +16,25 @@
     <Grid Background="#4b5157">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="20" Text="Microsoft IoT Central Client Sample" FontSize="32"/>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="20,0,0,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Margin="3" Text="Connection String" />
+            <TextBox Grid.Column="1" Margin="3" Text="&lt;type connection string&gt;" x:Name="ConnectStringBox"/>
+            <Button Grid.Column="2" Margin="3" Click="OnConnect">
+                <Button.Content>
+                    <TextBlock Text="Connect"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="350"/>
                 <RowDefinition Height="350"/>

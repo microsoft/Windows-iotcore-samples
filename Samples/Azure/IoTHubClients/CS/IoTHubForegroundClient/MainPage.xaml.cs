@@ -12,13 +12,15 @@ using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
 using Windows.ApplicationModel.Core;
+using Windows.Storage;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 
 namespace IoTHubForegroundClient
 {
     public sealed partial class MainPage : Page
     {
-        static string DeviceConnectionString = "{your device connection string}";
+        static string ConnectionStringFileName = "connection.string.iothub";
         static DeviceClient Client = null;
         static TwinCollection reportedProperties = new TwinCollection();
         static CancellationTokenSource cts;
@@ -29,20 +31,61 @@ namespace IoTHubForegroundClient
         const string SetTemperature = "setTemperature";
         const string SettingValue = "value";
 
+        bool _running = false;
+
         public MainPage()
         {
             this.InitializeComponent();
+            Start("");
+        }
+
+        private async Task<string> GetConnectionString()
+        {
+            // GetConnectionString() should read the connection string from the TPM.
+            // For simplicity, we will be reading it from a text file dropped at the Documents folder.
+            // Note that this is NOT a secure method and is only used for simplicity.
+            //
+            // An ANSI text file need to be placed at:
+            //  \\<ip>\c$\Data\Users\DefaultAccount\Documents\
+            //  The contents should be only the connection string.
+            //
+            StorageFolder storageFolder = KnownFolders.DocumentsLibrary;
+            try
+            {
+                StorageFile connectionStringFile = await storageFolder.GetFileAsync(ConnectionStringFileName);
+                return await FileIO.ReadTextAsync(connectionStringFile);
+            }
+            catch (System.IO.FileNotFoundException ex)
+            {
+                ConnectStringBox.Text = "<The file " + ConnectionStringFileName + " is missing from the documents folder. Copy/Paste the device connection string here>";
+            }
+            return "";
+        }
+
+        private async void Start(string connectionString)
+        {
             Debug.WriteLine("Raspberry Pi IoT Central example");
 
             try
             {
-                InitClient();
+                if (String.IsNullOrEmpty(connectionString))
+                {
+                    connectionString = await GetConnectionString();
+                }
+                if (String.IsNullOrEmpty(connectionString))
+                {
+                    return;
+                }
+
+                ConnectStringBox.Text = connectionString;
+
+                InitClient(connectionString);
 
                 cts = new CancellationTokenSource();
                 SendTelemetryAsync(cts.Token);
 
                 Debug.WriteLine("Wait for settings update...");
-                Client.SetDesiredPropertyUpdateCallbackAsync(HandleSettingChanged, null);
+                await Client.SetDesiredPropertyUpdateCallbackAsync(HandleSettingChanged, null);
             }
             catch (Exception ex)
             {
@@ -50,12 +93,12 @@ namespace IoTHubForegroundClient
             }
         }
 
-        public static void InitClient()
+        private static void InitClient(string connectionString)
         {
             try
             {
                 Debug.WriteLine("Connecting to hub");
-                Client = DeviceClient.CreateFromConnectionString(DeviceConnectionString, TransportType.Mqtt);
+                Client = DeviceClient.CreateFromConnectionString(connectionString, TransportType.Mqtt);
             }
             catch (Exception ex)
             {
@@ -71,7 +114,7 @@ namespace IoTHubForegroundClient
             });
         }
 
-        public async void SendDeviceProperties()
+        private async void SendDeviceProperties()
         {
             try
             {
@@ -107,6 +150,13 @@ namespace IoTHubForegroundClient
 
         private async void SendTelemetryAsync(CancellationToken token)
         {
+            // If we are already sending telemetry, let's not spawn another one...
+            if (_running)
+            {
+                return;
+            }
+            _running = true;
+
             try
             {
                 Random rand = new Random();
@@ -162,7 +212,8 @@ namespace IoTHubForegroundClient
                 Debug.WriteLine("Received settings change...");
                 if (desiredProperties.Contains(SetTemperature))
                 {
-                    JValue settingValue = desiredProperties[SetTemperature][SettingValue];
+                    JObject setting = (JObject)desiredProperties[SetTemperature];
+                    JValue settingValue = (JValue)setting[SettingValue];
                     if (settingValue.Type == JTokenType.Float || settingValue.Type == JTokenType.Integer)
                     {
                         ShowSetting(SetTemperature, Double.Parse(settingValue.Value.ToString()));
@@ -194,6 +245,11 @@ namespace IoTHubForegroundClient
         private void OnSendDeviceProperties(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             SendDeviceProperties();
+        }
+
+        private void OnConnect(object sender, RoutedEventArgs e)
+        {
+            Start(ConnectStringBox.Text);
         }
     }
 }
