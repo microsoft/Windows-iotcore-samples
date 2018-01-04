@@ -8,12 +8,12 @@ IoTBlockly leverages various pieces of open source software to create a "block" 
 <li>Emmellsoft.IoT.Rpi.SenseHat library to control the Raspberry Pi Sense Hat (https://github.com/emmellsoft/RPi.SenseHat)</li>
 </ol>
 
-###Requirements:
+## Requirements:
 <ol>
 <li>Raspberry Pi 2 or Raspberry Pi 3</li>
 <li>Raspberry Pi Sense Hat (https://www.raspberrypi.org/products/sense-hat)</li>
 <li>Windows 10 Core installed and running on the Raspberry Pi</li>
 </ol>
 
-###Usage
+## Usage
 Compile the solution and deploy the IoTBlocklyBackgroundApp to your Raspberry Pi. Once the app is up and running, browse to http://your-rpi-name:8024 and starting coding with Blockly! 
