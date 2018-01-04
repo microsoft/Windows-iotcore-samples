@@ -250,7 +250,7 @@ The security identifier "AC" identifies all application packages, and will grant
 
 Launch the app and launch process explorer. Open the properties dialog box for the process in process explorer and go to the Security tab. There you will see all of the security identifiers associated with the process's token. The SID with the AppContainer flag set is the app-specific SID.
 
-![Process Explorer]({{site.baseurl}}/Resources/images/DeviceIoControlUwp-AppContainerSid.png)
+![Process Explorer](../../../Resources/images/DeviceIoControlUwp-AppContainerSid.png)
 
 You can replace "AC" with this SID in the above SDDL to generate an SDDL that grants access to that specific application only. For example, the following SDDL would grant access only to the application shown above:
 
