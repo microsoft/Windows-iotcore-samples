@@ -45,7 +45,8 @@ namespace IoTCoreDefaultApp.Utils
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Log.Write("EnumUILanguages: " + ex.Message);
+                Log.Write(ex.ToString());
             }
         }
     }

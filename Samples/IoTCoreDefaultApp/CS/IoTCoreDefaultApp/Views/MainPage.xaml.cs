@@ -119,9 +119,11 @@ namespace IoTCoreDefaultApp
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Could not read the value
+                Log.Write("Could not read maker image value in registry");
+                Log.Write(ex.ToString());
             }
 
             return false;
