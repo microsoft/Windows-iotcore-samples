@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IoTCoreDefaultApp.Utils;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -73,7 +74,7 @@ namespace IoTCoreDefaultApp
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(String.Format("Error scanning: 0x{0:X}: {1}", e.HResult, e.Message));
+                    Log.Write(String.Format("Error scanning: 0x{0:X}: {1}", e.HResult, e.Message));
                     NoWifiFoundText.Text = e.Message;
                     NoWifiFoundText.Visibility = Visibility.Visible;
                     EnableView(true);

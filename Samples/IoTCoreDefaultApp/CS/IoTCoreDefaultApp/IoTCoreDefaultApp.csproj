@@ -136,6 +136,7 @@
     <Compile Include="Utils\DeviceTypeInformation.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\ImageLanguages.cs" />
+    <Compile Include="Utils\Log.cs" />
     <Compile Include="Utils\NativeTimeMethods.cs" />
     <Compile Include="Utils\NavigationUtils.cs" />
     <Compile Include="Utils\WifiGlyphConverter.cs" />

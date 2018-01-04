@@ -119,13 +119,14 @@ namespace IoTCoreDefaultApp
                     GlobalizationPreferences.TrySetLanguages(displayNameToImageLanguageMap.Values);
                 }
             }
-            catch(UnauthorizedAccessException)
+            catch(UnauthorizedAccessException ex)
             {
                 // This is indicative of EmbeddedMode not being enabled (i.e.
                 // running IotCoreDefaultApp on Desktop or Mobile without 
                 // enabling EmbeddedMode) 
                 //  https://developer.microsoft.com/en-us/windows/iot/docs/embeddedmode
-                Debug.WriteLine("Check to see if Embedded Mode is enabled");
+                Log.Write(ex.ToString());
+                Log.Write("UnauthorizedAccessException: Check to see if Embedded Mode is enabled");
             }
             
         }
