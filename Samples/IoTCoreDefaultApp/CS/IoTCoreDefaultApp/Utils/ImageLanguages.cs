@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -38,7 +39,14 @@ namespace IoTCoreDefaultApp.Utils
 
         public static void GetMUILanguages()
         {
-            EnumUILanguagesW(UILanguageProc, 0, IntPtr.Zero);
+            try
+            {
+                EnumUILanguagesW(UILanguageProc, 0, IntPtr.Zero);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
     }
 
@@ -61,7 +69,7 @@ namespace IoTCoreDefaultApp.Utils
         [DllImport("api-ms-win-core-localization-l1-2-1.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern int ResolveLocaleName(string lpNameToResolve, StringBuilder lpLocaleName, int cchLocaleName);
 
-        [DllImport("api-ms-win-core-localization-l1-2-1.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern int LCIDToLocaleName(uint Locale, StringBuilder lpName, int cchName, int dwFlags);
     }
         
