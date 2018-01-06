@@ -88,13 +88,13 @@ namespace IoTCoreDefaultApp
 
         private static void ShowScreensaver()
         { 
+            Window.Current.CoreWindow.PointerCursor = null; // Hide the cursor
             timeoutTimer.Stop();
             var bounds = Windows.UI.Core.CoreWindow.GetForCurrentThread().Bounds;
             var view = (Screensaver)screensaverContainer.Child;
             view.Width = bounds.Width;
             view.Height = bounds.Height;
             view.image.Width = view.Width / 5; //Make screensaver image 1/5 the width of the screen
-            Window.Current.CoreWindow.PointerCursor = null; // Hide the cursor
             screensaverContainer.IsOpen = true;
         }
 
