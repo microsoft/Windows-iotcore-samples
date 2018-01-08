@@ -15,6 +15,7 @@ using Windows.Devices.Radios;
 using Windows.Devices.Bluetooth;
 using System.Linq;
 using Windows.Foundation.Metadata;
+using Windows.System;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -68,6 +69,7 @@ namespace IoTCoreDefaultApp
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
                 {
                     SetupLanguages();
+                    SetupTimeZones();
                     screensaverToggleSwitch.IsOn = Screensaver.IsScreensaverEnabled;
                 });
             };
@@ -93,6 +95,12 @@ namespace IoTCoreDefaultApp
                     LangApplyStack.Visibility = Visibility.Visible;
                 }
             }
+        }
+
+        private void SetupTimeZones()
+        {
+            TimeZoneComboBox.ItemsSource = TimeZoneSettings.SupportedTimeZoneDisplayNames;
+            TimeZoneComboBox.SelectedItem = TimeZoneSettings.CurrentTimeZoneDisplayName;
         }
 
         private void SetupBluetooth()
@@ -1259,6 +1267,21 @@ namespace IoTCoreDefaultApp
         {
             await CortanaHelper.LaunchCortanaToAboutMeAsync();
         }
-        
+
+        private void TimeZoneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+
+            if (comboBox == null || comboBox.SelectedItem == null)
+            {
+                return;
+            }
+
+            if (TimeZoneSettings.CanChangeTimeZone)
+            {
+                string newTimeZone = comboBox.SelectedItem as string;
+                TimeZoneSettings.ChangeTimeZoneByDisplayName(newTimeZone);
+            }
+        }
     }
 }

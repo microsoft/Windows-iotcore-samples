@@ -1,5 +1,3 @@
-
-
 # GPIO OneWire DHT11 reader
 
 Note what follows below is a bit out of date-  the latest version on Github is a 2 wire operation requiring pin4 as input and pin 5 as output. Read the link above to GITHUB Code and the readme 
@@ -71,6 +69,7 @@ consider bits to be 1s, while we will consider pulses shorter
 than this threshold to be 0s. We convert 110 microseconds to
 QueryPerformanceCounter (QPC) units to be used later.
 
+``` C#
 	HRESULT GpioOneWire::Dht11::Sample (GpioOneWire::Dht11Reading& Reading)
 	{
 		Reading = Dht11Reading();
@@ -84,14 +83,14 @@ QueryPerformanceCounter (QPC) units to be used later.
 		// We convert the value to QPF units for later use.
 		const unsigned int oneThreshold = static_cast<unsigned int>(
 			110LL * qpf.QuadPart / 1000000LL);
-
+``` 
 
 Next, we send the sequence required to activate the sensor. The GPIO signal
 is normally pulled high while the device is idle, and we must pull it low
 for 18 milliseconds to request a sample. We latch a low value to the pin
 and set it as an output, driving the GPIO pin low.
 
-
+``` C#
     // Latch low value onto pin
     this->pin->Write(GpioPinValue::Low);
 
@@ -100,12 +99,12 @@ and set it as an output, driving the GPIO pin low.
 
     // Wait for at least 18 ms
     Sleep(SAMPLE_HOLD_LOW_MILLIS);
-
+```
 
 We then revert the pin to an input which causes it to go high, and wait for
 the DHT11 to pull the pin low, then high again.
 
-
+``` C#
     // Set pin back to input
     this->pin->SetDriveMode(this->inputDriveMode);
 
@@ -128,13 +127,13 @@ the DHT11 to pull the pin low, then high again.
             previousValue = value;
         }
     }
-
+```
 
 After receiving the first rising edge, we catch all of the falling edges
 and measure the time difference between them to determine whether the bit
 is a 0 or 1.
 
-
+``` C#
     LARGE_INTEGER prevTime = { 0 };
 
     const ULONG sampleTimeoutMillis = 10;
@@ -166,16 +165,17 @@ is a 0 or 1.
 
         previousValue = value;
     }
-
+```
 
 After all bits have been received, we validate the checksum to make sure the
 received data is valid. The data is returned through the `Reading` reference
 parameter.
 
-
+``` C#
     if (!Reading.IsValid()) {
         // checksum mismatch
         return HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
     }
 
     return S_OK;
+```
