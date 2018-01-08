@@ -16,7 +16,7 @@ namespace IoTCoreDefaultApp.Utils
     {
         public static Dictionary<int, string> Languages = new Dictionary<int, string>();
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         static extern System.Boolean EnumUILanguagesW(
             EnumUILanguagesProc lpUILanguageEnumProc,
             System.UInt32 dwFlags,
@@ -67,10 +67,10 @@ namespace IoTCoreDefaultApp.Utils
     /// </summary>
     internal static class LocaleFunctions
     {
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int ResolveLocaleName(string lpNameToResolve, StringBuilder lpLocaleName, int cchLocaleName);
 
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int LCIDToLocaleName(uint Locale, StringBuilder lpName, int cchName, int dwFlags);
     }
         
