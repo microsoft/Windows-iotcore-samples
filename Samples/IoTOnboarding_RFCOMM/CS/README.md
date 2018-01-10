@@ -1,6 +1,6 @@
-n# IoT WiFi Onboarding via Bluetooth(RFCOMM)
+# IoT WiFi Onboarding via Bluetooth(RFCOMM)
 
-This sample shows how to join your Headless IoT Device (an IoT device without a display) to your Wi-Fi network through Bluetooth RFCOMM.
+This sample shows how to join your Headless IoT Device (an IoT device without a display) to your WiFi network through Bluetooth RFCOMM.
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ The general communication flow between Client and Server
 1. On your Manager Device, go to *Settings* > *About* to get the **Device Name** under *Device Specifications*.
 2. Open the "Client" solution in Visual Studio 2017 on your Dev Machine.
 3. Open **SampleConfiguration.cs**, find the line
-	```C#
+    ```C#
     public const string TARGET_NAME = "<DESKTOP_NAME>";
     ```
     and replace `<DESKTOP_NAME>` with **Device Name** of your Manager Device.
