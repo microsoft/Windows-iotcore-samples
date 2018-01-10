@@ -1,4 +1,4 @@
-# IoT WiFi Onboarding via Bluetooth(RFCOMM)
+n# IoT WiFi Onboarding via Bluetooth(RFCOMM)
 
 This sample shows how to join your Headless IoT Device (an IoT device without a display) to your Wi-Fi network through Bluetooth RFCOMM.
 
@@ -6,7 +6,7 @@ This sample shows how to join your Headless IoT Device (an IoT device without a 
 
 1. **IoT Deivce (Server)**: A headed or headless IoT device with WiFi and Bluetooth capability running Windows 10.
 2. **Manager Device (Client)**: A Windows 10 device with WiFi capability. It can be a PC or a even a Windows 10 Phone.
-3. **Dev Machine**: A laptop or desktop runiing Visual Studio 2017 or newer.
+3. **Dev Machine**: A laptop or desktop running Visual Studio 2017 or newer.
 4. An available WiFi network for onboarding your IoT device. WiFi network may provide Open Authentication or may be secured with WPA2-PSK authentication. Substitute a Personal Hotspot from a cell phone if desired.
 
 ## Design
