@@ -1,4 +1,4 @@
-# IoT WiFi Onboarding via Bluetooth(RFCOMM)
+.# IoT WiFi Onboarding via Bluetooth(RFCOMM)
 
 This sample shows how to join your Headless IoT Device (an IoT device without a display) to your Wi-Fi network through Bluetooth RFCOMM.
 
@@ -17,7 +17,7 @@ There are two parts to this sample:
  
 The general communication flow between Client and Server
 
-![Flow](./images/Flow.png)
+![Flow](../images/Flow.png)
 
 ## Usage
 ### IoT Device Setup
@@ -53,13 +53,22 @@ The general communication flow between Client and Server
 2. Turn on your IoT Device.
 3. On you Manager Device, wait for the incoming pairing notifcation from your IoT Device. Complete the Bluetooth pairing.
 4. Once the Bluetooth connection between the IoT Device and Manager Device is successfully established, open the Client app on Manager Device. Press the **Start** button.
-![Start](./images/Snapshot00.png)
+
+	<img src="../images/Snapshot00.PNG" alt="Start" height="500"/>
+
 5. Select the IoT Device as the **Target Device**. The Client app will attempt to connect to the RFCOMM server on the selected device.
-![Select Device](./images/Snapshot01.png)
+
+	<img src="../images/Snapshot01.PNG" alt="Select Device" height="500"/>
+
 6. Once the RFCOMM session is established, the IoT Device will send a list of available network. On the Client app, select the desired WiFi network and enter the password. Click **Connect** to join the WiFi network.
-![Connect to Device](./images/Snapshot02.png) ![Get Available Networks](./images/Snapshot03.png)
+
+	<img src="../images/Snapshot02.PNG" alt="Connect to Device" height="500"/>
+	<img src="../images/Snapshot03.PNG" alt="Get Available Networks" height="500"/>
+
 7. Once the WiFi connection is established, the IoT Device will terminates the RFCOMM session. The network information is cached in the app. Next time when the Server apps starts, it will automatically connect to the last WiFi network it successfully connected to. If it fails to connect to the network, it will starts from Step 1 again.
-![Enter Network Information](./images/Snapshot04.png) ![Connect to Network](./images/Snapshot05.png)
+
+	<img src="../images/Snapshot04.PNG" alt="Enter Network Information" height="500"/>
+	<img src="../images/Snapshot05.PNG" alt="Connect to Network" height="500"/>
 
 ## Additional Information
 ### Bluetooth RFCOMM
