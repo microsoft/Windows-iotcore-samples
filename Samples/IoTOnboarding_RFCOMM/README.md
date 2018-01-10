@@ -1,10 +1,10 @@
 ---
 title: CIoT Onboarding - Bluetooth(RFCOMM) sample
 ms.author: marcha
-description: Create a simple solution to configure your Headless IoT Device (an IoT device without a display) to connect Wi-Fi network through Bluetooth RFCOMM at start up.
+description: Create a simple solution to configure your Headless IoT Device (an IoT device without a display) to connect WiFi network through Bluetooth RFCOMM at startup.
 ---
 
-# “IoT Onboarding - Bluetooth(RFCOMM)”
+# IoT Onboarding - Bluetooth(RFCOMM)
 
 These are the available versions of this Windows 10 IoT Core sample:
 
