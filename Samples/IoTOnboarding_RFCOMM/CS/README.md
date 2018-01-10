@@ -1,4 +1,4 @@
-.# IoT WiFi Onboarding via Bluetooth(RFCOMM)
+# IoT WiFi Onboarding via Bluetooth(RFCOMM)
 
 This sample shows how to join your Headless IoT Device (an IoT device without a display) to your Wi-Fi network through Bluetooth RFCOMM.
 
