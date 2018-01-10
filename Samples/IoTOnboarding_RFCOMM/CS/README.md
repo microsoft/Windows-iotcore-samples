@@ -21,7 +21,7 @@ The general communication flow between Client and Server
 
 ## Usage
 ### IoT Device Setup
-1. Install a clean O/S to your IoT Device. If using IoT Dashboard, deselect the "Wi-Fi Network Connection" checkbox when preparing your SD Card.
+1. Install a clean OS to your IoT Device. If using IoT Dashboard, deselect the "WiFi Network Connection" checkbox when preparing your SD Card.
 2. If your IoT Device needs an external Wi-Fi adapter, attach it now.
 3. Open the "Server" solution in Visual Studio 2017 on your Dev Machine. Build and deploy the Server app to your IoT Device.
 4. Set the Server App as the Default App. You may follow the directions [here](https://docs.microsoft.com/en-us/windows/iot-core/develop-your-app/setupdefaultapp).
