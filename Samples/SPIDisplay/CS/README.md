@@ -1,7 +1,7 @@
 # SPI display
 
-In this sample, we interface a SPI based [OLED display](http://www.adafruit.com/product/938){:target="_blank"} to your Raspberry Pi 2 or 3, MinnowBoard Max, or DragonBoard 410c. We then create an app that lets us write lines of text to the display. Step-by-step instructions are provided,
-so no background knowledge of SPI is needed. However, if you want to learn more, SparkFun provides a great [tutorial on SPI](https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi){:target="_blank"}.
+In this sample, we interface a SPI based [OLED display](http://www.adafruit.com/product/938)to your Raspberry Pi 2 or 3, MinnowBoard Max, or DragonBoard 410c. We then create an app that lets us write lines of text to the display. Step-by-step instructions are provided,
+so no background knowledge of SPI is needed. However, if you want to learn more, SparkFun provides a great [tutorial on SPI](https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi).
 
 This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
 
@@ -288,8 +288,8 @@ private async Task InitSpi()
 
 * We start by specifying some configuration settings for our SPI bus:
 1. We specify which chip select line we want to use. This line is connected to the **CS** pin on the display, and lets the display controller know when we're about to start a SPI bus transaction.
-2. The clock frequency is set to 10MHz. This is the rated speed for the display as documented in the [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf){:target="_blank"}.
-3. **settings.Mode** is set to **SpiMode.Mode3**. This configures clock polarity and phase for the bus as documented in the [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf){:target="_blank"}.
+2. The clock frequency is set to 10MHz. This is the rated speed for the display as documented in the [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf).
+3. **settings.Mode** is set to **SpiMode.Mode3**. This configures clock polarity and phase for the bus as documented in the [datasheet](http://www.adafruit.com/datasheets/SSD1306.pdf).
 
 * Next, we get the class selection string for our SPI controller. This controller controls the SPI lines on the exposed pin header. We then use the selection string to get the SPI bus controller matching our string name.
 
