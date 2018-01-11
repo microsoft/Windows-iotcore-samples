@@ -3,7 +3,6 @@
 
 using System;
 using System.Globalization;
-using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
