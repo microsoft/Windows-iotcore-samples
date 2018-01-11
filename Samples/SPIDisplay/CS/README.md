@@ -14,7 +14,7 @@ Note that this app requires a device with a physical SPI port and will not work 
 
 First, we need to wire up the display to your device. You'll need a few components:
 
-* <a name="SPI_Display"></a>a [Monochrome 1.3" 128x64 OLED graphic display](http://www.adafruit.com/product/938){:target="_blank"} from Adafruit with pin headers soldered on
+* <a name="SPI_Display"></a>a [Monochrome 1.3" 128x64 OLED graphic display](http://www.adafruit.com/product/938) from Adafruit with pin headers soldered on
 
 * a breadboard and several male-to-female connector wires (Raspberry Pi 2 or 3 or MinnowBoard Max) or male-to-male connector wires (DragonBoard 410c)
 
