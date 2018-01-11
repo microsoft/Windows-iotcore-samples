@@ -130,7 +130,6 @@ namespace OnboardingServer
             });
             deviceWatcher.EnumerationCompleted += handlerEnumCompleted;
 
-
             //"Stopped" Event Handler
             handlerStopped = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
             {

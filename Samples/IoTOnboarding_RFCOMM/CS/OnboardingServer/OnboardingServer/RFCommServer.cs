@@ -62,15 +62,13 @@ namespace OnboardingServer
         /// </summary>
         private async void InitializeRfcommServer()
         {
-            rfcommProvider = await RfcommServiceProvider.CreateAsync(
-                RfcommServiceId.FromUuid(Constants.RfcommChatServiceUuid));
+            rfcommProvider = await RfcommServiceProvider.CreateAsync(RfcommServiceId.FromUuid(Constants.RfcommChatServiceUuid));
 
             // Create a listener for this service and start listening
             socketListener = new StreamSocketListener();
             socketListener.ConnectionReceived += OnConnectionReceived;
 
-            await socketListener.BindServiceNameAsync(rfcommProvider.ServiceId.AsString(),
-                SocketProtectionLevel.BluetoothEncryptionAllowNullAuthentication);
+            await socketListener.BindServiceNameAsync(rfcommProvider.ServiceId.AsString(), SocketProtectionLevel.BluetoothEncryptionAllowNullAuthentication);
 
             // Set the SDP attributes and start Bluetooth advertising
             InitializeServiceSdpAttributes(rfcommProvider);
@@ -101,7 +99,6 @@ namespace OnboardingServer
             // Set the SDP Attribute on the RFCOMM Service Provider.
             rfcommProvider.SdpRawAttributes.Add(Constants.SdpServiceNameAttributeId, sdpWriter.DetachBuffer());
         }
-
 
         /// <summary>
         /// Sends message to the Client.
@@ -168,8 +165,7 @@ namespace OnboardingServer
         /// </summary>
         /// <param name="sender">The socket listener that accepted the connection.</param>
         /// <param name="args">The connection accept parameters, which contain the connected socket.</param>
-        private async void OnConnectionReceived(
-            StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        private async void OnConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
             // Stop advertising/listening so that we're only serving one client
             socketListener.Dispose();
@@ -236,7 +232,6 @@ namespace OnboardingServer
                             throw;
                     }
                     break;
-
                 }
             }
 
@@ -254,6 +249,5 @@ namespace OnboardingServer
         {
             public string Message { get; set; }
         }
-
     }
 }

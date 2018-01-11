@@ -29,7 +29,8 @@ namespace OnboardingClient
 
         private void ConversationListScrollBottom(Windows.Foundation.Collections.IObservableVector<object> sender, Windows.Foundation.Collections.IVectorChangedEventArgs @event)
         {
-            if (ConversationListBox.Items.Count > 0) {
+            if (ConversationListBox.Items.Count > 0)
+            {
                 ConversationListBox.ScrollIntoView(ConversationListBox.Items[ConversationListBox.Items.Count-1]);
             }
         }
@@ -289,7 +290,6 @@ namespace OnboardingClient
             Disconnect("Disconnected");
         }
 
-
         /// <summary>
         /// Cleans up the socket and DataWriter and reset the UI
         /// </summary>
@@ -301,7 +301,6 @@ namespace OnboardingClient
                 chatWriter.DetachStream();
                 chatWriter = null;
             }
-
 
             if (chatService != null)
             {
