@@ -68,6 +68,7 @@ namespace IoTCoreDefaultApp
                     UpdateBoardInfo();
                     UpdateNetworkInfo();
                     UpdateConnectedDevices();
+                    UpdatePackageVersion();
                 });
             };
 
@@ -166,8 +167,11 @@ namespace IoTCoreDefaultApp
                     (version & 0x00000000FFFF0000) >> 16,
                     version & 0x000000000000FFFF);
             }
+        }
 
-            AppxVersion.Text = string.Format("{0}.{1}.{2}.{3}",
+        private void UpdatePackageVersion()
+        {
+            AppxVersion.Text = String.Format(CultureInfo.InvariantCulture, "v{0}.{1}.{2}.{3}",
               Package.Current.Id.Version.Major,
               Package.Current.Id.Version.Minor,
               Package.Current.Id.Version.Build,

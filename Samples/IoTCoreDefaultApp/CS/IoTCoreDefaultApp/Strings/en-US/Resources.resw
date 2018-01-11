@@ -129,10 +129,6 @@
     <value>Device name</value>
     <comment>Field label</comment>
   </data>
-  <data name="MainPageAppxVersionText" xml:space="preserve">
-    <value>Application Version</value>
-    <comment>Field label</comment>
-  </data>
   <data name="MainPageNetworkText" xml:space="preserve">
     <value>Network</value>
     <comment>Field label</comment>
