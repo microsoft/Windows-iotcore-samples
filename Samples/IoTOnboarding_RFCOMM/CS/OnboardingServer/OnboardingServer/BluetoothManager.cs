@@ -151,7 +151,10 @@ namespace OnboardingServer
 
         public void StopWatcher()
         {
-            if (dispatcherTimer.IsEnabled) dispatcherTimer.Stop();
+            if (dispatcherTimer.IsEnabled)
+            {    
+                dispatcherTimer.Stop();
+            }
 
             if (null != deviceWatcher)
             {
@@ -175,7 +178,10 @@ namespace OnboardingServer
         private async Task PairDevice(DeviceInformationDisplay targetDevice)
         {
             pairSucceed = false;
-            if (dispatcherTimer.IsEnabled) dispatcherTimer.Stop();
+            if (dispatcherTimer.IsEnabled)
+            {
+                dispatcherTimer.Stop();
+            }
 
             // Gray out the pair button and results view while pairing is in progress.
             rootPage.Log(String.Format("BT_MANANGER::PairDevice::STATUS:  Pairing with {0} started. Please wait...", targetDevice.Name));
