@@ -1,9 +1,12 @@
-﻿using IoTCoreDefaultApp.Utils;
+﻿using IoTCoreDefaultApp.Presenters;
+using IoTCoreDefaultApp.Utils;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.Devices.WiFi;
+using Windows.Foundation.Metadata;
 using Windows.Security.Credentials;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -15,37 +18,41 @@ namespace IoTCoreDefaultApp
 {
     public sealed partial class NetworkListControl : UserControl
     {
-        private NetworkPresenter networkPresenter = new NetworkPresenter();
-        private bool ConnectAutomatically = true;
-        private string CurrentPassword = string.Empty;
-
         public event EventHandler<EventArgs> NetworkConnected;
 
+        public ObservableCollection<WifiListViewItemPresenter> WifiListViewItems = new ObservableCollection<WifiListViewItemPresenter>();
+        
         public NetworkListControl()
         {
             this.InitializeComponent();
 
             this.DataContext = LanguageManager.GetInstance();
+            WifiListView.ItemsSource = WifiListViewItems;
         }
 
-        private void EnableView(bool enable)
+        private void EnableView(bool enable, bool enableListView)
         {
             RefreshButton.IsEnabled = enable;
-            WifiListView.IsEnabled = enable;
+            RefreshButton.Visibility = enable? Visibility.Visible : Visibility.Collapsed;
+            RefreshProgressRing.Visibility = enable ? Visibility.Collapsed : Visibility.Visible;
+
+            WifiListView.IsEnabled = enableListView;
         }
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            await RecreateWifiNetworkListAsync();
+            try
+            {
+                await RefreshWifiListViewItemsAsync(false);
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(ex.ToString());
+                throw;
+            }
         }
 
-        public async Task SetupNetworkAsync()
-        {
-            SetupEthernet();
-            await RecreateWifiNetworkListAsync();
-        }
-
-        private void SetupEthernet()
+        public void SetupDirectConnection()
         {
             var ethernetProfile = NetworkPresenter.GetDirectConnectionName();
 
@@ -61,46 +68,47 @@ namespace IoTCoreDefaultApp
             }
         }
 
-        private async Task RecreateWifiNetworkListAsync()
+        public async Task RefreshWifiListViewItemsAsync(bool refreshIfNeeded)
         {
-            if (await networkPresenter.WifiIsAvailable())
+            if (await App.NetworkPresenter.WifiIsAvailable())
             {
-                EnableView(false);
+                bool isRefreshNeeded = App.NetworkPresenter.IsRefreshNeeded();
+                EnableView(false, false);
 
-                ObservableCollection<WiFiAvailableNetwork> networks;
                 try
                 {
-                    networks = new ObservableCollection<WiFiAvailableNetwork>(await networkPresenter.GetAvailableNetworks());
+                    var networks = await App.NetworkPresenter.GetAvailableNetworks(refreshIfNeeded);
+                    if (networks.Count > 0)
+                    {
+                        var connectedNetwork = App.NetworkPresenter.GetCurrentWifiNetwork();
+                        if (connectedNetwork != null)
+                        {
+                            networks.Remove(connectedNetwork);
+                            networks.Insert(0, connectedNetwork);
+                        }
+
+                        WifiListView.ItemsSource = WifiListViewItems = new ObservableCollection<WifiListViewItemPresenter>(networks);
+
+                        var item = SwitchToItemState(connectedNetwork, WifiConnectedState, true);
+                        if (item != null)
+                        {
+                            WifiListView.SelectedItem = item;
+                        }
+
+                        NoWifiFoundText.Visibility = Visibility.Collapsed;
+                        WifiListView.Visibility = Visibility.Visible;
+
+                        EnableView(true, true);
+
+                        return;
+                    }
                 }
                 catch (Exception e)
                 {
                     Log.Write(String.Format("Error scanning: 0x{0:X}: {1}", e.HResult, e.Message));
                     NoWifiFoundText.Text = e.Message;
                     NoWifiFoundText.Visibility = Visibility.Visible;
-                    EnableView(true);
-                    return;
-                }
-
-                if (networks.Count > 0)
-                {
-
-                    var connectedNetwork = networkPresenter.GetCurrentWifiNetwork();
-                    if (connectedNetwork != null)
-                    {
-                        networks.Remove(connectedNetwork);
-                        networks.Insert(0, connectedNetwork);
-                        WifiListView.ItemsSource = networks;
-                        SwitchToItemState(connectedNetwork, WifiConnectedState, true);
-                    }
-                    else
-                    {
-                        WifiListView.ItemsSource = networks;
-                    }
-
-
-                    NoWifiFoundText.Visibility = Visibility.Collapsed;
-                    WifiListView.Visibility = Visibility.Visible;
-                    EnableView(true);
+                    EnableView(true, true);
                     return;
                 }
             }
@@ -111,7 +119,7 @@ namespace IoTCoreDefaultApp
 
         private void WifiListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var connectedNetwork = networkPresenter.GetCurrentWifiNetwork();
+            var connectedNetwork = App.NetworkPresenter.GetCurrentWifiNetwork();
             var item = e.ClickedItem;
             if (connectedNetwork == item)
             {
@@ -122,16 +130,22 @@ namespace IoTCoreDefaultApp
         private void WifiListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var listView = sender as ListView;
+            var connectedNetwork = App.NetworkPresenter.GetCurrentWifiNetwork();
+
             foreach (var item in e.RemovedItems)
             {
-                SwitchToItemState(item, WifiInitialState, true);
+                if (connectedNetwork == item)
+                {
+                    SwitchToItemState(item, WifiConnectedState, true);
+                }
+                else
+                {
+                    SwitchToItemState(item, WifiInitialState, true);
+                }
             }
 
             foreach (var item in e.AddedItems)
             {
-                ConnectAutomatically = true;
-                var connectedNetwork = networkPresenter.GetCurrentWifiNetwork();
-
                 if (connectedNetwork == item)
                 {
                     SwitchToItemState(connectedNetwork, WifiConnectedMoreOptions, true);
@@ -141,105 +155,184 @@ namespace IoTCoreDefaultApp
                     SwitchToItemState(item, WifiConnectState, true);
                 }
             }
+
+            WifiListView.ScrollIntoView(WifiListView.SelectedItem);
         }
 
-        private async void ConnectButton_Clicked(object sender, RoutedEventArgs e)
+        private async void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                EnableView(false);
+                EnableView(false, true);
 
                 var button = sender as Button;
-                var network = button.DataContext as WiFiAvailableNetwork;
+                var network = button.DataContext as WifiListViewItemPresenter;
                 if (NetworkPresenter.IsNetworkOpen(network))
                 {
                     await ConnectToWifiAsync(network, null, Window.Current.Dispatcher);
+                }
+                else if (network.IsEapAvailable)
+                {
+                    SwitchToItemState(network, WifiEapPasswordState, false);
                 }
                 else
                 {
                     SwitchToItemState(network, WifiPasswordState, false);
                 }
             }
+            catch(Exception ex)
+            {
+                Log.Trace(ex.ToString());
+                throw;
+            }
             finally
             {
-                EnableView(true);
+                EnableView(true, true);
             }
         }
 
-        private async Task ConnectToWifiAsync(WiFiAvailableNetwork network, PasswordCredential credential, CoreDispatcher dispatcher)
+        private async Task OnConnected(WifiListViewItemPresenter network, WiFiConnectionStatus status, CoreDispatcher dispatcher)
+        {
+            if (status == WiFiConnectionStatus.Success)
+            {
+                await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    var itemLocation = WifiListViewItems.IndexOf(network);
+
+                    // don't move if index is -1 or 0
+                    if (itemLocation > 0)
+                    {
+                        // make sure first network doesn't also show connected
+                        SwitchToItemState(WifiListViewItems[0], WifiInitialState, true);
+
+                        // Show current connected network at top of list in connected state
+                        WifiListViewItems.Move(itemLocation, 0);
+                    }
+
+                    var item = SwitchToItemState(network, WifiConnectedState, true);
+                    if (item != null)
+                    {
+                        item.IsSelected = true;
+                    }
+                });
+
+                NetworkConnected?.Invoke(this, new EventArgs());
+            }
+            else
+            {
+                var resourceLoader = ResourceLoader.GetForCurrentView();
+                network.Message = resourceLoader.GetString(status.ToString() + "Text");
+                network.IsMessageVisible = true;
+                SwitchToItemState(network, WifiConnectState, true);
+            }
+        }
+
+        private async Task ConnectToWifiAsync(WifiListViewItemPresenter network, PasswordCredential credential, CoreDispatcher dispatcher)
         {
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 SwitchToItemState(network, WifiConnectingState, false);
             });
 
-            var didConnect = credential == null ?
-                networkPresenter.ConnectToNetwork(network, ConnectAutomatically) :
-                networkPresenter.ConnectToNetworkWithPassword(network, ConnectAutomatically, credential);
-            DataTemplate nextState = (await didConnect) ? WifiConnectedState : WifiInitialState;
-            bool isConnected = (nextState == WifiConnectedState);
-
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            Task<WiFiConnectionStatus> didConnect = null;
+            if (network.IsEapAvailable)
             {
-                var list = WifiListView.ItemsSource as ObservableCollection<WiFiAvailableNetwork>;
-                var itemLocation = list.IndexOf(network);
-                if (0 != itemLocation && isConnected)
-                {
-                    list.Move(itemLocation, 0);
-                }
-                var item = SwitchToItemState(network, nextState, true);
-                if (item != null)
-                {
-                    item.IsSelected = true;
-                }
-            });
-
-            if (isConnected)
-            {
-                NetworkConnected?.Invoke(this, new EventArgs());
+                didConnect = (credential == null) ?
+                    App.NetworkPresenter.ConnectToNetwork(network, network.ConnectAutomatically) :
+                    App.NetworkPresenter.ConnectToNetworkWithPassword(network, network.ConnectAutomatically, credential);
             }
+            else
+            { 
+                didConnect = (credential == null) ?
+                    App.NetworkPresenter.ConnectToNetwork(network, network.ConnectAutomatically) :
+                    App.NetworkPresenter.ConnectToNetworkWithPassword(network, network.ConnectAutomatically, credential);
+            }
+
+            WiFiConnectionStatus status = await didConnect;
+            await OnConnected(network, status, dispatcher);
         }
 
         private void DisconnectButton_Clicked(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            var network = button.DataContext as WiFiAvailableNetwork;
-            var connectedNetwork = networkPresenter.GetCurrentWifiNetwork();
-
-            if (network == connectedNetwork)
+            try
             {
-                networkPresenter.DisconnectNetwork(network);
-                var item = SwitchToItemState(network, WifiInitialState, true);
-                item.IsSelected = false;
+                var button = sender as Button;
+                var network = button.DataContext as WifiListViewItemPresenter;
+                var connectedNetwork = App.NetworkPresenter.GetCurrentWifiNetwork();
+
+                if (network == connectedNetwork)
+                {
+                    App.NetworkPresenter.DisconnectNetwork(network);
+                    var item = SwitchToItemState(network, WifiInitialState, true);
+                    item.IsSelected = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(ex.ToString());
+                throw;
             }
         }
 
         private async void NextButton_Clicked(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            PasswordCredential credential;
-
-            if (string.IsNullOrEmpty(CurrentPassword))
+            try
             {
-                credential = null;
-            }
-            else
-            {
-                credential = new PasswordCredential()
+                EnableView(false, true);
+                var button = sender as Button;
+                PasswordCredential credential;
+                var network = button.DataContext as WifiListViewItemPresenter;
+                if (network != null)
                 {
-                    Password = CurrentPassword
-                };
-            }
+                    if (string.IsNullOrEmpty(network.Password))
+                    {
+                        credential = null;
+                    }
+                    else
+                    {
+                        credential = new PasswordCredential();
+                        if (network.UsePassword)
+                        {
+                            if (!String.IsNullOrEmpty(network.Domain))
+                            {
+                                credential.Resource = network.Domain;
+                            }
+                            credential.UserName = network.UserName ?? "";
+                            credential.Password = network.Password ?? "";
+                        }
+                        else
+                        {
+                            credential.Password = network.Password;
+                        }
+                    }
 
-            var network = button.DataContext as WiFiAvailableNetwork;
-            await ConnectToWifiAsync(network, credential, Window.Current.Dispatcher);
+                    await ConnectToWifiAsync(network, credential, Window.Current.Dispatcher);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(ex.ToString());
+                throw;
+            }
+            finally
+            {
+                EnableView(true, true);
+            }
         }
 
         private void CancelButton_Clicked(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            var item = SwitchToItemState(button.DataContext, WifiInitialState, false);
-            item.IsSelected = false;
+            try
+            {
+                // Cancels the UI state but not the connection attempt
+                var button = sender as Button;
+                var item = SwitchToItemState(button.DataContext, WifiConnectState, false);
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(ex.ToString());
+                throw;
+            }
         }
 
         private ListViewItem SwitchToItemState(object dataContext, DataTemplate template, bool forceUpdate)
@@ -253,20 +346,8 @@ namespace IoTCoreDefaultApp
             {
                 item.ContentTemplate = template;
             }
+
             return item;
-        }
-
-        private void ConnectAutomaticallyCheckBox_Changed(object sender, RoutedEventArgs e)
-        {
-            var checkbox = sender as CheckBox;
-
-            ConnectAutomatically = checkbox.IsChecked ?? false;
-        }
-
-        private void WifiPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            var passwordBox = sender as PasswordBox;
-            CurrentPassword = passwordBox.Password;
         }
 
         private void WifiPasswordBox_Loaded(object sender, RoutedEventArgs e)
@@ -278,5 +359,32 @@ namespace IoTCoreDefaultApp
             }
         }
 
+        private async void PushButtonConnect_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                EnableView(false, true);
+                var button = sender as Button;
+                var network = button.DataContext as WifiListViewItemPresenter;
+                if (network != null)
+                {
+                    if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5, 0))
+                    {
+
+                        var didConnect = await network.Adapter.ConnectAsync(network.AvailableNetwork, network.ConnectAutomatically? WiFiReconnectionKind.Automatic : WiFiReconnectionKind.Manual, null, String.Empty, WiFiConnectionMethod.WpsPushButton).AsTask<WiFiConnectionResult>();
+                        await OnConnected(network, didConnect.ConnectionStatus, Window.Current.Dispatcher);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Trace(ex.ToString());
+                throw;
+            }
+            finally
+            {
+                EnableView(true, true);
+            }
+        }
     }
 }

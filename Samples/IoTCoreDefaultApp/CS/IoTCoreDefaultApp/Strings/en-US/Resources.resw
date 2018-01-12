@@ -766,6 +766,36 @@ Alternatively, click or tap the button below to enter your Administrator account
   <data name="PasswordText" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="DomainText" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="WpsText" xml:space="preserve">
+    <value>WPS</value>
+  </data>
+  <data name="UnspecifiedFailureText" xml:space="preserve">
+    <value>Unspecified Failure</value>
+  </data>
+  <data name="SuccessText" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="AccessRevokedText" xml:space="preserve">
+    <value>Access Revoked</value>
+  </data>
+  <data name="InvalidCredentialText" xml:space="preserve">
+    <value>Invalid Credential</value>
+  </data>
+  <data name="NetworkNotAvailableText" xml:space="preserve">
+    <value>Network Not Available</value>
+  </data>
+  <data name="TimeoutText" xml:space="preserve">
+    <value>Connection Timed Out</value>
+  </data>
+  <data name="UnsupportedAuthenticationProtocolText" xml:space="preserve">
+    <value>Unsupported Authentication Protocol</value>
+  </data>
+  <data name="UsePasswordText" xml:space="preserve">
+    <value>Use password</value>
+  </data>
   <data name="CmdTextEnabledSuccess" xml:space="preserve">
     <value>Successfully enabled Command Line Processor (cmd.exe) on your device.</value>
   </data>

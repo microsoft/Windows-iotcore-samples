@@ -3,6 +3,7 @@
 
 using SDKTemplate;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -130,17 +131,27 @@ namespace WiFiConnect
             rootPage.NotifyUser(string.Format("Network Report Timestamp: {0}", report.Timestamp), NotifyType.StatusMessage);
 
             ResultCollection.Clear();
+            ConcurrentDictionary<string, WiFiNetworkDisplay> dictionary = new ConcurrentDictionary<string, WiFiNetworkDisplay>();
 
             foreach (var network in report.AvailableNetworks)
             {
-                var item = new WiFiNetworkDisplay(network, firstAdapter);
+                if (!String.IsNullOrEmpty(network.Ssid))
+                {
+                    var item = new WiFiNetworkDisplay(network, firstAdapter);
+                    dictionary.TryAdd(network.Ssid, item);
+                }
+            }
+
+            var values = dictionary.Values;
+            foreach (var item in values)
+            { 
                 /*await*/ item.UpdateAsync();
-                if (IsConnected(network))
+                if (IsConnected(item.AvailableNetwork))
                 {
                     ResultCollection.Insert(0, item);
                     ResultsListView.SelectedItem = ResultsListView.Items[0];
                     ResultsListView.ScrollIntoView(ResultsListView.SelectedItem);
-                    SwitchToItemState(network, WifiConnectedState, false);
+                    SwitchToItemState(item.AvailableNetwork, WifiConnectedState, false);
                 }
                 else
                 {

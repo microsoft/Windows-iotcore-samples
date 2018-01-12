@@ -3,6 +3,7 @@
 
 using IoTCoreDefaultApp.Utils;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Devices.Enumeration;
@@ -40,6 +41,7 @@ namespace IoTCoreDefaultApp
 
         // Don't try and make discoverable if this has already been done
         private static bool isDiscoverable = false;
+        public static NetworkPresenter NetworkPresenter { get; } = new NetworkPresenter();
 
         public static bool IsBluetoothDiscoverable
         {
@@ -71,7 +73,7 @@ namespace IoTCoreDefaultApp
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 
             /*#if DEBUG
@@ -130,6 +132,11 @@ namespace IoTCoreDefaultApp
             Window.Current.Activate();
 
             Screensaver.InitializeScreensaver();
+            await Task.Run(async () =>
+            {
+                await App.NetworkPresenter.UpdateAvailableNetworksAsync(false);
+            });
+
         }
 
         protected override void OnActivated(IActivatedEventArgs args)

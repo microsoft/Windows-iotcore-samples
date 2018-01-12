@@ -1,9 +1,12 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
 
+using IoTCoreDefaultApp.Presenters;
+using IoTCoreDefaultApp.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +16,7 @@ using Windows.Devices.WiFi;
 using Windows.Networking;
 using Windows.Networking.Connectivity;
 using Windows.Security.Credentials;
+using Windows.System.Threading;
 
 namespace IoTCoreDefaultApp
 {
@@ -24,32 +28,48 @@ namespace IoTCoreDefaultApp
         private DeviceWatcher WiFiAdaptersWatcher;
         ManualResetEvent EnumAdaptersCompleted = new ManualResetEvent(false);
 
-        private ConcurrentDictionary<WiFiAvailableNetwork, WiFiAdapter> NetworkNameToInfo = new ConcurrentDictionary<WiFiAvailableNetwork, WiFiAdapter>();
-        private SemaphoreSlim NetworkNameToInfoLock = new SemaphoreSlim(1, 1);
+        private ConcurrentDictionary<string, WifiListViewItemPresenter> AvailableNetworks = new ConcurrentDictionary<string, WifiListViewItemPresenter>();
+        private SemaphoreSlim AvailableNetworksLock = new SemaphoreSlim(1, 1);
 
         private static WiFiAccessStatus? accessStatus;
+        private ThreadPoolTimer wifiRefreshTimer;
+        private TimeSpan refreshTimespan = TimeSpan.FromMinutes(5);
+        private TimeSpan expiredTimespan = TimeSpan.FromMinutes(7);
 
         public NetworkPresenter()
         {
-            WiFiAdaptersWatcher = DeviceInformation.CreateWatcher(WiFiAdapter.GetDeviceSelector());
-            WiFiAdaptersWatcher.EnumerationCompleted += AdaptersEnumCompleted;
-            WiFiAdaptersWatcher.Added += AdaptersAdded;
-            WiFiAdaptersWatcher.Removed += AdaptersRemoved;
-            WiFiAdaptersWatcher.Start();
+            Log.Enter();
+            Task.Run(() =>
+            {
+                if (TestAccess().Result)
+                {
+                    WiFiAdaptersWatcher = DeviceInformation.CreateWatcher(WiFiAdapter.GetDeviceSelector());
+                    WiFiAdaptersWatcher.EnumerationCompleted += AdaptersEnumCompleted;
+                    WiFiAdaptersWatcher.Added += AdaptersAdded;
+                    WiFiAdaptersWatcher.Removed += AdaptersRemoved;
+                    WiFiAdaptersWatcher.Start();
+                }
+            });
+            Log.Leave();
         }
 
         private void AdaptersRemoved(DeviceWatcher sender, DeviceInformationUpdate args)
         {
+            Log.Enter();
             WiFiAdapters.Remove(args.Id);
+            Log.Leave();
         }
 
         private void AdaptersAdded(DeviceWatcher sender, DeviceInformation args)
         {
+            Log.Enter();
             WiFiAdapters.Add(args.Id, null);
+            Log.Leave();
         }
 
         private async void AdaptersEnumCompleted(DeviceWatcher sender, object args)
         {
+            Log.Enter();
             List<String> WiFiAdaptersID = new List<string>(WiFiAdapters.Keys);
             for(int i = 0; i < WiFiAdaptersID.Count; i++)
             {
@@ -64,10 +84,23 @@ namespace IoTCoreDefaultApp
                 }
             }
             EnumAdaptersCompleted.Set();
+            if (WiFiAdapters.Count() > 0)
+            {
+                wifiRefreshTimer = ThreadPoolTimer.CreatePeriodicTimer(Timer_Tick, refreshTimespan);
+            }
+            Log.Leave();
+        }
+
+        private void Timer_Tick(ThreadPoolTimer timer)
+        {
+            Log.Enter();
+            App.NetworkPresenter.UpdateAvailableNetworksAsync(false).Wait();
+            Log.Leave();
         }
 
         public static string GetDirectConnectionName()
         {
+            Log.Enter();
             try
             {
                 var icp = NetworkInformation.GetInternetConnectionProfile();
@@ -82,11 +115,13 @@ namespace IoTCoreDefaultApp
                 // seeing cases where NetworkInformation.GetInternetConnectionProfile() fails
             }
 
+            Log.Leave();
             return null;
         }
 
         public static string GetCurrentNetworkName()
         {
+            Log.Enter();
             try
             {
                 var icp = NetworkInformation.GetInternetConnectionProfile();
@@ -103,11 +138,13 @@ namespace IoTCoreDefaultApp
 
             var resourceLoader = ResourceLoader.GetForCurrentView();
             var msg = resourceLoader.GetString("NoInternetConnection");
+            Log.Leave();
             return msg;
         }
 
         public static string GetCurrentIpv4Address()
         {
+            Log.Enter();
             try
             {
                 var icp = NetworkInformation.GetInternetConnectionProfile();
@@ -138,12 +175,14 @@ namespace IoTCoreDefaultApp
 
             var resourceLoader = ResourceLoader.GetForCurrentView();
             var msg = resourceLoader.GetString("NoInternetConnection");
+            Log.Leave();
             return msg;
         }
 
         // Call this method before accessing WiFiAdapters Dictionary
         private async Task UpdateAdapters()
         {
+            Log.Enter();
             bool fInit = false;
             foreach (var adapter in WiFiAdapters)
             {
@@ -170,9 +209,12 @@ namespace IoTCoreDefaultApp
                     }
                 }
             }
+            Log.Leave();
+
         }
         public async Task<bool> WifiIsAvailable()
         {
+            Log.Enter();
             if ((await TestAccess()) == false)
             {
                 return false;
@@ -181,7 +223,11 @@ namespace IoTCoreDefaultApp
             try
             {
                 EnumAdaptersCompleted.WaitOne();
-                await UpdateAdapters();
+                if (WiFiAdapters.Count == 0)
+                {
+                    await UpdateAdapters();
+                }
+                Log.Leave();
                 return (WiFiAdapters.Count > 0);
             }
             catch (Exception)
@@ -190,18 +236,39 @@ namespace IoTCoreDefaultApp
             }
         }
 
-        private async Task<bool> UpdateInfo()
+        private DateTime LastRefresh = DateTime.MinValue;
+        public bool IsRefreshNeeded()
         {
+            Log.Enter();
+            bool result = false;
+            if (DateTime.Now > (LastRefresh + expiredTimespan))
+            {
+                result = true;
+            }
+            Log.Leave($"result={result}");
+            return result;
+        }
+
+        public async Task<bool> UpdateAvailableNetworksAsync(bool refreshIfNeeded)
+        {
+            Log.Enter($"refreshIfNeeded={refreshIfNeeded}");
             try
             {
-                await NetworkNameToInfoLock.WaitAsync();
+                await AvailableNetworksLock.WaitAsync();
 
                 if ((await TestAccess()) == false)
                 {
                     return false;
                 }
 
-                NetworkNameToInfo.Clear();
+                if (refreshIfNeeded && !IsRefreshNeeded())
+                {
+                    return true;
+                }
+
+                LastRefresh = DateTime.Now;
+
+                EnumAdaptersCompleted.WaitOne();
                 List<WiFiAdapter> WiFiAdaptersList = new List<WiFiAdapter>(WiFiAdapters.Values);
                 foreach (var adapter in WiFiAdaptersList)
                 {
@@ -225,52 +292,69 @@ namespace IoTCoreDefaultApp
                         continue;
                     }
 
+                    DateTime reportTime = DateTime.Now;
                     foreach (var network in adapter.NetworkReport.AvailableNetworks)
                     {
-                        if (!HasSsid(NetworkNameToInfo, network.Ssid))
+                        if (!String.IsNullOrWhiteSpace(network.Ssid))
                         {
-                            NetworkNameToInfo[network] = adapter;
+                            if (AvailableNetworks.ContainsKey(network.Ssid))
+                            {
+                                WifiListViewItemPresenter value;
+                                AvailableNetworks.TryRemove(network.Ssid, out value);
+                            }
+
+                            var item = new WifiListViewItemPresenter(network, adapter, reportTime);
+                            if (AvailableNetworks.TryAdd(network.Ssid, item))
+                            {
+                                await item.InitializeAsync();
+                                Log.Trace($"Adding {network.Ssid}");
+                            }
+                        }
+                    }
+
+                    // remove some jitter from the list when refresh is repeatedly clicked
+                    // by remembering networks from the last 5 minutes
+                    DateTime expireTime = DateTime.Now - TimeSpan.FromMinutes(5);
+                    foreach(var key in AvailableNetworks.Keys)
+                    {
+                        if (AvailableNetworks[key].LastSeen < expireTime)
+                        {
+                            WifiListViewItemPresenter value;
+                            AvailableNetworks.TryRemove(key, out value);
                         }
                     }
                 }
 
+                Log.Leave();
                 return true;
             }
             finally
             {
-                NetworkNameToInfoLock.Release();
+                AvailableNetworksLock.Release();
             }
         }
 
-        private bool HasSsid(ConcurrentDictionary<WiFiAvailableNetwork, WiFiAdapter> resultCollection, string ssid)
+        public async Task<IList<WifiListViewItemPresenter>> GetAvailableNetworks(bool refreshIfNeeded)
         {
-            foreach (var network in resultCollection)
-            {
-                if (!string.IsNullOrEmpty(network.Key.Ssid) && network.Key.Ssid == ssid)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public async Task<IList<WiFiAvailableNetwork>> GetAvailableNetworks()
-        {
-            await UpdateInfo();
+            Log.Enter();
+            await UpdateAvailableNetworksAsync(refreshIfNeeded);
 
             try
             {
-                await NetworkNameToInfoLock.WaitAsync();
-                return NetworkNameToInfo.Keys.ToList();
+                await AvailableNetworksLock.WaitAsync();
+                var availableNetworks = AvailableNetworks.Values.ToList();
+                availableNetworks.Sort((item1, item2) => item2.AvailableNetwork.SignalBars.CompareTo(item1.AvailableNetwork.SignalBars));
+                return availableNetworks;
             }
             finally
             {
-                NetworkNameToInfoLock.Release();
+                AvailableNetworksLock.Release();
             }
         }
 
-        public WiFiAvailableNetwork GetCurrentWifiNetwork()
+        static public string GetConnectedProfileName()
         {
+            Log.Enter();
             IReadOnlyCollection<ConnectionProfile> connectionProfiles = null;
             try
             {
@@ -299,124 +383,108 @@ namespace IoTCoreDefaultApp
 
             var firstProfile = validProfiles.First() as ConnectionProfile;
 
-            try
-            {
-                NetworkNameToInfoLock.WaitAsync().ConfigureAwait(false);
-                return NetworkNameToInfo.Keys.FirstOrDefault(wifiNetwork => wifiNetwork.Ssid.Equals(firstProfile.ProfileName));
-            }
-            finally
-            {
-                NetworkNameToInfoLock.Release();
-            }
+            Log.Leave();
+            return firstProfile.ProfileName;
         }
 
-        public async Task<bool> ConnectToNetwork(WiFiAvailableNetwork network, bool autoConnect)
+        public WifiListViewItemPresenter GetCurrentWifiNetwork()
         {
+            Log.Enter();
+
+
             try
             {
-                await NetworkNameToInfoLock.WaitAsync();
-                if (network == null)
+                AvailableNetworksLock.WaitAsync().ConfigureAwait(false);
+                string connectedProfile = GetConnectedProfileName();
+                if (connectedProfile != null)
                 {
-                    return false;
+                    WifiListViewItemPresenter network;
+                    AvailableNetworks.TryGetValue(connectedProfile, out network);
+                    Log.Leave();
+                    return network;
                 }
-
-                // We need to use TryGetValue here.  If we are rescanning for Wifi networks
-                // (ie. 'await'ing on ScanAsync() in UpdateInfo(), 'NetworkNameToInfo' may not
-                // have an entry described by the key'network'.
-                WiFiAdapter wifiAdapter;
-                if (!NetworkNameToInfo.TryGetValue(network, out wifiAdapter))
+                else
                 {
-                    return false;
-                }
-
-                try
-                {
-                    var result = await wifiAdapter.ConnectAsync(network, autoConnect ? WiFiReconnectionKind.Automatic : WiFiReconnectionKind.Manual);
-
-                    //Call redirect only for Open Wifi
-                    if (IsNetworkOpen(network))
-                    {
-                        //Navigate to http://www.msftconnecttest.com/redirect 
-                        NavigationUtils.NavigateToScreen(typeof(WebBrowserPage), Common.GetResourceText("MicrosoftWifiConnect"));
-                    }
-
-                    return (result.ConnectionStatus == WiFiConnectionStatus.Success);
-                }
-                catch (Exception)
-                {
-                    return false;
+                    return null;
                 }
             }
             finally
             {
-                NetworkNameToInfoLock.Release();
+                AvailableNetworksLock.Release();
             }
         }
 
-        public void DisconnectNetwork(WiFiAvailableNetwork network)
+        public async Task<WiFiConnectionStatus> ConnectToNetwork(WifiListViewItemPresenter network, bool autoConnect)
         {
+            Log.Enter();
+            await AvailableNetworksLock.WaitAsync();
+            if (network == null)
+            {
+                return WiFiConnectionStatus.UnspecifiedFailure;
+            }
+
             try
             {
-                NetworkNameToInfoLock.Wait();
-                NetworkNameToInfo[network].Disconnect();
+                var result = await network.Adapter.ConnectAsync(network.AvailableNetwork, autoConnect ? WiFiReconnectionKind.Automatic : WiFiReconnectionKind.Manual);
+
+                //Call redirect only for Open Wifi
+                if (IsNetworkOpen(network))
+                {
+                    //Navigate to http://www.msftconnecttest.com/redirect 
+                    NavigationUtils.NavigateToScreen(typeof(WebBrowserPage), Common.GetResourceText("MicrosoftWifiConnect"));
+                }
+
+                Log.Leave($"LEAVE {result.ConnectionStatus}");
+                return result.ConnectionStatus;
             }
-            finally
+            catch (Exception)
             {
-                NetworkNameToInfoLock.Release();
+                return WiFiConnectionStatus.UnspecifiedFailure;
             }
         }
 
-        public static bool IsNetworkOpen(WiFiAvailableNetwork network)
+        public void DisconnectNetwork(WifiListViewItemPresenter network)
         {
-            return network.SecuritySettings.NetworkEncryptionType == NetworkEncryptionType.None;
+            Log.Enter();
+            network.Adapter.Disconnect();
+            Log.Leave();
+
         }
 
-        public async Task<bool> ConnectToNetworkWithPassword(WiFiAvailableNetwork network, bool autoConnect, PasswordCredential password)
+        public static bool IsNetworkOpen(WifiListViewItemPresenter network)
         {
+            Log.Enter();
+            return network.AvailableNetwork.SecuritySettings.NetworkEncryptionType == NetworkEncryptionType.None;
+        }
+
+        public async Task<WiFiConnectionStatus> ConnectToNetworkWithPassword(WifiListViewItemPresenter network, bool autoConnect, PasswordCredential password)
+        {
+            Log.Enter();
             try
             {
-                await NetworkNameToInfoLock.WaitAsync();
-                if (network == null)
-                {
-                    return false;
-                }
+                var result = await network.Adapter.ConnectAsync(
+                    network.AvailableNetwork,
+                    autoConnect ? WiFiReconnectionKind.Automatic : WiFiReconnectionKind.Manual,
+                    password);
 
-                // We need to use TryGetValue here.  If we are rescanning for Wifi networks
-                // (ie. 'await'ing on ScanAsync() in UpdateInfo(), 'NetworkNameToInfo' may not
-                // have an entry described by the key'network'.
-                WiFiAdapter wifiAdapter;
-                if (!NetworkNameToInfo.TryGetValue(network, out wifiAdapter))
-                {
-                    return false;
-                }
-
-                try
-                {
-                    var result = await wifiAdapter.ConnectAsync(
-                        network,
-                        autoConnect ? WiFiReconnectionKind.Automatic : WiFiReconnectionKind.Manual,
-                        password);
-
-                    return (result.ConnectionStatus == WiFiConnectionStatus.Success);
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                Log.Leave($"LEAVE {result.ConnectionStatus}");
+                return result.ConnectionStatus;
             }
-            finally
+            catch (Exception)
             {
-                NetworkNameToInfoLock.Release();
+                return WiFiConnectionStatus.UnspecifiedFailure;
             }
         }
 
         private static async Task<bool> TestAccess()
         {
+            Log.Enter();
             if (!accessStatus.HasValue)
             {
                 accessStatus = await WiFiAdapter.RequestAccessAsync();
             }
 
+            Log.Leave();
             return (accessStatus == WiFiAccessStatus.Allowed);
         }
 
@@ -431,6 +499,7 @@ namespace IoTCoreDefaultApp
 
         public static async Task<IList<NetworkInfo>> GetNetworkInformation()
         {
+            Log.Enter();
             var networkList = new Dictionary<Guid, NetworkInfo>();
 
             try
@@ -504,6 +573,7 @@ namespace IoTCoreDefaultApp
 
             var res = new List<NetworkInfo>();
             res.AddRange(networkList.Values);
+            Log.Leave();
             return res;
         }
     }

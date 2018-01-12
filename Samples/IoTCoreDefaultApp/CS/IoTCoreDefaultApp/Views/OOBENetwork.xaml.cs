@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
 
+using IoTCoreDefaultApp.Utils;
 using System;
+using System.Threading.Tasks;
 using Windows.Networking.Connectivity;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -17,6 +19,7 @@ namespace IoTCoreDefaultApp
     public sealed partial class OOBENetwork : Page
     {
         private CoreDispatcher OOBENetworkPageDispatcher;
+        private bool connected = false;
 
         public OOBENetwork()
         {
@@ -24,7 +27,7 @@ namespace IoTCoreDefaultApp
             OOBENetworkPageDispatcher = Window.Current.Dispatcher;
 
             NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
-            NetworkGrid.NetworkConnected += NetworkGrid_NetworkConnected;
+            NetworkControl.NetworkConnected += NetworkGrid_NetworkConnected;
 
 
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
@@ -34,28 +37,37 @@ namespace IoTCoreDefaultApp
             this.Loaded += async (sender, e) =>
             {
                 await OOBENetworkPageDispatcher.RunAsync(CoreDispatcherPriority.Low, async () => {
-                    await NetworkGrid.SetupNetworkAsync();
+                    NetworkControl.SetupDirectConnection();
+                    await NetworkControl.RefreshWifiListViewItemsAsync(true);
                 });
             };
         }
 
         private async void NetworkInformation_NetworkStatusChanged(object sender)
         {
-            await OOBENetworkPageDispatcher.RunAsync(CoreDispatcherPriority.Low, async () =>
+            Log.Enter();
+            if (!connected)
             {
-                await NetworkGrid.SetupNetworkAsync();
-            });
+                await OOBENetworkPageDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                {
+                    NetworkControl.SetupDirectConnection();
+                });
+            }
+            Log.Leave();
         }
 
         private async void NetworkGrid_NetworkConnected(object sender, EventArgs e)
         {
+            Log.Enter();
+            connected = true;
             await OOBENetworkPageDispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 await CortanaHelper.LaunchCortanaToConsentPageAsyncIfNeeded();
                 NavigationUtils.NavigateToScreen(typeof(MainPage));
             });
+            Log.Leave();
         }
-       
+
         private void BackButton_Clicked(object sender, RoutedEventArgs e)
         {
             NavigationUtils.GoBack();
