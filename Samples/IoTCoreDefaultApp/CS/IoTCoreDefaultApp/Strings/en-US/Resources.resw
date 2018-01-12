@@ -639,6 +639,11 @@
     <value>Already registered for inbound pairing, supported ceremonies: {0}</value>
     <comment>Format string for message displayed when Inbound pairing handler registration already done</comment>
   </data>
+  <data name="BluetoothListenerCreationFailedFormat" xml:space="preserve">
+    <value>Failed to successfully register for Inbound pairing:
+{0}</value>
+    <comment>Message displayed on when Bluetooth watcher fails to be created. The new line before {0} is deliberate and should be kept</comment>
+  </data>
   <data name="BluetoothInboundRegistrationFailed" xml:space="preserve">
     <value>Failed to register for inbound pairing.</value>
     <comment>Message displayed when Inbound pairing handler registration fails</comment>
