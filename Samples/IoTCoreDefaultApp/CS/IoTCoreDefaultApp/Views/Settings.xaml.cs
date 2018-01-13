@@ -218,10 +218,12 @@ namespace IoTCoreDefaultApp
             // Clear the current collection
             bluetoothDeviceObservableCollection.Clear();
             // Start the watcher
-            StartWatcher();
-            // Display a message
-            string confirmationMessage = Common.GetResourceText("BluetoothOn");
-            DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+            if (StartWatcher())
+            {
+                // Display a message
+                string confirmationMessage = Common.GetResourceText("BluetoothOn");
+                DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+            }
 
         }
 
@@ -488,103 +490,116 @@ namespace IoTCoreDefaultApp
         /// <summary>
         /// Start the Device Watcher and set callbacks to handle devices appearing and disappearing
         /// </summary>
-        private void StartWatcher()
+        private bool StartWatcher()
         {
-            //ProtocolSelectorInfo protocolSelectorInfo;
-            string aqsFilter = @"System.Devices.Aep.ProtocolId:=""{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}"" OR System.Devices.Aep.ProtocolId:=""{bb7bb05e-5972-42b5-94fc-76eaa7084d49}""";  //Bluetooth + BluetoothLE
-
-            // Request the IsPaired property so we can display the paired status in the UI
-            string[] requestedProperties = { "System.Devices.Aep.IsPaired" };
-
-            //// Get the device selector chosen by the UI, then 'AND' it with the 'CanPair' property
-            //protocolSelectorInfo = (ProtocolSelectorInfo)selectorComboBox.SelectedItem;
-            //aqsFilter = protocolSelectorInfo.Selector + " AND System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True";
-
-            deviceWatcher = DeviceInformation.CreateWatcher(
-                aqsFilter,
-                requestedProperties,
-                DeviceInformationKind.AssociationEndpoint
-                );
-
-            // Hook up handlers for the watcher events before starting the watcher
-
-            handlerAdded = new TypedEventHandler<DeviceWatcher, DeviceInformation>(async (watcher, deviceInfo) =>
+            try
             {
+                //ProtocolSelectorInfo protocolSelectorInfo;
+                string aqsFilter = @"System.Devices.Aep.ProtocolId:=""{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}"" OR System.Devices.Aep.ProtocolId:=""{bb7bb05e-5972-42b5-94fc-76eaa7084d49}""";  //Bluetooth + BluetoothLE
+
+                // Request the IsPaired property so we can display the paired status in the UI
+                string[] requestedProperties = { "System.Devices.Aep.IsPaired" };
+
+                //// Get the device selector chosen by the UI, then 'AND' it with the 'CanPair' property
+                //protocolSelectorInfo = (ProtocolSelectorInfo)selectorComboBox.SelectedItem;
+                //aqsFilter = protocolSelectorInfo.Selector + " AND System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True";
+
+                deviceWatcher = DeviceInformation.CreateWatcher(
+                    aqsFilter,
+                    requestedProperties,
+                    DeviceInformationKind.AssociationEndpoint
+                    );
+
+                // Hook up handlers for the watcher events before starting the watcher
+
+                handlerAdded = new TypedEventHandler<DeviceWatcher, DeviceInformation>(async (watcher, deviceInfo) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
-                    bluetoothDeviceObservableCollection.Add(new BluetoothDeviceInformationDisplay(deviceInfo));
+                    {
+                        bluetoothDeviceObservableCollection.Add(new BluetoothDeviceInformationDisplay(deviceInfo));
+                    });
                 });
-            });
-            deviceWatcher.Added += handlerAdded;
+                deviceWatcher.Added += handlerAdded;
 
-            handlerUpdated = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
-            {
+                handlerUpdated = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
+                    {
                     // Find the corresponding updated DeviceInformation in the collection and pass the update object
                     // to the Update method of the existing DeviceInformation. This automatically updates the object
                     // for us.
                     foreach (BluetoothDeviceInformationDisplay deviceInfoDisp in bluetoothDeviceObservableCollection)
-                    {
-                        if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
                         {
-                            deviceInfoDisp.Update(deviceInfoUpdate);
-                            break;
+                            if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
+                            {
+                                deviceInfoDisp.Update(deviceInfoUpdate);
+                                break;
+                            }
                         }
-                    }
+                    });
                 });
-            });
-            deviceWatcher.Updated += handlerUpdated;
+                deviceWatcher.Updated += handlerUpdated;
 
-            handlerRemoved = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
-            {
+                handlerRemoved = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
+                    {
                     // Find the corresponding DeviceInformation in the collection and remove it
                     foreach (BluetoothDeviceInformationDisplay deviceInfoDisp in bluetoothDeviceObservableCollection)
-                    {
-                        if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
                         {
-                            bluetoothDeviceObservableCollection.Remove(deviceInfoDisp);
-                            break;
+                            if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
+                            {
+                                bluetoothDeviceObservableCollection.Remove(deviceInfoDisp);
+                                break;
+                            }
                         }
-                    }
+                    });
                 });
-            });
-            deviceWatcher.Removed += handlerRemoved;
+                deviceWatcher.Removed += handlerRemoved;
 
-            handlerEnumCompleted = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
-            {
-                await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                handlerEnumCompleted = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
                 {
+                    await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                    {
                     // Finished enumerating
                     StackLoading.Visibility = Visibility.Collapsed;
-                    var index = confirmationText.Text.IndexOf(Common.GetResourceText("BluetoothOn"));
-                    if (index != -1)
-                    {
-                        DisplayMessagePanelAsync(confirmationText.Text.Substring(0, index), MessageType.InformationalMessage, true);
-                    } 
-                    
-                });
-            });
-            deviceWatcher.EnumerationCompleted += handlerEnumCompleted;
+                        var index = confirmationText.Text.IndexOf(Common.GetResourceText("BluetoothOn"));
+                        if (index != -1)
+                        {
+                            DisplayMessagePanelAsync(confirmationText.Text.Substring(0, index), MessageType.InformationalMessage, true);
+                        }
 
-            handlerStopped = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
-            {
-                await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                    });
+                });
+                deviceWatcher.EnumerationCompleted += handlerEnumCompleted;
+
+                handlerStopped = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
                 {
+                    await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                    {
                     // Device watcher stopped
                     StackLoading.Visibility = Visibility.Collapsed;
+                    });
                 });
-            });
-            deviceWatcher.Stopped += handlerStopped;
+                deviceWatcher.Stopped += handlerStopped;
 
-            // Start the Device Watcher
-            deviceWatcher.Start();
-            StackLoading.Visibility = Visibility.Visible;
+                // Start the Device Watcher
+                deviceWatcher.Start();
+                StackLoading.Visibility = Visibility.Visible;
+            }
+            catch (Exception e)
+            {
+                string formatString = Common.GetResourceText("BluetoothListenerCreationFailedFormat");
+                string confirmationMessage = string.Format(formatString, e.Message);
+                DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+                StackLoading.Visibility = Visibility.Collapsed;
+                deviceWatcher = null;
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -1091,10 +1106,12 @@ namespace IoTCoreDefaultApp
                 // Clear the current collection
                 bluetoothDeviceObservableCollection.Clear();
                 // Start the watcher
-                StartWatcher();
-                // Display a message
-                confirmationMessage += Common.GetResourceText("BluetoothOn");
-                DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+                if (StartWatcher())
+                {
+                    // Display a message
+                    confirmationMessage += Common.GetResourceText("BluetoothOn");
+                    DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+                }
             }
         }
 
