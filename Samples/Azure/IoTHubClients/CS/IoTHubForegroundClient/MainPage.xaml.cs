@@ -55,7 +55,7 @@ namespace IoTHubForegroundClient
                 StorageFile connectionStringFile = await storageFolder.GetFileAsync(ConnectionStringFileName);
                 return await FileIO.ReadTextAsync(connectionStringFile);
             }
-            catch (System.IO.FileNotFoundException ex)
+            catch (System.IO.FileNotFoundException)
             {
                 ConnectStringBox.Text = "<The file " + ConnectionStringFileName + " is missing from the documents folder. Copy/Paste the device connection string here>";
             }
@@ -106,9 +106,9 @@ namespace IoTHubForegroundClient
             }
         }
 
-        private void ShowDieNumber(int value)
+        private async void ShowDieNumber(int value)
         {
-            CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 DieNumberBlock.Text = value.ToString();
             });
@@ -138,9 +138,9 @@ namespace IoTHubForegroundClient
             }
         }
 
-        private void ShowTelemetry(double temperature, double pressure, double humidity)
+        private async void ShowTelemetry(double temperature, double pressure, double humidity)
         {
-            CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 TemperatureBlock.Text = temperature.ToString("F", CultureInfo.InvariantCulture);
                 PressureBlock.Text = pressure.ToString("F", CultureInfo.InvariantCulture);
@@ -192,9 +192,9 @@ namespace IoTHubForegroundClient
             }
         }
 
-        private void ShowSetting(string setting, double value)
+        private async void ShowSetting(string setting, double value)
         {
-            CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 switch (setting)
                 {
