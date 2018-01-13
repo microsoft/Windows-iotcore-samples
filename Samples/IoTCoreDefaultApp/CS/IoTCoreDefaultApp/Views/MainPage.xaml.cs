@@ -68,6 +68,7 @@ namespace IoTCoreDefaultApp
                     UpdateBoardInfo();
                     UpdateNetworkInfo();
                     UpdateConnectedDevices();
+                    UpdatePackageVersion();
                 });
             };
 
@@ -166,6 +167,15 @@ namespace IoTCoreDefaultApp
                     (version & 0x00000000FFFF0000) >> 16,
                     version & 0x000000000000FFFF);
             }
+        }
+
+        private void UpdatePackageVersion()
+        {
+            AppxVersion.Text = String.Format(CultureInfo.InvariantCulture, "v{0}.{1}.{2}.{3}",
+              Package.Current.Id.Version.Major,
+              Package.Current.Id.Version.Minor,
+              Package.Current.Id.Version.Build,
+              Package.Current.Id.Version.Revision);
         }
 
         private void WindowsOnDevices_Click(object sender, RoutedEventArgs e)

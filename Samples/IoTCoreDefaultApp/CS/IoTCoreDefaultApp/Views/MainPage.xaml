@@ -143,7 +143,9 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="72" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="24" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" x:Name="BoardName" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="{StaticResource AccentBrush}" Text="IoTCore Device"/>
@@ -162,6 +164,9 @@
                     <StackPanel Grid.Row="4">
                         <TextBlock Text="{Binding [ConnectedDevicesText]}" Style="{StaticResource BaseTextBlockStyle}" />
                         <ItemsControl x:Name="ConnectedDevices" Foreground="{StaticResource PaleTextBrush}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="6"  HorizontalAlignment="Right">
+                        <TextBlock x:Name="AppxVersion" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource PaleTextBrush}"/>
                     </StackPanel>
                 </Grid>
             </Grid>
