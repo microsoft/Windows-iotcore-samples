@@ -143,7 +143,7 @@ namespace IoTCoreDefaultApp
                 var di = devicePairingArgs.DeviceInformation;
 
                 // Automatically switch to Bluetooth Settings page
-                NavigationUtils.NavigateToScreen(typeof(Settings));
+                NavigationUtils.NavigateToScreen(typeof(Settings), "BluetoothListViewItem");
 
                 int bluetoothSettingsIndex = 2;
                 Frame rootFrame = Window.Current.Content as Frame;
