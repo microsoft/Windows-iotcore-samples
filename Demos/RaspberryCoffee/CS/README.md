@@ -1,11 +1,11 @@
-# Pet Recognition Door 
-This project employs computer vision to ensure that your cat will have exclusive entry access to your home. The door is motion-activated, and will unlock only when it detects a cat face.
+# Raspberry Coffee
+This project is a coffee maker that can be controlled using your phone's built-in virtual assistant. The coffee maker used here is from Black and Decker, and is connected to a Raspberry Pi 2.
 
 ## Cloning the project
 
 Navigate to the root folder [here](https://github.com/Microsoft/Windows-iotcore-samples) and either download the samples as a zip file or clone them using git. 
 
-The step-by-step instruction for building this project can be found on https://www.hackster.io/windowsiot/cat-door-with-pet-recognition-514dac
+The step-by-step instruction for building this project can be found on https://www.hackster.io/windows-iot/raspberry-coffee-955b13)
 
 ===
 
