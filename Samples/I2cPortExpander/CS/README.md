@@ -3,7 +3,7 @@
 ![I2C Port Expander Image](../../../Resources/images/I2CPortExpander/PortExpanderProjectPicture_480.png)
 
 In this sample, we'll connect an I2C port expander to your Raspberry Pi 2 or 3 and create a simple app that uses the port expander to read the status of a tactile switch and control an LED. No background knowledge of I2C or port expanders is needed.
-If you want to know more about I2C, SparkFun provides a great [tutorial on I2C](https://learn.sparkfun.com/tutorials/i2c){:target="_blank"}.
+If you want to know more about I2C, SparkFun provides a great [tutorial on I2C](https://learn.sparkfun.com/tutorials/i2c).
 
 This is a headed sample, so please ensure that your device is in headed
 mode by running this command: `setbootoption.exe headed` (changing the headed/headless state will require a reboot).
@@ -14,15 +14,15 @@ You will need the following components:
 
 * 1 Raspberry Pi 2 or 3
 
-* <a name="I2C_PortExpander"></a>1 [MCP23008 8-bit I/O Port Expander](http://www.digikey.com/product-detail/en/MCP23008-E%2FP/MCP23008-E%2FP-ND/735951){:target="_blank"} in PDIP package
+* <a name="I2C_PortExpander"></a>1 [MCP23008 8-bit I/O Port Expander](http://www.digikey.com/product-detail/en/MCP23008-E%2FP/MCP23008-E%2FP-ND/735951) in PDIP package
 
-* 1 [red LED](http://www.digikey.com/product-detail/en/C5SMF-RJS-CT0W0BB1/C5SMF-RJS-CT0W0BB1-ND/2341832){:target="_blank"}
+* 1 [red LED](http://www.digikey.com/product-detail/en/C5SMF-RJS-CT0W0BB1/C5SMF-RJS-CT0W0BB1-ND/2341832)
 
-* 1 [tactile switch](http://www.digikey.com/product-detail/en/320.02E11.08BLK/EG1311-ND/101397){:target="_blank"}
+* 1 [tactile switch](http://www.digikey.com/product-detail/en/320.02E11.08BLK/EG1311-ND/101397)
 
-* 1 [330 &#x2126; resistor](http://www.digikey.com/product-detail/en/CFR-25JB-52-330R/330QBK-ND/1636){:target="_blank"}
+* 1 [330 &#x2126; resistor](http://www.digikey.com/product-detail/en/CFR-25JB-52-330R/330QBK-ND/1636)
 
-* 1 [10k &#x2126; resistor](http://www.digikey.com/product-detail/en/CFR-25JB-52-10K/10KQBK-ND/338){:target="_blank"}
+* 1 [10k &#x2126; resistor](http://www.digikey.com/product-detail/en/CFR-25JB-52-10K/10KQBK-ND/338)
 
 * An HDMI monitor
 
@@ -59,7 +59,7 @@ Place the MCP23008 Port Expander on your breadboard such that it straddles the c
 
 *Image made with [Fritzing](http://fritzing.org/)*
 
-The pinout of the MCP23008 is shown below and can be found in the [datasheet](http://ww1.microchip.com/downloads/en/DeviceDoc/21919e.pdf){:target="_blank"}.
+The pinout of the MCP23008 is shown below and can be found in the [datasheet](http://ww1.microchip.com/downloads/en/DeviceDoc/21919e.pdf).
 
 ![MCP23008 Pinout](../../../Resources/images/I2CPortExpander/MCP23008_Pinout.PNG)
 
@@ -235,7 +235,7 @@ Here are what some of these constants and variables represent
 
  * `iodirRegister`, `gpioRegister` and `olatRegister` are our local copies of the values in the corresponding registers in the port expander.
 
-\* See the [MCP23008 datasheet](http://ww1.microchip.com/downloads/en/DeviceDoc/21919e.pdf){:target="_blank"} for details.
+\* See the [MCP23008 datasheet](http://ww1.microchip.com/downloads/en/DeviceDoc/21919e.pdf)for details.
 
 The method `InitializeSystem()`
 
