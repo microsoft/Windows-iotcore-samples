@@ -4,7 +4,7 @@ These are the available versions of this Windows 10 IoT Core sample:
 
 *	[C#](./CS/README.md)
 
-This sample demonestrates how to connect to IoT Hub, send telemetry, and monitor and respond to device twin state changes.
+This sample demonstrates how to connect to IoT Hub, send telemetry, and monitor and respond to device twin state changes.
 
 The sample is Microsoft IoT Central compatible. See below for a complete walk-through.
 
@@ -61,11 +61,11 @@ To deploy the client application to your Windows IoT Device,
   - Click ‘Azure IoT Hub Client’
   - Click ‘Deploy and run’
 
-<img src="webb.capture.png"/>
+<img src="../../../Resources/images/Azure/IoTHubClients/webb.capture.png"/>
 
 The application should launch on the device, and will look something like this:
 
-<img src="IoTHubClientScreenshot.png"/>
+<img src="../../../Resources/images/Azure/IoTHubClients/IoTHubClientScreenshot.png"/>
 
 In Microsoft IoT Central, you can see how the code running on the Raspberry Pi interacts with the application:
 
