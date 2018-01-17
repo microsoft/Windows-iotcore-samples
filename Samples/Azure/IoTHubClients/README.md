@@ -61,11 +61,11 @@ To deploy the client application to your Windows IoT Device,
   - Click ‘Azure IoT Hub Client’
   - Click ‘Deploy and run’
 
-<img src="../../../Resources/images/Azure/IoTHubClients/webb.capture.png"/>
+<img src="../../../Resources/images/Azure/IoTHubClients/webb.capture.png">
 
 The application should launch on the device, and will look something like this:
 
-<img src="../../../Resources/images/Azure/IoTHubClients/IoTHubClientScreenshot.png"/>
+<img src="../../../Resources/images/Azure/IoTHubClients/IoTHubClientScreenshot.png">
 
 In Microsoft IoT Central, you can see how the code running on the Raspberry Pi interacts with the application:
 
