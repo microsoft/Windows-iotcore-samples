@@ -63,22 +63,26 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
  <tr>
   <td><a href="Samples/HelloBlinkyBackground">HelloBlinkyBackground</a></td>
   <td><a href="Samples/NFCForIoT">NFCForIoT</a></td>
-  <td><a href="Samples/PotentiometerSensor">PotentiometerSensor</a></td>
+  <td><a href="Samples/PotentiometerSensor">Potentiomete rSensor</a></td>
  </tr>
  <tr>
-  <td><a href="Samples/PushButton">PushButton</a></td>
-  <td><a href="Samples/RGBLED">RGBLED</a></td>
+  <td><a href="Samples/PushButton">Push Button</a></td>
+  <td><a href="Samples/RGBLED">RGB LED</a></td>
   <td><a href="Samples/Accelerometer">Accelerometer</a></td>
  </tr>
  <tr>
-  <td><a href="Samples/SPIDisplay">SPIDisplay</a></td>
+  <td><a href="Samples/SPIDisplay">SPI Display</a></td>
   <td><a href="Samples/TempForceSensor">TempForceSensor</a></td>
   <td><a href="Samples/VideoCaptureSample">VideoCaptureSample</a></td>
  </tr>
   <tr>
-  <td><a href="Samples/I2CCompass">I2CCompass</a></td>
+  <td><a href="Samples/I2CCompass">I2C Compass</a></td>
   <td><a href="Samples/ContainerWebSocket">ContainerWebSocket</a></td>
   <td><a href="Samples/GpioOneWire">GpioOneWire</a></td>
+ </tr>
+  <tr>
+  <td><a href="Samples/I2cPortExpander">I2C Port Expander</a></td>
+  <td><a href="Samples/IoTBlockly">IoT Blockly</a></td>
  </tr>
 </table>
 
@@ -96,26 +100,49 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <td><a href="Samples/HelloWorld">HelloWorld</a></td>
  </tr>
  <tr>
-  <td><a href="Samples/IotBrowser">IoTBrowser</a></td>
-  <td><a href="Samples/IoTCoreDefaultApp">IoTCoreDefaultApp</a></td>
-  <td><a href="Samples/IoTCoreMediaPlayer">IoTCoreMediaPlayer</a></td>
+  <td><a href="Samples/IotBrowser">IoT Browser</a></td>
+  <td><a href="Samples/IoTCoreDefaultApp">IoTCore DefaultApp</a></td>
+  <td><a href="Samples/IoTCoreMediaPlayer">IoTCore MediaPlayer</a></td>
  </tr>
-<tr>
-  <td><a href="Samples/IotOnboarding">IoTOnboarding</a></td>
-  <td></td>
-  <td></td>
+ <tr>
+  <td><a href="Samples/IotOnboarding">IoT Onboarding</a></td>
+  <td><a href="Samples/CognitiveServicesExample">Cognitive Services</a></td>
+  <td><a href="Samples/CompanionApp">Companion App</a></td>
+ </tr>
+  <tr>
+  <td><a href="Samples/IoTHomeAppSample">IoT Home App</a></td>
+  <td><a href="Samples/OpenCVExample">OpenCV Example</a></td>
+  <td><a href="Samples/SerialUART">Serial UART</a></td>
+ </tr>
+  <tr>
+  <td><a href="Samples/WebcamApp">Webcam App</a></td>
+  <td><a href="Samples/WiFiConnector">WiFi Connector</a></td>
  </tr>
 </table>
 
 ### Samples that utilize Microsoft Azure features
 
 <table>
- <tr>
+  <tr>
   <td><a href="Samples/IoTConnector">IoTConnector</a></td>
   <td><a href="Samples/SpeechTranslator">SpeechTranslator</a></td>
   <td><a href="Samples/WeatherStation">WeatherStation</a></td>
  </tr>
+ <tr>
+  <td><a href="Samples/Azure/HelloCloud">HelloCloud</a></td>
+  <td><a href="Samples/Azure/HelloCloud.Headless">HelloCloud.Headless</a></td>
+  <td><a href="Samples/Azure/ReadDeviceToCloudMessages">ReadDeviceToCloudMessages</a></td>
+ </tr>
+ <tr>
+  <td><a href="Samples/Azure/TpmDeviceTest">TpmDeviceTest</a></td>
+  <td><a href="Samples/Azure/WeatherStation">WeatherStation</a></td>
+  <td><a href="Samples/Azure/WeatherStation.PowerBI">WeatherStation.PowerBI</a></td>
+ </tr>
+ <tr>
+  <td><a href="Samples/Azure/IoTHubClients">IoT Hub Clients</a></td>
+ </tr>
 </table>
+
 
 ### Samples that involve device drivers, services, or realtime processing
 
@@ -126,8 +153,13 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <td><a href="Samples/SerialUART">SerialUART</a></td>
  </tr>
  <tr>
-  <td><a href="Samples/ShiftRegister">ShiftRegister</a></td>
-  <td><a href="Samples/MemoryStatus">MemoryStatus</a></td>
-  <td></td>
+  <td><a href="Samples/ShiftRegister">Shift Register</a></td>
+  <td><a href="Samples/MemoryStatus">Memory Status</a></td>
+   <td><a href="Samples/ContainerWebSocketCS">Container Web Socket</a></td>
+ </tr>
+  <tr>
+  <td><a href="Samples/CustomDeviceAccessor">Custom Device Accessor</a></td>
+  <td><a href="Samples/IoTOnboarding_RFCOMM">IoT Onboarding - Bluetooth (RFCOMM)</a></td>
+   <td><a href="Samples/VirtualMicrophoneArrayDriver">Virtual Microphone Array Driver</a></td>
  </tr>
 </table>
