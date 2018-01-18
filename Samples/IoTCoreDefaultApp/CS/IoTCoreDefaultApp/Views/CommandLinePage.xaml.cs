@@ -33,23 +33,21 @@ namespace IoTCoreDefaultApp
         private string currentDirectory = "C:\\";
         private List<string> commandLineHistory = new List<string>();
         private int currentCommandLine = -1;
-        private ResourceLoader resourceLoader = new Windows.ApplicationModel.Resources.ResourceLoader();
+        private ResourceLoader resourceLoader = new ResourceLoader();
 
         public CommandLinePage()
         {
             this.InitializeComponent();
             this.DataContext = LanguageManager.GetInstance();
             CommandLine.PlaceholderText = String.Format(resourceLoader.GetString("CommandLinePlaceholderText"), currentDirectory);
+            this.NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            await Dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal,
-                () => CommandLine.Focus(FocusState.Keyboard));
+            CommandLine.Focus(FocusState.Pointer);
         }
-        
+
         private async Task RunProcess()
         {
             if (string.IsNullOrWhiteSpace(CommandLine.Text))
@@ -77,7 +75,8 @@ namespace IoTCoreDefaultApp
                 StdOutputText.Blocks.Clear();
                 return;
             }
-            else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.Equals("cd", StringComparison.CurrentCultureIgnoreCase))
+            else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.Equals("cd", StringComparison.CurrentCultureIgnoreCase) ||
+                     commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.Equals("chdir", StringComparison.CurrentCultureIgnoreCase))
             {
                 stdErrRun.Text = resourceLoader.GetString("CdNotSupported");
             }
@@ -182,29 +181,32 @@ namespace IoTCoreDefaultApp
 
         private async void CommandLine_KeyUp(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == VirtualKey.Enter)
+            switch (e.Key)
             {
-                await DoRunCommand(true);
-            }
-            else if (e.Key == VirtualKey.Up)
-            {
-                currentCommandLine = Math.Max(0, currentCommandLine - 1);
-                if (currentCommandLine < commandLineHistory.Count)
-                {
-                    UpdateCommandLineFromHistory();
-                }
-            }
-            else if (e.Key == VirtualKey.Down)
-            {
-                currentCommandLine = Math.Min(commandLineHistory.Count , currentCommandLine + 1);
-                if (currentCommandLine < commandLineHistory.Count && currentCommandLine >= 0)
-                {
-                    UpdateCommandLineFromHistory();
-                }
-                else
-                {
+                case VirtualKey.Enter:
+                    await DoRunCommand(true);
+                    break;
+                case VirtualKey.Up:
+                    currentCommandLine = Math.Max(0, currentCommandLine - 1);
+                    if (currentCommandLine < commandLineHistory.Count)
+                    {
+                        UpdateCommandLineFromHistory();
+                    }
+                    break;
+                case VirtualKey.Down:
+                    currentCommandLine = Math.Min(commandLineHistory.Count, currentCommandLine + 1);
+                    if (currentCommandLine < commandLineHistory.Count && currentCommandLine >= 0)
+                    {
+                        UpdateCommandLineFromHistory();
+                    }
+                    else
+                    {
+                        CommandLine.Text = string.Empty;
+                    }
+                    break;
+                case VirtualKey.Escape:
                     CommandLine.Text = string.Empty;
-                }
+                    break;
             }
         }
 
