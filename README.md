@@ -82,7 +82,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
  </tr>
 </table>
 
-### Samples that demonstrate Universal Windows Application Features 
+### Samples that demonstrate Universal Windows Application features 
 
 <table>
  <tr>
@@ -96,12 +96,12 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <td><a href="Samples/HelloWorld">HelloWorld</a></td>
  </tr>
  <tr>
-  <td><a href="Samples/IotBrowser">IotBrowser</a></td>
+  <td><a href="Samples/IotBrowser">IoTBrowser</a></td>
   <td><a href="Samples/IoTCoreDefaultApp">IoTCoreDefaultApp</a></td>
   <td><a href="Samples/IoTCoreMediaPlayer">IoTCoreMediaPlayer</a></td>
  </tr>
 <tr>
-  <td><a href="Samples/IotOnboarding">IotOnboarding</a></td>
+  <td><a href="Samples/IotOnboarding">IoTOnboarding</a></td>
   <td></td>
   <td></td>
  </tr>
