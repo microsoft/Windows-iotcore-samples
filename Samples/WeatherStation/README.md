@@ -9,7 +9,7 @@ description: Communicate with an I2C/SPI based temperature and pressure sensor.
 These are the available versions of this Windows 10 IoT Core sample:
 
 *	[C#](./CS/README.md)
-*	[C++](./Cpp/README.md)
+*	[C++](./CPP/README.md)
 *	[VB](./VB/README.md)
 
 ## Additional resources

@@ -1,0 +1,76 @@
+﻿<!-- The royalty-free icons on this page were downloaded from Syncfusion's Metro Studio (http://www.syncfusion.com/downloads/metrostudio). -->
+<Page
+    x:Class="FacialRecognitionDoor.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FacialRecognitionDoor"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" RequestedTheme="Dark">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <MediaElement x:Name="speechMediaElement" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="speechMediaElement_Loaded"/>
+        <Grid x:Name="DisabledFeedGrid" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Rectangle Margin="10" Stroke="White" StrokeThickness="4" Grid.RowSpan="2"/>
+            <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Source="Assets/CameraIcon.png" Margin="50"/>
+            <TextBlock x:Name="DisabledText" TextWrapping="Wrap" Text="The live camera feed has been disabled because of hardware constraints." HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" FontSize="33.333" TextAlignment="Center" Margin="10,0"/>
+        </Grid> 
+        <StackPanel x:Name="LiveFeedPanel" Margin="0, 10" Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <CaptureElement x:Name='WebcamFeed' Loaded="WebcamFeed_Loaded"/>
+        </StackPanel>
+        <StackPanel x:Name="AnalysingVisitorGrid" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
+            <ProgressRing IsActive="True" Width="113" Height="80" Foreground="White" VerticalAlignment="Center" Margin="0,0,0,10"/>
+            <TextBlock VerticalAlignment="Center" FontSize="26.667" Grid.Row="1" Text="Analyzing visitor..." TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+            <TextBlock VerticalAlignment="Center" FontSize="21.333" Grid.Row="1" Text="This may take some time depending on your hardware." TextWrapping="WrapWholeWords" TextAlignment="Center" FontStyle="Italic"/>
+
+        </StackPanel>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="8*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="VisitorsTitleBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Whitelisted Visitors" VerticalAlignment="Center" FontSize="33.333"/>
+            <GridView x:Name="WhitelistedUsersGrid" IsItemClickEnabled="True" Grid.Row="1" ItemClick="WhitelistedUsersGrid_ItemClick" Loaded="WhitelistedUsersGrid_Loaded" DataFetchSize="1">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Margin="1" Source="{Binding Image}" MaxWidth="{Binding MaxWidth}"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+            <ProgressRing x:Name="OxfordLoadingRing" Grid.Column="0" IsActive="True" Width="113" Height="80" Grid.RowSpan="2" Foreground="White"/>
+        </Grid>
+        <TextBlock x:Name="WelcomeBlock" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="Welcome to the Facial Recognition Door!" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="53.333" Margin="50,0,50,100"/>
+        <TextBlock x:Name="DetailsBlock" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="Press the + icon to add a whitelisted user and get started! When you're ready, hit the doorbell icon to try and unlock the door with your face!" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="33.333" Margin="50,80,50,0" TextAlignment="Center"/>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar IsOpen="True" IsSticky="True" IsEnabled="True" Foreground="#FF7C3C3C">
+            <AppBarButton x:Name="NewUserButton" Label="Add User" Icon="Add" Foreground="#FFFFFFFF" Width="64" Click="NewUserButton_Click"/>
+            <AppBarButton x:Name="DoorbellButton" Label="Doorbell" Foreground="#FFFFFFFF" Width="64" Click="DoorbellButton_Click">
+                <AppBarButton.Icon>
+                    <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M10.4650821685791,11.4196882247925L11.2984371185303,11.9828414916992 11.2984371185303,19.0712509155273 8.20937538146973,19.0712509155273 8.20937538146973,18.2379112243652 10.4650821685791,18.2379112243652 10.4650821685791,11.4196882247925z M5.91997575759888,9.44459342956543L5.3645715713501,10 5.91997575759888,10.5554065704346 6.4753794670105,10 5.91997575759888,9.44459342956543z M13.3438606262207,8.08500003814697L13.3438606262207,9.18812656402588 15.7143745422363,9.18812656402588 15.7143745422363,11.2263736724854 13.3438606262207,11.2263736724854 13.3438606262207,12.3303127288818 10.2012500762939,10.2074680328369 13.3438606262207,8.08500003814697z M8.20937538146973,1.20656251907349L11.2984371185303,1.20656251907349 11.2984371185303,8.43277740478516 10.4650821685791,8.99593734741211 10.4650821685791,2.03990983963013 8.20937538146973,2.03990983963013 8.20937538146973,1.20656251907349z M7.58437538146973,0L7.58437538146973,20 0,18.75 0,1.25 7.58437538146973,0z" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="ShutdownButton" Label="Shutdown" Foreground="#FFFFFFFF" Width="64" Click="ShutdownButton_Click">
+                <AppBarButton.Icon>
+                    <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M11.7508964538574,2.06159472465515L14.3777828216553,3.32075762748718 16.4570598602295,5.31251096725464 17.824821472168,7.87397146224976 18.3171653747559,10.8422555923462 18.1310977935791,12.6877717971802 17.5974464416504,14.4067335128784 15.6347007751465,17.3176441192627 12.7235441207886,19.2802963256836 11.0043783187866,19.8139343261719 9.15859127044678,20 7.31282997131348,19.8139343261719 5.59367513656616,19.2802963256836 2.68250775337219,17.3176441192627 0.71973443031311,14.4067335128784 0.186072036623955,12.6877717971802 0,10.8422555923462 0.44942644238472,8.00430679321289 1.70248377323151,5.53095245361328 3.61633920669556,3.56202936172485 6.0481595993042,2.23737692832947 6.0481595993042,4.48604154586792 4.43608236312866,5.57392311096191 3.18009638786316,7.05070686340332 2.36460709571838,8.8342113494873 2.07402062416077,10.8422555923462 2.63165616989136,13.5970163345337 4.15142965316772,15.848934173584 6.40364122390747,17.3684387207031 9.15859127044678,17.9259548187256 11.9135599136353,17.3684387207031 14.1658029556274,15.848934173584 15.6856069564819,13.5970163345337 16.2432556152344,10.8422555923462 15.9106607437134,8.69653224945068 14.9819736480713,6.81538581848145 13.5608377456665,5.30091285705566 11.7508964538574,4.25520801544189 11.7508964538574,2.06159472465515z M7.86293601989746,0L10.0651578903198,0 10.0651578903198,8.55388450622559 7.86293601989746,8.55388450622559 7.86293601989746,0z" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

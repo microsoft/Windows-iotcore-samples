@@ -52,6 +52,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="72"/>
+            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -62,8 +63,24 @@
             </local:TopBarUC>
         </Grid>
 
+        <!-- Maker image security notice row -->
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="SecurityNoticeRow" Background="#FF363636" Visibility="Collapsed" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="48" />
+                </Grid.ColumnDefinitions>
+                <TextBlock FontSize="14" VerticalAlignment="Center" Grid.Column="0" Foreground="#FFFEFEFE" Text="{Binding [MakerImageNoticeText]}" Margin="12,0"></TextBlock>
+                <Button FontSize="14" VerticalAlignment="Center" Height="32" Width="120" Grid.Column="1" Name="SecurityNoticeLearnMoreButton" Background="#FF0078D7" Content="{Binding [LeanMoreText]}" Click="SecurityNoticeLearnMoreButton_Click" />
+                <Button FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Name="CloseNoticeButton" Foreground="#FFFEFEFE" Background="Transparent" Click="CloseNoticeButton_Click">
+                    <TextBlock FontFamily="{StaticResource IconFontFamily}" Text="{StaticResource IconCancel}" TextAlignment="Center"/>
+                </Button>
+            </Grid>
+        </Grid>
+
         <!-- Content row -->
-        <ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" >
+        <ScrollViewer Grid.Row="2" HorizontalScrollMode="Disabled" >
             <Grid Margin="20,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -93,7 +110,7 @@
                             </InlineUIContainer>
                             <InlineUIContainer>
                                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Foreground="{StaticResource AccentBrush}">
-                                    <Hyperlink NavigateUri="{Binding [WindowsOnDevicesUrlText]}" Click="WindowsOnDevices_Click" ToolTipService.ToolTip="{Binding [WindowsOnDevicesUrlText]}" >
+                                    <Hyperlink Click="WindowsOnDevices_Click" ToolTipService.ToolTip="{Binding [WindowsOnDevicesUrlText]}" >
                                         <Run Text="{Binding [Windows10IoTCoreText]}" />
                                     </Hyperlink>
                                 </TextBlock>
@@ -126,7 +143,9 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="72" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="24" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" x:Name="BoardName" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="{StaticResource AccentBrush}" Text="IoTCore Device"/>
@@ -145,6 +164,9 @@
                     <StackPanel Grid.Row="4">
                         <TextBlock Text="{Binding [ConnectedDevicesText]}" Style="{StaticResource BaseTextBlockStyle}" />
                         <ItemsControl x:Name="ConnectedDevices" Foreground="{StaticResource PaleTextBrush}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="6"  HorizontalAlignment="Right">
+                        <TextBlock x:Name="AppxVersion" Style="{StaticResource BodyTextBlockStyle}" Foreground="{StaticResource PaleTextBrush}"/>
                     </StackPanel>
                 </Grid>
             </Grid>

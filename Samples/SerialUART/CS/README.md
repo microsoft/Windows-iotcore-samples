@@ -2,7 +2,7 @@
 
 We'll create a simple app that allows communication between a desktop and an IoT device over a serial interface.
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode){:target="_blank"}.
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
 
 ### Load the project in Visual Studio
 
@@ -15,7 +15,7 @@ This app is a Universal Windows app and will run on both the PC and your IoT dev
 You have two options for wiring up your board:
 
 1. using the On-board UART controller
-2. using a USB-to-TTL adapter cable such as [this one](http://www.adafruit.com/products/954){:target="_blank"}
+2. using a USB-to-TTL adapter cable such as [this one](http://www.adafruit.com/products/954).
 
 #### <a name="MBM_UART"></a>On-board UART (MinnowBoard Max)
 
@@ -76,9 +76,9 @@ _NOTE: Leave the power wire of the USB-to-TTL cable unconnected._
 
 You will need:
 
-* 1 X USB-to-TTL module (This is what we will connect to our RPi2 or RPi3 or MBM device. We used [this Silicon Labs CP2102 based USB-to-TTL module](http://www.amazon.com/gp/product/B00LODGRV8){:target="_blank"})
+* 1 X USB-to-TTL module (This is what we will connect to our RPi2 or RPi3 or MBM device. We used [this Silicon Labs CP2102 based USB-to-TTL module](http://www.amazon.com/gp/product/B00LODGRV8))
 
-* 1 X USB-to-TTL cable (This will connect to our PC. We used [this one](http://www.adafruit.com/products/954){:target="_blank"})
+* 1 X USB-to-TTL cable (This will connect to our PC. We used [this one](http://www.adafruit.com/products/954))
 
 Make the following connections:
 
@@ -179,7 +179,7 @@ The device that is receiving the message will automatically display the text in 
 
 ### Let's look at the code
 
-The code for this sample uses the [Windows.Devices.SerialCommunication](https://msdn.microsoft.com/en-us/library/windows.devices.serialcommunication.aspx){:target="_blank"} namespace. 
+The code for this sample uses the [Windows.Devices.SerialCommunication](https://msdn.microsoft.com/en-us/library/windows.devices.serialcommunication.aspx) namespace. 
 
 The SerialDevice class will be used to enumerate, connect, read, and write to the serial devices connected to the device. 
 

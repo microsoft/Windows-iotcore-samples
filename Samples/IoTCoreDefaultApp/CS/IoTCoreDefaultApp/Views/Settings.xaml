@@ -146,37 +146,38 @@
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="30"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="30"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="408"/>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-
-                <ToggleSwitch Grid.Column="1" Grid.Row="1" Style="{StaticResource IoTCoreDefaultAppToggleStyle}" Toggled="Screensaver_Toggled" x:Name="screensaverToggleSwitch"
-                              OnContent="{Binding [ToggleOnText]}" OffContent="{Binding [ToggleOffText]}">
+                
+                <ToggleSwitch Grid.Column="1" Grid.Row="0" Style="{StaticResource IoTCoreDefaultAppToggleStyle}" Toggled="Screensaver_Toggled" x:Name="screensaverToggleSwitch" 
+                              OnContent="{Binding [ToggleOnText]}" OffContent="{Binding [ToggleOffText]}" Margin="0,30,0,12">
                     <ToggleSwitch.Header>
                         <TextBlock Text="{Binding [EnableScreensaverText]}" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Normal" />
                     </ToggleSwitch.Header>
                 </ToggleSwitch>
-                <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding [LanguageTitleText]}" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Normal" />
-                <ComboBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" x:Name="LanguageComboBox" FontSize="16" Margin="0,10,0,0" Width="446" SelectionChanged="LanguageComboBox_SelectionChanged" Loaded="LanguageComboBox_Loaded" />
-                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="5" Margin="2,0,10,10">
+
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding [LanguageTitleText]}" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Normal" Margin="0,12,0,0" />
+                <ComboBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" x:Name="LanguageComboBox" FontSize="16" Margin="0,10,0,0" Width="446" SelectionChanged="LanguageComboBox_SelectionChanged" Loaded="LanguageComboBox_Loaded" />
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="3" Margin="2,4,10,12">
                     <TextBlock x:Name="SpeechSupport" ></TextBlock>
                     <StackPanel x:Name="LangApplyStack" Visibility="Collapsed" HorizontalAlignment="Center">
                         <Button x:Name="LangApplyYes" Content="{Binding [LanguageApplyButtonText]}" Margin="0,0,20,10" Click="LangApplyYes_Click" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding [KeyboardTitleText]}" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Normal" />
-                <ComboBox Grid.Column="1" Grid.Row="8" HorizontalAlignment="Left" x:Name="InputLanguageComboBox" FontSize="16" Margin="0,10,0,0" Width="446" SelectionChanged="InputLanguageComboBox_SelectionChanged"/>
+                
+                <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding [KeyboardTitleText]}" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Normal" Margin="0,12,0,0" />
+                <ComboBox Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" x:Name="InputLanguageComboBox" FontSize="16" Margin="0,10,0,12" Width="446" SelectionChanged="InputLanguageComboBox_SelectionChanged"/>
+
+                <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding [ChangeTimeZoneTitleText]}" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Normal" Margin="0,12,0,0" />
+                <ComboBox Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" x:Name="TimeZoneComboBox" FontSize="16" Margin="0,10,0,0" Width="446" SelectionChanged="TimeZoneComboBox_SelectionChanged"/>
 
             </Grid>
         </ScrollViewer>

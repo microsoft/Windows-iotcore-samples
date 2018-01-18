@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IoTCoreDefaultApp.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Windows.Foundation;
@@ -367,7 +368,7 @@ namespace IoTCoreDefaultApp
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error: " + e.Message);
+                Log.Write("Error: " + e.Message);
 
                 //Direct to bing.com
                 WebAddressText.Text = Constants.BingHomePageUrl;

@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using System.Linq;
 using Windows.Foundation.Metadata;
 using System.Threading;
+using Windows.System;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -145,6 +146,7 @@ namespace IoTCoreDefaultApp
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
                 {
                     SetupLanguages();
+                    SetupTimeZones();
                     screensaverToggleSwitch.IsOn = Screensaver.IsScreensaverEnabled;
                 });
             };
@@ -172,6 +174,12 @@ namespace IoTCoreDefaultApp
                     LangApplyStack.Visibility = Visibility.Visible;
                 }
             }
+        }
+
+        private void SetupTimeZones()
+        {
+            TimeZoneComboBox.ItemsSource = TimeZoneSettings.SupportedTimeZoneDisplayNames;
+            TimeZoneComboBox.SelectedItem = TimeZoneSettings.CurrentTimeZoneDisplayName;
         }
 
         private void SetupBluetooth()
@@ -299,9 +307,11 @@ namespace IoTCoreDefaultApp
             // Clear the current collection
             bluetoothDeviceObservableCollection.Clear();
             // Start the watcher
-            StartWatcher();
-            // Display a message
-            bluetoothMessageText.Text = Common.GetResourceText("BluetoothOn");
+            if (StartWatcher())
+            {
+                // Display a message
+                 bluetoothMessageText.Text = Common.GetResourceText("BluetoothOn");
+            }
         }
 
         private void BackButton_Clicked(object sender, RoutedEventArgs e)
@@ -565,76 +575,88 @@ namespace IoTCoreDefaultApp
         /// <summary>
         /// Start the Device Watcher and set callbacks to handle devices appearing and disappearing
         /// </summary>
-        private void StartWatcher()
+        private bool StartWatcher()
         {
-            //ProtocolSelectorInfo protocolSelectorInfo;
-            string aqsFilter = @"System.Devices.Aep.ProtocolId:=""{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}"" OR System.Devices.Aep.ProtocolId:=""{bb7bb05e-5972-42b5-94fc-76eaa7084d49}""";  //Bluetooth + BluetoothLE
-
-            // Request the IsPaired property so we can display the paired status in the UI
-            string[] requestedProperties = { "System.Devices.Aep.IsPaired" };
-
-            //// Get the device selector chosen by the UI, then 'AND' it with the 'CanPair' property
-            //protocolSelectorInfo = (ProtocolSelectorInfo)selectorComboBox.SelectedItem;
-            //aqsFilter = protocolSelectorInfo.Selector + " AND System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True";
-
-            deviceWatcher = DeviceInformation.CreateWatcher(
-                aqsFilter,
-                requestedProperties,
-                DeviceInformationKind.AssociationEndpoint
-                );
-
-            // Hook up handlers for the watcher events before starting the watcher
-
-            handlerAdded = new TypedEventHandler<DeviceWatcher, DeviceInformation>(async (watcher, deviceInfo) =>
+            try
             {
+                //ProtocolSelectorInfo protocolSelectorInfo;
+                string aqsFilter = @"System.Devices.Aep.ProtocolId:=""{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}"" OR System.Devices.Aep.ProtocolId:=""{bb7bb05e-5972-42b5-94fc-76eaa7084d49}""";  //Bluetooth + BluetoothLE
+
+                // Request the IsPaired property so we can display the paired status in the UI
+                string[] requestedProperties = { "System.Devices.Aep.IsPaired" };
+
+                //// Get the device selector chosen by the UI, then 'AND' it with the 'CanPair' property
+                //protocolSelectorInfo = (ProtocolSelectorInfo)selectorComboBox.SelectedItem;
+                //aqsFilter = protocolSelectorInfo.Selector + " AND System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True";
+
+                deviceWatcher = DeviceInformation.CreateWatcher(
+                    aqsFilter,
+                    requestedProperties,
+                    DeviceInformationKind.AssociationEndpoint
+                    );
+
+                // Hook up handlers for the watcher events before starting the watcher
+
+                handlerAdded = new TypedEventHandler<DeviceWatcher, DeviceInformation>(async (watcher, deviceInfo) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
-                    bluetoothDeviceObservableCollection.Add(new BluetoothDeviceInformationDisplay(deviceInfo));
+                    {
+                        bluetoothDeviceObservableCollection.Add(new BluetoothDeviceInformationDisplay(deviceInfo));
+                    });
                 });
-            });
-            deviceWatcher.Added += handlerAdded;
+                deviceWatcher.Added += handlerAdded;
 
-            handlerUpdated = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
-            {
+                handlerUpdated = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
+                    {
                     // Find the corresponding updated DeviceInformation in the collection and pass the update object
                     // to the Update method of the existing DeviceInformation. This automatically updates the object
                     // for us.
                     foreach (BluetoothDeviceInformationDisplay deviceInfoDisp in bluetoothDeviceObservableCollection)
-                    {
-                        if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
                         {
-                            deviceInfoDisp.Update(deviceInfoUpdate);
-                            break;
+                            if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
+                            {
+                                deviceInfoDisp.Update(deviceInfoUpdate);
+                                break;
+                            }
                         }
-                    }
+                    });
                 });
-            });
-            deviceWatcher.Updated += handlerUpdated;
+                deviceWatcher.Updated += handlerUpdated;
 
-            handlerRemoved = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
-            {
+                handlerRemoved = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
+                    {
                     // Find the corresponding DeviceInformation in the collection and remove it
                     foreach (BluetoothDeviceInformationDisplay deviceInfoDisp in bluetoothDeviceObservableCollection)
-                    {
-                        if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
                         {
-                            bluetoothDeviceObservableCollection.Remove(deviceInfoDisp);
-                            break;
+                            if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
+                            {
+                                bluetoothDeviceObservableCollection.Remove(deviceInfoDisp);
+                                break;
+                            }
                         }
-                    }
+                    });
                 });
-            });
-            deviceWatcher.Removed += handlerRemoved;
+                deviceWatcher.Removed += handlerRemoved;
 
-            // Start the Device Watcher
-            deviceWatcher.Start();
+                // Start the Device Watcher
+                deviceWatcher.Start();
+            }
+            catch (Exception e)
+            {
+                string formatString = Common.GetResourceText("BluetoothListenerCreationFailedFormat");
+                string confirmationMessage = string.Format(formatString, e.Message);
+                bluetoothMessageText.Text = confirmationMessage;
+                deviceWatcher = null;
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -1092,7 +1114,7 @@ namespace IoTCoreDefaultApp
                     formatString = Common.GetResourceText("BluetoothInboundRegistrationSucceededFormat");
                     confirmationMessage = string.Format(formatString, ceremoniesSelected.ToString());
                 }
-
+                
                 // Display a message
                 bluetoothMessageText.Text = Common.GetResourceText("BluetoothOn");
             }
@@ -1268,5 +1290,20 @@ namespace IoTCoreDefaultApp
             await CortanaHelper.LaunchCortanaToAboutMeAsync();
         }
 
+        private void TimeZoneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+
+            if (comboBox == null || comboBox.SelectedItem == null)
+            {
+                return;
+            }
+
+            if (TimeZoneSettings.CanChangeTimeZone)
+            {
+                string newTimeZone = comboBox.SelectedItem as string;
+                TimeZoneSettings.ChangeTimeZoneByDisplayName(newTimeZone);
+            }
+        }
     }
 }

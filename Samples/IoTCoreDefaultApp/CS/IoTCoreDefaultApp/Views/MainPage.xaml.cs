@@ -5,9 +5,12 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Networking.Connectivity;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -22,6 +25,10 @@ namespace IoTCoreDefaultApp
         public static MainPage Current;
         private CoreDispatcher MainPageDispatcher;
         private ConnectedDevicePresenter connectedDevicePresenter;
+        private const string CommandLineProcesserExe = "c:\\windows\\system32\\cmd.exe";
+        private const string RegKeyQueryCmdArg = "/c \"reg query HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\IoT /v IsMakerImage /z\"";
+        private const string ExpectedResultPattern = @"\s*IsMakerImage\s*REG_DWORD\s*\(4\)\s*0x1";
+        private const uint CmdLineBufSize = 8192;
 
         public CoreDispatcher UIThreadDispatcher
         {
@@ -51,17 +58,76 @@ namespace IoTCoreDefaultApp
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
 
             this.DataContext = LanguageManager.GetInstance();
-            
-            this.Loaded += async (sender, e) => 
+
+            UpdateMakerImageSecurityNotice();
+
+            this.Loaded += async (sender, e) =>
             {
                 await MainPageDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
                 {
                     UpdateBoardInfo();
                     UpdateNetworkInfo();
                     UpdateConnectedDevices();
+                    UpdatePackageVersion();
                 });
             };
 
+        }
+
+        private async void UpdateMakerImageSecurityNotice()
+        {
+            if (await IsMakerImager())
+            {
+                await MainPageDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                {
+                    SecurityNoticeRow.Visibility = Visibility.Visible;
+                });
+            }
+        }
+
+        private async Task<bool> IsMakerImager()
+        {
+            var cmdOutput = string.Empty;
+
+            var standardOutput = new InMemoryRandomAccessStream();
+            var options = new ProcessLauncherOptions
+            {
+                StandardOutput = standardOutput
+            };
+
+            try
+            {
+                var result = await ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, RegKeyQueryCmdArg, options);
+
+                if (result.ExitCode == 0)
+                {
+                    using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
+                    {
+                        using (var dataReader = new DataReader(outStreamRedirect))
+                        {
+                            uint bytesLoaded = 0;
+                            while ((bytesLoaded = await dataReader.LoadAsync(CmdLineBufSize)) > 0)
+                            {
+                                cmdOutput += dataReader.ReadString(bytesLoaded);
+                            }
+                        }
+                    }
+                }
+
+                Match match = Regex.Match(cmdOutput, ExpectedResultPattern, RegexOptions.IgnoreCase);
+                if (match.Success)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Could not read the value
+                Log.Write("Could not read maker image value in registry");
+                Log.Write(ex.ToString());
+            }
+
+            return false;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -95,7 +161,7 @@ namespace IoTCoreDefaultApp
             }
             else
             {
-                OSVersion.Text = String.Format(CultureInfo.InvariantCulture,"{0}.{1}.{2}.{3}",
+                OSVersion.Text = String.Format(CultureInfo.InvariantCulture, "{0}.{1}.{2}.{3}",
                     (version & 0xFFFF000000000000) >> 48,
                     (version & 0x0000FFFF00000000) >> 32,
                     (version & 0x00000000FFFF0000) >> 16,
@@ -103,11 +169,20 @@ namespace IoTCoreDefaultApp
             }
         }
 
+        private void UpdatePackageVersion()
+        {
+            AppxVersion.Text = String.Format(CultureInfo.InvariantCulture, "v{0}.{1}.{2}.{3}",
+              Package.Current.Id.Version.Major,
+              Package.Current.Id.Version.Minor,
+              Package.Current.Id.Version.Build,
+              Package.Current.Id.Version.Revision);
+        }
+
         private void WindowsOnDevices_Click(object sender, RoutedEventArgs e)
         {
             NavigationUtils.NavigateToScreen(typeof(WebBrowserPage), Constants.WODUrl);
         }
-        
+
         private async void UpdateNetworkInfo()
         {
             this.DeviceName.Text = DeviceInfoPresenter.GetDeviceName();
@@ -121,6 +196,15 @@ namespace IoTCoreDefaultApp
             connectedDevicePresenter = new ConnectedDevicePresenter(MainPageDispatcher);
             this.ConnectedDevices.ItemsSource = connectedDevicePresenter.GetConnectedDevices();
         }
-        
+
+        private void CloseNoticeButton_Click(object sender, RoutedEventArgs e)
+        {
+            SecurityNoticeRow.Visibility = Visibility.Collapsed;
+        }
+
+        private void SecurityNoticeLearnMoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationUtils.NavigateToScreen(typeof(WebBrowserPage), Constants.IoTCoreManufacturingGuideUrl);
+        }
     }
 }

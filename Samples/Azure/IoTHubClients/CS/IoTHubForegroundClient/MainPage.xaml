@@ -1,0 +1,103 @@
+﻿<Page
+    x:Class="IoTHubForegroundClient.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:IoTHubForegroundClient"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid Background="#4b5157">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="20" Text="Microsoft IoT Central Client Sample" FontSize="32"/>
+        <Grid Grid.Row="1" Margin="20,0,0,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Margin="3" Text="Connection String" />
+            <TextBox Grid.Column="1" Margin="3" Text="&lt;type connection string&gt;" x:Name="ConnectStringBox"/>
+            <Button Grid.Column="2" Margin="3" Click="OnConnect">
+                <Button.Content>
+                    <TextBlock Text="Connect"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="350"/>
+                <RowDefinition Height="350"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="350"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="20" Orientation="Vertical" Background="#31373e">
+                <TextBlock Margin="5,20" Text="Telemetry Data" FontSize="20"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Temperature"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" x:Name="TemperatureBlock"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" Text="Pressure"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" x:Name="PressureBlock"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" Text="Humidity"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" x:Name="HumidityBlock"/>
+                </Grid>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="20" Orientation="Vertical" Background="#31373e">
+                <TextBlock Margin="5,20" Text="Device Properties Sent" FontSize="20"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Die Number"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="--" x:Name="DieNumberBlock"/>
+                    <Button Grid.Row="1" Grid.Column="0" Margin="5" Click="OnSendDeviceProperties">
+                        <TextBlock Text="Generate &amp; Send"/>
+                    </Button>
+                </Grid>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="20" Orientation="Vertical" Background="#31373e">
+                <TextBlock Margin="5,20" Text="Device Properties Received" FontSize="20"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Set Temperature"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="--" x:Name="SetTemperatureBlock"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
