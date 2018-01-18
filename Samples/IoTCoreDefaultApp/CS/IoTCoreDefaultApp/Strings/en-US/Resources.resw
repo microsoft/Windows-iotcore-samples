@@ -852,6 +852,30 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>Please wait, pairing inprogress</value>
     <comment>Pairing InProgress Text</comment>
   </data>
+  <data name="BluetoothOutboundLabel" xml:space="preserve">
+    <value>Outbound Pairing:</value>
+    <comment>Label that shows outbound pairing status</comment>
+  </data>
+  <data name="BluetoothInboundLabel" xml:space="preserve">
+    <value>Inbound Pairing:</value>
+    <comment>Label that shows inbound pairing status</comment>
+  </data>
+    <data name="BluetoothOutboundLabel" xml:space="preserve">
+    <value>Outbound Pairing:</value>
+    <comment>Label that shows outbound pairing status</comment>
+  </data>
+  <data name="YesLabel" xml:space="preserve">
+    <value>Yes</value>
+    <comment>Generic text for a Yes Label</comment>
+  </data>
+  <data name="NoLabel" xml:space="preserve">
+    <value>No</value>
+    <comment>Generic text for a No Label</comment>
+  </data>
+    <data name="OKLabel" xml:space="preserve">
+    <value>OK</value>
+    <comment>Generic text for an OK Label</comment>
+  </data>
   <data name="ChangeTimeZoneTitleText" xml:space="preserve">
     <value>Time zone</value>
     <comment>Time zone text</comment>
