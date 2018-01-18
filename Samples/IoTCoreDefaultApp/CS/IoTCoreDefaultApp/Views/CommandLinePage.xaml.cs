@@ -91,12 +91,13 @@ namespace IoTCoreDefaultApp
                 var options = new ProcessLauncherOptions
                 {
                     StandardOutput = standardOutput,
-                    StandardError = standardError
+                    StandardError = standardError,
+                    WorkingDirectory = currentDirectory
                 };
 
                 try
                 {
-                    var args = "/C \"cd \"" + currentDirectory + "\" & " + commandLineText + "\"";
+                    var args = "/C \"" + commandLineText + "\"";
                     var result = await ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
 
                     // First write std out
