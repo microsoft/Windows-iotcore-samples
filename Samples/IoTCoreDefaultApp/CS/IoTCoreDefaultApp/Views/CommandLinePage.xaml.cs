@@ -75,8 +75,7 @@ namespace IoTCoreDefaultApp
                 StdOutputText.Blocks.Clear();
                 return;
             }
-            else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.Equals("cd", StringComparison.CurrentCultureIgnoreCase) ||
-                     commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.Equals("chdir", StringComparison.CurrentCultureIgnoreCase))
+            else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase))
             {
                 stdErrRun.Text = resourceLoader.GetString("CdNotSupported");
             }
