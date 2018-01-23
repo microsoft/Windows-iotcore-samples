@@ -190,7 +190,7 @@ From the Configuration Manager, ensure that the Deploy checkbox is selected for 
 
 * You can now run the application as you would any other application.  Simply open a PowerShell/SSH connection (instructions can be found [here for powershell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) and [here for SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/SSH) and enter the Remote Command you specified above.
 
-![Console output](../../../Resources/images/MemoryStatus/console_ouptut.png)
+![Console output](../../../Resources/images/MemoryStatus/console_output.png)
 
 * Once you are done debugging Console Applications, remember to stop the remote debugger on the Windows IoT Core device. You can do this by navigating to Debug settings section of Windows Device Portal and clicking on the Stop Remote Debugger button.
 
