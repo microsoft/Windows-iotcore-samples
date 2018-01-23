@@ -75,8 +75,7 @@ namespace IoTCoreDefaultApp
                 StdOutputText.Blocks.Clear();
                 return;
             }
-            else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.Equals("cd", StringComparison.CurrentCultureIgnoreCase) ||
-                     commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.Equals("chdir", StringComparison.CurrentCultureIgnoreCase))
+            else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase))
             {
                 stdErrRun.Text = resourceLoader.GetString("CdNotSupported");
             }
@@ -91,12 +90,13 @@ namespace IoTCoreDefaultApp
                 var options = new ProcessLauncherOptions
                 {
                     StandardOutput = standardOutput,
-                    StandardError = standardError
+                    StandardError = standardError,
+                    WorkingDirectory = currentDirectory
                 };
 
                 try
                 {
-                    var args = "/C \"cd \"" + currentDirectory + "\" & " + commandLineText + "\"";
+                    var args = "/C \"" + commandLineText + "\"";
                     var result = await ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
 
                     // First write std out
