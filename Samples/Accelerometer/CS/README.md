@@ -1,7 +1,9 @@
 # SPI Accelerometer
 
-We'll connect an SPI accelerometer to your Raspberry Pi 2 or 3, MinnowBoard Max, or DragonBoard 410c and create a simple app to read data from it. We'll walk you through step-by-step, so no background knowledge of SPI is needed.
-However, if you're curious, SparkFun provides a great [tutorial on SPI](https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi){:target="_blank"}.
+We'll connect an SPI accelerometer to your Raspberry Pi 2 or 3, Up Squared*, or DragonBoard 410c and create a simple app to read data from it. We'll walk you through step-by-step, so no background knowledge of SPI is needed.
+However, if you're curious, SparkFun provides a great [tutorial on SPI](https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi).
+
+*The Up Squared should be used in place of the Minnowboard Max. We are in the process of updating our documentation to reflect this change.   
 
 This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
 
@@ -13,7 +15,7 @@ You can find the source code for this sample by downloading a zip of all of our 
 
 You'll need a few components:
 
-* <a name="SPI_Accelerometer"></a>an [ADXL345 accelerometer board from Sparkfun](https://www.sparkfun.com/products/9836){:target="_blank"} with pin headers soldered on
+* <a name="SPI_Accelerometer"></a>an [ADXL345 accelerometer board from Sparkfun](https://www.sparkfun.com/products/9836) with pin headers soldered on
 
 * a breadboard and a couple of male-to-female connector wires
 
