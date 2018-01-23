@@ -3,7 +3,7 @@ We’ll create a simple Blinky [app service](https://docs.microsoft.com/en-us/wi
 
 ## Set up your hardware
 ___
-The hardware setup for this sample is the same as the [C# ‘Blinky’ sample](/Samples/helloblinky).
+The hardware setup for this sample is the same as the [C# ‘Blinky’ sample](https://github.com/Microsoft/Windows-iotcore-samples/tree/master/Samples/HelloBlinky/CS).
 Note that the app will not run successfully if it cannot find any available GPIO ports.
 
 ## Load the projects in Visual Studio

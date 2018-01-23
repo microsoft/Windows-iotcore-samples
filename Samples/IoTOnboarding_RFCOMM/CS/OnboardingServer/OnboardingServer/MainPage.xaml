@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="OnboardingServer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OnboardingServer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Main"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <!-- The UI is for debugging purpose only, you may remove it for headless devices.-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="0,5,0,0">
+            <TextBlock Text="Session Log" Style="{StaticResource BaseTextBlockStyle}" Margin="10,0" VerticalAlignment="Center"/>
+            <Button Content="Clear Log"  VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5" Click="ClearHistoryButton_Click"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ListBox x:Name="ConversationListBox" VerticalAlignment="Top" 
+                     ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollMode="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ListBox.Resources>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="5"/>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
+        </Grid>
+    </Grid>
+</Page>

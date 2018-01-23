@@ -5,7 +5,7 @@ namespace IoTCoreDefaultApp.Utils
 {
     internal static class NativeTimeMethods
     {
-        [DllImport("api-ms-win-core-sysinfo-l1-2-1.dll")]
+        [DllImport("kernel32.dll", ExactSpelling = true)]
         internal static extern void GetLocalTime(out SYSTEMTIME lpLocalTime);
     }
 

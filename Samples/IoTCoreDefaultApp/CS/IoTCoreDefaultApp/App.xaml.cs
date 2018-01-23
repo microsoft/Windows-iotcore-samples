@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
 
+using IoTCoreDefaultApp.Utils;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -62,6 +63,7 @@ namespace IoTCoreDefaultApp
             // System.Diagnostics.Debugger.Break();
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            Log.Write("Started");
         }
 
         /// <summary>
@@ -143,7 +145,7 @@ namespace IoTCoreDefaultApp
                 var di = devicePairingArgs.DeviceInformation;
 
                 // Automatically switch to Bluetooth Settings page
-                NavigationUtils.NavigateToScreen(typeof(Settings));
+                NavigationUtils.NavigateToScreen(typeof(Settings), "BluetoothListViewItem");
 
                 int bluetoothSettingsIndex = 2;
                 Frame rootFrame = Window.Current.Content as Frame;

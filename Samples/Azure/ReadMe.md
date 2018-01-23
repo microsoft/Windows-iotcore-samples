@@ -18,13 +18,15 @@ This project has adopted the Microsoft Open Source Code of Conduct. For more inf
  <tr>
   <td><a href="../Azure/HelloCloud">HelloCloud</a></td>
   <td><a href="../Azure/HelloCloud.Headless">HelloCloud.Headless</a></td>
+  <td><a href="../Azure/ReadDeviceToCloudMessages">ReadDeviceToCloudMessages</a></td>
  </tr>
  <tr>
-  <td><a href="../Azure/ReadDeviceToCloudMessages">ReadDeviceToCloudMessages</a></td>
   <td><a href="../Azure/TpmDeviceTest">TpmDeviceTest</a></td>
   <td><a href="../Azure/WeatherStation">WeatherStation</a></td>
- </tr>
- <tr>
   <td><a href="../Azure/WeatherStation.PowerBI">WeatherStation.PowerBI</a></td>
  </tr>
+ <tr>
+  <td><a href="../Azure/IoTHubClients">IoT Hub Clients</a></td>
+ </tr>
 </table>
+

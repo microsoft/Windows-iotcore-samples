@@ -13,13 +13,84 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.Devices.Radios;
 using Windows.Devices.Bluetooth;
+using Windows.UI.Xaml.Controls.Primitives;
 using System.Linq;
 using Windows.Foundation.Metadata;
+using System.Threading;
+using Windows.System;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace IoTCoreDefaultApp
 {
+    // Simple collection of UI elements and data associated with Bluetooth Pairing
+    public sealed class PairingContext
+    {
+        public PairingContext(Button yesButton, Button noButton, TextBlock confirmationText)
+        {
+            m_yesButton = yesButton;
+            m_noButton = noButton;
+            m_confirmationText = confirmationText;
+        }
+
+        // Rejects pairing request maintained by this pairing context
+        public void RejectPairing()
+        {
+            if (m_deferral != null)
+            {
+                //Complete the deferral
+                CompleteDeferral();
+            }
+        }
+
+        public void CompleteDeferral()
+        {
+            // Complete the deferral
+            if (m_deferral != null)
+            {
+                m_deferral.Complete();
+                m_deferral = null;
+            }
+        }
+
+        /// <summary>
+        /// Accept the pairing and complete the deferral
+        /// </summary>
+        public void AcceptPairing()
+        {
+            if (m_pairingRequestedEventArgs != null)
+            {
+                m_pairingRequestedEventArgs.Accept();
+            }
+            // Complete deferral
+            CompleteDeferral();
+            m_pairingRequestedEventArgs = null;
+        }
+
+        public void AcceptPairingWithPIN(string PIN)
+        {
+            if (m_pairingRequestedEventArgs != null)
+            {
+                m_pairingRequestedEventArgs.Accept(PIN);
+                m_pairingRequestedEventArgs = null;
+            }
+            // Complete the deferral here
+            CompleteDeferral();
+        }
+
+        public void SetPairingRequestedEventArgs(DevicePairingRequestedEventArgs pairingRequestedEventArgs)
+        {
+            m_pairingRequestedEventArgs = pairingRequestedEventArgs;
+            m_deferral = pairingRequestedEventArgs.GetDeferral();
+        }
+
+        public readonly Button m_yesButton;
+        public readonly Button m_noButton;
+        public readonly TextBlock m_confirmationText;
+        private DevicePairingRequestedEventArgs m_pairingRequestedEventArgs = null;
+        private Deferral m_deferral = null;
+    };
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -31,12 +102,9 @@ namespace IoTCoreDefaultApp
         private TypedEventHandler<DeviceWatcher, DeviceInformation> handlerAdded = null;
         private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> handlerUpdated = null;
         private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> handlerRemoved = null;
-        private TypedEventHandler<DeviceWatcher, Object> handlerEnumCompleted = null;
-        private TypedEventHandler<DeviceWatcher, Object> handlerStopped = null;
+
         // Pairing controls and notifications
         private enum MessageType { YesNoMessage, OKMessage, InformationalMessage };
-        Windows.Devices.Enumeration.DevicePairingRequestedEventArgs pairingRequestedHandlerArgs;
-        Windows.Foundation.Deferral deferral;
         Windows.Devices.Bluetooth.Rfcomm.RfcommServiceProvider provider = null; // To be used for inbound
         private string bluetoothConfirmOnlyFormatString;
         private string bluetoothDisplayPinFormatString;
@@ -46,6 +114,16 @@ namespace IoTCoreDefaultApp
 
         private bool needsCortanaConsent = false;
         private bool cortanaConsentRequestedFromSwitch = false;
+
+     
+        // Inbound pairing related cache  (Pairing from an external device to this device)
+        private PairingContext inboundContext;
+
+        // Outbound pairing related cache (Pairing from this device to an external device)
+        private PairingContext outboundContext;
+
+        // Indicates whether or not inbound pairing is in progress
+        private bool inboundPairingInProgress = false;
 
         static public ObservableCollection<BluetoothDeviceInformationDisplay> bluetoothDeviceObservableCollection
         {
@@ -60,7 +138,7 @@ namespace IoTCoreDefaultApp
             PreferencesListView.IsSelected = true;
 
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
-                       
+ 
             this.DataContext = LanguageManager.GetInstance();
 
             this.Loaded += async (sender, e) =>
@@ -68,11 +146,15 @@ namespace IoTCoreDefaultApp
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
                 {
                     SetupLanguages();
+                    SetupTimeZones();
                     screensaverToggleSwitch.IsOn = Screensaver.IsScreensaverEnabled;
                 });
             };
 
             Window.Current.Activated += Window_Activated;
+
+            inboundContext = new PairingContext(yesButtonInbound, noButtonInbound, confirmationTextInbound);
+            outboundContext = new PairingContext(yesButtonOutbound, noButtonOutbound, confirmationTextOutbound);
         }
 
         private void SetupLanguages()
@@ -84,7 +166,6 @@ namespace IoTCoreDefaultApp
 
             InputLanguageComboBox.ItemsSource = languageManager.InputLanguageDisplayNames;
             InputLanguageComboBox.SelectedItem = LanguageManager.GetCurrentInputLanguageDisplayName();
-            
             LangApplyStack.Visibility = Common.LangApplyRebootRequired ? Visibility.Visible : Visibility.Collapsed;
             if (Common.LangApplyRebootRequired)
             {
@@ -93,6 +174,12 @@ namespace IoTCoreDefaultApp
                     LangApplyStack.Visibility = Visibility.Visible;
                 }
             }
+        }
+
+        private void SetupTimeZones()
+        {
+            TimeZoneComboBox.ItemsSource = TimeZoneSettings.SupportedTimeZoneDisplayNames;
+            TimeZoneComboBox.SelectedItem = TimeZoneSettings.CurrentTimeZoneDisplayName;
         }
 
         private void SetupBluetooth()
@@ -159,62 +246,72 @@ namespace IoTCoreDefaultApp
             {
                 await SwitchToSelectedSettingsAsync(e.Parameter.ToString());
             }
-            
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            // Reject any pairing that might be in progress
+            inboundContext.RejectPairing();
+            outboundContext.RejectPairing();
+
+            // Clear the confirmation message
+            ClearConfirmationPanel(inboundContext);
+            ClearConfirmationPanel(outboundContext);
+
             StopWatcher();
+            inboundPairingInProgress = false;
+        }
+
+        public void ClearConfirmationPanel(PairingContext pairingContext)
+        {
+            pairingContext.m_confirmationText.Text = "";
+            pairingContext.m_yesButton.Visibility = Visibility.Collapsed;
+            pairingContext.m_noButton.Visibility = Visibility.Collapsed;           
         }
 
         private async void App_InboundPairingRequested(object sender, InboundPairingEventArgs inboundArgs)
         {
-            // Ignore the inbound if pairing is already in progress
-            if (inProgressPairButton == null)
+            // Note: This demo only supports a single inbound pairing operation at a time.  This discards additional pairing requests.
+            // This also discards multiple pairing requests from the same device
+            if (inboundPairingInProgress)
             {
-                await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
-                {
-                    // Make sure the Bluetooth grid is showing
-                    await SwitchToSelectedSettingsAsync("BluetoothListViewItem");
-
-                    // Restore the ceremonies we registered with
-                    var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                    Object supportedPairingKinds = localSettings.Values["supportedPairingKinds"];
-                    int iSelectedCeremonies = (int)DevicePairingKinds.ConfirmOnly;
-                    if (supportedPairingKinds != null)
-                    {
-                        iSelectedCeremonies = (int)supportedPairingKinds;
-                    }
-                    SetSelectedCeremonies(iSelectedCeremonies);
-
-                    // Clear any previous devices
-                    bluetoothDeviceObservableCollection.Clear();
-
-                    // Add latest
-                    BluetoothDeviceInformationDisplay deviceInfoDisp = new BluetoothDeviceInformationDisplay(inboundArgs.DeviceInfo);
-                    bluetoothDeviceObservableCollection.Add(deviceInfoDisp);
-
-                    // Display a message about the inbound request
-                    string formatString = Common.GetResourceText("BluetoothInboundPairingRequestFormat");
-                    string confirmationMessage = string.Format(formatString, deviceInfoDisp.Name, deviceInfoDisp.Id);
-                    DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
-                });
+                return;
             }
+            inboundPairingInProgress = true;
+
+            await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                // Make sure the Bluetooth grid is showing
+                await SwitchToSelectedSettingsAsync("BluetoothListViewItem");
+
+                BluetoothDeviceInformationDisplay deviceInfoDisp = new BluetoothDeviceInformationDisplay(inboundArgs.DeviceInfo);
+
+                // Display a message about the inbound request
+                string formatString = Common.GetResourceText("BluetoothInboundPairingRequestFormat");
+                string confirmationMessage = string.Format(formatString, deviceInfoDisp.Name, deviceInfoDisp.Id);
+                DisplayMessagePanelAsync(inboundContext, confirmationMessage, MessageType.InformationalMessage);
+
+                DevicePairingKinds supportedCeremonies = DevicePairingKinds.DisplayPin | DevicePairingKinds.ConfirmPinMatch | DevicePairingKinds.ConfirmOnly;
+
+                inboundArgs.DeviceInfo.Pairing.Custom.PairingRequested += InboundPairingRequestedHandler;
+                var result = await inboundArgs.DeviceInfo.Pairing.Custom.PairAsync(supportedCeremonies);
+                inboundArgs.DeviceInfo.Pairing.Custom.PairingRequested -= InboundPairingRequestedHandler;
+
+            });
+            inboundPairingInProgress = false;
         }
 
         private void StartWatchingAndDisplayConfirmationMessage()
         {
-            StackLoading.Visibility = Visibility.Visible;
-            DisplayMessagePanelAsync("Waiting to Refresh...", MessageType.InformationalMessage);
-
             // Clear the current collection
             bluetoothDeviceObservableCollection.Clear();
             // Start the watcher
-            StartWatcher();
-            // Display a message
-            string confirmationMessage = Common.GetResourceText("BluetoothOn");
-            DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
-
+            if (StartWatcher())
+            {
+                // Display a message
+                 bluetoothMessageText.Text = Common.GetResourceText("BluetoothOn");
+            }
         }
 
         private void BackButton_Clicked(object sender, RoutedEventArgs e)
@@ -268,7 +365,7 @@ namespace IoTCoreDefaultApp
 
             //Check if selected language is part of ffu
             var newLang = languageManager.CheckUpdateLanguage(comboBox.SelectedItem as string);
-                      
+
             //Selected Language, but Check Proposing other language
             if (LanguageManager.GetDisplayNameFromLanguageTag(newLang.Item4).Equals(comboBox.SelectedItem as string))
             {
@@ -376,7 +473,7 @@ namespace IoTCoreDefaultApp
             }
 
         }
-        
+
         private void LangApplyYes_Click(object sender, RoutedEventArgs e)
         {
             //Restart app
@@ -406,7 +503,7 @@ namespace IoTCoreDefaultApp
             // Language, Network, or Bluetooth settings etc.
             await SwitchToSelectedSettingsAsync(item.Name);
         }
-        
+
         /// <summary>
         /// Helps Hiding all other Grid Views except the selected Grid
         /// </summary>
@@ -445,8 +542,6 @@ namespace IoTCoreDefaultApp
 
                     if (BluetoothGrid.Visibility == Visibility.Collapsed)
                     {
-                        //SetupBluetooth();
-
                         BluetoothGrid.Visibility = Visibility.Visible;
                         BluetoothListView.IsSelected = true;
                         if (await IsBluetoothEnabledAsync())
@@ -480,103 +575,88 @@ namespace IoTCoreDefaultApp
         /// <summary>
         /// Start the Device Watcher and set callbacks to handle devices appearing and disappearing
         /// </summary>
-        private void StartWatcher()
+        private bool StartWatcher()
         {
-            //ProtocolSelectorInfo protocolSelectorInfo;
-            string aqsFilter = @"System.Devices.Aep.ProtocolId:=""{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}"" OR System.Devices.Aep.ProtocolId:=""{bb7bb05e-5972-42b5-94fc-76eaa7084d49}""";  //Bluetooth + BluetoothLE
-
-            // Request the IsPaired property so we can display the paired status in the UI
-            string[] requestedProperties = { "System.Devices.Aep.IsPaired" };
-
-            //// Get the device selector chosen by the UI, then 'AND' it with the 'CanPair' property
-            //protocolSelectorInfo = (ProtocolSelectorInfo)selectorComboBox.SelectedItem;
-            //aqsFilter = protocolSelectorInfo.Selector + " AND System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True";
-
-            deviceWatcher = DeviceInformation.CreateWatcher(
-                aqsFilter,
-                requestedProperties,
-                DeviceInformationKind.AssociationEndpoint
-                );
-
-            // Hook up handlers for the watcher events before starting the watcher
-
-            handlerAdded = new TypedEventHandler<DeviceWatcher, DeviceInformation>(async (watcher, deviceInfo) =>
+            try
             {
+                //ProtocolSelectorInfo protocolSelectorInfo;
+                string aqsFilter = @"System.Devices.Aep.ProtocolId:=""{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}"" OR System.Devices.Aep.ProtocolId:=""{bb7bb05e-5972-42b5-94fc-76eaa7084d49}""";  //Bluetooth + BluetoothLE
+
+                // Request the IsPaired property so we can display the paired status in the UI
+                string[] requestedProperties = { "System.Devices.Aep.IsPaired" };
+
+                //// Get the device selector chosen by the UI, then 'AND' it with the 'CanPair' property
+                //protocolSelectorInfo = (ProtocolSelectorInfo)selectorComboBox.SelectedItem;
+                //aqsFilter = protocolSelectorInfo.Selector + " AND System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True";
+
+                deviceWatcher = DeviceInformation.CreateWatcher(
+                    aqsFilter,
+                    requestedProperties,
+                    DeviceInformationKind.AssociationEndpoint
+                    );
+
+                // Hook up handlers for the watcher events before starting the watcher
+
+                handlerAdded = new TypedEventHandler<DeviceWatcher, DeviceInformation>(async (watcher, deviceInfo) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
-                    bluetoothDeviceObservableCollection.Add(new BluetoothDeviceInformationDisplay(deviceInfo));
+                    {
+                        bluetoothDeviceObservableCollection.Add(new BluetoothDeviceInformationDisplay(deviceInfo));
+                    });
                 });
-            });
-            deviceWatcher.Added += handlerAdded;
+                deviceWatcher.Added += handlerAdded;
 
-            handlerUpdated = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
-            {
+                handlerUpdated = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
+                    {
                     // Find the corresponding updated DeviceInformation in the collection and pass the update object
                     // to the Update method of the existing DeviceInformation. This automatically updates the object
                     // for us.
                     foreach (BluetoothDeviceInformationDisplay deviceInfoDisp in bluetoothDeviceObservableCollection)
-                    {
-                        if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
                         {
-                            deviceInfoDisp.Update(deviceInfoUpdate);
-                            break;
+                            if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
+                            {
+                                deviceInfoDisp.Update(deviceInfoUpdate);
+                                break;
+                            }
                         }
-                    }
+                    });
                 });
-            });
-            deviceWatcher.Updated += handlerUpdated;
+                deviceWatcher.Updated += handlerUpdated;
 
-            handlerRemoved = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
-            {
+                handlerRemoved = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(async (watcher, deviceInfoUpdate) =>
+                {
                 // Since we have the collection databound to a UI element, we need to update the collection on the UI thread.
                 await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
+                    {
                     // Find the corresponding DeviceInformation in the collection and remove it
                     foreach (BluetoothDeviceInformationDisplay deviceInfoDisp in bluetoothDeviceObservableCollection)
-                    {
-                        if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
                         {
-                            bluetoothDeviceObservableCollection.Remove(deviceInfoDisp);
-                            break;
+                            if (deviceInfoDisp.Id == deviceInfoUpdate.Id)
+                            {
+                                bluetoothDeviceObservableCollection.Remove(deviceInfoDisp);
+                                break;
+                            }
                         }
-                    }
+                    });
                 });
-            });
-            deviceWatcher.Removed += handlerRemoved;
+                deviceWatcher.Removed += handlerRemoved;
 
-            handlerEnumCompleted = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
+                // Start the Device Watcher
+                deviceWatcher.Start();
+            }
+            catch (Exception e)
             {
-                await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
-                    // Finished enumerating
-                    StackLoading.Visibility = Visibility.Collapsed;
-                    var index = confirmationText.Text.IndexOf(Common.GetResourceText("BluetoothOn"));
-                    if (index != -1)
-                    {
-                        DisplayMessagePanelAsync(confirmationText.Text.Substring(0, index), MessageType.InformationalMessage, true);
-                    } 
-                    
-                });
-            });
-            deviceWatcher.EnumerationCompleted += handlerEnumCompleted;
-
-            handlerStopped = new TypedEventHandler<DeviceWatcher, Object>(async (watcher, obj) =>
-            {
-                await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
-                {
-                    // Device watcher stopped
-                    StackLoading.Visibility = Visibility.Collapsed;
-                });
-            });
-            deviceWatcher.Stopped += handlerStopped;
-
-            // Start the Device Watcher
-            deviceWatcher.Start();
-            StackLoading.Visibility = Visibility.Visible;
+                string formatString = Common.GetResourceText("BluetoothListenerCreationFailedFormat");
+                string confirmationMessage = string.Format(formatString, e.Message);
+                bluetoothMessageText.Text = confirmationMessage;
+                deviceWatcher = null;
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -593,36 +673,33 @@ namespace IoTCoreDefaultApp
                 deviceWatcher.Added -= handlerAdded;
                 deviceWatcher.Updated -= handlerUpdated;
                 deviceWatcher.Removed -= handlerRemoved;
-                deviceWatcher.EnumerationCompleted -= handlerEnumCompleted;
 
                 if (DeviceWatcherStatus.Started == deviceWatcher.Status ||
                     DeviceWatcherStatus.EnumerationCompleted == deviceWatcher.Status)
                 {
                     deviceWatcher.Stop();
-                    StackLoading.Visibility = Visibility.Collapsed;
                 }
             }
         }
 
-        /// <summary>
-        /// This is really just a replacement for MessageDialog, which you can't use on Athens
-        /// </summary>
-        /// <param name="confirmationMessage"></param>
-        /// <param name="messageType"></param>
-        private async void DisplayMessagePanelAsync(string confirmationMessage, MessageType messageType, bool force = false)
+        private async void DisplayMessagePanelAsync(PairingContext pairingContext, string confirmationMessage, MessageType messageType, bool force = false)
         {
             // Use UI thread
             await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
             {
-                if(!force && !BluetoothToggle.IsOn)
+                Button yesButton = pairingContext.m_yesButton;
+                Button noButton = pairingContext.m_noButton;
+                TextBlock confirmationMessageText = pairingContext.m_confirmationText;
+
+                if (!force && !BluetoothToggle.IsOn)
                 {
-                    ClearConfirmationPanel();
+                    ClearConfirmationPanel(pairingContext);
                 }
 
-                confirmationText.Text = confirmationMessage;
+                pairingContext.m_confirmationText.Text = confirmationMessage;
                 if (messageType == MessageType.OKMessage)
                 {
-                    yesButton.Content = "OK";
+                    yesButton.Content = Common.GetResourceText("OKLabel");
                     yesButton.Visibility = Visibility.Visible;
                     noButton.Visibility = Visibility.Collapsed;
                 }
@@ -634,13 +711,13 @@ namespace IoTCoreDefaultApp
                 }
                 else
                 {
-                    yesButton.Content = "Yes";
+                    yesButton.Content = Common.GetResourceText("YesLabel");
                     yesButton.Visibility = Visibility.Visible;
                     noButton.Visibility = Visibility.Visible;
                 }
             });
         }
-
+  
         /// <summary>
         /// The Yes or OK button on the DisplayConfirmationPanelAndComplete - accepts the pairing, completes the deferral and clears the message panel
         /// </summary>
@@ -648,45 +725,15 @@ namespace IoTCoreDefaultApp
         /// <param name="e"></param>
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
+            var pairingContext = (sender == yesButtonInbound) ? inboundContext : outboundContext;
+
             // Accept the pairing
-            AcceptPairing();
+            pairingContext.AcceptPairing();
 
             //Display InProgress Status while in pairing
-            DisplayMessagePanelAsync( Common.GetResourceText("BluetoothPairingRequestProgress"), MessageType.InformationalMessage);
-            
+            DisplayMessagePanelAsync(pairingContext, Common.GetResourceText("BluetoothPairingRequestProgress"), MessageType.InformationalMessage);
         }
-
-        private void CompleteDeferral()
-        {
-            // Complete the deferral
-            if (deferral != null)
-            {
-                deferral.Complete();
-                deferral = null;
-            }
-        }
-
-        /// <summary>
-        /// Accept the pairing and complete the deferral
-        /// </summary>
-        private void AcceptPairing()
-        {
-            if (pairingRequestedHandlerArgs != null)
-            {
-                pairingRequestedHandlerArgs.Accept();
-                pairingRequestedHandlerArgs = null;
-            }
-            // Complete deferral
-            CompleteDeferral();
-        }
-
-        private void ClearConfirmationPanel()
-        {
-            confirmationText.Text = "";
-            yesButton.Visibility = Visibility.Collapsed;
-            noButton.Visibility = Visibility.Collapsed;
-        }
-
+      
         /// <summary>
         /// The No button on the DisplayConfirmationPanelAndComplete - completes the deferral and clears the message panel
         /// </summary>
@@ -694,11 +741,11 @@ namespace IoTCoreDefaultApp
         /// <param name="e"></param>
         private void NoButton_Click(object sender, RoutedEventArgs e)
         {
-            //Complete the deferral
-            CompleteDeferral();
-            // Clear the confirmation message
-            ClearConfirmationPanel();
+            var pairingContext = (sender == noButtonInbound) ? inboundContext : outboundContext;
+            pairingContext.RejectPairing();
+            ClearConfirmationPanel(pairingContext);
         }
+     
 
         /// <summary>
         /// User wants to use custom pairing with the selected ceremony types and Default protection level
@@ -712,7 +759,7 @@ namespace IoTCoreDefaultApp
                 ((Button)sender).DataContext as BluetoothDeviceInformationDisplay;
             string formatString = Common.GetResourceText("BluetoothAttemptingToPairFormat");
             string confirmationMessage = string.Format(formatString, deviceInfoDisp.Name, deviceInfoDisp.Id);
-            DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+            DisplayMessagePanelAsync(outboundContext, confirmationMessage, MessageType.InformationalMessage);
 
             // Save the pair button
             Button pairButton = sender as Button;
@@ -733,7 +780,7 @@ namespace IoTCoreDefaultApp
             // Specify custom pairing with all ceremony types and protection level EncryptionAndAuthentication
             DeviceInformationCustomPairing customPairing = deviceInfoDisp.DeviceInformation.Pairing.Custom;
 
-            customPairing.PairingRequested += PairingRequestedHandler;
+            customPairing.PairingRequested += OutboundPairingRequestedHandler;
             DevicePairingResult result = await customPairing.PairAsync(ceremoniesSelected, protectionLevel);
 
             if (result.Status == DevicePairingResultStatus.Paired)
@@ -748,7 +795,7 @@ namespace IoTCoreDefaultApp
                     deviceInfoDisp.Id);
             }
             // Display the result of the pairing attempt
-            DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+            DisplayMessagePanelAsync(outboundContext, confirmationMessage, MessageType.InformationalMessage);
 
             // If the watcher toggle is on, clear any devices in the list and stop and restart the watcher to ensure state is reflected in list
             if (BluetoothToggle.IsOn)
@@ -756,11 +803,6 @@ namespace IoTCoreDefaultApp
                 bluetoothDeviceObservableCollection.Clear();
                 StopWatcher();
                 StartWatcher();
-            }
-            else
-            {
-                // If the watcher is off this is an inbound request so just clear the list
-                bluetoothDeviceObservableCollection.Clear();
             }
 
             // Re-enable the pair button
@@ -773,8 +815,33 @@ namespace IoTCoreDefaultApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private async void PairingRequestedHandler(
+        private async void InboundPairingRequestedHandler(
             DeviceInformationCustomPairing sender,
+            DevicePairingRequestedEventArgs args)
+        {
+            PairingRequestedHandler(inboundContext, args);
+        }
+
+        /// <summary>
+        /// Called when custom pairing is initiated so that we can handle the custom ceremony
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private async void OutboundPairingRequestedHandler(
+            DeviceInformationCustomPairing sender,
+            DevicePairingRequestedEventArgs args)
+        {
+            PairingRequestedHandler(outboundContext, args);
+        }
+
+
+        /// <summary>
+        /// Called when custom pairing is initiated so that we can handle the custom ceremony
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private async void PairingRequestedHandler(
+            PairingContext pairingContext,
             DevicePairingRequestedEventArgs args)
         {
             //Null Check
@@ -782,28 +849,18 @@ namespace IoTCoreDefaultApp
                 return;
 
             // Save the args for use in ProvidePin case
-            pairingRequestedHandlerArgs = args;
-
-            // Save the deferral away and complete it where necessary.
-            if (args.PairingKind != DevicePairingKinds.DisplayPin)
-            {
-                deferral = args.GetDeferral();
-            }
+            pairingContext.SetPairingRequestedEventArgs(args);
 
             string confirmationMessage;
 
             switch (args.PairingKind)
             {
                 case DevicePairingKinds.ConfirmOnly:
-                    // Windows itself will pop the confirmation dialog as part of "consent" if this is running on Desktop or Mobile
-                    // If this is an App for Athens where there is no Windows Consent UX, you may want to provide your own confirmation.
                     {
                         confirmationMessage = string.Format(bluetoothConfirmOnlyFormatString,
                             null != args.DeviceInformation ? args.DeviceInformation.Name : string.Empty,
                             null != args.DeviceInformation ? args.DeviceInformation.Id : string.Empty);
-                        DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
-                        // Accept the pairing which also completes the deferral
-                        AcceptPairing();
+                        DisplayMessagePanelAsync(pairingContext,confirmationMessage, MessageType.YesNoMessage);
                     }
                     break;
 
@@ -812,19 +869,23 @@ namespace IoTCoreDefaultApp
                     // on the target device
                     {
                         confirmationMessage = string.Format(bluetoothDisplayPinFormatString, args.Pin);
-                        DisplayMessagePanelAsync(confirmationMessage, MessageType.OKMessage);
+                        DisplayMessagePanelAsync(pairingContext, confirmationMessage, MessageType.InformationalMessage);
+                        pairingContext.CompleteDeferral();
                     }
                     break;
 
                 case DevicePairingKinds.ProvidePin:
-                    // A PIN may be shown on the target device and the user needs to enter the matching PIN on 
-                    // this Windows device.
-                    await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                    // A PIN may be displayed on the target device, or is a hardcoded value on the target device.
+                    // The user needs to enter the matching PIN on this Windows device.
+                    if (pairingContext == outboundContext)
                     {
-                        // PIN Entry
-                        inProgressPairButton.Flyout = savedPairButtonFlyout;
-                        inProgressPairButton.Flyout.ShowAt(inProgressPairButton);
-                    });
+                        await MainPage.Current.UIThreadDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
+                        {
+                            // PIN Entry
+                            inProgressPairButton.Flyout = savedPairButtonFlyout;
+                            inProgressPairButton.Flyout.ShowAt(inProgressPairButton);
+                        });
+                    }
                     break;
 
                 case DevicePairingKinds.ConfirmPinMatch:
@@ -833,7 +894,7 @@ namespace IoTCoreDefaultApp
                     // then complete the deferral.
                     {
                         confirmationMessage = string.Format(bluetoothConfirmPinMatchFormatString, args.Pin);
-                        DisplayMessagePanelAsync(confirmationMessage, MessageType.YesNoMessage);
+                        DisplayMessagePanelAsync(pairingContext, confirmationMessage, MessageType.YesNoMessage);
                     }
                     break;
             }
@@ -844,13 +905,10 @@ namespace IoTCoreDefaultApp
         /// </summary>
         private async void TurnOnRadio()
         {
-            StackLoading.Visibility = Visibility.Visible;
             // Display a message
-            string confirmationMessage = Common.GetResourceText("BluetoothOn");
-            DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
-
-            //Restart the Discoverability
-            //Check: App.IsBluetoothDiscoverable = false;
+            bluetoothMessageText.Text = Common.GetResourceText("BluetoothOn");
+            ClearConfirmationPanel(inboundContext);
+            ClearConfirmationPanel(outboundContext);
 
             await ToggleBluetoothAsync(true);
             SetupBluetooth();
@@ -876,12 +934,13 @@ namespace IoTCoreDefaultApp
                     return;
                 }
                 BluetoothAdapter adapter = await BluetoothAdapter.GetDefaultAsync();
-                if(null != adapter )
+                if (null != adapter)
                 {
                     var btRadio = await adapter.GetRadioAsync();
                     if (bluetoothState)
                     {
                         await btRadio.SetStateAsync(RadioState.On);
+                        StartWatchingAndDisplayConfirmationMessage();
                     }
                     else
                     {
@@ -890,8 +949,10 @@ namespace IoTCoreDefaultApp
                 }
                 else
                 {
-                    if(bluetoothState)
+                    if (bluetoothState)
+                    {
                         NoDeviceFound();
+                    }
                 }
 
             }
@@ -906,10 +967,7 @@ namespace IoTCoreDefaultApp
         {
             string formatString = Common.GetResourceText("BluetoothNoDeviceAvailableFormat");
             string confirmationMessage = string.Format(formatString, message);
-            DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
-
-            StackLoading.Visibility = Visibility.Collapsed;
-
+            DisplayMessagePanelAsync(outboundContext, confirmationMessage, MessageType.InformationalMessage);
         }
 
         /// <summary>
@@ -923,10 +981,10 @@ namespace IoTCoreDefaultApp
             //Check StopWatcher();
 
             // Display a message
-            string confirmationMessage = Common.GetResourceText("BluetoothOff");
-            DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
-
-            StackLoading.Visibility = Visibility.Collapsed;
+            bluetoothMessageText.Text = Common.GetResourceText("BluetoothOff");
+            
+            ClearConfirmationPanel(inboundContext);
+            ClearConfirmationPanel(outboundContext);
 
             await ToggleBluetoothAsync(false);
         }
@@ -961,7 +1019,7 @@ namespace IoTCoreDefaultApp
                 confirmationMessage = string.Format(formatString, unpairingResult.Status.ToString(), deviceInfoDisp.Name, deviceInfoDisp.Id);
             }
             // Display the result of the pairing attempt
-            DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+            DisplayMessagePanelAsync(outboundContext, confirmationMessage, MessageType.InformationalMessage);
 
             // If the watcher toggle is on, clear any devices in the list and stop and restart the watcher to ensure state is reflected in list
             if (BluetoothToggle.IsOn)
@@ -986,7 +1044,7 @@ namespace IoTCoreDefaultApp
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PinEntryTextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
+        {            
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 //  Close the flyout and save the PIN the user entered
@@ -998,21 +1056,10 @@ namespace IoTCoreDefaultApp
                     inProgressPairButton.Flyout.Hide();
                     inProgressPairButton.Flyout = null;
                     // Use the PIN to accept the pairing
-                    AcceptPairingWithPIN(pairingPIN);
+                    outboundContext.AcceptPairingWithPIN(pairingPIN);
                 }
             }
-        }
-
-        private void AcceptPairingWithPIN(string PIN)
-        {
-            if (pairingRequestedHandlerArgs != null)
-            {
-                pairingRequestedHandlerArgs.Accept(PIN);
-                pairingRequestedHandlerArgs = null;
-            }
-            // Complete the deferral here
-            CompleteDeferral();
-        }
+        }      
 
         /// <summary>
         /// Call when selection changes on the list of discovered Bluetooth devices
@@ -1057,17 +1104,6 @@ namespace IoTCoreDefaultApp
 
                 // Get state of ceremony checkboxes
                 DevicePairingKinds ceremoniesSelected = GetSelectedCeremonies();
-                int iCurrentSelectedCeremonies = (int)ceremoniesSelected;
-
-                // Find out if we changed the ceremonies we orginally registered with - if we have registered before these will be saved
-                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                Object supportedPairingKinds = localSettings.Values["supportedPairingKinds"];
-                int iSavedSelectedCeremonies = -1; // Deliberate impossible value
-                if (supportedPairingKinds != null)
-                {
-                    iSavedSelectedCeremonies = (int)supportedPairingKinds;
-                }
-
                 if (!DeviceInformationPairing.TryRegisterForAllInboundPairingRequests(ceremoniesSelected))
                 {
                     confirmationMessage = Common.GetResourceText("BluetoothInboundRegistrationFailed");
@@ -1075,18 +1111,12 @@ namespace IoTCoreDefaultApp
                 else
                 {
                     // Save off the ceremonies we registered with
-                    localSettings.Values["supportedPairingKinds"] = iCurrentSelectedCeremonies;
                     formatString = Common.GetResourceText("BluetoothInboundRegistrationSucceededFormat");
                     confirmationMessage = string.Format(formatString, ceremoniesSelected.ToString());
                 }
-
-                // Clear the current collection
-                bluetoothDeviceObservableCollection.Clear();
-                // Start the watcher
-                StartWatcher();
+                
                 // Display a message
-                confirmationMessage += Common.GetResourceText("BluetoothOn");
-                DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+                bluetoothMessageText.Text = Common.GetResourceText("BluetoothOn");
             }
         }
 
@@ -1111,7 +1141,7 @@ namespace IoTCoreDefaultApp
                 {
                     string formatString = Common.GetResourceText("BluetoothNoDeviceAvailableFormat");
                     string confirmationMessage = string.Format(formatString, e.Message);
-                    DisplayMessagePanelAsync(confirmationMessage, MessageType.InformationalMessage);
+                    DisplayMessagePanelAsync(inboundContext, confirmationMessage, MessageType.InformationalMessage);
                 }
             }
         }
@@ -1177,8 +1207,8 @@ namespace IoTCoreDefaultApp
                 CortanaVoiceActivationSwitch.IsEnabled = false;
                 await Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                 {
-                   await SetVoiceActivation(enableVoiceActivation);
-                   CortanaVoiceActivationSwitch.IsEnabled = true;
+                    await SetVoiceActivation(enableVoiceActivation);
+                    CortanaVoiceActivationSwitch.IsEnabled = true;
                 });
             }
         }
@@ -1259,6 +1289,21 @@ namespace IoTCoreDefaultApp
         {
             await CortanaHelper.LaunchCortanaToAboutMeAsync();
         }
-        
+
+        private void TimeZoneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+
+            if (comboBox == null || comboBox.SelectedItem == null)
+            {
+                return;
+            }
+
+            if (TimeZoneSettings.CanChangeTimeZone)
+            {
+                string newTimeZone = comboBox.SelectedItem as string;
+                TimeZoneSettings.ChangeTimeZoneByDisplayName(newTimeZone);
+            }
+        }
     }
 }

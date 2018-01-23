@@ -8,7 +8,7 @@ description: A simple shared host service for Windows 10 IoT Core.
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[C++](./Cpp/README.md)
+*	[C++](./CPP/README.md)
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)

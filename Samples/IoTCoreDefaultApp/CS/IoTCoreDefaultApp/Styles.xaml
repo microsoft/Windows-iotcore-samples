@@ -49,7 +49,7 @@
     <x:String x:Key="IconBrowserNext">&#xE76C;</x:String>
     <x:String x:Key="IconRefresh">&#xE72C;</x:String>
     <x:String x:Key="IconSearch">&#xE721;</x:String>
-    <x:String x:Key="IconCross">&#xE711;</x:String>
+    <x:String x:Key="IconCancel">&#xE711;</x:String>
     <x:String x:Key="IconWarning">&#xE7BA;</x:String>
 
     <!--Colours-->
