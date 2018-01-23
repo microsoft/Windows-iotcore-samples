@@ -1,15 +1,13 @@
 Windows 10 IoT Core sample code
 ===============
 
-[Documentation for this sample](https://developer.microsoft.com/en-us/windows/iot/samples/memorystatus) 
-
 ## How to download:
 
 You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
 
 ### Design
 
-This sample is intended to show how to create a console application that can be used to query the memory usage on your Windows IoT Core device (Raspberry Pi 2 or 3, MinnowBoard Max, or a DragonBoard). Please note that you need to compile the project for ARM for Raspberry Pi 2 or 3 or DragonBoard and x86 for MinnowBoard Max.
+This sample is intended to show how to create a console application that can be used to query the memory usage on your Windows IoT Core device (Raspberry Pi 2 or 3, Up Squared, or a DragonBoard). Please note that you need to compile the project for ARM for Raspberry Pi 2 or 3 or DragonBoard and x86 for Up Squared.
 
 ### Usage
 
@@ -20,7 +18,13 @@ This sample is intended to show how to create a console application that can be 
 * Create a new project (File | New Project...). In the 'New Project' dialog, navigate to 'Windows IoT Core' as shown below (in the left pane in the dialog: Templates | Visual C++ | Windows | Windows IoT Core).
 Select the template 'Blank Windows IoT Core Console Application'
 Remember to give a good name to your first app! In this example, we called the project 'MemoryStatus'.
+
+![New CPP Project](../../../Resources/images/MemoryStatus/new_cpp_console_proj.png)
+
 * Let's add some content to the console application. From Solution Explorer, select the 'ConsoleApplication.cpp' file.
+
+![Console application](../../../Resources/images/MemoryStatus/console_application.png)
+
 * To add some functionality to our console, add the following memory status query and display code:
 
 ```C++
@@ -158,19 +162,27 @@ int main(int argc, char **argv)
 
 * Now navigate to the Debug settings section of Windows Device Portal and click the Start button under Start Visual Studio Remote Debugger. 
 
+![Visual Studio Remote Debugger](../../../Resources/images/MemoryStatus/device_portal_start_debugger.png)
+
 * This will show pop-up a message box and give you the connection information. 
 
 *  In Visual Studio, you can configure your target by editing your project's properties (be sure to make all of the highlighted changes as appropriate to your board's name or IP address):
 
-        Note: You can use the IP address instead of the Windows IoT Core device name.
+![Project properties](../../../Resources/images/MemoryStatus/console_project_settings.png)
+
+**Note: You can use the IP address instead of the Windows IoT Core device name.**
 
 * The project configuration needs to be modified to enable deployment.  To do this, open the Configuration Manager by selecting the Configuration manger from the Solution Configuration drop-down menu on the toolbar.
 
-    From the Configuration Manager, ensure that the Deploy checkbox is selected for your project configuration (if this options is disabled, it is likely that the deployment options have not been fully entered into the Debugging tab of the project properties)
+![Configuration management](../../../Resources/images/MemoryStatus/configuration_management.png)
+
+From the Configuration Manager, ensure that the Deploy checkbox is selected for your project configuration (if this options is disabled, it is likely that the deployment options have not been fully entered into the Debugging tab of the project properties).
+
+![Deploy checkbox](../../../Resources/images/MemoryStatus/deploy_checkbox.png)
 
 * Now we're ready to deploy to the remote Windows IoT Core device. Simply press F5 (or select Debug \| Start Debugging) to start debugging our app. You can also use Build \| Deploy Solution to simply deploy your application without starting a debug session.
 
-        NOTE: When run from Visual Studio, the output will not display anywhere, but you will be able to set breakpoints, see variable values, etc.
+**Note: When run from Visual Studio, the output will not display anywhere, but you will be able to set breakpoints, see variable values, etc.**
 
 * To stop the app, press on the 'Stop Debugging' button (or select Debug \| Stop Debugging).
 
@@ -178,18 +190,14 @@ int main(int argc, char **argv)
 
 * You can now run the application as you would any other application.  Simply open a PowerShell/SSH connection (instructions can be found [here for powershell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) and [here for SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/SSH) and enter the Remote Command you specified above.
 
+![Console output](../../../Resources/images/MemoryStatus/console_output.png)
+
 * Once you are done debugging Console Applications, remember to stop the remote debugger on the Windows IoT Core device. You can do this by navigating to Debug settings section of Windows Device Portal and clicking on the Stop Remote Debugger button.
+
+![Stop remote debugger](../../../Resources/images/MemoryStatus/device_portal_stop_debugger.png)
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
 * [Documentation for all samples](https://developer.microsoft.com/en-us/windows/iot/samples)
 
 This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
-
-
-
-
-
-
-
-
