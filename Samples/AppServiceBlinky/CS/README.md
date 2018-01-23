@@ -1,9 +1,9 @@
 # Using an app service to blink an LED
-We’ll create a simple Blinky [app service](https://docs.microsoft.com/en-us/windows/uwp/launch-resume/how-to-create-and-consume-an-app-service) and connect a LED to your Windows IoT Core device (Raspberry Pi 2 or 3, MinnowBoard Max or DragonBoard). We'll also create a simple app service client that blinks the LED. Be aware that the GPIO APIs are only available on Windows IoT Core, so this sample cannot run on your desktop.
+We’ll create a simple Blinky [app service](https://docs.microsoft.com/en-us/windows/uwp/launch-resume/how-to-create-and-consume-an-app-service) and connect a LED to your Windows IoT Core device (Raspberry Pi 2 or 3, Up Squared or DragonBoard). We'll also create a simple app service client that blinks the LED. Be aware that the GPIO APIs are only available on Windows IoT Core, so this sample cannot run on your desktop.
 
 ## Set up your hardware
 ___
-The hardware setup for this sample is the same as the [C# ‘Blinky’ sample](/Samples/helloblinky).
+The hardware setup for this sample is the same as the [C# ‘Blinky’ sample](https://github.com/Microsoft/Windows-iotcore-samples/tree/master/Samples/HelloBlinky/CS).
 Note that the app will not run successfully if it cannot find any available GPIO ports.
 
 ## Load the projects in Visual Studio
