@@ -35,7 +35,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -51,9 +51,7 @@
             <TextBlock Text="{Binding [OOBENetworkTitleText]}" Style="{StaticResource BodyTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,14,0,0"/>
         </StackPanel>
 
-        <ScrollViewer Grid.Column="1" Grid.Row="2">
-            <local:NetworkListControl x:Name="NetworkGrid"/>
-        </ScrollViewer>
+        <local:NetworkListControl Grid.Column="1" Grid.Row="2" x:Name="NetworkControl" Margin="24"/>
 
         <HyperlinkButton Grid.Column="1" Grid.Row="3" x:Name="SkipButton" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="SkipButton_Clicked" HorizontalContentAlignment="Left">
             <TextBlock Text="{Binding [SkipStepText]}"/>

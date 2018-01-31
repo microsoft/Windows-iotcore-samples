@@ -45,6 +45,7 @@ namespace IoTCoreDefaultApp
 
         public MainPage()
         {
+            Log.Enter();
             this.InitializeComponent();
 
             // This is a static public property that allows downstream pages to get a handle to the MainPage instance
@@ -63,6 +64,7 @@ namespace IoTCoreDefaultApp
 
             this.Loaded += async (sender, e) =>
             {
+                Log.Enter("MainPage Loaded");
                 await MainPageDispatcher.RunAsync(CoreDispatcherPriority.Low, () =>
                 {
                     UpdateBoardInfo();
@@ -70,8 +72,9 @@ namespace IoTCoreDefaultApp
                     UpdateConnectedDevices();
                     UpdatePackageVersion();
                 });
+                Log.Leave();
             };
-
+            Log.Leave();
         }
 
         private async void UpdateMakerImageSecurityNotice()

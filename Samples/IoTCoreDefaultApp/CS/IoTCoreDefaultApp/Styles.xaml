@@ -59,6 +59,7 @@
     <SolidColorBrush x:Key="PaleTextBrush" Color="White" Opacity="0.6"/>
     <SolidColorBrush x:Key="DarkAccentBrush" Color="{StaticResource DarkAccentColor}"/>
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+    <SolidColorBrush x:Key="AccentBorderBrush" Color="{StaticResource AccentBorderColor}" />
     <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource AccentColor}" Opacity="0.2"/>
 
     <!--<SolidColorBrush x:Key="ListViewItemSelectedPointerOverBorderThemeBrush" Color="Transparent" />
@@ -218,6 +219,16 @@
         </Setter>
     </Style>
 
+    <Style x:Key="SignalBarsStyle" TargetType="TextBlock">
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="FontSize" Value="40" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="FontFamily" Value="{StaticResource IconFontFamily}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    
     <Style x:Key="LanguageSelectionListViewItemStyle" TargetType="ListViewItem">
         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
@@ -286,9 +297,9 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="TabNavigation" Value="Local"/>
         <Setter Property="IsHoldingEnabled" Value="True"/>
-        <Setter Property="Margin" Value="0,0,0,4"/>
-        <Setter Property="Padding" Value="12,0,14,0"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="4,4,4,4"/>
+        <Setter Property="Padding" Value="12,6,14,6"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}"/>
         <Setter Property="MinHeight" Value="{ThemeResource ListViewItemMinHeight}"/>
