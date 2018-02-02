@@ -228,9 +228,9 @@ namespace IoTUtilities
             };
         }
 
-        public async void Listen(int port)
+        public void Listen(int port)
         {
-            await listener.BindServiceNameAsync(port.ToString());
+            listener.BindServiceNameAsync(port.ToString()).AsTask().Wait();
         }
 
         public void Dispose()
