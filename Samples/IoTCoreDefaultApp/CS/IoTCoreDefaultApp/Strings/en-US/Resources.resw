@@ -790,6 +790,9 @@ Alternatively, click or tap the button below to enter your Administrator account
   <data name="TimeoutText" xml:space="preserve">
     <value>Connection Timed Out</value>
   </data>
+  <data name="CommandTimeoutText" xml:space="preserve">
+    <value>Command Timed Out</value>
+  </data>
   <data name="UnsupportedAuthenticationProtocolText" xml:space="preserve">
     <value>Unsupported Authentication Protocol</value>
   </data>
