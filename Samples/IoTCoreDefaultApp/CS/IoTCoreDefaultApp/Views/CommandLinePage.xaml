@@ -71,7 +71,7 @@
             </Popup>
             <ScrollViewer Name="StdOutputScroller"  Grid.Row="0" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <RichTextBlock Name="StdOutputText" TextWrapping="NoWrap" FontFamily="Lucida Console" FontSize="12" IsTextSelectionEnabled="True" Margin="10 10" SizeChanged="StdOutputText_SizeChanged">
-                    <Paragraph>
+                    <Paragraph x:Name="MainParagraph">
                         <Run FontWeight="Bold" Text="{Binding [ExecAsDefaultAccount]}" />
                     </Paragraph>
                 </RichTextBlock>

@@ -2,9 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
+using Windows.Foundation;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 using Windows.System;
@@ -22,18 +23,27 @@ using Windows.Web.Http.Headers;
 namespace IoTCoreDefaultApp
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Command Line page. 
+    /// Allow executing processes and simple command lines using Windows Command Processor, cmd.exe, through a familiar interface.
     /// </summary>
     public sealed partial class CommandLinePage : Page
     {
         private const string CommandLineProcesserExe = "c:\\windows\\system32\\cmd.exe";
         private const string EnableCommandLineProcesserRegCommand = "reg ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\EmbeddedMode\\ProcessLauncher\" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d \"c:\\windows\\system32\\cmd.exe\\0\"";
-        private const uint CmdLineBufSize = 8192;
+        private const uint MaxLines = 10000;
+        private const int MaxReaderTries = 10;
+        private readonly SolidColorBrush RedSolidColorBrush = new SolidColorBrush(Windows.UI.Colors.Red);
+        private readonly SolidColorBrush DefaultSolidColorBrush = new SolidColorBrush(Windows.UI.Colors.WhiteSmoke);
+        private readonly TimeSpan CommandTimeOut = TimeSpan.FromSeconds(10);
 
         private string currentDirectory = "C:\\";
         private List<string> commandLineHistory = new List<string>();
         private int currentCommandLine = -1;
         private ResourceLoader resourceLoader = new ResourceLoader();
+        private bool IsProcessRunning = true;
+        private CoreDispatcher coreDispatcher;
+        private DateTime commandStartTime;
+        private IAsyncOperation<ProcessLauncherResult> processLauncherOperation;
 
         public CommandLinePage()
         {
@@ -41,6 +51,7 @@ namespace IoTCoreDefaultApp
             this.DataContext = LanguageManager.GetInstance();
             CommandLine.PlaceholderText = String.Format(resourceLoader.GetString("CommandLinePlaceholderText"), currentDirectory);
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
+            coreDispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
         }
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
@@ -59,25 +70,25 @@ namespace IoTCoreDefaultApp
             currentCommandLine = commandLineHistory.Count;
 
             bool isCmdAuthorized = true;
-            Run cmdLineRun = new Run();
-            cmdLineRun.Foreground = new SolidColorBrush(Windows.UI.Colors.LightGray);
-            cmdLineRun.FontWeight = FontWeights.Bold;
-            cmdLineRun.Text = currentDirectory + "> " + CommandLine.Text + "\n";
+            Run cmdLineRun = new Run
+            {
+                Foreground = new SolidColorBrush(Windows.UI.Colors.LightGray),
+                FontWeight = FontWeights.Bold,
+                Text = currentDirectory + "> " + CommandLine.Text + "\n"
+            };
 
-            Run stdOutRun = new Run();
-            Run stdErrRun = new Run();
-            stdErrRun.Foreground = new SolidColorBrush(Windows.UI.Colors.Red);
+            var stdErrRunText = string.Empty;
 
             var commandLineText = CommandLine.Text.Trim();
 
             if (commandLineText.Equals("cls", StringComparison.CurrentCultureIgnoreCase))
             {
-                StdOutputText.Blocks.Clear();
+                MainParagraph.Inlines.Clear();
                 return;
             }
             else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase))
             {
-                stdErrRun.Text = resourceLoader.GetString("CdNotSupported");
+                stdErrRunText = resourceLoader.GetString("CdNotSupported") + "\n";
             }
             else if (commandLineText.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -97,59 +108,81 @@ namespace IoTCoreDefaultApp
                 try
                 {
                     var args = "/C \"" + commandLineText + "\"";
-                    var result = await ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
+                    IsProcessRunning = true;
+                    commandStartTime = DateTime.Now;
 
-                    // First write std out
-                    using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
+                    processLauncherOperation = ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
+                    processLauncherOperation.Completed = (operation, status) =>
                     {
-                        using (var dataReader = new DataReader(outStreamRedirect))
+                        IsProcessRunning = false;
+                        if (status == AsyncStatus.Canceled)
                         {
-                            await ReadText(dataReader, stdOutRun);
+                            stdErrRunText = resourceLoader.GetString("CommandTimeoutText") + "\n";
                         }
-                    }
+                    };
 
-                    // Then write std err
-                    using (var errStreamRedirect = standardError.GetInputStreamAt(0))
+                    await coreDispatcher.RunAsync(
+                        CoreDispatcherPriority.Normal, () =>
                     {
-                        using (var dataReader = new DataReader(errStreamRedirect))
+
+                        MainParagraph.Inlines.Add(cmdLineRun);
+
+                        // First write std out
+                        using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
                         {
-                            await ReadText(dataReader, stdErrRun);
+                            using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
+                            {
+                                ReadText(streamReader);
+                            }
                         }
-                    }
+
+                        // Then write std err
+                        using (var errStreamRedirect = standardError.GetInputStreamAt(0))
+                        {
+
+                            using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
+                            {
+                                ReadText(streamReader, true);
+                            }
+                        }
+                    });
                 }
-                catch (UnauthorizedAccessException uex)
+                catch (UnauthorizedAccessException uax)
                 {
                     isCmdAuthorized = false;
-                    var errorMessage = uex.Message + "\n\n" + resourceLoader.GetString("CmdNotEnabled");
-                    stdErrRun.Text = errorMessage;
+                    stdErrRunText = uax.Message + "\n\n" + resourceLoader.GetString("CmdNotEnabled") + "\n";
                 }
                 catch (Exception ex)
                 {
-                    var errorMessage = ex.Message + "\n" + ex.StackTrace + "\n";
-                    stdErrRun.Text = errorMessage;
+                    stdErrRunText = ex.Message + "\n";
                 }
             }
 
-            await CoreWindow.GetForCurrentThread().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            if (!string.IsNullOrEmpty(stdErrRunText))
             {
-                Paragraph paragraph = new Paragraph();
-
-                paragraph.Inlines.Add(cmdLineRun);
-                paragraph.Inlines.Add(stdOutRun);
-                paragraph.Inlines.Add(stdErrRun);
-
-                if (!isCmdAuthorized)
+                await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    InlineUIContainer uiContainer = new InlineUIContainer();
-                    Button cmdEnableButton = new Button();
-                    cmdEnableButton.Content = resourceLoader.GetString("EnableCmdText");
-                    cmdEnableButton.Click += AccessButtonClicked;
-                    uiContainer.Child = cmdEnableButton;
-                    paragraph.Inlines.Add(uiContainer);
-                }
+                    Run stdErrRun = new Run
+                    {
+                        Text = stdErrRunText,
+                        Foreground = new SolidColorBrush(Windows.UI.Colors.Red)
+                    };
 
-                StdOutputText.Blocks.Add(paragraph);
-            });
+                    MainParagraph.Inlines.Add(stdErrRun);
+
+                    if (!isCmdAuthorized)
+                    {
+                        InlineUIContainer uiContainer = new InlineUIContainer();
+                        Button cmdEnableButton = new Button
+                        {
+                            Content = resourceLoader.GetString("EnableCmdText")
+                        };
+                        cmdEnableButton.Click += AccessButtonClicked;
+                        uiContainer.Child = cmdEnableButton;
+                        MainParagraph.Inlines.Add(uiContainer);
+                    }
+                });
+            }
         }
 
         private void AccessButtonClicked(object sender, RoutedEventArgs e)
@@ -161,22 +194,59 @@ namespace IoTCoreDefaultApp
             Password.Focus(FocusState.Keyboard);
         }
 
-        private async Task ReadText(DataReader dataReader, Run run)
+        private void ReadText(StreamReader streamReader, bool isErrorRun = false)
         {
-            StringBuilder textOutput = new StringBuilder((int)CmdLineBufSize);
-            uint bytesLoaded = 0;
-            while ((bytesLoaded = await dataReader.LoadAsync(CmdLineBufSize)) > 0)
+            int numTries = MaxReaderTries;
+            while (numTries > 0)
             {
-                textOutput.Append(dataReader.ReadString(bytesLoaded));
-            }
+                string line;
+                try
+                {
+                    line = streamReader.ReadLine();
+                }
+                catch (ObjectDisposedException)
+                {
+                    break;
+                }
 
-            new System.Threading.ManualResetEvent(false).WaitOne(10);
-            if ((bytesLoaded = await dataReader.LoadAsync(CmdLineBufSize)) > 0)
-            {
-                textOutput.Append(dataReader.ReadString(bytesLoaded));
-            }
+                if (line == null)
+                {
+                    if (IsProcessRunning)
+                    {
+                        if (DateTime.Now.Subtract(commandStartTime) > CommandTimeOut)
+                        {
+                            processLauncherOperation.Cancel();
+                        }
+                    }
+                    else
+                    {
+                        numTries--;
+                    }
+                }
+                else
+                {
+                    if (isErrorRun)
+                    {
+                        MainParagraph.Inlines.Add(new Run
+                            {
+                                Text = line + "\n",
+                                Foreground = RedSolidColorBrush
+                            });
+                    }
+                    else
+                    {
+                        MainParagraph.Inlines.Add(new Run
+                            {
+                                Text = line + "\n"
+                            });
+                    }
 
-            run.Text = textOutput.ToString();
+                    if (MainParagraph.Inlines.Count  >= MaxLines)
+                    {
+                        MainParagraph.Inlines.RemoveAt(0);
+                    }
+                }
+            }
         }
 
         private async void CommandLine_KeyUp(object sender, KeyRoutedEventArgs e)
@@ -255,7 +325,7 @@ namespace IoTCoreDefaultApp
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            StdOutputText.Blocks.Clear();
+            MainParagraph.Inlines.Clear();
         }
 
         private async void EnableCmdLineButton_Click(object sender, RoutedEventArgs e)
