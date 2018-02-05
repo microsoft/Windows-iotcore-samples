@@ -9,6 +9,7 @@ using Windows.Foundation;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -30,33 +31,32 @@ namespace IoTCoreDefaultApp
     {
         private const string CommandLineProcesserExe = "c:\\windows\\system32\\cmd.exe";
         private const string EnableCommandLineProcesserRegCommand = "reg ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\EmbeddedMode\\ProcessLauncher\" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d \"c:\\windows\\system32\\cmd.exe\\0\"";
-        private const uint MaxLines = 10000;
-        private const int MaxReaderTries = 10;
-        private readonly SolidColorBrush RedSolidColorBrush = new SolidColorBrush(Windows.UI.Colors.Red);
-        private readonly SolidColorBrush DefaultSolidColorBrush = new SolidColorBrush(Windows.UI.Colors.WhiteSmoke);
-        private readonly TimeSpan CommandTimeOut = TimeSpan.FromSeconds(10);
+        private const uint MaxOutputLines = 10000;
+        private readonly SolidColorBrush RedSolidColorBrush = new SolidColorBrush(Colors.Red);
+        private readonly SolidColorBrush DefaultSolidColorBrush = new SolidColorBrush(Colors.WhiteSmoke);
+        private readonly TimeSpan TimeOutAfterNoOutput = TimeSpan.FromSeconds(15);
 
         private string currentDirectory = "C:\\";
         private List<string> commandLineHistory = new List<string>();
         private int currentCommandLine = -1;
         private ResourceLoader resourceLoader = new ResourceLoader();
-        private bool IsProcessRunning = true;
+        private bool isProcessRunning = true;
         private CoreDispatcher coreDispatcher;
-        private DateTime commandStartTime;
         private IAsyncOperation<ProcessLauncherResult> processLauncherOperation;
+        private bool isProcessTimedOut = false;
 
         public CommandLinePage()
         {
-            this.InitializeComponent();
-            this.DataContext = LanguageManager.GetInstance();
+            InitializeComponent();
+            DataContext = LanguageManager.GetInstance();
             CommandLine.PlaceholderText = String.Format(resourceLoader.GetString("CommandLinePlaceholderText"), currentDirectory);
-            this.NavigationCacheMode = NavigationCacheMode.Enabled;
+            NavigationCacheMode = NavigationCacheMode.Enabled;
             coreDispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
         }
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
-            CommandLine.Focus(FocusState.Pointer);
+            EnableCommandLineTextBox(true);
         }
 
         private async Task RunProcess()
@@ -72,18 +72,23 @@ namespace IoTCoreDefaultApp
             bool isCmdAuthorized = true;
             Run cmdLineRun = new Run
             {
-                Foreground = new SolidColorBrush(Windows.UI.Colors.LightGray),
+                Foreground = DefaultSolidColorBrush,
                 FontWeight = FontWeights.Bold,
                 Text = currentDirectory + "> " + CommandLine.Text + "\n"
             };
 
             var stdErrRunText = string.Empty;
-
             var commandLineText = CommandLine.Text.Trim();
 
-            if (commandLineText.Equals("cls", StringComparison.CurrentCultureIgnoreCase))
+            EnableCommandLineTextBox(false);
+            CommandLine.Text = string.Empty;
+            MainParagraph.Inlines.Add(cmdLineRun);
+
+            if (commandLineText.Equals("cls", StringComparison.CurrentCultureIgnoreCase) ||
+                commandLineText.Equals("clear", StringComparison.CurrentCultureIgnoreCase))
             {
                 MainParagraph.Inlines.Clear();
+                EnableCommandLineTextBox(true);
                 return;
             }
             else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase))
@@ -96,6 +101,7 @@ namespace IoTCoreDefaultApp
             }
             else
             {
+                var args = "/C \"" + commandLineText + "\"";
                 var standardOutput = new InMemoryRandomAccessStream();
                 var standardError = new InMemoryRandomAccessStream();
                 var options = new ProcessLauncherOptions
@@ -107,45 +113,43 @@ namespace IoTCoreDefaultApp
 
                 try
                 {
-                    var args = "/C \"" + commandLineText + "\"";
-                    IsProcessRunning = true;
-                    commandStartTime = DateTime.Now;
-
+                    isProcessRunning = true;
+                    isProcessTimedOut = false;
                     processLauncherOperation = ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
                     processLauncherOperation.Completed = (operation, status) =>
                     {
-                        IsProcessRunning = false;
+                        isProcessRunning = false;
                         if (status == AsyncStatus.Canceled)
                         {
-                            stdErrRunText = resourceLoader.GetString("CommandTimeoutText") + "\n";
+                            if (isProcessTimedOut)
+                            {
+                                stdErrRunText = String.Format(resourceLoader.GetString("CommandTimeoutText"), TimeOutAfterNoOutput.Seconds) + "\n";
+                            }
+                            else
+                            {
+                                stdErrRunText = resourceLoader.GetString("CommandCancelled") + "\n";
+                            }
                         }
                     };
 
-                    await coreDispatcher.RunAsync(
-                        CoreDispatcherPriority.Normal, () =>
+                    // First write std out
+                    using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
+                    {
+                        using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
+                        {
+                            await ReadText(streamReader);
+                        }
+                    }
+
+                    // Then write std err
+                    using (var errStreamRedirect = standardError.GetInputStreamAt(0))
                     {
 
-                        MainParagraph.Inlines.Add(cmdLineRun);
-
-                        // First write std out
-                        using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
+                        using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
                         {
-                            using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
-                            {
-                                ReadText(streamReader);
-                            }
+                            await ReadText(streamReader, true);
                         }
-
-                        // Then write std err
-                        using (var errStreamRedirect = standardError.GetInputStreamAt(0))
-                        {
-
-                            using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
-                            {
-                                ReadText(streamReader, true);
-                            }
-                        }
-                    });
+                    }
                 }
                 catch (UnauthorizedAccessException uax)
                 {
@@ -160,29 +164,29 @@ namespace IoTCoreDefaultApp
 
             if (!string.IsNullOrEmpty(stdErrRunText))
             {
-                await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                Run stdErrRun = new Run
                 {
-                    Run stdErrRun = new Run
+                    Text = stdErrRunText,
+                    Foreground = RedSolidColorBrush,
+                    FontWeight = FontWeights.Bold
+                };
+
+                MainParagraph.Inlines.Add(stdErrRun);
+
+                if (!isCmdAuthorized)
+                {
+                    InlineUIContainer uiContainer = new InlineUIContainer();
+                    Button cmdEnableButton = new Button
                     {
-                        Text = stdErrRunText,
-                        Foreground = new SolidColorBrush(Windows.UI.Colors.Red)
+                        Content = resourceLoader.GetString("EnableCmdText")
                     };
-
-                    MainParagraph.Inlines.Add(stdErrRun);
-
-                    if (!isCmdAuthorized)
-                    {
-                        InlineUIContainer uiContainer = new InlineUIContainer();
-                        Button cmdEnableButton = new Button
-                        {
-                            Content = resourceLoader.GetString("EnableCmdText")
-                        };
-                        cmdEnableButton.Click += AccessButtonClicked;
-                        uiContainer.Child = cmdEnableButton;
-                        MainParagraph.Inlines.Add(uiContainer);
-                    }
-                });
+                    cmdEnableButton.Click += AccessButtonClicked;
+                    uiContainer.Child = cmdEnableButton;
+                    MainParagraph.Inlines.Add(uiContainer);
+                }
             }
+
+            EnableCommandLineTextBox(true);
         }
 
         private void AccessButtonClicked(object sender, RoutedEventArgs e)
@@ -194,57 +198,48 @@ namespace IoTCoreDefaultApp
             Password.Focus(FocusState.Keyboard);
         }
 
-        private void ReadText(StreamReader streamReader, bool isErrorRun = false)
+        private async Task ReadText(StreamReader streamReader, bool isErrorRun = false)
         {
-            int numTries = MaxReaderTries;
-            while (numTries > 0)
+            DateTime lastOutputTime = DateTime.Now;
+            while (true)
             {
-                string line;
-                try
-                {
-                    line = streamReader.ReadLine();
-                }
-                catch (ObjectDisposedException)
-                {
-                    break;
-                }
-
+                string line = await streamReader.ReadLineAsync();
                 if (line == null)
                 {
-                    if (IsProcessRunning)
+                    if (isProcessRunning)
                     {
-                        if (DateTime.Now.Subtract(commandStartTime) > CommandTimeOut)
+                        if (DateTime.Now.Subtract(lastOutputTime) > TimeOutAfterNoOutput)
                         {
+                            // Timeout
+                            isProcessTimedOut = true;
                             processLauncherOperation.Cancel();
+                        }
+                        else
+                        {
+                            await Task.Delay(TimeSpan.FromMilliseconds(1));
                         }
                     }
                     else
                     {
-                        numTries--;
+                        break;
                     }
                 }
                 else
                 {
-                    if (isErrorRun)
+                    lastOutputTime = DateTime.Now;
+                    await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         MainParagraph.Inlines.Add(new Run
-                            {
-                                Text = line + "\n",
-                                Foreground = RedSolidColorBrush
-                            });
-                    }
-                    else
-                    {
-                        MainParagraph.Inlines.Add(new Run
-                            {
-                                Text = line + "\n"
-                            });
-                    }
+                        {
+                            Text = line + "\n",
+                            Foreground = isErrorRun ? RedSolidColorBrush : MainParagraph.Foreground
+                        });
 
-                    if (MainParagraph.Inlines.Count  >= MaxLines)
-                    {
-                        MainParagraph.Inlines.RemoveAt(0);
-                    }
+                        if (MainParagraph.Inlines.Count >= MaxOutputLines)
+                        {
+                            MainParagraph.Inlines.RemoveAt(0);
+                        }
+                    });
                 }
             }
         }
@@ -254,7 +249,10 @@ namespace IoTCoreDefaultApp
             switch (e.Key)
             {
                 case VirtualKey.Enter:
-                    await DoRunCommand(true);
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                        {
+                            await RunProcess();
+                        });
                     break;
                 case VirtualKey.Up:
                     currentCommandLine = Math.Max(0, currentCommandLine - 1);
@@ -292,30 +290,23 @@ namespace IoTCoreDefaultApp
 
         private async void RunButton_Click(object sender, RoutedEventArgs e)
         {
-            await DoRunCommand(false);
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                await RunProcess();
+            });
         }
 
-        private async Task DoRunCommand(bool isFocus)
+        private void EnableCommandLineTextBox(bool isEnaled)
         {
-            await Dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal,
-                async () =>
-                {
-                    RunButton.IsEnabled = false;
-                    CommandLine.IsEnabled = false;
-                    ClearButton.IsEnabled = false;
+            RunButton.IsEnabled = isEnaled;
+            CommandLine.IsEnabled = isEnaled;
+            ClearButton.IsEnabled = isEnaled;
+            CancelButton.IsEnabled = !isEnaled;
 
-                    await RunProcess();
-                    CommandLine.Text = string.Empty;
-
-                    RunButton.IsEnabled = true;
-                    CommandLine.IsEnabled = true;
-                    ClearButton.IsEnabled = true;
-                    if (isFocus)
-                    {
-                        CommandLine.Focus(FocusState.Keyboard);
-                    }
-                });
+            if (isEnaled)
+            {
+                CommandLine.Focus(FocusState.Keyboard);
+            }
         }
 
         private void StdOutputText_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -364,17 +355,19 @@ namespace IoTCoreDefaultApp
 
         private static async Task<HttpResponseMessage> EnableCmdExe(string ipAddress, string username, string password, string runCommand)
         {
-            HttpClient client = new HttpClient();
+            var Protocol = "http";
+            var Port = "8080";
+            var client = new HttpClient();
             var command = CryptographicBuffer.ConvertStringToBinary(runCommand, BinaryStringEncoding.Utf8);
-            var runAsdefault = CryptographicBuffer.ConvertStringToBinary("false", BinaryStringEncoding.Utf8);
+            var runAsDefaultAccountFalse = CryptographicBuffer.ConvertStringToBinary("false", BinaryStringEncoding.Utf8);
 
             var urlContent = new HttpFormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string,string>("command", CryptographicBuffer.EncodeToBase64String(command)),
-                new KeyValuePair<string,string>("runasdefaultaccount", CryptographicBuffer.EncodeToBase64String(runAsdefault)),
+                new KeyValuePair<string,string>("runasdefaultaccount", CryptographicBuffer.EncodeToBase64String(runAsDefaultAccountFalse)),
             });
 
-            Uri uri = new Uri("http://" + ipAddress + ":8080/api/iot/processmanagement/runcommand?" + await urlContent.ReadAsStringAsync());
+            var uri = new Uri(Protocol + "://" + ipAddress + ":" + Port + "/api/iot/processmanagement/runcommand?" + await urlContent.ReadAsStringAsync());
 
             var authBuffer = CryptographicBuffer.ConvertStringToBinary(username + ":" + password, BinaryStringEncoding.Utf8);
             client.DefaultRequestHeaders.Authorization = new HttpCredentialsHeaderValue("Basic", CryptographicBuffer.EncodeToBase64String(authBuffer));
@@ -387,6 +380,14 @@ namespace IoTCoreDefaultApp
         {
             CmdEnabledStatusPopup.IsOpen = false;
             CommandLine.Focus(FocusState.Keyboard);
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isProcessRunning)
+            {
+                processLauncherOperation.Cancel();
+            }
         }
     }
 }

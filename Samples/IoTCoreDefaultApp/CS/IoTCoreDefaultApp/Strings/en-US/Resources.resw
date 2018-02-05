@@ -751,8 +751,7 @@ Alternatively, click or tap the button below to enter your Administrator account
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Executing commands as DefaultAccount
-    </value>
+    <value>Executing commands as DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Close</value>
@@ -791,7 +790,10 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>Connection Timed Out</value>
   </data>
   <data name="CommandTimeoutText" xml:space="preserve">
-    <value>Command Timed Out</value>
+    <value>Command Timed Out After {0} Seconds</value>
+  </data>
+  <data name="CommandCancelled" xml:space="preserve">
+    <value>Command Cancelled</value>
   </data>
   <data name="UnsupportedAuthenticationProtocolText" xml:space="preserve">
     <value>Unsupported Authentication Protocol</value>
