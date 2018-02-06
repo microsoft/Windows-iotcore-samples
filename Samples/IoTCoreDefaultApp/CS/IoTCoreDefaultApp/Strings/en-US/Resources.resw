@@ -790,10 +790,13 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>Connection Timed Out</value>
   </data>
   <data name="CommandTimeoutText" xml:space="preserve">
-    <value>Command Timed Out After {0} Seconds</value>
+    <value>Command timed out after {0} seconds of no output.</value>
   </data>
   <data name="CommandCancelled" xml:space="preserve">
-    <value>Command Cancelled</value>
+    <value>Command cancelled.</value>
+  </data>
+  <data name="CommandOutputTooLongeWarning" xml:space="preserve">
+    <value>Warning: Command output too long. Output trimmed.</value>
   </data>
   <data name="UnsupportedAuthenticationProtocolText" xml:space="preserve">
     <value>Unsupported Authentication Protocol</value>

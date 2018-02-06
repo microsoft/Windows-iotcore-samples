@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
@@ -31,9 +32,13 @@ namespace IoTCoreDefaultApp
     {
         private const string CommandLineProcesserExe = "c:\\windows\\system32\\cmd.exe";
         private const string EnableCommandLineProcesserRegCommand = "reg ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\EmbeddedMode\\ProcessLauncher\" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d \"c:\\windows\\system32\\cmd.exe\\0\"";
-        private const uint MaxOutputLines = 10000;
+        private const uint PageSize = 25;
+        private const uint PagingThreshold = 300;
+        private const uint MaxCommandOutputLines = 1500;
+        private const uint MaxTotalOutputRuns = 2000;
+        private const int MaxRetriesAfterProcessTerminates = 3;
         private readonly SolidColorBrush RedSolidColorBrush = new SolidColorBrush(Colors.Red);
-        private readonly SolidColorBrush DefaultSolidColorBrush = new SolidColorBrush(Colors.WhiteSmoke);
+        private readonly SolidColorBrush GraySolidColorBrush = new SolidColorBrush(Colors.Gray);
         private readonly TimeSpan TimeOutAfterNoOutput = TimeSpan.FromSeconds(15);
 
         private string currentDirectory = "C:\\";
@@ -72,9 +77,9 @@ namespace IoTCoreDefaultApp
             bool isCmdAuthorized = true;
             Run cmdLineRun = new Run
             {
-                Foreground = DefaultSolidColorBrush,
+                Foreground = GraySolidColorBrush,
                 FontWeight = FontWeights.Bold,
-                Text = currentDirectory + "> " + CommandLine.Text + "\n"
+                Text = "\n" + currentDirectory + "> " + CommandLine.Text + "\n"
             };
 
             var stdErrRunText = string.Empty;
@@ -201,6 +206,12 @@ namespace IoTCoreDefaultApp
         private async Task ReadText(StreamReader streamReader, bool isErrorRun = false)
         {
             DateTime lastOutputTime = DateTime.Now;
+            uint numTriesAfterProcessCompletes = 0;
+            uint numLines = 0;
+            uint numLinesInCurrentPage = 0;
+            StringBuilder currentPage = null;
+            bool isPageOutput = false;
+            bool isCmdOutputWarningDisplayed = false;
             while (true)
             {
                 string line = await streamReader.ReadLineAsync();
@@ -221,27 +232,91 @@ namespace IoTCoreDefaultApp
                     }
                     else
                     {
-                        break;
+                        if (numTriesAfterProcessCompletes++ >= MaxRetriesAfterProcessTerminates)
+                        {
+
+                            if (isPageOutput && numLinesInCurrentPage > 0 && !isCmdOutputWarningDisplayed)
+                            {
+                                await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                                {
+                                    AddLineToParagraph(isErrorRun, currentPage.ToString());
+                                });
+                            }
+
+                            break;
+                        }
+                        else
+                        {
+                            await Task.Delay(TimeSpan.FromMilliseconds(1));
+                        }
                     }
                 }
                 else
                 {
                     lastOutputTime = DateTime.Now;
-                    await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    numLines++;
+                    if (numLines >= PagingThreshold && !isPageOutput)
                     {
-                        MainParagraph.Inlines.Add(new Run
-                        {
-                            Text = line + "\n",
-                            Foreground = isErrorRun ? RedSolidColorBrush : MainParagraph.Foreground
-                        });
+                        isPageOutput = true;
+                        currentPage = new StringBuilder();
+                        numLinesInCurrentPage = 0;
+                    }
 
-                        if (MainParagraph.Inlines.Count >= MaxOutputLines)
+                    if (numLines > MaxCommandOutputLines)
+                    {
+                        if (!isCmdOutputWarningDisplayed)
                         {
-                            MainParagraph.Inlines.RemoveAt(0);
+                            isCmdOutputWarningDisplayed = true;
+                            await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                            {
+                                AddLineToParagraph(isErrorRun, "...\n");
+                                AddLineToParagraph(true, resourceLoader.GetString("CommandOutputTooLongeWarning") + "\n");
+                            });
                         }
-                    });
+                        continue;
+                    }
+
+                    if (isPageOutput)
+                    {
+                        currentPage.AppendLine(line);
+
+                        if (numLinesInCurrentPage < PageSize)
+                        {
+                            numLinesInCurrentPage++;
+                        }
+                        else
+                        {
+                            await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                            {
+                                AddLineToParagraph(isErrorRun, currentPage.ToString());
+                            });
+                            numLinesInCurrentPage = 0;
+                            currentPage.Clear();
+                        }
+                    }
+                    else
+                    {
+                        await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            AddLineToParagraph(isErrorRun, line + "\n");
+                        });
+                    }
                 }
             }
+        }
+
+        private void AddLineToParagraph(bool isErrorRun, string text)
+        {
+            if (MainParagraph.Inlines.Count >= MaxTotalOutputRuns)
+            {
+                MainParagraph.Inlines.RemoveAt(0);
+            }
+
+            MainParagraph.Inlines.Add(new Run
+            {
+                Text = text,
+                Foreground = isErrorRun ? RedSolidColorBrush : MainParagraph.Foreground
+            });
         }
 
         private async void CommandLine_KeyUp(object sender, KeyRoutedEventArgs e)
