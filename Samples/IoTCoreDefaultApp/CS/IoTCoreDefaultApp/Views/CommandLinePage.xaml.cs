@@ -222,6 +222,15 @@ namespace IoTCoreDefaultApp
                         if (DateTime.Now.Subtract(lastOutputTime) > TimeOutAfterNoOutput)
                         {
                             // Timeout
+
+                            if (isPageOutput && numLinesInCurrentPage > 0 && !isCmdOutputWarningDisplayed)
+                            {
+                                await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                                {
+                                    AddLineToParagraph(isErrorRun, currentPage.ToString());
+                                });
+                            }
+
                             isProcessTimedOut = true;
                             processLauncherOperation.Cancel();
                         }
