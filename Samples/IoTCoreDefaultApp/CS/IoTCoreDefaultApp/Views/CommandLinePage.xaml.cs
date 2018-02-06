@@ -33,12 +33,13 @@ namespace IoTCoreDefaultApp
         private const string CommandLineProcesserExe = "c:\\windows\\system32\\cmd.exe";
         private const string EnableCommandLineProcesserRegCommand = "reg ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\EmbeddedMode\\ProcessLauncher\" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d \"c:\\windows\\system32\\cmd.exe\\0\"";
         private const uint PageSize = 25;
-        private const uint PagingThreshold = 300;
-        private const uint MaxCommandOutputLines = 1500;
+        private const uint PagingThreshold = 500;
+        private const uint MaxCommandOutputLines = 2000;
         private const uint MaxTotalOutputRuns = 2000;
-        private const int MaxRetriesAfterProcessTerminates = 3;
+        private const int MaxRetriesAfterProcessTerminates = 2;
         private readonly SolidColorBrush RedSolidColorBrush = new SolidColorBrush(Colors.Red);
         private readonly SolidColorBrush GraySolidColorBrush = new SolidColorBrush(Colors.Gray);
+        private readonly SolidColorBrush YellowSolidColorBrush = new SolidColorBrush(Colors.Yellow);
         private readonly TimeSpan TimeOutAfterNoOutput = TimeSpan.FromSeconds(15);
 
         private string currentDirectory = "C:\\";
@@ -207,7 +208,7 @@ namespace IoTCoreDefaultApp
         {
             DateTime lastOutputTime = DateTime.Now;
             uint numTriesAfterProcessCompletes = 0;
-            uint numLines = 0;
+            uint numLinesReadFromStream = 0;
             uint numLinesInCurrentPage = 0;
             StringBuilder currentPage = null;
             bool isPageOutput = false;
@@ -241,9 +242,8 @@ namespace IoTCoreDefaultApp
                     }
                     else
                     {
-                        if (numTriesAfterProcessCompletes++ >= MaxRetriesAfterProcessTerminates)
+                        if (numTriesAfterProcessCompletes >= MaxRetriesAfterProcessTerminates)
                         {
-
                             if (isPageOutput && numLinesInCurrentPage > 0 && !isCmdOutputWarningDisplayed)
                             {
                                 await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -256,6 +256,7 @@ namespace IoTCoreDefaultApp
                         }
                         else
                         {
+                            numTriesAfterProcessCompletes++;
                             await Task.Delay(TimeSpan.FromMilliseconds(1));
                         }
                     }
@@ -263,15 +264,15 @@ namespace IoTCoreDefaultApp
                 else
                 {
                     lastOutputTime = DateTime.Now;
-                    numLines++;
-                    if (numLines >= PagingThreshold && !isPageOutput)
+                    numLinesReadFromStream++;
+                    if (numLinesReadFromStream >= PagingThreshold && !isPageOutput)
                     {
                         isPageOutput = true;
                         currentPage = new StringBuilder();
                         numLinesInCurrentPage = 0;
                     }
 
-                    if (numLines > MaxCommandOutputLines)
+                    if (numLinesReadFromStream > MaxCommandOutputLines)
                     {
                         if (!isCmdOutputWarningDisplayed)
                         {
@@ -380,14 +381,17 @@ namespace IoTCoreDefaultApp
             });
         }
 
-        private void EnableCommandLineTextBox(bool isEnaled)
+        private void EnableCommandLineTextBox(bool isEnabled)
         {
-            RunButton.IsEnabled = isEnaled;
-            CommandLine.IsEnabled = isEnaled;
-            ClearButton.IsEnabled = isEnaled;
-            CancelButton.IsEnabled = !isEnaled;
+            RunButton.IsEnabled = isEnabled;
+            CommandLine.IsEnabled = isEnabled;
+            ClearButton.IsEnabled = isEnabled;
+            CancelButton.IsEnabled = !isEnabled;
 
-            if (isEnaled)
+            CancelButton.Foreground = isEnabled ? GraySolidColorBrush : YellowSolidColorBrush;
+            CancelButton.FontWeight = isEnabled ? FontWeights.Normal : FontWeights.Bold;
+
+            if (isEnabled)
             {
                 CommandLine.Focus(FocusState.Keyboard);
             }

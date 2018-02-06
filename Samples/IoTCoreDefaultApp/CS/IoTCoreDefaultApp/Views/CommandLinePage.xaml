@@ -86,9 +86,9 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" x:Name="CommandLine" PlaceholderText="{Binding [CommandLinePlaceholderText]}" Background="Transparent" BorderThickness="2" BorderBrush="Transparent" FontFamily="Lucida Console" FontSize="14" Padding="6 6" KeyUp="CommandLine_KeyUp" Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsSpellCheckEnabled="False" />
-                <Button Grid.Column="1" x:Name="RunButton" Content="{StaticResource IconRun}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontFamily="{StaticResource IconFontFamily}" FontSize="16" Click="RunButton_Click" Height="28" Width="32" VerticalAlignment="Center"/>
-                <Button Grid.Column="2" x:Name="CancelButton" Content="{StaticResource IconCancel}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontFamily="{StaticResource IconFontFamily}" FontSize="16" Click="CancelButton_Click" Height="28" Width="32" VerticalAlignment="Center"/>
-                <Button Grid.Column="3" x:Name="ClearButton" Content="{Binding [ClearPageText]}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontSize="16" Click="ClearButton_Click" Height="28" Width="Auto" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" x:Name="RunButton" Content="{StaticResource IconRun}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontFamily="{StaticResource IconFontFamily}" FontSize="16" Click="RunButton_Click" Height="32" Width="32" VerticalAlignment="Center"/>
+                <Button Grid.Column="2" x:Name="CancelButton" Content="{StaticResource IconCancel}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontFamily="{StaticResource IconFontFamily}" FontSize="16" Click="CancelButton_Click" Height="32" Width="32" VerticalAlignment="Center"/>
+                <Button Grid.Column="3" x:Name="ClearButton" Content="{Binding [ClearPageText]}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontSize="16" Click="ClearButton_Click" Height="32" Width="Auto" VerticalAlignment="Center"/>
             </Grid>
 
         </Grid>
