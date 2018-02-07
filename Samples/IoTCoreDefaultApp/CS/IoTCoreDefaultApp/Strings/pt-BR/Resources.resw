@@ -208,6 +208,14 @@
     <value>Wi-Fi</value>
     <comment>Label for Wi-Fi list in options page</comment>
   </data>
+  <data name="VisitText" xml:space="preserve">
+    <value>Comece a explorar o</value>
+    <comment>Part of "Start exploring WindowsOnDevices.com"</comment>
+  </data>
+  <data name="WindowsOnDevicesUrlText" xml:space="preserve">
+    <value>WindowsOnDevices.com</value>
+    <comment>Part of "Start exploring WindowsOnDevices.com"</comment>
+  </data>
   <data name="KeyboardTitleText" xml:space="preserve">
     <value>Layout do teclado</value>
     <comment>Field label</comment>
@@ -745,5 +753,49 @@ Você também pode clicar ou tocar no botão abaixo para inserir a senha da sua 
   <data name="ToggleOffText" xml:space="preserve">
     <value>Desativado</value>
     <comment>Text used in toggle switches for 'off' state.</comment>
+  </data>
+  <data name="WebBrowserText" xml:space="preserve">
+    <value>Navegador</value>
+    <comment>Title for WebBrowser Text</comment>
+  </data>
+  <data name="WebAddressPlaceholderText" xml:space="preserve">
+    <value>Pesquisar ou inserir endereço Web</value>
+    <comment>WebAddress Placeholder</comment>
+  </data>
+  <data name="MicrosoftWifiConnect" xml:space="preserve">
+    <value>http://www.msftconnecttest.com/redirect</value>
+    <comment>Used by Wifi Connect Redirect</comment>
+  </data>
+  <data name="NetworkNotConnected" xml:space="preserve">
+    <value>Nenhuma conexão encontrada.</value>
+    <comment>Part1 of NetworkNotConnected. Check to see if Device is connected to network</comment>
+  </data>
+  <data name="WebAddressRequired" xml:space="preserve">
+    <value>É preciso inserir um endereço Web ou texto para pesquisar.</value>
+    <comment>Browser Text Required</comment>
+  </data>
+  <data name="NetworkNotConnected2" xml:space="preserve">
+    <value>Verifique sua rede de dispositivo nas configurações.</value>
+    <comment>Part2 of NetworkNotConnected</comment>
+  </data>
+  <data name="Windows10IoTCoreText" xml:space="preserve">
+    <value>Windows 10 IoT Core</value>
+    <comment>Dont Localize</comment>
+  </data>
+  <data name="BluetoothOutboundLabel" xml:space="preserve">
+    <value>Outbound Pairing:</value>
+    <comment>Label that shows outbound pairing status</comment>
+  </data>
+  <data name="YesLabel" xml:space="preserve">
+    <value>Sim</value>
+    <comment>Generic text for a Yes Label</comment>
+  </data>
+  <data name="NoLabel" xml:space="preserve">
+    <value>Não</value>
+    <comment>Generic text for a No Label</comment>
+  </data>
+  <data name="OKLabel" xml:space="preserve">
+    <value>OK</value>
+    <comment>Generic text for an OK Label</comment>
   </data>
 </root>
