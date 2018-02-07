@@ -846,10 +846,6 @@ También puedes hacer clic o pulsar el botón que se muestra a continuación par
     <value>Espera un poco, enlace en curso</value>
     <comment>Pairing InProgress Text</comment>
   </data>
-  <data name="BluetoothOutboundLabel" xml:space="preserve">
-    <value>Outbound Pairing:</value>
-    <comment>Label that shows outbound pairing status</comment>
-  </data>
   <data name="BluetoothInboundLabel" xml:space="preserve">
     <value>Enlace entrante:</value>
     <comment>Label that shows inbound pairing status</comment>

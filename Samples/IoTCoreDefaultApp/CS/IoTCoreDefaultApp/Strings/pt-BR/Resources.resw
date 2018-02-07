@@ -782,10 +782,6 @@ Você também pode clicar ou tocar no botão abaixo para inserir a senha da sua 
     <value>Windows 10 IoT Core</value>
     <comment>Dont Localize</comment>
   </data>
-  <data name="BluetoothOutboundLabel" xml:space="preserve">
-    <value>Outbound Pairing:</value>
-    <comment>Label that shows outbound pairing status</comment>
-  </data>
   <data name="YesLabel" xml:space="preserve">
     <value>Sim</value>
     <comment>Generic text for a Yes Label</comment>

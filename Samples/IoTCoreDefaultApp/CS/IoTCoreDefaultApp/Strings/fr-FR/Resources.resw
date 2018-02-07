@@ -846,10 +846,6 @@ Vous pouvez également cliquer ou appuyer sur le bouton ci-dessous pour entrer l
     <value>Veuillez patienter, association en cours</value>
     <comment>Pairing InProgress Text</comment>
   </data>
-  <data name="BluetoothOutboundLabel" xml:space="preserve">
-    <value>Outbound Pairing:</value>
-    <comment>Label that shows outbound pairing status</comment>
-  </data>
   <data name="BluetoothInboundLabel" xml:space="preserve">
     <value>Association entrante :</value>
     <comment>Label that shows inbound pairing status</comment>

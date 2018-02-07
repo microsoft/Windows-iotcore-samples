@@ -846,10 +846,6 @@ Klicken oder tippen Sie alternativ auf die Schaltfläche unten, um das Kennwort 
     <value>Bitte warten, Kopplung wird ausgeführt...</value>
     <comment>Pairing InProgress Text</comment>
   </data>
-  <data name="BluetoothOutboundLabel" xml:space="preserve">
-    <value>Outbound Pairing:</value>
-    <comment>Label that shows outbound pairing status</comment>
-  </data>
   <data name="BluetoothInboundLabel" xml:space="preserve">
     <value>Eingehende Kopplung:</value>
     <comment>Label that shows inbound pairing status</comment>
