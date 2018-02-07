@@ -5,6 +5,7 @@ using Windows.Storage;
 using IoTUtilities;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
 
 namespace IoTBlocklyBackgroundApp
 {
@@ -66,7 +67,14 @@ namespace IoTBlocklyBackgroundApp
                 await res.RedirectAsync("..");
             });
 
-            server.Listen(8024);
+            try
+            {
+                server.Listen(8024);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
         }
 
         private async Task StartMostRecentScript()

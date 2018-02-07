@@ -782,4 +782,16 @@ In alternativa, tocca o fai clic sul pulsante di seguito per immettere la passwo
     <value>Windows 10 IoT Core</value>
     <comment>Dont Localize</comment>
   </data>
+  <data name="YesLabel" xml:space="preserve">
+    <value>Sì</value>
+    <comment>Generic text for a Yes Label</comment>
+  </data>
+  <data name="NoLabel" xml:space="preserve">
+    <value>No</value>
+    <comment>Generic text for a No Label</comment>
+  </data>
+  <data name="OKLabel" xml:space="preserve">
+    <value>OK</value>
+    <comment>Generic text for an OK Label</comment>
+  </data>
 </root>

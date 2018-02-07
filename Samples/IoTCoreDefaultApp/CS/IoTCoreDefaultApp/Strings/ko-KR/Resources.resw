@@ -782,4 +782,16 @@
     <value>Windows 10 IoT Core</value>
     <comment>Dont Localize</comment>
   </data>
+  <data name="YesLabel" xml:space="preserve">
+    <value>예</value>
+    <comment>Generic text for a Yes Label</comment>
+  </data>
+  <data name="NoLabel" xml:space="preserve">
+    <value>아니요</value>
+    <comment>Generic text for a No Label</comment>
+  </data>
+  <data name="OKLabel" xml:space="preserve">
+    <value>확인</value>
+    <comment>Generic text for an OK Label</comment>
+  </data>
 </root>
