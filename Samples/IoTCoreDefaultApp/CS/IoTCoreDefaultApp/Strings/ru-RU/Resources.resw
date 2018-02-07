@@ -846,10 +846,6 @@
     <value>Подождите. Выполняется соединение</value>
     <comment>Pairing InProgress Text</comment>
   </data>
-  <data name="BluetoothOutboundLabel" xml:space="preserve">
-    <value>Outbound Pairing:</value>
-    <comment>Label that shows outbound pairing status</comment>
-  </data>
   <data name="BluetoothInboundLabel" xml:space="preserve">
     <value>Входящее соединение:</value>
     <comment>Label that shows inbound pairing status</comment>
