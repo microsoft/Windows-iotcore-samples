@@ -24,6 +24,16 @@ using Windows.Web.Http.Headers;
 
 namespace IoTCoreDefaultApp
 {
+    internal enum CommandError
+    {
+        None,
+        Cancelled,
+        CdNotSupported,
+        InvalidDirectory,
+        NotAuthorized,
+        TimedOut,
+        GenericError
+    }
     /// <summary>
     /// Command Line page. 
     /// Allow executing processes and simple command lines using Windows Command Processor, cmd.exe, through a familiar interface.
@@ -37,12 +47,13 @@ namespace IoTCoreDefaultApp
         private const uint MaxCommandOutputLines = 2000;
         private const uint MaxTotalOutputRuns = 2000;
         private const int MaxRetriesAfterProcessTerminates = 2;
+        private const int HRESULT_AccessDenied = -2147024891;
+        private const int HRESULT_InvalidDirectory = -2147024629;
         private readonly SolidColorBrush RedSolidColorBrush = new SolidColorBrush(Colors.Red);
         private readonly SolidColorBrush GraySolidColorBrush = new SolidColorBrush(Colors.Gray);
         private readonly SolidColorBrush YellowSolidColorBrush = new SolidColorBrush(Colors.Yellow);
         private readonly TimeSpan TimeOutAfterNoOutput = TimeSpan.FromSeconds(15);
 
-        private string currentDirectory = "C:\\";
         private List<string> commandLineHistory = new List<string>();
         private int currentCommandLine = -1;
         private ResourceLoader resourceLoader = new ResourceLoader();
@@ -55,14 +66,13 @@ namespace IoTCoreDefaultApp
         {
             InitializeComponent();
             DataContext = LanguageManager.GetInstance();
-            CommandLine.PlaceholderText = String.Format(resourceLoader.GetString("CommandLinePlaceholderText"), currentDirectory);
             NavigationCacheMode = NavigationCacheMode.Enabled;
             coreDispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
         }
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
-            EnableCommandLineTextBox(true);
+            EnableCommandLineTextBox(true, CommandLine);
         }
 
         private async Task RunProcess()
@@ -75,16 +85,16 @@ namespace IoTCoreDefaultApp
             commandLineHistory.Add(CommandLine.Text);
             currentCommandLine = commandLineHistory.Count;
 
-            bool isCmdAuthorized = true;
             Run cmdLineRun = new Run
             {
                 Foreground = GraySolidColorBrush,
                 FontWeight = FontWeights.Bold,
-                Text = "\n" + currentDirectory + "> " + CommandLine.Text + "\n"
+                Text = "\n" + WorkingDirectory.Text + " " + CommandLine.Text + "\n"
             };
 
             var stdErrRunText = string.Empty;
             var commandLineText = CommandLine.Text.Trim();
+            CommandError commandError = CommandError.None;
 
             EnableCommandLineTextBox(false);
             CommandLine.Text = string.Empty;
@@ -94,12 +104,13 @@ namespace IoTCoreDefaultApp
                 commandLineText.Equals("clear", StringComparison.CurrentCultureIgnoreCase))
             {
                 MainParagraph.Inlines.Clear();
-                EnableCommandLineTextBox(true);
+                EnableCommandLineTextBox(true, CommandLine);
                 return;
             }
             else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase))
             {
-                stdErrRunText = resourceLoader.GetString("CdNotSupported") + "\n";
+                commandError = CommandError.CdNotSupported;
+                stdErrRunText = resourceLoader.GetString("CdNotSupported");
             }
             else if (commandLineText.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -107,79 +118,91 @@ namespace IoTCoreDefaultApp
             }
             else
             {
-                var args = "/C \"" + commandLineText + "\"";
+                var args = String.Format("/C \"{0}\"", commandLineText); ;
                 var standardOutput = new InMemoryRandomAccessStream();
                 var standardError = new InMemoryRandomAccessStream();
                 var options = new ProcessLauncherOptions
                 {
                     StandardOutput = standardOutput,
                     StandardError = standardError,
-                    WorkingDirectory = currentDirectory
+                    WorkingDirectory = GetWorkingDirectory()
                 };
 
-                try
+                isProcessRunning = true;
+                isProcessTimedOut = false;
+                processLauncherOperation = ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
+                processLauncherOperation.Completed = (operation, status) =>
                 {
-                    isProcessRunning = true;
-                    isProcessTimedOut = false;
-                    processLauncherOperation = ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
-                    processLauncherOperation.Completed = (operation, status) =>
+                    isProcessRunning = false;
+                        
+                    if (status == AsyncStatus.Canceled)
                     {
-                        isProcessRunning = false;
-                        if (status == AsyncStatus.Canceled)
+                        if (isProcessTimedOut)
                         {
-                            if (isProcessTimedOut)
-                            {
-                                stdErrRunText = String.Format(resourceLoader.GetString("CommandTimeoutText"), TimeOutAfterNoOutput.Seconds) + "\n";
-                            }
-                            else
-                            {
-                                stdErrRunText = resourceLoader.GetString("CommandCancelled") + "\n";
-                            }
+                            commandError = CommandError.TimedOut;
+                            stdErrRunText = String.Format(resourceLoader.GetString("CommandTimeoutText"), TimeOutAfterNoOutput.Seconds);
                         }
-                    };
-
-                    // First write std out
-                    using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
-                    {
-                        using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
+                        else
                         {
-                            await ReadText(streamReader);
+                            commandError = CommandError.Cancelled;
+                            stdErrRunText = resourceLoader.GetString("CommandCancelled");
                         }
                     }
-
-                    // Then write std err
-                    using (var errStreamRedirect = standardError.GetInputStreamAt(0))
+                    else if (status == AsyncStatus.Error)
                     {
-
-                        using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
+                        if (operation.ErrorCode.HResult == HRESULT_AccessDenied)
                         {
-                            await ReadText(streamReader, true);
+                            commandError = CommandError.NotAuthorized;
+                            stdErrRunText = String.Format(resourceLoader.GetString("CmdNotEnabled"), EnableCommandLineProcesserRegCommand);
+
+                        }
+                        else
+                        if (operation.ErrorCode.HResult == HRESULT_InvalidDirectory)
+                        {
+                            commandError = CommandError.InvalidDirectory;
+                            stdErrRunText = String.Format(resourceLoader.GetString("WorkingDirectoryInvalid"), options.WorkingDirectory);
+
+                        }
+                        else
+                        {
+                            commandError = CommandError.GenericError;
+                            stdErrRunText = String.Format(resourceLoader.GetString("CommandLineError"), operation.ErrorCode.Message);
                         }
                     }
-                }
-                catch (UnauthorizedAccessException uax)
+                };
+
+                // First write std out
+                using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
                 {
-                    isCmdAuthorized = false;
-                    stdErrRunText = uax.Message + "\n\n" + resourceLoader.GetString("CmdNotEnabled") + "\n";
+                    using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
+                    {
+                        await ReadText(streamReader);
+                    }
                 }
-                catch (Exception ex)
+
+                // Then write std err
+                using (var errStreamRedirect = standardError.GetInputStreamAt(0))
                 {
-                    stdErrRunText = ex.Message + "\n";
+
+                    using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
+                    {
+                        await ReadText(streamReader, true);
+                    }
                 }
             }
 
-            if (!string.IsNullOrEmpty(stdErrRunText))
+            if (commandError != CommandError.None)
             {
                 Run stdErrRun = new Run
                 {
-                    Text = stdErrRunText,
+                    Text = stdErrRunText + "\n",
                     Foreground = RedSolidColorBrush,
                     FontWeight = FontWeights.Bold
                 };
 
                 MainParagraph.Inlines.Add(stdErrRun);
 
-                if (!isCmdAuthorized)
+                if (commandError == CommandError.NotAuthorized)
                 {
                     InlineUIContainer uiContainer = new InlineUIContainer();
                     Button cmdEnableButton = new Button
@@ -192,7 +215,16 @@ namespace IoTCoreDefaultApp
                 }
             }
 
-            EnableCommandLineTextBox(true);
+            if (commandError == CommandError.InvalidDirectory || commandError == CommandError.CdNotSupported)
+            {
+                EnableCommandLineTextBox(true, WorkingDirectory);
+            }
+            else
+            {
+                EnableCommandLineTextBox(true, CommandLine);
+
+            }
+            
         }
 
         private void AccessButtonClicked(object sender, RoutedEventArgs e)
@@ -381,19 +413,20 @@ namespace IoTCoreDefaultApp
             });
         }
 
-        private void EnableCommandLineTextBox(bool isEnabled)
+        private void EnableCommandLineTextBox(bool isEnabled, TextBox textBoxToFocus = null)
         {
             RunButton.IsEnabled = isEnabled;
             CommandLine.IsEnabled = isEnabled;
+            WorkingDirectory.IsEnabled = isEnabled;
             ClearButton.IsEnabled = isEnabled;
-            CancelButton.IsEnabled = !isEnabled;
 
+            CancelButton.IsEnabled = !isEnabled;
             CancelButton.Foreground = isEnabled ? GraySolidColorBrush : YellowSolidColorBrush;
             CancelButton.FontWeight = isEnabled ? FontWeights.Normal : FontWeights.Bold;
 
-            if (isEnabled)
+            if (isEnabled && textBoxToFocus != null)
             {
-                CommandLine.Focus(FocusState.Keyboard);
+                textBoxToFocus.Focus(FocusState.Keyboard);
             }
         }
 
@@ -424,12 +457,12 @@ namespace IoTCoreDefaultApp
                 }
                 else
                 {
-                    CmdEnabledStatus.Text = string.Format(resourceLoader.GetString("CmdTextEnabledFailure"), response.StatusCode);
+                    CmdEnabledStatus.Text = String.Format(resourceLoader.GetString("CmdTextEnabledFailure"), response.StatusCode);
                 }
             }
             catch (Exception cmdEnabledException)
             {
-                CmdEnabledStatus.Text = string.Format(resourceLoader.GetString("CmdTextEnabledFailure"), cmdEnabledException.HResult);
+                CmdEnabledStatus.Text = String.Format(resourceLoader.GetString("CmdTextEnabledFailure"), cmdEnabledException.HResult);
             }
 
             EnableCmdPopup.IsOpen = false;
@@ -475,6 +508,53 @@ namespace IoTCoreDefaultApp
             if (isProcessRunning)
             {
                 processLauncherOperation.Cancel();
+            }
+        }
+
+        private void WorkingDirectory_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string workingDirectory = GetWorkingDirectory();
+
+            WorkingDirectory.Text = workingDirectory + ">";
+        }
+
+        private bool IsDrive(string workingDirectory)
+        {
+            return workingDirectory.Length == 2 && workingDirectory[1] == ':';
+        }
+
+        private string GetWorkingDirectory()
+        {
+            var workingDirectory = WorkingDirectory.Text.Trim();
+            if (workingDirectory.Length == 0)
+            {
+                return "C:\\";
+            }
+
+            while (workingDirectory.EndsWith(">") || workingDirectory.EndsWith("\\"))
+            {
+                workingDirectory = workingDirectory.Remove(workingDirectory.Length - 1);
+            }
+
+            if (IsDrive(workingDirectory))
+            {
+                workingDirectory = workingDirectory + "\\";
+            }
+
+            return workingDirectory;
+        }
+
+        private void WorkingDirectory_GotFocus(object sender, RoutedEventArgs e)
+        {
+            WorkingDirectory.Text = GetWorkingDirectory();
+            WorkingDirectory.SelectAll();
+        }
+
+        private void WorkingDirectory_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                CommandLine.Focus(FocusState.Keyboard);
             }
         }
     }

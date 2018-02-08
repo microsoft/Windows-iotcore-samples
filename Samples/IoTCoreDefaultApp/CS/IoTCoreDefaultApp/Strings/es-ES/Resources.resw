@@ -694,7 +694,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; Escribe una línea de comandos</value>
+    <value>Escribe una línea de comandos</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -707,7 +707,7 @@
     <value>El dispositivo no está habilitado para ejecutar el procesador de línea de comandos.
 Para habilitarlo, conecta el dispositivo como "administrador" (por ejemplo, usando PowerShell or SSH) o usa Windows Device Portal para ejecutar este comando
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 También puedes hacer clic o pulsar el botón que se muestra a continuación para escribir la contraseña de tu cuenta de administrador e intentar habilitar el procesador de línea de comandos.
 

@@ -694,7 +694,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; Befehlszeile eingeben</value>
+    <value>Befehlszeile eingeben</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -707,7 +707,7 @@
     <value>Ihr Gerät ist nicht zur Ausführung des Befehlszeilenprozessors berechtigt.
 Stellen Sie als "Administrator" (z. B. über PowerShell oder SSH) eine Verbindung mit Ihrem Gerät her, oder führen Sie im Windows Device Portal den folgenden Befehl aus, um die Ausführung zu aktivieren:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 Klicken oder tippen Sie alternativ auf die Schaltfläche unten, um das Kennwort Ihres Administratorkontos einzugeben und den Befehlszeilenprozessor zu aktivieren.
 

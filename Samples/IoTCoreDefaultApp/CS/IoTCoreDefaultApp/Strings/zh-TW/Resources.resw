@@ -681,7 +681,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; 輸入命令列</value>
+    <value>輸入命令列</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -694,7 +694,7 @@
     <value>您的裝置未啟用所以無法執行命令列處理器。
 若要啟用，請以「系統管理員」身分 (例如：使用 PowerShell 或 SSH) 連接您的裝置，或使用 Windows Device Portal 執行此命令:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 或者，按一下或輕觸下方的按鈕，輸入系統管理員帳戶的密碼，然後嘗試啟用命令列處理器。
 

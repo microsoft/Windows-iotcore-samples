@@ -681,7 +681,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; Immetti la riga di comando</value>
+    <value>Immetti la riga di comando</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -694,7 +694,7 @@
     <value>Il tuo dispositivo non può eseguire il processore della riga di comando.
 Per abilitarlo, connettiti al dispositivo come "Amministratore" (ad esempio utilizzando PowerShell o SSH) oppure utilizza Windows Device Portal per eseguire questo comando:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 In alternativa, tocca o fai clic sul pulsante di seguito per immettere la password dell'account Amministratore e tentare di abilitare il processore della riga di comando.
 

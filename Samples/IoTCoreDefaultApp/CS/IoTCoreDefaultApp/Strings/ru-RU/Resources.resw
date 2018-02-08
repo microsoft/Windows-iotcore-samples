@@ -694,7 +694,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; введите командную строку</value>
+    <value>введите командную строку</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -707,7 +707,7 @@
     <value>На вашем устройстве невозможно запускать процессор командной строки.
 Чтобы это изменить, подключитесь к устройству как администратор (например, с помощью PowerShell или SSH) или войдите на Windows Device Portal и запустите эту команду:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 Также можно нажать расположенную ниже кнопку. Это позволит ввести пароль к учетной записи администратора и попытаться включить процессор командной строки.
 

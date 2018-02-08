@@ -694,7 +694,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; Entrer la ligne de commande</value>
+    <value>Entrer la ligne de commande</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -707,7 +707,7 @@
     <value>Votre appareil n’est pas configuré de manière à pouvoir exécuter le processeur de ligne de commande.
 Pour qu'il puisse le faire, connectez-vous à votre appareil en tant qu'administrateur (p. ex. à l'aide de PowerShell or SSH) ou utilisez le Windows Device Portal pour exécuter la commande suivante :
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 Vous pouvez également cliquer ou appuyer sur le bouton ci-dessous pour entrer le mot de passe de votre compte administrateur et tenter d'activer le processeur de ligne de commande.
 
