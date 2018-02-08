@@ -730,20 +730,23 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; Enter command line</value>
+    <value>Enter command line</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
     <value>Clear</value>
   </data>
   <data name="CdNotSupported" xml:space="preserve">
-    <value>Change Directory not currently supported. Please use full paths in your commands.</value>
+    <value>Change directory not currently supported using "cd" command. Please update the folder name in the corresponding text box instead.</value>
+  </data>
+  <data name="WorkingDirectoryInvalid" xml:space="preserve">
+    <value>Invalid working directory : {0}</value>
   </data>
   <data name="CmdNotEnabled" xml:space="preserve">
     <value>Your device is not enabled to run the command line processor.
 To enable it, connect to your device as "Administrator" (e.g. using PowerShell or SSH) or use Windows Device Portal to run this command:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 Alternatively, click or tap the button below to enter your Administrator account's password and attempt to enable the command line processor.
 
@@ -751,8 +754,7 @@ Alternatively, click or tap the button below to enter your Administrator account
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Executing commands as DefaultAccount
-    </value>
+    <value>Executing commands as DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Close</value>
@@ -789,6 +791,18 @@ Alternatively, click or tap the button below to enter your Administrator account
   </data>
   <data name="TimeoutText" xml:space="preserve">
     <value>Connection Timed Out</value>
+  </data>
+  <data name="CommandTimeoutText" xml:space="preserve">
+    <value>Command timed out after {0} seconds of no output.</value>
+  </data>
+  <data name="CommandLineError" xml:space="preserve">
+    <value>Error running command line: {0}</value>
+  </data>
+  <data name="CommandCancelled" xml:space="preserve">
+    <value>Command cancelled.</value>
+  </data>
+  <data name="CommandOutputTooLongeWarning" xml:space="preserve">
+    <value>Warning: Command output too long. Output trimmed.</value>
   </data>
   <data name="UnsupportedAuthenticationProtocolText" xml:space="preserve">
     <value>Unsupported Authentication Protocol</value>

@@ -681,7 +681,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; 输入命令行</value>
+    <value>输入命令行</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -694,7 +694,7 @@
     <value>你的设备未启用，无法运行命令行处理器。
 要启用它，请以“管理员”身份(例如使用 PowerShell 或 SSH)连接到你的设备或使用 Windows Device Portal 运行以下命令:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 或者，单击或点击下面的按钮，输入你管理员帐户的密码并尝试启用命令行处理器。
 
@@ -702,8 +702,7 @@
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>正在以 DefaultAccount 身份执行命令
-    </value>
+    <value>正在以 DefaultAccount 身份执行命令</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>关闭</value>

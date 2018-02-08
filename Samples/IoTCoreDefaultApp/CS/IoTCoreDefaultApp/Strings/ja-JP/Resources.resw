@@ -681,7 +681,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; コマンド ラインを入力してください</value>
+    <value>コマンド ラインを入力してください</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -694,7 +694,7 @@
     <value>デバイスでコマンド ライン プロセッサの実行が有効になっていません。
 有効にするには、"管理者" としてデバイスに (たとえば PowerShell や SSH を使用して) 接続するか、Windows Device Portal を使用してこのコマンドを実行します:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 または、下にあるボタンをクリックするかタップして管理者アカウントのパスワードを入力し、コマンド ライン プロセッサを有効にしてください。
 
@@ -702,8 +702,7 @@
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>DefaultAccount としてコマンドを実行中
-    </value>
+    <value>DefaultAccount としてコマンドを実行中</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>閉じる</value>
