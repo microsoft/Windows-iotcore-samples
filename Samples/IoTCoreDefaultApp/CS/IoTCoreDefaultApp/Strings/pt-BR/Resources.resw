@@ -702,8 +702,7 @@ Você também pode clicar ou tocar no botão abaixo para inserir a senha da sua 
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Executando comandos como DefaultAccount
-    </value>
+    <value>Executando comandos como DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Fechar</value>

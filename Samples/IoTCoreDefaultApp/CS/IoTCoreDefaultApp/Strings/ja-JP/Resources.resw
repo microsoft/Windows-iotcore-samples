@@ -702,8 +702,7 @@
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>DefaultAccount としてコマンドを実行中
-    </value>
+    <value>DefaultAccount としてコマンドを実行中</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>閉じる</value>

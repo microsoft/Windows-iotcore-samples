@@ -702,8 +702,7 @@
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>正在以 DefaultAccount 的身分執行命令
-    </value>
+    <value>正在以 DefaultAccount 的身分執行命令</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>關閉</value>

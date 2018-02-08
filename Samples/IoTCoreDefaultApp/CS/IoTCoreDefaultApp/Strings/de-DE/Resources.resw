@@ -715,8 +715,7 @@ Klicken oder tippen Sie alternativ auf die Schaltfläche unten, um das Kennwort 
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Befehle werden unter DefaultAccount ausgeführt.
-    </value>
+    <value>Befehle werden unter DefaultAccount ausgeführt.</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Schließen</value>

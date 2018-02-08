@@ -715,8 +715,7 @@
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Выполнение команд в роли DefaultAccount
-    </value>
+    <value>Выполнение команд в роли DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Закрыть</value>

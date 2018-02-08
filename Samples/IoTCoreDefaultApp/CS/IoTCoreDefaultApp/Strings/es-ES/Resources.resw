@@ -715,8 +715,7 @@ También puedes hacer clic o pulsar el botón que se muestra a continuación par
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Ejecutar comandos como DefaultAccount
-    </value>
+    <value>Ejecutar comandos como DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Cerrar</value>

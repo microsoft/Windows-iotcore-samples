@@ -702,8 +702,7 @@ In alternativa, tocca o fai clic sul pulsante di seguito per immettere la passwo
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Esecuzione dei comandi come DefaultAccount
-    </value>
+    <value>Esecuzione dei comandi come DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Chiudi</value>
