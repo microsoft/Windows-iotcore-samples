@@ -814,7 +814,7 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>Successfully enabled Command Line Processor (cmd.exe) on your device.</value>
   </data>
   <data name="CmdTextEnabledFailure" xml:space="preserve">
-    <value>Failed to enable Command Line Processor (cmd.exe) on your device. Status = {0}</value>
+    <value>Failed to enable Command Line Processor (cmd.exe) on your device: {0}</value>
   </data>
   <data name="DisconnectButtonContent" xml:space="preserve">
     <value>Disconnect</value>
@@ -900,7 +900,7 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>Inbound Pairing:</value>
     <comment>Label that shows inbound pairing status</comment>
   </data>
-    <data name="BluetoothOutboundLabel" xml:space="preserve">
+  <data name="BluetoothOutboundLabel" xml:space="preserve">
     <value>Outbound Pairing:</value>
     <comment>Label that shows outbound pairing status</comment>
   </data>
@@ -912,12 +912,22 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>No</value>
     <comment>Generic text for a No Label</comment>
   </data>
-    <data name="OKLabel" xml:space="preserve">
+  <data name="OKLabel" xml:space="preserve">
     <value>OK</value>
     <comment>Generic text for an OK Label</comment>
   </data>
   <data name="ChangeTimeZoneTitleText" xml:space="preserve">
     <value>Time zone</value>
     <comment>Time zone text</comment>
+  </data>
+  <data name="ContinueText" xml:space="preserve">
+    <value>Continue</value>
+    <comment>Continue</comment>
+  </data>
+  <data name="CmdTextAdminCommandFailure" xml:space="preserve">
+    <value>Failed to run command as Administrator: {0}</value>
+  </data>
+  <data name="CouldNotParseOutputFailure" xml:space="preserve">
+    <value>Could not parse command output</value>
   </data>
 </root>
