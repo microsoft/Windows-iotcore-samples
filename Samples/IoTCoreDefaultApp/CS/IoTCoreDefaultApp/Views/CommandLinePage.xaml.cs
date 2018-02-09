@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
+using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
@@ -42,6 +43,11 @@ namespace IoTCoreDefaultApp
     {
         private const string CommandLineProcesserExe = "c:\\windows\\system32\\cmd.exe";
         private const string EnableCommandLineProcesserRegCommand = "reg ADD \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\EmbeddedMode\\ProcessLauncher\" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d \"c:\\windows\\system32\\cmd.exe\\0\"";
+        private const string DefaultHostName = "127.0.0.1";
+        private const string DefaultProtocol = "http";
+        private const string DefaultPort = "8080";
+        private const string WDPRESTRunCommandApi = "/api/iot/processmanagement/runcommand";
+        private const string WDPRESTRunCommandWithOutputApi = "/api/iot/processmanagement/runcommandwithoutput";
         private const uint PageSize = 25;
         private const uint PagingThreshold = 500;
         private const uint MaxCommandOutputLines = 2000;
@@ -54,13 +60,15 @@ namespace IoTCoreDefaultApp
         private readonly SolidColorBrush YellowSolidColorBrush = new SolidColorBrush(Colors.Yellow);
         private readonly TimeSpan TimeOutAfterNoOutput = TimeSpan.FromSeconds(15);
 
+        private string adminCommandLine;
         private List<string> commandLineHistory = new List<string>();
-        private int currentCommandLine = -1;
         private ResourceLoader resourceLoader = new ResourceLoader();
-        private bool isProcessRunning = true;
         private CoreDispatcher coreDispatcher;
         private IAsyncOperation<ProcessLauncherResult> processLauncherOperation;
+        private int currentCommandLine = -1;
+        private bool isProcessRunning = true;
         private bool isProcessTimedOut = false;
+        private bool isProcessingAdminCommand = false;
 
         public CommandLinePage()
         {
@@ -84,6 +92,7 @@ namespace IoTCoreDefaultApp
 
             commandLineHistory.Add(CommandLine.Text);
             currentCommandLine = commandLineHistory.Count;
+            isProcessingAdminCommand = false;
 
             Run cmdLineRun = new Run
             {
@@ -116,6 +125,13 @@ namespace IoTCoreDefaultApp
             {
                 NavigationUtils.GoBack();
             }
+            else if (commandLineText.StartsWith("RunAsAdmin ", StringComparison.CurrentCultureIgnoreCase))
+            {
+                adminCommandLine = commandLineText.Remove(0, "RunAsAdmin".Length).Trim();
+                adminCommandLine = "cd \"" + GetWorkingDirectory() + "\" & " + adminCommandLine;
+                isProcessingAdminCommand = true;
+                ShowGetCredentialsPopup();
+            }
             else
             {
                 var args = String.Format("/C \"{0}\"", commandLineText); ;
@@ -134,7 +150,7 @@ namespace IoTCoreDefaultApp
                 processLauncherOperation.Completed = (operation, status) =>
                 {
                     isProcessRunning = false;
-                        
+
                     if (status == AsyncStatus.Canceled)
                     {
                         if (isProcessTimedOut)
@@ -212,6 +228,7 @@ namespace IoTCoreDefaultApp
                     cmdEnableButton.Click += AccessButtonClicked;
                     uiContainer.Child = cmdEnableButton;
                     MainParagraph.Inlines.Add(uiContainer);
+                    MainParagraph.Inlines.Add(new Run() { Text = "\n\n" });
                 }
             }
 
@@ -219,20 +236,23 @@ namespace IoTCoreDefaultApp
             {
                 EnableCommandLineTextBox(true, WorkingDirectory);
             }
-            else
+            else if (!isProcessingAdminCommand)
             {
                 EnableCommandLineTextBox(true, CommandLine);
-
             }
-            
         }
 
         private void AccessButtonClicked(object sender, RoutedEventArgs e)
         {
+            ShowGetCredentialsPopup();
+        }
+
+        private void ShowGetCredentialsPopup()
+        {
             CoreWindow currentWindow = Window.Current.CoreWindow;
-            EnableCmdPopup.VerticalOffset = (currentWindow.Bounds.Height / 2) - (EnableCmdStackPanel.Height / 2);
-            EnableCmdPopup.HorizontalOffset = (currentWindow.Bounds.Width / 2) - (EnableCmdStackPanel.Width / 2);
-            EnableCmdPopup.IsOpen = true;
+            GetCredentialsPopup.VerticalOffset = (currentWindow.Bounds.Height / 2) - (CredentialsStackPanel.Height / 2);
+            GetCredentialsPopup.HorizontalOffset = (currentWindow.Bounds.Width / 2) - (CredentialsStackPanel.Width / 2);
+            GetCredentialsPopup.IsOpen = true;
             Password.Focus(FocusState.Keyboard);
         }
 
@@ -283,7 +303,6 @@ namespace IoTCoreDefaultApp
                                     AddLineToParagraph(isErrorRun, currentPage.ToString());
                                 });
                             }
-
                             break;
                         }
                         else
@@ -367,9 +386,9 @@ namespace IoTCoreDefaultApp
             {
                 case VirtualKey.Enter:
                     await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
-                        {
-                            await RunProcess();
-                        });
+                    {
+                        await RunProcess();
+                    });
                     break;
                 case VirtualKey.Up:
                     currentCommandLine = Math.Max(0, currentCommandLine - 1);
@@ -440,67 +459,119 @@ namespace IoTCoreDefaultApp
             MainParagraph.Inlines.Clear();
         }
 
-        private async void EnableCmdLineButton_Click(object sender, RoutedEventArgs e)
+        private async void RunAdminCommand()
         {
+            GetCredentialsPopup.IsOpen = false;
+
             if (Password.Password.Trim().Equals(string.Empty))
             {
                 // Empty password not accepted
                 return;
             }
 
-            try
+            string outputText = string.Empty;
+            bool isError = false;
+            if (isProcessingAdminCommand)
             {
-                var response = await EnableCmdExe("127.0.0.1", Username.Text, Password.Password, EnableCommandLineProcesserRegCommand);
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    CmdEnabledStatus.Text = resourceLoader.GetString("CmdTextEnabledSuccess");
+                    var response = await ExecuteCommandUsingRESTApi(DefaultHostName, Username.Text, Password.Password, adminCommandLine);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        JsonObject jsonOutput = null;
+                        if (JsonObject.TryParse(await response.Content.ReadAsStringAsync(), out jsonOutput))
+                        {
+                            if (jsonOutput.ContainsKey("output"))
+                            {
+                                outputText = jsonOutput["output"].GetString();
+                            }
+                            else
+                            {
+                                isError = true;
+                                outputText = resourceLoader.GetString("CouldNotParseOutputFailure");
+                            }
+                        }
+                        else
+                        {
+                            isError = true;
+                            outputText = resourceLoader.GetString("CouldNotParseOutputFailure");
+                        }
+                    }
+                    else
+                    {
+                        isError = true;
+                        outputText = String.Format(resourceLoader.GetString("CmdTextAdminCommandFailure"), response.StatusCode);
+                    }
                 }
-                else
+                catch (Exception adminCmdRunException)
                 {
-                    CmdEnabledStatus.Text = String.Format(resourceLoader.GetString("CmdTextEnabledFailure"), response.StatusCode);
+                    isError = true;
+                    outputText = String.Format(resourceLoader.GetString("CmdTextAdminCommandFailure"), adminCmdRunException.Message);
+
                 }
             }
-            catch (Exception cmdEnabledException)
+            else
             {
-                CmdEnabledStatus.Text = String.Format(resourceLoader.GetString("CmdTextEnabledFailure"), cmdEnabledException.HResult);
+                try
+                {
+                    var response = await ExecuteCommandUsingRESTApi(DefaultHostName, Username.Text, Password.Password, EnableCommandLineProcesserRegCommand, isOutputRequired: false);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        outputText = resourceLoader.GetString("CmdTextEnabledSuccess");
+                    }
+                    else
+                    {
+                        isError = true;
+                        outputText = String.Format(resourceLoader.GetString("CmdTextEnabledFailure"), response.StatusCode);
+                    }
+                }
+                catch (Exception cmdEnabledException)
+                {
+                    isError = true;
+                    outputText = String.Format(resourceLoader.GetString("CmdTextEnabledFailure"), cmdEnabledException.Message);
+                }
             }
 
-            EnableCmdPopup.IsOpen = false;
-
-            CoreWindow currentWindow = Window.Current.CoreWindow;
-            CmdEnabledStatusPopup.VerticalOffset = (currentWindow.Bounds.Height / 2) - (StatusStackPanel.Height / 2);
-            CmdEnabledStatusPopup.HorizontalOffset = (currentWindow.Bounds.Width / 2) - (StatusStackPanel.Width / 2);
-
-            CmdEnabledStatusPopup.IsOpen = true;
+            AddLineToParagraph(isError, outputText);
+            EnableCommandLineTextBox(true, CommandLine);
         }
 
-        private static async Task<HttpResponseMessage> EnableCmdExe(string ipAddress, string username, string password, string runCommand)
+        private void CredentialsPopupContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            var Protocol = "http";
-            var Port = "8080";
+            RunAdminCommand();
+        }
+
+        private void Password_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                RunAdminCommand();
+            }
+        }
+
+        private async Task<HttpResponseMessage> ExecuteCommandUsingRESTApi(string ipAddress, string username, string password, string runCommand, bool isOutputRequired = true)
+        {
             var client = new HttpClient();
             var command = CryptographicBuffer.ConvertStringToBinary(runCommand, BinaryStringEncoding.Utf8);
             var runAsDefaultAccountFalse = CryptographicBuffer.ConvertStringToBinary("false", BinaryStringEncoding.Utf8);
+            var timeout = CryptographicBuffer.ConvertStringToBinary(String.Format("{0}", TimeOutAfterNoOutput.TotalMilliseconds), BinaryStringEncoding.Utf8);
 
             var urlContent = new HttpFormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string,string>("command", CryptographicBuffer.EncodeToBase64String(command)),
                 new KeyValuePair<string,string>("runasdefaultaccount", CryptographicBuffer.EncodeToBase64String(runAsDefaultAccountFalse)),
+                new KeyValuePair<string,string>("timeout", CryptographicBuffer.EncodeToBase64String(timeout)),
             });
 
-            var uri = new Uri(Protocol + "://" + ipAddress + ":" + Port + "/api/iot/processmanagement/runcommand?" + await urlContent.ReadAsStringAsync());
+            var wdpCommand = isOutputRequired ? WDPRESTRunCommandWithOutputApi : WDPRESTRunCommandApi;
+            var uriString = String.Format("{0}://{1}:{2}{3}?{4}", DefaultProtocol, ipAddress, DefaultPort, wdpCommand, await urlContent.ReadAsStringAsync());
+            var uri = new Uri(uriString);
 
-            var authBuffer = CryptographicBuffer.ConvertStringToBinary(username + ":" + password, BinaryStringEncoding.Utf8);
+            var authBuffer = CryptographicBuffer.ConvertStringToBinary(String.Format("{0}:{1}", username, password), BinaryStringEncoding.Utf8);
             client.DefaultRequestHeaders.Authorization = new HttpCredentialsHeaderValue("Basic", CryptographicBuffer.EncodeToBase64String(authBuffer));
 
             HttpResponseMessage response = await client.PostAsync(uri, null);
             return response;
-        }
-
-        private void CloseStatusButton_Click(object sender, RoutedEventArgs e)
-        {
-            CmdEnabledStatusPopup.IsOpen = false;
-            CommandLine.Focus(FocusState.Keyboard);
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -557,5 +628,6 @@ namespace IoTCoreDefaultApp
                 CommandLine.Focus(FocusState.Keyboard);
             }
         }
+
     }
 }
