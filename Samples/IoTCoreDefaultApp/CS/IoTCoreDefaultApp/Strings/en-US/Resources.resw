@@ -737,7 +737,7 @@
     <value>Clear</value>
   </data>
   <data name="CdNotSupported" xml:space="preserve">
-    <value>Change directory not currently supported using "cd" command. Please update the folder name in the corresponding text box instead.</value>
+    <value>Change directory not currently supported using "cd" command. Please update the working directory path in the corresponding text box.</value>
   </data>
   <data name="WorkingDirectoryInvalid" xml:space="preserve">
     <value>Invalid working directory : {0}</value>
