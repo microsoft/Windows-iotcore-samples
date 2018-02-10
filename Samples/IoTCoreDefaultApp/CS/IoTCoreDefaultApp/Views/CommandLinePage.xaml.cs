@@ -4,13 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Security.Cryptography;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
+using Windows.System.Threading;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Text;
@@ -36,7 +39,7 @@ namespace IoTCoreDefaultApp
         GenericError
     }
     /// <summary>
-    /// Command Line page. 
+    /// Command Line page.
     /// Allow executing processes and simple command lines using Windows Command Processor, cmd.exe, through a familiar interface.
     /// </summary>
     public sealed partial class CommandLinePage : Page
@@ -46,12 +49,12 @@ namespace IoTCoreDefaultApp
         private const string DefaultHostName = "127.0.0.1";
         private const string DefaultProtocol = "http";
         private const string DefaultPort = "8080";
-        private const string WDPRESTRunCommandApi = "/api/iot/processmanagement/runcommand";
-        private const string WDPRESTRunCommandWithOutputApi = "/api/iot/processmanagement/runcommandwithoutput";
-        private const uint PageSize = 25;
-        private const uint PagingThreshold = 500;
-        private const uint MaxCommandOutputLines = 2000;
-        private const uint MaxTotalOutputRuns = 2000;
+        private const string WdpRunCommandApi = "/api/iot/processmanagement/runcommand";
+        private const string WdpRunCommandWithOutputApi = "/api/iot/processmanagement/runcommandwithoutput";
+        private const string CommandHistoryKey = "CommandHistory";
+        private const int BlockSize = 8192;
+        private const int MaxTotalOutputBlockSizes = 30 * BlockSize;
+        private const int MaxCommandHistory = 200;
         private const int MaxRetriesAfterProcessTerminates = 2;
         private const int HRESULT_AccessDenied = -2147024891;
         private const int HRESULT_InvalidDirectory = -2147024629;
@@ -59,6 +62,7 @@ namespace IoTCoreDefaultApp
         private readonly SolidColorBrush GraySolidColorBrush = new SolidColorBrush(Colors.Gray);
         private readonly SolidColorBrush YellowSolidColorBrush = new SolidColorBrush(Colors.Yellow);
         private readonly TimeSpan TimeOutAfterNoOutput = TimeSpan.FromSeconds(15);
+        private readonly char[] readBuffer = new char[BlockSize];
 
         private string adminCommandLine;
         private List<string> commandLineHistory = new List<string>();
@@ -66,6 +70,7 @@ namespace IoTCoreDefaultApp
         private CoreDispatcher coreDispatcher;
         private IAsyncOperation<ProcessLauncherResult> processLauncherOperation;
         private int currentCommandLine = -1;
+        private int totalOutputSize = 0;
         private bool isProcessRunning = true;
         private bool isProcessTimedOut = false;
         private bool isProcessingAdminCommand = false;
@@ -76,6 +81,32 @@ namespace IoTCoreDefaultApp
             DataContext = LanguageManager.GetInstance();
             NavigationCacheMode = NavigationCacheMode.Enabled;
             coreDispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey(CommandHistoryKey))
+            {
+                commandLineHistory.AddRange(DeserializeCommandHistory(ApplicationData.Current.LocalSettings.Values[CommandHistoryKey] as string));
+                currentCommandLine = commandLineHistory.Count;
+            }
+        }
+
+        private string[] DeserializeCommandHistory(string serializedCommandLineHistory)
+        {
+            if (serializedCommandLineHistory == null)
+            {
+                return new string[0];
+            }
+
+            return serializedCommandLineHistory.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private string SerializeCommandHistory()
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (string cmdLine in commandLineHistory)
+            {
+                builder.AppendFormat("{0}\n", cmdLine);
+            }
+
+            return builder.ToString();
         }
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
@@ -90,7 +121,8 @@ namespace IoTCoreDefaultApp
                 return;
             }
 
-            commandLineHistory.Add(CommandLine.Text);
+            StdOutputScroller.ChangeView(null, StdOutputScroller.ScrollableHeight, null, true);
+            AddToCommandHistory(CommandLine.Text);
             currentCommandLine = commandLineHistory.Count;
             isProcessingAdminCommand = false;
 
@@ -108,12 +140,12 @@ namespace IoTCoreDefaultApp
             EnableCommandLineTextBox(false);
             CommandLine.Text = string.Empty;
             MainParagraph.Inlines.Add(cmdLineRun);
+            totalOutputSize += cmdLineRun.Text.Length;
 
             if (commandLineText.Equals("cls", StringComparison.CurrentCultureIgnoreCase) ||
                 commandLineText.Equals("clear", StringComparison.CurrentCultureIgnoreCase))
             {
-                MainParagraph.Inlines.Clear();
-                EnableCommandLineTextBox(true, CommandLine);
+                ClearOutput();
                 return;
             }
             else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase))
@@ -143,6 +175,7 @@ namespace IoTCoreDefaultApp
                     StandardError = standardError,
                     WorkingDirectory = GetWorkingDirectory()
                 };
+                var manualResetEvent = new ManualResetEvent(false);
 
                 isProcessRunning = true;
                 isProcessTimedOut = false;
@@ -185,26 +218,41 @@ namespace IoTCoreDefaultApp
                             stdErrRunText = String.Format(resourceLoader.GetString("CommandLineError"), operation.ErrorCode.Message);
                         }
                     }
+
+                    manualResetEvent.Set();
                 };
 
-                // First write std out
-                using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
+                var stdOutTask = ThreadPool.RunAsync(async (t) =>
                 {
-                    using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
+                    // First write std out
+                    using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
                     {
-                        await ReadText(streamReader);
+                        using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
+                        {
+                            await ReadText(streamReader);
+                        }
                     }
-                }
+                }).AsTask();
 
-                // Then write std err
-                using (var errStreamRedirect = standardError.GetInputStreamAt(0))
+                var stdErrTask = ThreadPool.RunAsync(async (t) =>
                 {
-
-                    using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
+                    using (var errStreamRedirect = standardError.GetInputStreamAt(0))
                     {
-                        await ReadText(streamReader, true);
+                        using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
+                        {
+                            await ReadText(streamReader, isErrorRun: true);
+                        }
                     }
-                }
+                }).AsTask();
+
+                Task[] tasks = new Task[2]
+                {
+                    stdOutTask,
+                    stdErrTask
+                };
+
+                Task.WaitAll(tasks);
+                manualResetEvent.WaitOne();
             }
 
             if (commandError != CommandError.None)
@@ -242,6 +290,21 @@ namespace IoTCoreDefaultApp
             }
         }
 
+        private void AddToCommandHistory(string cmdLine)
+        {
+            if (commandLineHistory.Count >= MaxCommandHistory)
+            {
+                commandLineHistory.RemoveAt(0);
+            }
+
+            commandLineHistory.Add(cmdLine);
+
+            ThreadPool.RunAsync((asyncAction) =>
+            {
+                ApplicationData.Current.LocalSettings.Values[CommandHistoryKey] = SerializeCommandHistory();
+            }).AsTask();
+        }
+
         private void AccessButtonClicked(object sender, RoutedEventArgs e)
         {
             ShowGetCredentialsPopup();
@@ -260,30 +323,17 @@ namespace IoTCoreDefaultApp
         {
             DateTime lastOutputTime = DateTime.Now;
             uint numTriesAfterProcessCompletes = 0;
-            uint numLinesReadFromStream = 0;
-            uint numLinesInCurrentPage = 0;
-            StringBuilder currentPage = null;
-            bool isPageOutput = false;
-            bool isCmdOutputWarningDisplayed = false;
+
             while (true)
             {
-                string line = await streamReader.ReadLineAsync();
-                if (line == null)
+                int charsRead = await streamReader.ReadBlockAsync(readBuffer, 0, readBuffer.Length);
+                if (charsRead <= 0)
                 {
                     if (isProcessRunning)
                     {
                         if (DateTime.Now.Subtract(lastOutputTime) > TimeOutAfterNoOutput)
                         {
                             // Timeout
-
-                            if (isPageOutput && numLinesInCurrentPage > 0 && !isCmdOutputWarningDisplayed)
-                            {
-                                await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                                {
-                                    AddLineToParagraph(isErrorRun, currentPage.ToString());
-                                });
-                            }
-
                             isProcessTimedOut = true;
                             processLauncherOperation.Cancel();
                         }
@@ -296,13 +346,6 @@ namespace IoTCoreDefaultApp
                     {
                         if (numTriesAfterProcessCompletes >= MaxRetriesAfterProcessTerminates)
                         {
-                            if (isPageOutput && numLinesInCurrentPage > 0 && !isCmdOutputWarningDisplayed)
-                            {
-                                await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                                {
-                                    AddLineToParagraph(isErrorRun, currentPage.ToString());
-                                });
-                            }
                             break;
                         }
                         else
@@ -315,69 +358,49 @@ namespace IoTCoreDefaultApp
                 else
                 {
                     lastOutputTime = DateTime.Now;
-                    numLinesReadFromStream++;
-                    if (numLinesReadFromStream >= PagingThreshold && !isPageOutput)
+                    string text = new string(readBuffer, 0, charsRead);
+                    if (totalOutputSize + text.Length > MaxTotalOutputBlockSizes)
                     {
-                        isPageOutput = true;
-                        currentPage = new StringBuilder();
-                        numLinesInCurrentPage = 0;
+                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
                     }
 
-                    if (numLinesReadFromStream > MaxCommandOutputLines)
+                    await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
-                        if (!isCmdOutputWarningDisplayed)
-                        {
-                            isCmdOutputWarningDisplayed = true;
-                            await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                            {
-                                AddLineToParagraph(isErrorRun, "...\n");
-                                AddLineToParagraph(true, resourceLoader.GetString("CommandOutputTooLongeWarning") + "\n");
-                            });
-                        }
-                        continue;
-                    }
-
-                    if (isPageOutput)
-                    {
-                        currentPage.AppendLine(line);
-
-                        if (numLinesInCurrentPage < PageSize)
-                        {
-                            numLinesInCurrentPage++;
-                        }
-                        else
-                        {
-                            await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                            {
-                                AddLineToParagraph(isErrorRun, currentPage.ToString());
-                            });
-                            numLinesInCurrentPage = 0;
-                            currentPage.Clear();
-                        }
-                    }
-                    else
-                    {
-                        await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                        {
-                            AddLineToParagraph(isErrorRun, line + "\n");
-                        });
-                    }
+                        AddLineToParagraph(isErrorRun, text);
+                    });
                 }
             }
         }
 
         private void AddLineToParagraph(bool isErrorRun, string text)
         {
-            if (MainParagraph.Inlines.Count >= MaxTotalOutputRuns)
+            while (totalOutputSize + text.Length > MaxTotalOutputBlockSizes)
             {
+                Run currentRun = MainParagraph.Inlines[0] as Run;
+                if (currentRun != null && currentRun.Text != null)
+                {
+                    totalOutputSize -= currentRun.Text.Length;
+                }
                 MainParagraph.Inlines.RemoveAt(0);
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             }
 
-            MainParagraph.Inlines.Add(new Run
+            totalOutputSize += text.Length;
+            if (!isErrorRun)
             {
-                Text = text,
-                Foreground = isErrorRun ? RedSolidColorBrush : MainParagraph.Foreground
-            });
+                MainParagraph.Inlines.Add(new Run
+                {
+                    Text = text
+                });
+            }
+            else
+            {
+                MainParagraph.Inlines.Add(new Run
+                {
+                    Text = text,
+                    Foreground = RedSolidColorBrush
+                });
+            }
         }
 
         private async void CommandLine_KeyUp(object sender, KeyRoutedEventArgs e)
@@ -456,7 +479,19 @@ namespace IoTCoreDefaultApp
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
+            ClearOutput();
+        }
+
+        private void ClearOutput()
+        {
+            var previousOutputSize = totalOutputSize;
+            totalOutputSize = 0;
             MainParagraph.Inlines.Clear();
+            if (previousOutputSize > (MaxTotalOutputBlockSizes / 2))
+            {
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            }
+            EnableCommandLineTextBox(true, CommandLine);
         }
 
         private async void RunAdminCommand()
@@ -507,7 +542,6 @@ namespace IoTCoreDefaultApp
                 {
                     isError = true;
                     outputText = String.Format(resourceLoader.GetString("CmdTextAdminCommandFailure"), adminCmdRunException.Message);
-
                 }
             }
             else
@@ -563,7 +597,7 @@ namespace IoTCoreDefaultApp
                 new KeyValuePair<string,string>("timeout", CryptographicBuffer.EncodeToBase64String(timeout)),
             });
 
-            var wdpCommand = isOutputRequired ? WDPRESTRunCommandWithOutputApi : WDPRESTRunCommandApi;
+            var wdpCommand = isOutputRequired ? WdpRunCommandWithOutputApi : WdpRunCommandApi;
             var uriString = String.Format("{0}://{1}:{2}{3}?{4}", DefaultProtocol, ipAddress, DefaultPort, wdpCommand, await urlContent.ReadAsStringAsync());
             var uri = new Uri(uriString);
 
@@ -621,13 +655,12 @@ namespace IoTCoreDefaultApp
             WorkingDirectory.SelectAll();
         }
 
-        private void WorkingDirectory_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void WorkingDirectory_CharReceived(UIElement sender, CharacterReceivedRoutedEventArgs args)
         {
-            if (e.Key == VirtualKey.Enter)
+            if (args.Character=='\r')
             {
                 CommandLine.Focus(FocusState.Keyboard);
             }
         }
-
     }
 }
