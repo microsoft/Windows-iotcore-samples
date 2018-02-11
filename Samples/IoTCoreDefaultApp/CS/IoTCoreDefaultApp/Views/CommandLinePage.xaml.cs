@@ -111,6 +111,7 @@ namespace IoTCoreDefaultApp
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
             EnableCommandLineTextBox(true, CommandLine);
+            StdOutputScroller.ChangeView(null, StdOutputScroller.ScrollableHeight, null, true);
         }
 
         private void RunProcess()
@@ -147,28 +148,40 @@ namespace IoTCoreDefaultApp
             }
             else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase))
             {
-                var stdErrRunText = resourceLoader.GetString("CdNotSupported");
-                ShowError(stdErrRunText);
+                ShowError(resourceLoader.GetString("CdNotSupported"));
                 EnableCommandLineTextBox(true, WorkingDirectory);
             }
             else if (commandLineText.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
             {
                 NavigationUtils.GoBack();
             }
-            else if (commandLineText.StartsWith("RunAsAdmin ", StringComparison.CurrentCultureIgnoreCase))
+            else if (commandLineText.StartsWith("RunAsAdmin", StringComparison.CurrentCultureIgnoreCase))
             {
-                adminCommandLine = commandLineText.Remove(0, "RunAsAdmin".Length).Trim();
+                RunAdminCommand(commandLineText);
+            }
+            else
+            {
+                LaunchCmdProcess(commandLineText);
+            }
+        }
+
+        private void RunAdminCommand(string commandLineText)
+        {
+            adminCommandLine = commandLineText.Remove(0, "RunAsAdmin".Length).Trim();
+            if (adminCommandLine.Length == 0)
+            {
+                ShowError(resourceLoader.GetString("RunAsAdminUsage"));
+                EnableCommandLineTextBox(true, CommandLine);
+            }
+            else
+            {
                 adminCommandLine = "cd \"" + GetWorkingDirectory() + "\" & " + adminCommandLine;
                 isProcessingAdminCommand = true;
                 ShowGetCredentialsPopup();
             }
-            else
-            {
-                ProcessCommand(commandLineText);
-            }
         }
 
-        private void ProcessCommand(string commandLineText)
+        private void LaunchCmdProcess(string commandLineText)
         {
             var args = String.Format("/C \"{0}\"", commandLineText); ;
             var standardOutput = new InMemoryRandomAccessStream();
@@ -194,12 +207,12 @@ namespace IoTCoreDefaultApp
                     if (isProcessTimedOut)
                     {
                         commandError = CommandError.TimedOut;
-                        stdErrRunText = String.Format(resourceLoader.GetString("CommandTimeoutText"), TimeOutAfterNoOutput.Seconds);
+                        stdErrRunText = "\n" + String.Format(resourceLoader.GetString("CommandTimeoutText"), TimeOutAfterNoOutput.Seconds);
                     }
                     else
                     {
                         commandError = CommandError.Cancelled;
-                        stdErrRunText = resourceLoader.GetString("CommandCancelled");
+                        stdErrRunText = "\n" + resourceLoader.GetString("CommandCancelled");
                     }
                 }
                 else if (status == AsyncStatus.Error)
@@ -392,10 +405,10 @@ namespace IoTCoreDefaultApp
         {
             while (totalOutputSize + text.Length > MaxTotalOutputBlockSizes)
             {
-                Run currentRun = MainParagraph.Inlines[0] as Run;
-                if (currentRun != null && currentRun.Text != null)
+                Run firstRun = MainParagraph.Inlines[0] as Run;
+                if (firstRun != null && firstRun.Text != null)
                 {
-                    totalOutputSize -= currentRun.Text.Length;
+                    totalOutputSize -= firstRun.Text.Length;
                 }
                 MainParagraph.Inlines.RemoveAt(0);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
