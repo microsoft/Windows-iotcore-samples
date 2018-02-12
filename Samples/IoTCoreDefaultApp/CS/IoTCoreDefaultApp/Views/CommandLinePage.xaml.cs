@@ -168,7 +168,7 @@ namespace IoTCoreDefaultApp
         private void RunAdminCommand(string commandLineText)
         {
             adminCommandLine = commandLineText.Remove(0, "RunAsAdmin".Length).Trim();
-            if (adminCommandLine.Length == 0)
+            if (adminCommandLine.Length == 0 || adminCommandLine.StartsWith("-") || adminCommandLine.StartsWith("/") || adminCommandLine.StartsWith("\""))
             {
                 ShowError(resourceLoader.GetString("RunAsAdminUsage"));
                 EnableCommandLineTextBox(true, CommandLine);
