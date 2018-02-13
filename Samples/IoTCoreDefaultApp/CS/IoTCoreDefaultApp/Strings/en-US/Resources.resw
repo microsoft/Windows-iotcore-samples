@@ -930,4 +930,12 @@ Alternatively, click or tap the button below to enter your Administrator account
   <data name="CouldNotParseOutputFailure" xml:space="preserve">
     <value>Could not parse command output</value>
   </data>
+  <data name="RunAsAdminUsage" xml:space="preserve">
+    <value>Usage: RunAsAdmin command
+
+Examples:
+> RunAsdmin TZUTIL /s "Pacific Standard Time"
+> RunAsdmin SetComputerName MyNewDeviceName</value>
+
+</data>
 </root>

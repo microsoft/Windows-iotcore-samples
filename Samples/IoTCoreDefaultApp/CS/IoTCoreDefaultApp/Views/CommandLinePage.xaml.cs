@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Data.Json;
@@ -112,9 +111,10 @@ namespace IoTCoreDefaultApp
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
             EnableCommandLineTextBox(true, CommandLine);
+            StdOutputScroller.ChangeView(null, StdOutputScroller.ScrollableHeight, null, true);
         }
 
-        private async Task RunProcess()
+        private void RunProcess()
         {
             if (string.IsNullOrWhiteSpace(CommandLine.Text))
             {
@@ -122,6 +122,7 @@ namespace IoTCoreDefaultApp
             }
 
             StdOutputScroller.ChangeView(null, StdOutputScroller.ScrollableHeight, null, true);
+
             AddToCommandHistory(CommandLine.Text);
             currentCommandLine = commandLineHistory.Count;
             isProcessingAdminCommand = false;
@@ -133,9 +134,7 @@ namespace IoTCoreDefaultApp
                 Text = "\n" + WorkingDirectory.Text + " " + CommandLine.Text + "\n"
             };
 
-            var stdErrRunText = string.Empty;
             var commandLineText = CommandLine.Text.Trim();
-            CommandError commandError = CommandError.None;
 
             EnableCommandLineTextBox(false);
             CommandLine.Text = string.Empty;
@@ -146,116 +145,168 @@ namespace IoTCoreDefaultApp
                 commandLineText.Equals("clear", StringComparison.CurrentCultureIgnoreCase))
             {
                 ClearOutput();
-                return;
             }
             else if (commandLineText.StartsWith("cd ", StringComparison.CurrentCultureIgnoreCase) || commandLineText.StartsWith("chdir ", StringComparison.CurrentCultureIgnoreCase))
             {
-                commandError = CommandError.CdNotSupported;
-                stdErrRunText = resourceLoader.GetString("CdNotSupported");
+                ShowError(resourceLoader.GetString("CdNotSupported"));
+                EnableCommandLineTextBox(true, WorkingDirectory);
             }
             else if (commandLineText.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
             {
                 NavigationUtils.GoBack();
             }
-            else if (commandLineText.StartsWith("RunAsAdmin ", StringComparison.CurrentCultureIgnoreCase))
+            else if (commandLineText.StartsWith("RunAsAdmin", StringComparison.CurrentCultureIgnoreCase))
             {
-                adminCommandLine = commandLineText.Remove(0, "RunAsAdmin".Length).Trim();
+                RunAdminCommand(commandLineText);
+            }
+            else
+            {
+                LaunchCmdProcess(commandLineText);
+            }
+        }
+
+        private void RunAdminCommand(string commandLineText)
+        {
+            adminCommandLine = commandLineText.Remove(0, "RunAsAdmin".Length).Trim();
+            if (adminCommandLine.Length == 0 || adminCommandLine.StartsWith("-") || adminCommandLine.StartsWith("/") || adminCommandLine.StartsWith("\""))
+            {
+                ShowError(resourceLoader.GetString("RunAsAdminUsage"));
+                EnableCommandLineTextBox(true, CommandLine);
+            }
+            else
+            {
                 adminCommandLine = "cd \"" + GetWorkingDirectory() + "\" & " + adminCommandLine;
                 isProcessingAdminCommand = true;
                 ShowGetCredentialsPopup();
             }
-            else
+        }
+
+        private void LaunchCmdProcess(string commandLineText)
+        {
+            var args = String.Format("/C \"{0}\"", commandLineText); ;
+            var standardOutput = new InMemoryRandomAccessStream();
+            var standardError = new InMemoryRandomAccessStream();
+            var options = new ProcessLauncherOptions
             {
-                var args = String.Format("/C \"{0}\"", commandLineText); ;
-                var standardOutput = new InMemoryRandomAccessStream();
-                var standardError = new InMemoryRandomAccessStream();
-                var options = new ProcessLauncherOptions
-                {
-                    StandardOutput = standardOutput,
-                    StandardError = standardError,
-                    WorkingDirectory = GetWorkingDirectory()
-                };
-                var manualResetEvent = new ManualResetEvent(false);
+                StandardOutput = standardOutput,
+                StandardError = standardError,
+                WorkingDirectory = GetWorkingDirectory()
+            };
+            string stdErrRunText = string.Empty;
+            CommandError commandError = CommandError.None;
 
-                isProcessRunning = true;
-                isProcessTimedOut = false;
-                processLauncherOperation = ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
-                processLauncherOperation.Completed = (operation, status) =>
-                {
-                    isProcessRunning = false;
+            isProcessRunning = true;
+            isProcessTimedOut = false;
+            processLauncherOperation = ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
+            processLauncherOperation.Completed = (operation, status) =>
+            {
+                isProcessRunning = false;
 
-                    if (status == AsyncStatus.Canceled)
+                if (status == AsyncStatus.Canceled)
+                {
+                    if (isProcessTimedOut)
                     {
-                        if (isProcessTimedOut)
-                        {
-                            commandError = CommandError.TimedOut;
-                            stdErrRunText = String.Format(resourceLoader.GetString("CommandTimeoutText"), TimeOutAfterNoOutput.Seconds);
-                        }
-                        else
-                        {
-                            commandError = CommandError.Cancelled;
-                            stdErrRunText = resourceLoader.GetString("CommandCancelled");
-                        }
+                        commandError = CommandError.TimedOut;
+                        stdErrRunText = "\n" + String.Format(resourceLoader.GetString("CommandTimeoutText"), TimeOutAfterNoOutput.Seconds);
                     }
-                    else if (status == AsyncStatus.Error)
+                    else
                     {
-                        if (operation.ErrorCode.HResult == HRESULT_AccessDenied)
-                        {
-                            commandError = CommandError.NotAuthorized;
-                            stdErrRunText = String.Format(resourceLoader.GetString("CmdNotEnabled"), EnableCommandLineProcesserRegCommand);
-
-                        }
-                        else
-                        if (operation.ErrorCode.HResult == HRESULT_InvalidDirectory)
-                        {
-                            commandError = CommandError.InvalidDirectory;
-                            stdErrRunText = String.Format(resourceLoader.GetString("WorkingDirectoryInvalid"), options.WorkingDirectory);
-
-                        }
-                        else
-                        {
-                            commandError = CommandError.GenericError;
-                            stdErrRunText = String.Format(resourceLoader.GetString("CommandLineError"), operation.ErrorCode.Message);
-                        }
+                        commandError = CommandError.Cancelled;
+                        stdErrRunText = "\n" + resourceLoader.GetString("CommandCancelled");
                     }
-
-                    manualResetEvent.Set();
-                };
-
-                var stdOutTask = ThreadPool.RunAsync(async (t) =>
+                }
+                else if (status == AsyncStatus.Error)
                 {
-                    // First write std out
-                    using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
+                    if (operation.ErrorCode.HResult == HRESULT_AccessDenied)
                     {
-                        using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
-                        {
-                            await ReadText(streamReader);
-                        }
-                    }
-                }).AsTask();
+                        commandError = CommandError.NotAuthorized;
+                        stdErrRunText = String.Format(resourceLoader.GetString("CmdNotEnabled"), EnableCommandLineProcesserRegCommand);
 
-                var stdErrTask = ThreadPool.RunAsync(async (t) =>
-                {
-                    using (var errStreamRedirect = standardError.GetInputStreamAt(0))
+                    }
+                    else
+                    if (operation.ErrorCode.HResult == HRESULT_InvalidDirectory)
                     {
-                        using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
-                        {
-                            await ReadText(streamReader, isErrorRun: true);
-                        }
-                    }
-                }).AsTask();
+                        commandError = CommandError.InvalidDirectory;
+                        stdErrRunText = String.Format(resourceLoader.GetString("WorkingDirectoryInvalid"), options.WorkingDirectory);
 
-                Task[] tasks = new Task[2]
+                    }
+                    else
+                    {
+                        commandError = CommandError.GenericError;
+                        stdErrRunText = String.Format(resourceLoader.GetString("CommandLineError"), operation.ErrorCode.Message);
+                    }
+                }
+
+                if (commandError != CommandError.None)
                 {
+                    ShowError(stdErrRunText);
+
+                    if (commandError == CommandError.NotAuthorized)
+                    {
+                        ShowAuthorizationUI();
+                    }
+                }
+
+                if (commandError == CommandError.InvalidDirectory)
+                {
+                    EnableCommandLineTextBox(true, WorkingDirectory);
+                }
+                else
+                {
+                    EnableCommandLineTextBox(true, CommandLine);
+                }
+            };
+
+            var stdOutTask = ThreadPool.RunAsync(async (t) =>
+            {
+                using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
+                {
+                    using (var streamReader = new StreamReader(outStreamRedirect.AsStreamForRead()))
+                    {
+                        await ReadText(streamReader);
+                    }
+                }
+            }).AsTask();
+
+            var stdErrTask = ThreadPool.RunAsync(async (t) =>
+            {
+                using (var errStreamRedirect = standardError.GetInputStreamAt(0))
+                {
+                    using (var streamReader = new StreamReader(errStreamRedirect.AsStreamForRead()))
+                    {
+                        await ReadText(streamReader, isErrorRun: true);
+                    }
+                }
+            }).AsTask();
+
+            Task[] tasks = new Task[2]
+            {
                     stdOutTask,
                     stdErrTask
+            };
+
+            Task.WaitAll(tasks);
+        }
+
+        private async void ShowAuthorizationUI()
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                InlineUIContainer uiContainer = new InlineUIContainer();
+                Button cmdEnableButton = new Button
+                {
+                    Content = resourceLoader.GetString("EnableCmdText")
                 };
+                cmdEnableButton.Click += AccessButtonClicked;
+                uiContainer.Child = cmdEnableButton;
+                MainParagraph.Inlines.Add(uiContainer);
+                MainParagraph.Inlines.Add(new Run() { Text = "\n\n" });
+            });
+        }
 
-                Task.WaitAll(tasks);
-                manualResetEvent.WaitOne();
-            }
-
-            if (commandError != CommandError.None)
+        private async void ShowError(string stdErrRunText)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 Run stdErrRun = new Run
                 {
@@ -265,29 +316,7 @@ namespace IoTCoreDefaultApp
                 };
 
                 MainParagraph.Inlines.Add(stdErrRun);
-
-                if (commandError == CommandError.NotAuthorized)
-                {
-                    InlineUIContainer uiContainer = new InlineUIContainer();
-                    Button cmdEnableButton = new Button
-                    {
-                        Content = resourceLoader.GetString("EnableCmdText")
-                    };
-                    cmdEnableButton.Click += AccessButtonClicked;
-                    uiContainer.Child = cmdEnableButton;
-                    MainParagraph.Inlines.Add(uiContainer);
-                    MainParagraph.Inlines.Add(new Run() { Text = "\n\n" });
-                }
-            }
-
-            if (commandError == CommandError.InvalidDirectory || commandError == CommandError.CdNotSupported)
-            {
-                EnableCommandLineTextBox(true, WorkingDirectory);
-            }
-            else if (!isProcessingAdminCommand)
-            {
-                EnableCommandLineTextBox(true, CommandLine);
-            }
+            });
         }
 
         private void AddToCommandHistory(string cmdLine)
@@ -376,10 +405,10 @@ namespace IoTCoreDefaultApp
         {
             while (totalOutputSize + text.Length > MaxTotalOutputBlockSizes)
             {
-                Run currentRun = MainParagraph.Inlines[0] as Run;
-                if (currentRun != null && currentRun.Text != null)
+                Run firstRun = MainParagraph.Inlines[0] as Run;
+                if (firstRun != null && firstRun.Text != null)
                 {
-                    totalOutputSize -= currentRun.Text.Length;
+                    totalOutputSize -= firstRun.Text.Length;
                 }
                 MainParagraph.Inlines.RemoveAt(0);
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
@@ -408,9 +437,9 @@ namespace IoTCoreDefaultApp
             switch (e.Key)
             {
                 case VirtualKey.Enter:
-                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
-                        await RunProcess();
+                        RunProcess();
                     });
                     break;
                 case VirtualKey.Up:
@@ -449,27 +478,30 @@ namespace IoTCoreDefaultApp
 
         private async void RunButton_Click(object sender, RoutedEventArgs e)
         {
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                await RunProcess();
+                RunProcess();
             });
         }
 
-        private void EnableCommandLineTextBox(bool isEnabled, TextBox textBoxToFocus = null)
+        private async void EnableCommandLineTextBox(bool isEnabled, TextBox textBoxToFocus = null)
         {
-            RunButton.IsEnabled = isEnabled;
-            CommandLine.IsEnabled = isEnabled;
-            WorkingDirectory.IsEnabled = isEnabled;
-            ClearButton.IsEnabled = isEnabled;
-
-            CancelButton.IsEnabled = !isEnabled;
-            CancelButton.Foreground = isEnabled ? GraySolidColorBrush : YellowSolidColorBrush;
-            CancelButton.FontWeight = isEnabled ? FontWeights.Normal : FontWeights.Bold;
-
-            if (isEnabled && textBoxToFocus != null)
+            await coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                textBoxToFocus.Focus(FocusState.Keyboard);
-            }
+                RunButton.IsEnabled = isEnabled;
+                CommandLine.IsEnabled = isEnabled;
+                WorkingDirectory.IsEnabled = isEnabled;
+                ClearButton.IsEnabled = isEnabled;
+
+                CancelButton.IsEnabled = !isEnabled;
+                CancelButton.Foreground = isEnabled ? GraySolidColorBrush : YellowSolidColorBrush;
+                CancelButton.FontWeight = isEnabled ? FontWeights.Normal : FontWeights.Bold;
+
+                if (isEnabled && textBoxToFocus != null)
+                {
+                    textBoxToFocus.Focus(FocusState.Keyboard);
+                }
+            });
         }
 
         private void StdOutputText_SizeChanged(object sender, SizeChangedEventArgs e)
