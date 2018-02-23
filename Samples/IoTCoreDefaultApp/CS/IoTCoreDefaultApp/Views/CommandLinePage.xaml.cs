@@ -73,6 +73,7 @@ namespace IoTCoreDefaultApp
         private bool isProcessRunning = true;
         private bool isProcessTimedOut = false;
         private bool isProcessingAdminCommand = false;
+        private DateTime lastOutputTime = DateTime.Now;
 
         public CommandLinePage()
         {
@@ -197,6 +198,7 @@ namespace IoTCoreDefaultApp
 
             isProcessRunning = true;
             isProcessTimedOut = false;
+            lastOutputTime = DateTime.Now;
             processLauncherOperation = ProcessLauncher.RunToCompletionAsync(CommandLineProcesserExe, args, options);
             processLauncherOperation.Completed = (operation, status) =>
             {
@@ -350,7 +352,6 @@ namespace IoTCoreDefaultApp
 
         private async Task ReadText(StreamReader streamReader, bool isErrorRun = false)
         {
-            DateTime lastOutputTime = DateTime.Now;
             uint numTriesAfterProcessCompletes = 0;
 
             while (true)
