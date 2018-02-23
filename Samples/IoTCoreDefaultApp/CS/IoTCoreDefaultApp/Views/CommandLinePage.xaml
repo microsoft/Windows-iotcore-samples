@@ -50,42 +50,38 @@
                 <RowDefinition Height="32"></RowDefinition>
                 <RowDefinition Height="2"></RowDefinition>
             </Grid.RowDefinitions>
-            <Popup x:Name="EnableCmdPopup" Grid.Row="0">
+            <Popup x:Name="GetCredentialsPopup" Grid.Row="0">
                 <Border BorderThickness="2" BorderBrush="LightGray" Background="Black">
-                    <StackPanel x:Name="EnableCmdStackPanel"  Height="172" Width="400">
+                    <StackPanel x:Name="CredentialsStackPanel" Height="172" Width="400">
                         <TextBlock Text="{Binding [UsernameText]}" FontSize="14"  Margin="10, 2, 10, 0" />
                         <TextBox x:Name="Username" FontSize="14" Text="administrator"  Margin="10, 2, 10, 4"/>
                         <TextBlock Text="{Binding [PasswordText]}" FontSize="14"  Margin="10, 2, 10, 0"/>
-                        <PasswordBox x:Name="Password" FontSize="14"  Margin="10, 2, 10, 10"/>
-                        <Button x:Name="EnableCmdLineButton" Content="{Binding [EnableCmdText]}" HorizontalAlignment="Center" Click="EnableCmdLineButton_Click" />
-                    </StackPanel>
-                </Border>
-            </Popup>
-            <Popup  x:Name="CmdEnabledStatusPopup" Grid.Row="0">
-                <Border BorderThickness="2" BorderBrush="LightGray" Background="Black">
-                    <StackPanel x:Name="StatusStackPanel"  Height="120" Width="300">
-                        <TextBlock x:Name="CmdEnabledStatus" FontSize="14"  Margin="10, 10" TextWrapping="WrapWholeWords" />
-                        <Button x:Name="CloseStatusButton" Content="{Binding [CloseText]}" HorizontalAlignment="Center" Click="CloseStatusButton_Click" />
+                        <PasswordBox x:Name="Password" FontSize="14"  Margin="10, 2, 10, 10" KeyUp="Password_KeyUp"/>
+                        <Button x:Name="CredentialsPopupContinueButton" Content="{Binding [ContinueText]}" HorizontalAlignment="Center" Click="CredentialsPopupContinueButton_Click" />
                     </StackPanel>
                 </Border>
             </Popup>
             <ScrollViewer Name="StdOutputScroller"  Grid.Row="0" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <RichTextBlock Name="StdOutputText" TextWrapping="NoWrap" FontFamily="Lucida Console" FontSize="12" IsTextSelectionEnabled="True" Margin="10 10" SizeChanged="StdOutputText_SizeChanged">
-                    <Paragraph>
-                        <Run FontWeight="Bold" Text="{Binding [ExecAsDefaultAccount]}" />
+                <RichTextBlock Name="StdOutputText" TextWrapping="NoWrap" IsTextSelectionEnabled="True" Margin="10 10" SizeChanged="StdOutputText_SizeChanged">
+                    <Paragraph x:Name="MainParagraph" FontFamily="Lucida Console" FontSize="12" >
+                        <Run Text="{Binding [ExecAsDefaultAccount]}" Foreground="#FFF3FF00" FontWeight="Bold" />
+                        <Span><LineBreak /></Span>
                     </Paragraph>
                 </RichTextBlock>
             </ScrollViewer>
             <Grid Grid.Row="1" VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-                <TextBox Grid.Column="0" x:Name="CommandLine" PlaceholderText="{Binding [CommandLinePlaceholderText]}" Background="Transparent" BorderThickness="2" BorderBrush="Transparent" FontFamily="Lucida Console" FontSize="14" Padding="6 6" KeyUp="CommandLine_KeyUp" Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsSpellCheckEnabled="False" />
-                <Button Grid.Column="1" x:Name="RunButton" Content="{StaticResource IconRun}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontFamily="{StaticResource IconFontFamily}" FontSize="16" Click="RunButton_Click" Height="24" Width="32" VerticalAlignment="Center"/>
-                <Button Grid.Column="2" x:Name="ClearButton" Content="{Binding [ClearPageText]}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontSize="14" Click="ClearButton_Click" Height="28" Width="Auto" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="0" x:Name="WorkingDirectory" Text="C:\>" Background="Transparent" BorderThickness="2" BorderBrush="Transparent" FontFamily="Lucida Console" FontSize="14" Padding="6 6" MinWidth="10" CharacterReceived="WorkingDirectory_CharReceived" LostFocus="WorkingDirectory_LostFocus" GotFocus="WorkingDirectory_GotFocus" Height="24" IsSpellCheckEnabled="False" />
+                <TextBox Grid.Column="1" x:Name="CommandLine" PlaceholderText="{Binding [CommandLinePlaceholderText]}" Background="Transparent" BorderThickness="2" BorderBrush="Transparent" FontFamily="Lucida Console" FontSize="14" Padding="6 6" KeyUp="CommandLine_KeyUp" Height="24" IsSpellCheckEnabled="False" AllowFocusWhenDisabled="True" />
+                <Button Grid.Column="2" x:Name="RunButton" Content="{StaticResource IconRun}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontFamily="{StaticResource IconFontFamily}" FontSize="16" Click="RunButton_Click" Height="32" Width="32" VerticalAlignment="Center"/>
+                <Button Grid.Column="3" x:Name="CancelButton" Content="{StaticResource IconCancel}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontFamily="{StaticResource IconFontFamily}" FontSize="16" Click="CancelButton_Click" Height="32" Width="32" VerticalAlignment="Center"/>
+                <Button Grid.Column="4" x:Name="ClearButton" Content="{Binding [ClearPageText]}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontSize="16" Click="ClearButton_Click" Height="32" Width="Auto" VerticalAlignment="Center"/>
             </Grid>
 
         </Grid>

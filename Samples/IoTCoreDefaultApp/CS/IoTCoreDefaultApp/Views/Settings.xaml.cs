@@ -513,7 +513,7 @@ namespace IoTCoreDefaultApp
             switch (itemName)
             {
                 case "PreferencesListViewItem":
-                    NetworkGrid.Visibility = Visibility.Collapsed;
+                    NetworkControl.Visibility = Visibility.Collapsed;
                     BluetoothGrid.Visibility = Visibility.Collapsed;
                     CortanaGrid.Visibility = Visibility.Collapsed;
 
@@ -528,16 +528,17 @@ namespace IoTCoreDefaultApp
                     BluetoothGrid.Visibility = Visibility.Collapsed;
                     CortanaGrid.Visibility = Visibility.Collapsed;
 
-                    if (NetworkGrid.Visibility == Visibility.Collapsed)
+                    if (NetworkControl.Visibility == Visibility.Collapsed)
                     {
-                        NetworkGrid.Visibility = Visibility.Visible;
+                        NetworkControl.Visibility = Visibility.Visible;
                         NetworkListView.IsSelected = true;
-                        await NetworkControl.SetupNetworkAsync();
+                        NetworkControl.SetupDirectConnection();
+                        await NetworkControl.RefreshWifiListViewItemsAsync(true);
                     }
                     break;
                 case "BluetoothListViewItem":
                     BasicPreferencesGridView.Visibility = Visibility.Collapsed;
-                    NetworkGrid.Visibility = Visibility.Collapsed;
+                    NetworkControl.Visibility = Visibility.Collapsed;
                     CortanaGrid.Visibility = Visibility.Collapsed;
 
                     if (BluetoothGrid.Visibility == Visibility.Collapsed)
@@ -556,7 +557,7 @@ namespace IoTCoreDefaultApp
                     break;
                 case "CortanaListViewItem":
                     BasicPreferencesGridView.Visibility = Visibility.Collapsed;
-                    NetworkGrid.Visibility = Visibility.Collapsed;
+                    NetworkControl.Visibility = Visibility.Collapsed;
                     BluetoothGrid.Visibility = Visibility.Collapsed;
 
                     if (CortanaGrid.Visibility == Visibility.Collapsed)
@@ -782,6 +783,7 @@ namespace IoTCoreDefaultApp
 
             customPairing.PairingRequested += OutboundPairingRequestedHandler;
             DevicePairingResult result = await customPairing.PairAsync(ceremoniesSelected, protectionLevel);
+            customPairing.PairingRequested -= OutboundPairingRequestedHandler;
 
             if (result.Status == DevicePairingResultStatus.Paired)
             {
@@ -815,11 +817,11 @@ namespace IoTCoreDefaultApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private async void InboundPairingRequestedHandler(
+        private void InboundPairingRequestedHandler(
             DeviceInformationCustomPairing sender,
             DevicePairingRequestedEventArgs args)
         {
-            PairingRequestedHandler(inboundContext, args);
+            PairingRequestedHandlerAsync(inboundContext, args).Wait();
         }
 
         /// <summary>
@@ -827,11 +829,11 @@ namespace IoTCoreDefaultApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private async void OutboundPairingRequestedHandler(
+        private void OutboundPairingRequestedHandler(
             DeviceInformationCustomPairing sender,
             DevicePairingRequestedEventArgs args)
         {
-            PairingRequestedHandler(outboundContext, args);
+            PairingRequestedHandlerAsync(outboundContext, args).Wait();
         }
 
 
@@ -840,12 +842,12 @@ namespace IoTCoreDefaultApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private async void PairingRequestedHandler(
+        private async Task PairingRequestedHandlerAsync(
             PairingContext pairingContext,
             DevicePairingRequestedEventArgs args)
         {
             //Null Check
-            if (null == args)
+            if (null == args || null == pairingContext)
                 return;
 
             // Save the args for use in ProvidePin case

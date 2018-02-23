@@ -164,6 +164,14 @@
     <value>Ethernet</value>
     <comment>Field label</comment>
   </data>
+  <data name="LeanMoreText" xml:space="preserve">
+    <value>Weitere Informationen</value>
+    <comment>Learn More Button</comment>
+  </data>
+  <data name="MakerImageNoticeText" xml:space="preserve">
+    <value>Wenn Sie Ihr Gerät gewerblich anbieten möchten, müssen Sie ein benutzerdefiniertes FFU verwenden, um die Sicherheit für Ihr Gerät zu optimieren.</value>
+    <comment>Maker Imager Security Notice</comment>
+  </data>
   <data name="NetworkConnectingMessageText" xml:space="preserve">
     <value>Netzwerkanforderungen werden überprüft.</value>
     <comment>Message display during wifi network connect click</comment>
@@ -595,6 +603,11 @@
     <value>Registrierung für eingehende Kopplung wurde bereits ausgeführt, unterstützte Zeremonien: {0}</value>
     <comment>Format string for message displayed when Inbound pairing handler registration already done</comment>
   </data>
+  <data name="BluetoothListenerCreationFailedFormat" xml:space="preserve">
+    <value>Fehler bei der Registrierung für eingehende Kopplung:
+{0}</value>
+    <comment>Message displayed on when Bluetooth watcher fails to be created. The new line before {0} is deliberate and should be kept</comment>
+  </data>
   <data name="BluetoothInboundRegistrationFailed" xml:space="preserve">
     <value>Fehler beim Registrieren für eingehende Kopplung.</value>
     <comment>Message displayed when Inbound pairing handler registration fails</comment>
@@ -681,7 +694,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; Befehlszeile eingeben</value>
+    <value>Befehlszeile eingeben</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -694,7 +707,7 @@
     <value>Ihr Gerät ist nicht zur Ausführung des Befehlszeilenprozessors berechtigt.
 Stellen Sie als "Administrator" (z. B. über PowerShell oder SSH) eine Verbindung mit Ihrem Gerät her, oder führen Sie im Windows Device Portal den folgenden Befehl aus, um die Ausführung zu aktivieren:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 Klicken oder tippen Sie alternativ auf die Schaltfläche unten, um das Kennwort Ihres Administratorkontos einzugeben und den Befehlszeilenprozessor zu aktivieren.
 
@@ -702,8 +715,7 @@ Klicken oder tippen Sie alternativ auf die Schaltfläche unten, um das Kennwort 
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Befehle werden unter DefaultAccount ausgeführt.
-    </value>
+    <value>Befehle werden unter DefaultAccount ausgeführt.</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Schließen</value>
@@ -716,6 +728,36 @@ Klicken oder tippen Sie alternativ auf die Schaltfläche unten, um das Kennwort 
   </data>
   <data name="PasswordText" xml:space="preserve">
     <value>Kennwort</value>
+  </data>
+  <data name="DomainText" xml:space="preserve">
+    <value>Domäne</value>
+  </data>
+  <data name="WpsText" xml:space="preserve">
+    <value>WPS</value>
+  </data>
+  <data name="UnspecifiedFailureText" xml:space="preserve">
+    <value>Unbekannter Fehler</value>
+  </data>
+  <data name="SuccessText" xml:space="preserve">
+    <value>Erfolgreich</value>
+  </data>
+  <data name="AccessRevokedText" xml:space="preserve">
+    <value>Zugriff widerrufen</value>
+  </data>
+  <data name="InvalidCredentialText" xml:space="preserve">
+    <value>Ungültige Anmeldeinformationen</value>
+  </data>
+  <data name="NetworkNotAvailableText" xml:space="preserve">
+    <value>Netzwerk nicht verfügbar</value>
+  </data>
+  <data name="TimeoutText" xml:space="preserve">
+    <value>Zeitüberschreitung bei Verbindung</value>
+  </data>
+  <data name="UnsupportedAuthenticationProtocolText" xml:space="preserve">
+    <value>Nicht unterstütztes Authentifizierungsprotokoll</value>
+  </data>
+  <data name="UsePasswordText" xml:space="preserve">
+    <value>Passwort verwenden</value>
   </data>
   <data name="CmdTextEnabledSuccess" xml:space="preserve">
     <value>Der Befehlszeilenprozessor (cmd.exe) wurde erfolgreich auf Ihrem Gerät aktiviert.</value>
@@ -781,5 +823,50 @@ Klicken oder tippen Sie alternativ auf die Schaltfläche unten, um das Kennwort 
   <data name="Windows10IoTCoreText" xml:space="preserve">
     <value>Windows 10 IoT Core</value>
     <comment>Dont Localize</comment>
+  </data>
+  <data name="LanguagePopupText1" xml:space="preserve">
+    <value>Cortana unterstützt die aktuellen Spracheinstellungen nicht. Möchten Sie Folgendes auswählen:</value>
+    <comment>Part for PopupText1</comment>
+  </data>
+  <data name="LanguagePopupText3" xml:space="preserve">
+    <value>Sprache, um Cortana zu aktivieren?</value>
+    <comment>Text for PopupText3</comment>
+  </data>
+  <data name="SpeechNotSupportText" xml:space="preserve">
+    <value>Diese Sprache unterstützt die Spracherkennung nicht.</value>
+  </data>
+  <data name="SpeechSupportText" xml:space="preserve">
+    <value>Diese Sprache unterstützt die Spracherkennung.</value>
+  </data>
+  <data name="LanguageApplyButtonText" xml:space="preserve">
+    <value>Diese App neu starten, um die neuen Einstellungen zu übernehmen</value>
+  </data>
+  <data name="BluetoothPairingRequestProgress" xml:space="preserve">
+    <value>Bitte warten, Kopplung wird ausgeführt...</value>
+    <comment>Pairing InProgress Text</comment>
+  </data>
+  <data name="BluetoothInboundLabel" xml:space="preserve">
+    <value>Eingehende Kopplung:</value>
+    <comment>Label that shows inbound pairing status</comment>
+  </data>
+  <data name="BluetoothOutboundLabel" xml:space="preserve">
+    <value>Ausgehende Kopplung:</value>
+    <comment>Label that shows outbound pairing status</comment>
+  </data>
+  <data name="YesLabel" xml:space="preserve">
+    <value>Ja</value>
+    <comment>Generic text for a Yes Label</comment>
+  </data>
+  <data name="NoLabel" xml:space="preserve">
+    <value>Nein</value>
+    <comment>Generic text for a No Label</comment>
+  </data>
+  <data name="OKLabel" xml:space="preserve">
+    <value>OK</value>
+    <comment>Generic text for an OK Label</comment>
+  </data>
+  <data name="ChangeTimeZoneTitleText" xml:space="preserve">
+    <value>Zeitzone</value>
+    <comment>Time zone text</comment>
   </data>
 </root>

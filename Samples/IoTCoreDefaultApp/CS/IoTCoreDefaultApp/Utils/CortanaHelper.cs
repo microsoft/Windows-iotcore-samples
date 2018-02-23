@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using IoTCoreDefaultApp.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,12 +43,14 @@ namespace IoTCoreDefaultApp
             {
                 isCortanaSupported = CortanaSettings.IsSupported();
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
                 // This is indicitive of EmbeddedMode not being enabled (i.e.
                 // running IotCoreDefaultApp on Desktop or Mobile without 
                 // enabling EmbeddedMode) 
                 //  https://developer.microsoft.com/en-us/windows/iot/docs/embeddedmode
+                Log.Write(ex.ToString());
+                Log.Write("UnauthorizedAccessException: Check to see if Embedded Mode is enabled");
             }
 
             return isCortanaSupported;

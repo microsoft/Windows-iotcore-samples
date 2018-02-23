@@ -208,6 +208,14 @@
     <value>Wi-Fi</value>
     <comment>Label for Wi-Fi list in options page</comment>
   </data>
+  <data name="VisitText" xml:space="preserve">
+    <value>Comece a explorar o</value>
+    <comment>Part of "Start exploring WindowsOnDevices.com"</comment>
+  </data>
+  <data name="WindowsOnDevicesUrlText" xml:space="preserve">
+    <value>WindowsOnDevices.com</value>
+    <comment>Part of "Start exploring WindowsOnDevices.com"</comment>
+  </data>
   <data name="KeyboardTitleText" xml:space="preserve">
     <value>Layout do teclado</value>
     <comment>Field label</comment>
@@ -673,7 +681,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; Insira a linha de comando</value>
+    <value>Insira a linha de comando</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -686,7 +694,7 @@
     <value>Seu dispositivo não está habilitado para executar o processador de linha de comando.
 Para habilitá-lo, conecte-se ao seu dispositivo como "Administrador" (por exemplo, usando o PowerShell ou SSH) ou use o Windows Device Portal para executar este comando:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 Você também pode clicar ou tocar no botão abaixo para inserir a senha da sua conta de Administrador e tentar habilitar o processador de linha de comando.
 
@@ -694,8 +702,7 @@ Você também pode clicar ou tocar no botão abaixo para inserir a senha da sua 
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Executando comandos como DefaultAccount
-    </value>
+    <value>Executando comandos como DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Fechar</value>
@@ -745,5 +752,45 @@ Você também pode clicar ou tocar no botão abaixo para inserir a senha da sua 
   <data name="ToggleOffText" xml:space="preserve">
     <value>Desativado</value>
     <comment>Text used in toggle switches for 'off' state.</comment>
+  </data>
+  <data name="WebBrowserText" xml:space="preserve">
+    <value>Navegador</value>
+    <comment>Title for WebBrowser Text</comment>
+  </data>
+  <data name="WebAddressPlaceholderText" xml:space="preserve">
+    <value>Pesquisar ou inserir endereço Web</value>
+    <comment>WebAddress Placeholder</comment>
+  </data>
+  <data name="MicrosoftWifiConnect" xml:space="preserve">
+    <value>http://www.msftconnecttest.com/redirect</value>
+    <comment>Used by Wifi Connect Redirect</comment>
+  </data>
+  <data name="NetworkNotConnected" xml:space="preserve">
+    <value>Nenhuma conexão encontrada.</value>
+    <comment>Part1 of NetworkNotConnected. Check to see if Device is connected to network</comment>
+  </data>
+  <data name="WebAddressRequired" xml:space="preserve">
+    <value>É preciso inserir um endereço Web ou texto para pesquisar.</value>
+    <comment>Browser Text Required</comment>
+  </data>
+  <data name="NetworkNotConnected2" xml:space="preserve">
+    <value>Verifique sua rede de dispositivo nas configurações.</value>
+    <comment>Part2 of NetworkNotConnected</comment>
+  </data>
+  <data name="Windows10IoTCoreText" xml:space="preserve">
+    <value>Windows 10 IoT Core</value>
+    <comment>Dont Localize</comment>
+  </data>
+  <data name="YesLabel" xml:space="preserve">
+    <value>Sim</value>
+    <comment>Generic text for a Yes Label</comment>
+  </data>
+  <data name="NoLabel" xml:space="preserve">
+    <value>Não</value>
+    <comment>Generic text for a No Label</comment>
+  </data>
+  <data name="OKLabel" xml:space="preserve">
+    <value>OK</value>
+    <comment>Generic text for an OK Label</comment>
   </data>
 </root>

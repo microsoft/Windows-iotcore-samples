@@ -730,20 +730,23 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; Enter command line</value>
+    <value>Enter command line</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
     <value>Clear</value>
   </data>
   <data name="CdNotSupported" xml:space="preserve">
-    <value>Change Directory not currently supported. Please use full paths in your commands.</value>
+    <value>Change directory not currently supported using "cd" command. Please update the working directory path in the corresponding text box.</value>
+  </data>
+  <data name="WorkingDirectoryInvalid" xml:space="preserve">
+    <value>Invalid working directory : {0}</value>
   </data>
   <data name="CmdNotEnabled" xml:space="preserve">
     <value>Your device is not enabled to run the command line processor.
 To enable it, connect to your device as "Administrator" (e.g. using PowerShell or SSH) or use Windows Device Portal to run this command:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 Alternatively, click or tap the button below to enter your Administrator account's password and attempt to enable the command line processor.
 
@@ -751,8 +754,7 @@ Alternatively, click or tap the button below to enter your Administrator account
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Executing commands as DefaultAccount
-    </value>
+    <value>Executing commands as DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Close</value>
@@ -766,11 +768,53 @@ Alternatively, click or tap the button below to enter your Administrator account
   <data name="PasswordText" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="DomainText" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="WpsText" xml:space="preserve">
+    <value>WPS</value>
+  </data>
+  <data name="UnspecifiedFailureText" xml:space="preserve">
+    <value>Unspecified Failure</value>
+  </data>
+  <data name="SuccessText" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="AccessRevokedText" xml:space="preserve">
+    <value>Access Revoked</value>
+  </data>
+  <data name="InvalidCredentialText" xml:space="preserve">
+    <value>Invalid Credential</value>
+  </data>
+  <data name="NetworkNotAvailableText" xml:space="preserve">
+    <value>Network Not Available</value>
+  </data>
+  <data name="TimeoutText" xml:space="preserve">
+    <value>Connection Timed Out</value>
+  </data>
+  <data name="CommandTimeoutText" xml:space="preserve">
+    <value>Command timed out after {0} seconds of no output.</value>
+  </data>
+  <data name="CommandLineError" xml:space="preserve">
+    <value>Error running command line: {0}</value>
+  </data>
+  <data name="CommandCancelled" xml:space="preserve">
+    <value>Command cancelled.</value>
+  </data>
+  <data name="CommandOutputTooLongeWarning" xml:space="preserve">
+    <value>Warning: Command output too long. Output trimmed.</value>
+  </data>
+  <data name="UnsupportedAuthenticationProtocolText" xml:space="preserve">
+    <value>Unsupported Authentication Protocol</value>
+  </data>
+  <data name="UsePasswordText" xml:space="preserve">
+    <value>Use password</value>
+  </data>
   <data name="CmdTextEnabledSuccess" xml:space="preserve">
     <value>Successfully enabled Command Line Processor (cmd.exe) on your device.</value>
   </data>
   <data name="CmdTextEnabledFailure" xml:space="preserve">
-    <value>Failed to enable Command Line Processor (cmd.exe) on your device. Status = {0}</value>
+    <value>Failed to enable Command Line Processor (cmd.exe) on your device: {0}</value>
   </data>
   <data name="DisconnectButtonContent" xml:space="preserve">
     <value>Disconnect</value>
@@ -852,15 +896,11 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>Please wait, pairing inprogress</value>
     <comment>Pairing InProgress Text</comment>
   </data>
-  <data name="BluetoothOutboundLabel" xml:space="preserve">
-    <value>Outbound Pairing:</value>
-    <comment>Label that shows outbound pairing status</comment>
-  </data>
   <data name="BluetoothInboundLabel" xml:space="preserve">
     <value>Inbound Pairing:</value>
     <comment>Label that shows inbound pairing status</comment>
   </data>
-    <data name="BluetoothOutboundLabel" xml:space="preserve">
+  <data name="BluetoothOutboundLabel" xml:space="preserve">
     <value>Outbound Pairing:</value>
     <comment>Label that shows outbound pairing status</comment>
   </data>
@@ -872,7 +912,7 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>No</value>
     <comment>Generic text for a No Label</comment>
   </data>
-    <data name="OKLabel" xml:space="preserve">
+  <data name="OKLabel" xml:space="preserve">
     <value>OK</value>
     <comment>Generic text for an OK Label</comment>
   </data>
@@ -880,4 +920,22 @@ Alternatively, click or tap the button below to enter your Administrator account
     <value>Time zone</value>
     <comment>Time zone text</comment>
   </data>
+  <data name="ContinueText" xml:space="preserve">
+    <value>Continue</value>
+    <comment>Continue</comment>
+  </data>
+  <data name="CmdTextAdminCommandFailure" xml:space="preserve">
+    <value>Failed to run command as Administrator: {0}</value>
+  </data>
+  <data name="CouldNotParseOutputFailure" xml:space="preserve">
+    <value>Could not parse command output</value>
+  </data>
+  <data name="RunAsAdminUsage" xml:space="preserve">
+    <value>Usage: RunAsAdmin command
+
+Examples:
+> RunAsdmin TZUTIL /s "Pacific Standard Time"
+> RunAsdmin SetComputerName MyNewDeviceName</value>
+
+</data>
 </root>

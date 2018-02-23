@@ -164,6 +164,14 @@
     <value>Ethernet</value>
     <comment>Field label</comment>
   </data>
+  <data name="LeanMoreText" xml:space="preserve">
+    <value>Дополнительные сведения</value>
+    <comment>Learn More Button</comment>
+  </data>
+  <data name="MakerImageNoticeText" xml:space="preserve">
+    <value>Если вы хотите получать прибыль с помощью устройства, воспользуйтесь настраиваемым средством для пакетного применения образов, чтобы оптимизировать защиту на этом устройстве.</value>
+    <comment>Maker Imager Security Notice</comment>
+  </data>
   <data name="NetworkConnectingMessageText" xml:space="preserve">
     <value>Проверка требований сети</value>
     <comment>Message display during wifi network connect click</comment>
@@ -207,6 +215,14 @@
   <data name="WifiText" xml:space="preserve">
     <value>Wi-Fi</value>
     <comment>Label for Wi-Fi list in options page</comment>
+  </data>
+  <data name="VisitText" xml:space="preserve">
+    <value>Начните исследовать сайт </value>
+    <comment>Part of "Start exploring WindowsOnDevices.com"</comment>
+  </data>
+  <data name="WindowsOnDevicesUrlText" xml:space="preserve">
+    <value>WindowsOnDevices.com</value>
+    <comment>Part of "Start exploring WindowsOnDevices.com"</comment>
   </data>
   <data name="KeyboardTitleText" xml:space="preserve">
     <value>Раскладка клавиатуры</value>
@@ -587,6 +603,11 @@
     <value>Регистрация уже пройдена для входящего связывания, поддерживаемых церемоний: {0}</value>
     <comment>Format string for message displayed when Inbound pairing handler registration already done</comment>
   </data>
+  <data name="BluetoothListenerCreationFailedFormat" xml:space="preserve">
+    <value>Сбой регистрации для входящего соединения:
+{0}</value>
+    <comment>Message displayed on when Bluetooth watcher fails to be created. The new line before {0} is deliberate and should be kept</comment>
+  </data>
   <data name="BluetoothInboundRegistrationFailed" xml:space="preserve">
     <value>Не удалось зарегистрировать для входящего связывания.</value>
     <comment>Message displayed when Inbound pairing handler registration fails</comment>
@@ -673,7 +694,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; введите командную строку</value>
+    <value>введите командную строку</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -686,7 +707,7 @@
     <value>На вашем устройстве невозможно запускать процессор командной строки.
 Чтобы это изменить, подключитесь к устройству как администратор (например, с помощью PowerShell или SSH) или войдите на Windows Device Portal и запустите эту команду:
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 Также можно нажать расположенную ниже кнопку. Это позволит ввести пароль к учетной записи администратора и попытаться включить процессор командной строки.
 
@@ -694,8 +715,7 @@
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>Выполнение команд в роли DefaultAccount
-    </value>
+    <value>Выполнение команд в роли DefaultAccount</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>Закрыть</value>
@@ -708,6 +728,36 @@
   </data>
   <data name="PasswordText" xml:space="preserve">
     <value>Пароль</value>
+  </data>
+  <data name="DomainText" xml:space="preserve">
+    <value>Домен</value>
+  </data>
+  <data name="WpsText" xml:space="preserve">
+    <value>WPS</value>
+  </data>
+  <data name="UnspecifiedFailureText" xml:space="preserve">
+    <value>Неопределенная ошибка</value>
+  </data>
+  <data name="SuccessText" xml:space="preserve">
+    <value>Выполнено</value>
+  </data>
+  <data name="AccessRevokedText" xml:space="preserve">
+    <value>Доступ отменен</value>
+  </data>
+  <data name="InvalidCredentialText" xml:space="preserve">
+    <value>Недопустимые учетные данные</value>
+  </data>
+  <data name="NetworkNotAvailableText" xml:space="preserve">
+    <value>Нет доступа к сети</value>
+  </data>
+  <data name="TimeoutText" xml:space="preserve">
+    <value>Превышено время ожидания подключения</value>
+  </data>
+  <data name="UnsupportedAuthenticationProtocolText" xml:space="preserve">
+    <value>Неподдерживаемый протокол проверки подлинности</value>
+  </data>
+  <data name="UsePasswordText" xml:space="preserve">
+    <value>Использовать пароль</value>
   </data>
   <data name="CmdTextEnabledSuccess" xml:space="preserve">
     <value>На устройстве успешно включен процессор командной строки (cmd.exe).</value>
@@ -745,5 +795,78 @@
   <data name="ToggleOffText" xml:space="preserve">
     <value>Выключить</value>
     <comment>Text used in toggle switches for 'off' state.</comment>
+  </data>
+  <data name="WebBrowserText" xml:space="preserve">
+    <value>Браузер</value>
+    <comment>Title for WebBrowser Text</comment>
+  </data>
+  <data name="WebAddressPlaceholderText" xml:space="preserve">
+    <value>Введите поисковый запрос или веб-адрес</value>
+    <comment>WebAddress Placeholder</comment>
+  </data>
+  <data name="MicrosoftWifiConnect" xml:space="preserve">
+    <value>http://www.msftconnecttest.com/redirect</value>
+    <comment>Used by Wifi Connect Redirect</comment>
+  </data>
+  <data name="NetworkNotConnected" xml:space="preserve">
+    <value>Подключения не найдены.</value>
+    <comment>Part1 of NetworkNotConnected. Check to see if Device is connected to network</comment>
+  </data>
+  <data name="WebAddressRequired" xml:space="preserve">
+    <value>Необходимо ввести веб-адрес или поисковый запрос.</value>
+    <comment>Browser Text Required</comment>
+  </data>
+  <data name="NetworkNotConnected2" xml:space="preserve">
+    <value>Проверьте сеть устройств в параметрах.</value>
+    <comment>Part2 of NetworkNotConnected</comment>
+  </data>
+  <data name="Windows10IoTCoreText" xml:space="preserve">
+    <value>Windows 10 IoT Базовая</value>
+    <comment>Dont Localize</comment>
+  </data>
+  <data name="LanguagePopupText1" xml:space="preserve">
+    <value>Кортана не поддерживает текущие языковые параметры. Выбрать</value>
+    <comment>Part for PopupText1</comment>
+  </data>
+  <data name="LanguagePopupText3" xml:space="preserve">
+    <value>язык, чтобы включить Кортану?</value>
+    <comment>Text for PopupText3</comment>
+  </data>
+  <data name="SpeechNotSupportText" xml:space="preserve">
+    <value>Для этого языка не поддерживается функция речи.</value>
+  </data>
+  <data name="SpeechSupportText" xml:space="preserve">
+    <value>Для этого языка поддерживается функция речи.</value>
+  </data>
+  <data name="LanguageApplyButtonText" xml:space="preserve">
+    <value>Перезапустить приложение, чтобы применить новые параметры</value>
+  </data>
+  <data name="BluetoothPairingRequestProgress" xml:space="preserve">
+    <value>Подождите. Выполняется соединение</value>
+    <comment>Pairing InProgress Text</comment>
+  </data>
+  <data name="BluetoothInboundLabel" xml:space="preserve">
+    <value>Входящее соединение:</value>
+    <comment>Label that shows inbound pairing status</comment>
+  </data>
+  <data name="BluetoothOutboundLabel" xml:space="preserve">
+    <value>Исходящее соединение:</value>
+    <comment>Label that shows outbound pairing status</comment>
+  </data>
+  <data name="YesLabel" xml:space="preserve">
+    <value>Да</value>
+    <comment>Generic text for a Yes Label</comment>
+  </data>
+  <data name="NoLabel" xml:space="preserve">
+    <value>Нет</value>
+    <comment>Generic text for a No Label</comment>
+  </data>
+  <data name="OKLabel" xml:space="preserve">
+    <value>ОК</value>
+    <comment>Generic text for an OK Label</comment>
+  </data>
+  <data name="ChangeTimeZoneTitleText" xml:space="preserve">
+    <value>Часовой пояс</value>
+    <comment>Time zone text</comment>
   </data>
 </root>

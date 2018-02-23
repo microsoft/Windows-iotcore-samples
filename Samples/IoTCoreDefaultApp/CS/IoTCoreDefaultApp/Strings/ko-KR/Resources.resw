@@ -681,7 +681,7 @@
     <comment>Title for command line page</comment>
   </data>
   <data name="CommandLinePlaceholderText" xml:space="preserve">
-    <value>{0}&gt; 명령줄 입력</value>
+    <value>명령줄 입력</value>
     <comment>Placeholder for command line input text box</comment>
   </data>
   <data name="ClearPageText" xml:space="preserve">
@@ -694,7 +694,7 @@
     <value>장치에서 명령줄 프로세서를 실행할 수 없습니다.
 실행하도록 하려면 "관리자"로 장치에 연결하거나(PowerShell 또는 SSH 사용) Windows Device Portal을 사용해 이 명령을 실행하세요.
 
-    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /f /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+    {0}
 
 또는 아래 버튼을 클릭하거나 탭하여 관리자 계정의 비밀번호를 입력하고 명령줄 프로세서를 사용하도록 설정해 보세요.
 
@@ -702,8 +702,7 @@
     <comment>New lines need to be preserved</comment>
   </data>
   <data name="ExecAsDefaultAccount" xml:space="preserve">
-    <value>DefaultAccount로 명령 실행 중
-    </value>
+    <value>DefaultAccount로 명령 실행 중</value>
   </data>
   <data name="CloseText" xml:space="preserve">
     <value>닫기</value>
@@ -781,5 +780,17 @@
   <data name="Windows10IoTCoreText" xml:space="preserve">
     <value>Windows 10 IoT Core</value>
     <comment>Dont Localize</comment>
+  </data>
+  <data name="YesLabel" xml:space="preserve">
+    <value>예</value>
+    <comment>Generic text for a Yes Label</comment>
+  </data>
+  <data name="NoLabel" xml:space="preserve">
+    <value>아니요</value>
+    <comment>Generic text for a No Label</comment>
+  </data>
+  <data name="OKLabel" xml:space="preserve">
+    <value>확인</value>
+    <comment>Generic text for an OK Label</comment>
   </data>
 </root>

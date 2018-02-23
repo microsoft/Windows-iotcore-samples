@@ -3,7 +3,6 @@
 
 using System;
 using System.Globalization;
-using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,6 +19,8 @@ namespace IoTCoreDefaultApp
         private LanguageManager languageManager;
         private DispatcherTimer timer;
         private DispatcherTimer countdown;
+        private NetworkPresenter networkPresenter = new NetworkPresenter();
+
 
 
         public OOBEWelcome()
@@ -241,7 +242,6 @@ namespace IoTCoreDefaultApp
 
         private async void NextButton_Clicked(object sender, RoutedEventArgs e)
         {
-            var networkPresenter = new NetworkPresenter();
             var wifiAvailable = networkPresenter.WifiIsAvailable();
             SetPreferences();
             Type nextScreen;

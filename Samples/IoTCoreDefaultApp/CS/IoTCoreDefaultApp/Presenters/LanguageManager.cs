@@ -314,12 +314,14 @@ namespace IoTCoreDefaultApp
                         });
 
                     }
-                    catch (InvalidCastException)
+                    catch (UnauthorizedAccessException ex)
                     {
-                        // This is indicitive of EmbeddedMode not being enabled (i.e.
+                        // This is indicative of EmbeddedMode not being enabled (i.e.
                         // running IotCoreDefaultApp on Desktop or Mobile without 
                         // enabling EmbeddedMode) 
                         //  https://developer.microsoft.com/en-us/windows/iot/docs/embeddedmode
+                        Log.Write(ex.ToString());
+                        Log.Write("UnauthorizedAccessException: Check to see if Embedded Mode is enabled");
                     }
                 }
 
