@@ -783,6 +783,7 @@ namespace IoTCoreDefaultApp
 
             customPairing.PairingRequested += OutboundPairingRequestedHandler;
             DevicePairingResult result = await customPairing.PairAsync(ceremoniesSelected, protectionLevel);
+            customPairing.PairingRequested -= OutboundPairingRequestedHandler;
 
             if (result.Status == DevicePairingResultStatus.Paired)
             {
@@ -846,7 +847,7 @@ namespace IoTCoreDefaultApp
             DevicePairingRequestedEventArgs args)
         {
             //Null Check
-            if (null == args)
+            if (null == args || null == pairingContext)
                 return;
 
             // Save the args for use in ProvidePin case
