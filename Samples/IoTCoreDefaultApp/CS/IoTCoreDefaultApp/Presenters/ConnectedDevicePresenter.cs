@@ -16,7 +16,7 @@ namespace IoTCoreDefaultApp
     public class ConnectedDevicePresenter
     {
         private CoreDispatcher dispatcher;
-        const string usbDevicesSelector = "(System.Devices.InterfaceClassGuid:=\"{" + Constants.GUID_DEVINTERFACE_USB_DEVICE + "}\")";
+        const string usbDevicesSelector = "(System.Devices.InterfaceClassGuid:=\"{" + Constants.GUID_DEVINTERFACE_USB_DEVICE + "}\" AND System.Devices.InterfaceEnabled:=System.StructuredQueryType.Boolean#True)";
 
         public ConnectedDevicePresenter(CoreDispatcher dispatcher)
         {
