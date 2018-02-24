@@ -89,13 +89,25 @@ namespace IoTCoreDefaultApp
             ImageLanguageDisplayNames = displayNameToImageLanguageMap.Keys.ToList();
 
 
-            displayNameToLanguageMap = new Dictionary<string, string> (
-                ApplicationLanguages.ManifestLanguages.Union(imageLanguagesList).Select(tag =>
+            var keyValueList = ApplicationLanguages.ManifestLanguages.Union(imageLanguagesList).Select(tag =>
+            {
+                var lang = new Language(tag);
+                return new KeyValuePair<string, string>(lang.NativeName, GetLocaleFromLanguageTag(lang.LanguageTag));
+            }).OrderBy(a => a.Key);
+
+            // check for duplicates
+            displayNameToLanguageMap = new Dictionary<string, string>();
+            foreach (var item in keyValueList)
+            {
+                if (!displayNameToLanguageMap.ContainsKey(item.Key))
                 {
-                    var lang = new Language(tag);
-                    return new KeyValuePair<string, string>(lang.NativeName, GetLocaleFromLanguageTag(lang.LanguageTag));
-                }).OrderBy(a => a.Key).ToDictionary(keyitem => keyitem.Key, valueItem => valueItem.Value)
-                );
+                    displayNameToLanguageMap.Add(item.Key, item.Value);
+                }
+                else
+                {
+                    Log.Trace($"duplicate key {item.Key}");
+                }
+            }
 
             LanguageDisplayNames = displayNameToLanguageMap.Keys.ToList();
 
