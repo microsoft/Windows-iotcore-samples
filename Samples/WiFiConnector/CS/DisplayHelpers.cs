@@ -81,7 +81,8 @@ namespace WiFiConnect
 
             if (!string.IsNullOrEmpty(connectedSsid))
             {
-                if (connectedSsid.Equals(AvailableNetwork.Ssid))
+                if (connectedSsid.Equals(AvailableNetwork.Ssid) ||
+                    connectedSsid.Equals(HiddenSsid))
                 {
                     connectivityLevel = connectedProfile.GetNetworkConnectivityLevel().ToString();
                 }

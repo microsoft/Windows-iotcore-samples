@@ -324,7 +324,10 @@ namespace WiFiConnect
             }
 
             // Since a connection attempt was made, update the connectivity level displayed for each
-            ResultCollection.Select(network => network.UpdateConnectivityLevelAsync());
+            foreach (var network in ResultCollection)
+            {
+                var task = network.UpdateConnectivityLevelAsync();
+            }
         }
 
         private void Browser_Toggle_Click(object sender, RoutedEventArgs e)
