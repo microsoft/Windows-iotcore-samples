@@ -125,7 +125,7 @@ public sealed partial class MainPage : Page
 }
 ```  
 
-Follow the instructions to [setup remote debugging and deploy the app](/Docs/AppDeployment.htm#csharp). The SPIAccelerometer app will deploy and start, and you should see accelerometer data show up on screen.
+Follow the instructions to [setup remote debugging and deploy the app](https://docs.microsoft.com/en-us/windows/iot-core/develop-your-app/appdeployment). The SPIAccelerometer app will deploy and start, and you should see accelerometer data show up on screen.
  If you have your accelerometer flat on a surface, the Z axis should read close to 1.000G, while X and Y are close to 0.000G. The values will fluctuate a little even if the device is standing still.
  This is normal and is due to minute vibrations and electrical noise. If you tilt or shake the sensor, you should see the values change in response. Note that this sample configures the device in 4G mode,
 so you wont be able to see G readings higher than 4Gs.
