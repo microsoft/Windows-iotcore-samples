@@ -173,7 +173,7 @@ namespace IoTHubForegroundClient
                     {
                         humidity = currentHumidity,
                         pressure = currentPressure,
-                        temperature = currentTemperature
+                        temp = currentTemperature
                     };
                     var messageString = JsonConvert.SerializeObject(telemetryDataPoint);
                     var message = new Message(Encoding.ASCII.GetBytes(messageString));
