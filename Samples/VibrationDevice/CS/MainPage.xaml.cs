@@ -21,7 +21,7 @@ namespace VibrationCSApp
             _coreDispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
         }
 
-        private async Task GetVbrationDevice()
+        private async Task GetVibrationDevice()
         {
             _isCheckedForVibrationDevice = true;
 
@@ -80,7 +80,7 @@ namespace VibrationCSApp
             {
                 if (!_isCheckedForVibrationDevice)
                 {
-                    await GetVbrationDevice();
+                    await GetVibrationDevice();
                 }
             }
 
@@ -102,7 +102,7 @@ namespace VibrationCSApp
             {
                 if (!_isCheckedForVibrationDevice)
                 {
-                    await GetVbrationDevice();
+                    await GetVibrationDevice();
                 }
             }
         }
