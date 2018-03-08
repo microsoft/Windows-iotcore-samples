@@ -25,7 +25,7 @@ Visit the **Raspberry Pi 2 or 3/MinnowBoard Max** sections below depending on wh
 
 #### Raspberry Pi 2 or 3
 If you have a Raspberry Pi 2 or 3, we need to hook up power, ground, and the SPI lines to the accelerometer.
- See the [Raspberry Pi 2 and 3 pin mapping page](/Samples/PinMappingsRPi2) for more details on the RPi2 and RPi3 IO pins.
+ See the [Raspberry Pi 2 and 3 pin mapping page](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/pinmappings/pinmappingsrpi) for more details on the RPi2 and RPi3 IO pins.
 
 **Note: Make sure to power off the RPi2 or RPi3 when connecting your circuit. This is good practice to reduce the chance of an accidental short circuit during construction.**
 
