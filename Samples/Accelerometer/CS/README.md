@@ -52,7 +52,7 @@ Here are the schematics:
 
 #### MinnowBoard Max
 If you have a MinnowBoard Max, we need to hook up power, ground, and the SPI lines to the accelerometer.
- See the [MBM pin mapping page](/Samples/PinMappingsMBM) for more details on the MBM IO pins.
+ See the [MBM pin mapping page](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/pinmappings/pinmappingsmbm) for more details on the MBM IO pins.
 
 **Note: Make sure to power off the MBM when connecting your circuit. This is good practice to reduce the chance of an accidental short circuit during construction.**
 
