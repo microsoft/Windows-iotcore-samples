@@ -70,7 +70,7 @@ namespace IoTCoreDefaultApp
         private IAsyncOperation<ProcessLauncherResult> processLauncherOperation;
         private int currentCommandLine = -1;
         private int totalOutputSize = 0;
-        private bool isProcessRunning = true;
+        private bool isProcessRunning = false;
         private bool isProcessTimedOut = false;
         private bool isProcessingAdminCommand = false;
         private DateTime lastOutputTime = DateTime.Now;
@@ -111,8 +111,11 @@ namespace IoTCoreDefaultApp
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
-            EnableCommandLineTextBox(true, CommandLine);
-            StdOutputScroller.ChangeView(null, StdOutputScroller.ScrollableHeight, null, true);
+            if (!isProcessRunning && !isProcessingAdminCommand)
+            {
+                EnableCommandLineTextBox(true, CommandLine);
+                StdOutputScroller.ChangeView(null, StdOutputScroller.ScrollableHeight, null, true);
+            }
         }
 
         private void RunProcess()

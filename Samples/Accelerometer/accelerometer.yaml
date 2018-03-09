@@ -1,0 +1,10 @@
+### YamlMime:Sample
+sample:
+- name: Geolocation sample
+  description: The Accelerometer sample connects an accelerometer to your device and reads data from it.
+  generateZip: false
+  author: saraclay
+  languages:
+  - csharp
+  technologies:
+  - windows-iot

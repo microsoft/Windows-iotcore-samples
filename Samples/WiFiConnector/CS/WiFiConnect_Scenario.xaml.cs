@@ -83,7 +83,8 @@ namespace WiFiConnect
                 rootPage.NotifyUser(String.Format("Error scanning WiFi adapter: 0x{0:X}: {1}", err.HResult, err.Message), NotifyType.ErrorMessage);
                 return;
             }
-            await DisplayNetworkReportAsync(firstAdapter.NetworkReport);
+
+            DisplayNetworkReport(firstAdapter.NetworkReport);
         }
 
         public string GetCurrentWifiNetwork()
@@ -126,7 +127,7 @@ namespace WiFiConnect
             return false;
         }
 
-        private async Task DisplayNetworkReportAsync(WiFiNetworkReport report)
+        private void DisplayNetworkReport(WiFiNetworkReport report)
         {
             rootPage.NotifyUser(string.Format("Network Report Timestamp: {0}", report.Timestamp), NotifyType.StatusMessage);
 
@@ -135,17 +136,22 @@ namespace WiFiConnect
 
             foreach (var network in report.AvailableNetworks)
             {
+                var item = new WiFiNetworkDisplay(network, firstAdapter);
                 if (!String.IsNullOrEmpty(network.Ssid))
                 {
-                    var item = new WiFiNetworkDisplay(network, firstAdapter);
                     dictionary.TryAdd(network.Ssid, item);
+                }
+                else
+                {
+                    string bssid = network.Bssid.Substring(0, network.Bssid.LastIndexOf(":"));
+                    dictionary.TryAdd(bssid, item);
                 }
             }
 
             var values = dictionary.Values;
             foreach (var item in values)
             { 
-                /*await*/ item.UpdateAsync();
+                item.Update();
                 if (IsConnected(item.AvailableNetwork))
                 {
                     ResultCollection.Insert(0, item);
@@ -228,6 +234,22 @@ namespace WiFiConnect
                 rootPage.NotifyUser("Network not selected", NotifyType.ErrorMessage);
                 return;
             }
+
+
+            var ssid = selectedNetwork.AvailableNetwork.Ssid;
+            if (string.IsNullOrEmpty(ssid))
+            {
+                if (string.IsNullOrEmpty(selectedNetwork.HiddenSsid))
+                {
+                    rootPage.NotifyUser("Ssid required for connection to hidden network.", NotifyType.ErrorMessage);
+                    return;
+                }
+                else
+                {
+                    ssid = selectedNetwork.HiddenSsid;
+                }
+            }
+
             WiFiReconnectionKind reconnectionKind = WiFiReconnectionKind.Manual;
             if(selectedNetwork.ConnectAutomatically)
             {
@@ -240,46 +262,35 @@ namespace WiFiConnect
             {
                 if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5, 0))
                 {
-                    didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind, null, String.Empty, WiFiConnectionMethod.WpsPushButton).AsTask<WiFiConnectionResult>();
+                    didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind, null, string.Empty, WiFiConnectionMethod.WpsPushButton).AsTask();
                 }
             }
-            else if (selectedNetwork.IsEapAvailable)
+            else
             {
-                if (selectedNetwork.UsePassword)
+                PasswordCredential credential = new PasswordCredential();
+                if (selectedNetwork.IsEapAvailable && selectedNetwork.UsePassword)
                 {
-                    var credential = new PasswordCredential();
                     if (!String.IsNullOrEmpty(selectedNetwork.Domain))
                     {
                         credential.Resource = selectedNetwork.Domain;
                     }
+
                     credential.UserName = selectedNetwork.UserName ?? "";
                     credential.Password = selectedNetwork.Password ?? "";
+                }
+                else if (!String.IsNullOrEmpty(selectedNetwork.Password))
+                {
+                    credential.Password = selectedNetwork.Password;
+                }
 
-                    didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind, credential).AsTask<WiFiConnectionResult>();
+                if (selectedNetwork.IsHiddenNetwork)
+                {
+                    // Hidden networks require the SSID to be supplied
+                    didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind, credential, ssid).AsTask();
                 }
                 else
                 {
-                    didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind).AsTask<WiFiConnectionResult>();
-                }
-            }
-            else if (selectedNetwork.AvailableNetwork.SecuritySettings.NetworkAuthenticationType == Windows.Networking.Connectivity.NetworkAuthenticationType.Open80211 &&
-                    selectedNetwork.AvailableNetwork.SecuritySettings.NetworkEncryptionType == NetworkEncryptionType.None)
-            {
-                didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind).AsTask<WiFiConnectionResult>();
-            }
-            else
-            {
-                // Only the password potion of the credential need to be supplied
-                if (String.IsNullOrEmpty(selectedNetwork.Password))
-                {
-                    didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind).AsTask<WiFiConnectionResult>();
-                }
-                else
-                {
-                    var credential = new PasswordCredential();
-                    credential.Password = selectedNetwork.Password ?? "";
-
-                    didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind, credential).AsTask<WiFiConnectionResult>();
+                    didConnect = firstAdapter.ConnectAsync(selectedNetwork.AvailableNetwork, reconnectionKind, credential).AsTask();
                 }
             }
 
@@ -308,14 +319,14 @@ namespace WiFiConnect
             }
             else
             {
-                rootPage.NotifyUser(string.Format("Could not connect to {0}. Error: {1}", selectedNetwork.Ssid, result.ConnectionStatus), NotifyType.ErrorMessage);
+                rootPage.NotifyUser(string.Format("Could not connect to {0}. Error: {1}", selectedNetwork.Ssid, (result != null ? result.ConnectionStatus : WiFiConnectionStatus.UnspecifiedFailure )), NotifyType.ErrorMessage);
                 SwitchToItemState(selectedNetwork, WifiConnectState, false);
             }
 
             // Since a connection attempt was made, update the connectivity level displayed for each
             foreach (var network in ResultCollection)
             {
-                network.UpdateConnectivityLevel();
+                var task = network.UpdateConnectivityLevelAsync();
             }
         }
 

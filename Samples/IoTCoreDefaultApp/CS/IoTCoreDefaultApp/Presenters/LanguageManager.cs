@@ -88,13 +88,12 @@ namespace IoTCoreDefaultApp
         
             ImageLanguageDisplayNames = displayNameToImageLanguageMap.Keys.ToList();
 
-
-            displayNameToLanguageMap = new Dictionary<string, string> (
+            displayNameToLanguageMap = new Dictionary<string, string>(
                 ApplicationLanguages.ManifestLanguages.Union(imageLanguagesList).Select(tag =>
                 {
                     var lang = new Language(tag);
                     return new KeyValuePair<string, string>(lang.NativeName, GetLocaleFromLanguageTag(lang.LanguageTag));
-                }).OrderBy(a => a.Key).ToDictionary(keyitem => keyitem.Key, valueItem => valueItem.Value)
+                }).Distinct().OrderBy(a => a.Key).ToDictionary(keyitem => keyitem.Key, valueItem => valueItem.Value)
                 );
 
             LanguageDisplayNames = displayNameToLanguageMap.Keys.ToList();
