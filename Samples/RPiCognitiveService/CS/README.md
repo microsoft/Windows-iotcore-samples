@@ -40,7 +40,7 @@ Choose one picture then double click or click “select” button, the Photo Ana
 
 So, we know that in Photo Analysis page, the descriptions tags, and faces will be given.
 
-Now, let’s test the Face Page. First, click Face menu. Then click Browser button on the right corner, double click Pictures folder, the pictures that you uploaded above will show. Choose one picture then double click or click “select” button, the Face Analysis will start. If the network is OK, then the results will show on the screen in a few seconds as follows.
+Now, let’s test the Face Page. First, click Face menu. Then click Browser button on the right corner, double click Pictures folder, the pictures that you uploaded above will show. Choose one picture then double click or click “select” button, the Face Analysis will start. If the network is OK, then the results will show on the screen in a few seconds.
 
 So, we know that in Face Analysis page, the faces and emotions will be given.
 
