@@ -169,7 +169,7 @@
     <comment>Learn More Button</comment>
   </data>
   <data name="MakerImageNoticeText" xml:space="preserve">
-    <value>If you're looking to commercialize your device, you must use a custom FFU to optimize security for your device.</value>
+    <value>This is a Windows 10 IoT Core test image designed for prototyping only. If you are looking to commercialize, you must use a custom FFU for optimal security.</value>
     <comment>Maker Imager Security Notice</comment>
   </data>
   <data name="NetworkConnectingMessageText" xml:space="preserve">
