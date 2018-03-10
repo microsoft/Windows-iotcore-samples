@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{74FE43AC-FA7B-4791-9A26-FCFA7ED4F9C0}</ProjectGuid>
+    <ProjectGuid>{28B8916A-4200-46D8-BA23-3087C65A127F}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RPiCognitiveServie</RootNamespace>
-    <AssemblyName>RPiCognitiveServie</AssemblyName>
-    <DefaultLanguage>zh-CN</DefaultLanguage>
+    <RootNamespace>RPiCognitiveService</RootNamespace>
+    <AssemblyName>RPiCognitiveService</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.16299.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
@@ -17,7 +17,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>RPiCognitiveServie_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>RPiCognitiveService_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -113,7 +113,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="RPiCognitiveServie_TemporaryKey.pfx" />
+    <None Include="RPiCognitiveService_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />

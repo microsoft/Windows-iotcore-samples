@@ -15,9 +15,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
-//https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
+// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace RPiCognitiveServie
+namespace RPiCognitiveService
 {
     public sealed partial class EmotionDataControl : UserControl
     {
@@ -28,7 +28,7 @@ namespace RPiCognitiveServie
         }
 
         /// <summary>
-        /// emotion数据 id-data
+        /// emotion data id-data
         /// </summary>
         public Dictionary<string, double> Data
         {

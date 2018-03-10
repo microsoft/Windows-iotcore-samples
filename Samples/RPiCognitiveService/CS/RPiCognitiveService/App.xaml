@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="RPiCognitiveServie.App"
+    x:Class="RPiCognitiveService.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:RPiCognitiveServie"
-    RequestedTheme="Dark">
+    xmlns:local="using:RPiCognitiveService"
+    RequestedTheme="Light">
 
 </Application>

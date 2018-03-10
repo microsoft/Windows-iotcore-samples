@@ -27,16 +27,16 @@ using Windows.Storage.Search;
 using Windows.Media.MediaProperties;
 using Windows.Storage.Streams;
 
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace RPiCognitiveServie
+namespace RPiCognitiveService
 {
     /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class FacePage : Page
     {
-        
+        //Cognitive service API Key
         string key_face = "Your Face API Key";
         string key_emotion = "Your Emotion API Key";
 
@@ -128,19 +128,19 @@ namespace RPiCognitiveServie
             {
                 btnTakePhoto.IsEnabled = false;
                 captureImage.Source = null;
-                //存储照片
+                //store the captured image
                 photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync(
                     PHOTO_FILE_NAME, CreationCollisionOption.GenerateUniqueName);
                 ImageEncodingProperties imageProperties = ImageEncodingProperties.CreateJpeg();
                 await mediaCapture.CapturePhotoToStorageFileAsync(imageProperties, photoFile);
                 btnTakePhoto.IsEnabled = true;
                 txtLocation.Text = "Take Photo succeeded: " + photoFile.Path;
-                //获取照片
+                //display the image
                 IRandomAccessStream photoStream = await photoFile.OpenReadAsync();
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.SetSource(photoStream);
                 captureImage.Source = bitmap;
-                Picker_SelectedFile= photoFile;
+                Picker_SelectedFile = photoFile;
                 SelectFile();
             }
             catch (Exception ex)
@@ -164,7 +164,7 @@ namespace RPiCognitiveServie
                 mediaCapture.Dispose();
                 mediaCapture = null;
             }
-            btnTakePhoto.IsEnabled=false;
+            btnTakePhoto.IsEnabled = false;
         }
 
 
@@ -175,7 +175,7 @@ namespace RPiCognitiveServie
             ".bmp",
         };
 
-        //浏览按钮事件
+        //Browse Button Click Event
         private void btnBrowse_Click(object sender, RoutedEventArgs e)
         {
             Picker_Show();
@@ -216,13 +216,14 @@ namespace RPiCognitiveServie
                 }
             }
         }
-        //清除按钮事件
+
+        //Clear Button Click Event
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             txtFileName.Text = "";
         }
 
-        //点击选择按钮
+        //Select Button Click Event
         private async void btnSelect_Click(object sender, RoutedEventArgs e)
         {
             if (lstFiles.SelectedItem != null)
@@ -256,7 +257,7 @@ namespace RPiCognitiveServie
 
                     ringLoading.IsActive = true;
 
-                    //请求API
+                    //Face and emotion service
                     FaceServiceClient f_client = new FaceServiceClient(key_face);
                     EmotionServiceClient e_client = new EmotionServiceClient(key_emotion);
 
@@ -305,6 +306,7 @@ namespace RPiCognitiveServie
             }
         }
 
+        //Open Button Click Event
         private async void btnOpen_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -417,7 +419,7 @@ namespace RPiCognitiveServie
             }
         }
 
-        //listview双击事件
+        //Double Tapped Event for listview
         private async void lstFiles_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             if (lstFiles.SelectedItem != null)
@@ -433,7 +435,7 @@ namespace RPiCognitiveServie
             }
         }
 
-        //listview事件
+        //Keyup enevt for listview
         private async void lstFiles_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (lstFiles.SelectedItem != null && e.Key == Windows.System.VirtualKey.Enter)
@@ -449,14 +451,14 @@ namespace RPiCognitiveServie
             }
         }
 
-        //取消按钮事件
+        //Cancel Button Click Event
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Picker_Hide();
         }
 
         /// <summary>
-        /// 显示Face数据到界面
+        /// Display Face Data
         /// </summary>
         /// <param name="result"></param>
         private void DisplayFacesData(Face[] faces, bool init = true)
@@ -484,7 +486,6 @@ namespace RPiCognitiveServie
             if (faces != null)
             {
                 int count = 1;
-                //将face矩形显示到界面（如果有）
                 foreach (var face in faces)
                 {
                     Windows.UI.Xaml.Shapes.Rectangle rect = new Windows.UI.Xaml.Shapes.Rectangle();
@@ -509,7 +510,7 @@ namespace RPiCognitiveServie
             if (!init)
                 return;
 
-            var list_child = gridFaces.Children.ToList();  //移除之前Face数据
+            var list_child = gridFaces.Children.ToList();  
             list_child.ForEach((e) =>
             {
                 if (e as TextBlock != null && (e as TextBlock).Tag != null)
@@ -565,7 +566,7 @@ namespace RPiCognitiveServie
             }
         }
         /// <summary>
-        /// 显示Emotions数据到界面
+        /// Display Emotions data
         /// </summary>
         /// <param name="emotions"></param>
         private void DisplayEmotionsData(Emotion[] emotions, bool init = true)
@@ -575,7 +576,7 @@ namespace RPiCognitiveServie
             if (!init)
                 return;
 
-            var list_child = gridEmotions.Children.ToList();  //移除之前Emotion数据
+            var list_child = gridEmotions.Children.ToList();  
             list_child.ForEach((e) =>
             {
                 if (e as TextBlock != null && (e as TextBlock).Tag != null)
@@ -671,16 +672,11 @@ namespace RPiCognitiveServie
                 gridEmotions.Children.Add(txt8);
             }
         }
-        /// <summary>
-        /// 粘贴URL时 图片加载完毕
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         private async void imgPhoto_ImageOpened(object sender, RoutedEventArgs e)
         {
             size_image = new Size((imgPhoto.Source as BitmapImage).PixelWidth, (imgPhoto.Source as BitmapImage).PixelHeight);
 
-            //请求API
             FaceServiceClient f_client = new FaceServiceClient(key_face);
             EmotionServiceClient e_client = new EmotionServiceClient(key_emotion);
 
@@ -709,7 +705,7 @@ namespace RPiCognitiveServie
             ringLoading.IsActive = false;
         }
         /// <summary>
-        /// 尺寸改变 重新绘制界面中Face 矩形
+        /// Re-rendering Face Data
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -719,7 +715,7 @@ namespace RPiCognitiveServie
             DisplayEmotionsData(emotions, false);
         }
         /// <summary>
-        /// 点击face 显示emotion数据折线图
+        /// Display Emotion Data
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -785,7 +781,7 @@ namespace RPiCognitiveServie
 
         private void btnShow_Click(object sender, RoutedEventArgs e)
         {
-            if(stpPreview.Visibility==Visibility.Collapsed)
+            if (stpPreview.Visibility == Visibility.Collapsed)
             {
                 stpPreview.Visibility = Visibility.Visible;
                 btnShow.Content = "Hide Preview";
@@ -795,7 +791,6 @@ namespace RPiCognitiveServie
                 stpPreview.Visibility = Visibility.Collapsed;
                 btnShow.Content = "Show Preview";
             }
-
         }
     }
 }

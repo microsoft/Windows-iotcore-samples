@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,18 +25,19 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.Media.MediaProperties;
 using Windows.Storage.Streams;
 
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace RPiCognitiveServie
+namespace RPiCognitiveService
 {
     /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class PhotoPage : Page
     {
-        string key = "Your Computer Vision Key API";  //API key
-        Size size_image;  //当前图片实际size
-        AnalysisResult thisresult;  //当前分析结果
+        //Vision API key
+        string key = "Your Vision API Key";  
+        Size size_image;  //The size of the current image
+        AnalysisResult thisresult;  //The result of analysis
 
         StorageFolder currentFolder;
         StorageFile Picker_SelectedFile;
@@ -129,14 +130,14 @@ namespace RPiCognitiveServie
             {
                 btnTakePhoto.IsEnabled = false;
                 captureImage.Source = null;
-                //存储照片
+                //Store image
                 photoFile = await KnownFolders.PicturesLibrary.CreateFileAsync(
                     PHOTO_FILE_NAME, CreationCollisionOption.GenerateUniqueName);
                 ImageEncodingProperties imageProperties = ImageEncodingProperties.CreateJpeg();
                 await mediaCapture.CapturePhotoToStorageFileAsync(imageProperties, photoFile);
                 btnTakePhoto.IsEnabled = true;
                 txtLocation.Text = "Take Photo succeeded: " + photoFile.Path;
-                //获取照片
+                //Display image
                 IRandomAccessStream photoStream = await photoFile.OpenReadAsync();
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.SetSource(photoStream);
@@ -169,7 +170,7 @@ namespace RPiCognitiveServie
         }
 
         /// <summary>
-        /// 显示数据到界面
+        /// Dispaly data
         /// </summary>
         /// <param name="result"></param>
         private void DisplayData(AnalysisResult result, bool init = true)
@@ -197,7 +198,7 @@ namespace RPiCognitiveServie
             if (result.Faces != null)
             {
                 int count = 1;
-                //将face矩形显示到界面（如果有）
+                //Dispaly face
                 foreach (var face in result.Faces)
                 {
                     Windows.UI.Xaml.Shapes.Rectangle rect = new Windows.UI.Xaml.Shapes.Rectangle();
@@ -222,13 +223,13 @@ namespace RPiCognitiveServie
             if (!init)
                 return;
 
-            //将其他数据显示到表格
-            if (result.Description != null && result.Description.Captions != null) //描述
+            //Display result to table
+            if (result.Description != null && result.Description.Captions != null) //description
             {
                 txtDesc.Text = result.Description.Captions[0].Text;
                 txtDesc_Score.Text = Math.Round(result.Description.Captions[0].Confidence, 3).ToString();
             }
-            if (result.Adult != null)  //是否成人内容
+            if (result.Adult != null)  //adult content
             {
                 txtAdult.Text = result.Adult.IsAdultContent.ToString();
                 txtAdult_Score.Text = Math.Round(result.Adult.AdultScore, 3).ToString();
@@ -237,7 +238,7 @@ namespace RPiCognitiveServie
                 txtRacy_Score.Text = Math.Round(result.Adult.RacyScore, 3).ToString();
             }
 
-            var list_child = gridTags.Children.ToList();  //移除之前Tag数据
+            var list_child = gridTags.Children.ToList();  //Remove previous Tag data
             list_child.ForEach((e) =>
             {
                 if (e as TextBlock != null && (e as TextBlock).Tag != null)
@@ -246,7 +247,7 @@ namespace RPiCognitiveServie
                 }
             });
 
-            list_child = gridFaces.Children.ToList();  //移除之前Face数据
+            list_child = gridFaces.Children.ToList();  //Remove previous face data
             list_child.ForEach((e) =>
             {
                 if (e as TextBlock != null && (e as TextBlock).Tag != null)
@@ -326,7 +327,7 @@ namespace RPiCognitiveServie
 
         }
         /// <summary>
-        /// 尺寸改变时，重新绘制Canvas中的内容
+        /// Re-rendering Data in main canvas
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -334,16 +335,11 @@ namespace RPiCognitiveServie
         {
             DisplayData(thisresult, false);
         }
-        /// <summary>
-        /// 粘贴URL时  图片加载完毕后保存图片尺寸
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         private async void imgPhoto_ImageOpened(object sender, RoutedEventArgs e)
         {
             size_image = new Size((imgPhoto.Source as BitmapImage).PixelWidth, (imgPhoto.Source as BitmapImage).PixelHeight);
 
-            //请求API
             VisionServiceClient client = new VisionServiceClient(key);
             var feature = new VisualFeature[] { VisualFeature.Tags, VisualFeature.Faces, VisualFeature.Description, VisualFeature.Adult, VisualFeature.Categories };
 
@@ -397,14 +393,14 @@ namespace RPiCognitiveServie
                 }
             }
         }
-        //清除按钮事件
+        //Clear Button Click Event
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             //lblError.Visibility = Visibility.Collapsed;
             txtFileName.Text = "";
         }
 
-        //点击选择按钮
+        ////Select Button Click Event
         private async void btnSelect_Click(object sender, RoutedEventArgs e)
         {
             if (lstFiles.SelectedItem != null)
@@ -437,7 +433,7 @@ namespace RPiCognitiveServie
                     size_image = new Size(image.PixelWidth, image.PixelHeight);
 
                     ringLoading.IsActive = true;
-                    //请求API
+                    //Vision Service
                     VisionServiceClient client = new VisionServiceClient(key);
                     var feature = new VisualFeature[] { VisualFeature.Tags, VisualFeature.Faces, VisualFeature.Description, VisualFeature.Adult, VisualFeature.Categories };
 
@@ -470,6 +466,7 @@ namespace RPiCognitiveServie
             }
         }
 
+        //Show Button Click Event
         private void btnShow_Click(object sender, RoutedEventArgs e)
         {
             if (stpPreview.Visibility == Visibility.Collapsed)
@@ -484,6 +481,7 @@ namespace RPiCognitiveServie
             }
         }
 
+        //Open Button Click Event
         private async void btnOpen_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -596,7 +594,7 @@ namespace RPiCognitiveServie
             }
         }
 
-        //listview双击事件
+        //DoubleTapped event for listview
         private async void lstFiles_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             if (lstFiles.SelectedItem != null)
@@ -612,7 +610,7 @@ namespace RPiCognitiveServie
             }
         }
 
-        //listview事件
+        //KeyUp event for listview
         private async void lstFiles_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (lstFiles.SelectedItem != null && e.Key == Windows.System.VirtualKey.Enter)
@@ -628,11 +626,10 @@ namespace RPiCognitiveServie
             }
         }
 
-        //取消按钮事件
+        //Cancel Button Click Event
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Picker_Hide();
         }
-
     }
 }
