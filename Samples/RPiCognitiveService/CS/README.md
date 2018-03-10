@@ -2,7 +2,7 @@
 
 We'll create a simple app that demonstrate Microsoft Cognitive Services on Windows 10 IoT Core Devices.
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/zh-cn/windows/iot-core/learn-about-hardware/headlessmode).
 
 ## Hardware components 
 
