@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,8 +34,8 @@ namespace RPiCognitiveService
     /// </summary>
     public sealed partial class PhotoPage : Page
     {
-        //Vision API key
-        string key = "Your Vision API Key";  
+        //Computer Vision Key
+        string key = "your Computer Vision Key";  //API key
         Size size_image;  //The size of the current image
         AnalysisResult thisresult;  //The result of analysis
 
