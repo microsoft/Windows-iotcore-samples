@@ -72,8 +72,8 @@ namespace IoTCoreDefaultApp
         {
             get;
             set;
-        }                
-       
+        }
+
         private LanguageManager()
         {
             List<string> imageLanguagesList = GetImageSupportedLanguages();
@@ -115,7 +115,19 @@ namespace IoTCoreDefaultApp
                 //Add Image Enabled Languages as Global Preferences List
                 if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
                 {
-                    GlobalizationPreferences.TrySetLanguages(displayNameToImageLanguageMap.Values);
+                    //Find language currently set as UI language ... this should be
+                    //the first language in the list passed to TrySetLanguages
+                    var uiLanguageTag = GlobalizationPreferences.Languages[0];
+                    var index = imageLanguagesList.IndexOf(uiLanguageTag);
+                    if (index != 0)
+                    {
+                        if (index != -1)
+                        {
+                            imageLanguagesList.Remove(uiLanguageTag);
+                        }
+                        imageLanguagesList.Insert(0, uiLanguageTag);
+                    }
+                    GlobalizationPreferences.TrySetLanguages(imageLanguagesList);
                 }
             }
             catch(UnauthorizedAccessException ex)
