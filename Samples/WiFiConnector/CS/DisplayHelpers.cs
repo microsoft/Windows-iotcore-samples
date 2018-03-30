@@ -20,12 +20,19 @@ namespace WiFiConnect
             this.adapter = adapter;
         }
 
-        public async Task UpdateAsync()
+        public async void Update()
         {
             UpdateWiFiImage();
             UpdateNetworkKeyVisibility();
-            await UpdateConnectivityLevel();
-            await UpdateWpsPushbuttonAvailable();
+            UpdateHiddenSsidTextBoxVisibility();
+            await UpdateConnectivityLevelAsync();
+            await UpdateWpsPushButtonAvailableAsync();
+        }
+
+        private void UpdateHiddenSsidTextBoxVisibility()
+        {
+            IsHiddenNetwork = string.IsNullOrEmpty(AvailableNetwork.Ssid);
+            OnPropertyChanged("IsHiddenNetwork");
         }
 
         private void UpdateNetworkKeyVisibility()
@@ -59,7 +66,7 @@ namespace WiFiConnect
 
         }
 
-        public async Task UpdateConnectivityLevel()
+        public async Task UpdateConnectivityLevelAsync()
         {
             string connectivityLevel = "Not Connected";
             string connectedSsid = null;
@@ -74,7 +81,8 @@ namespace WiFiConnect
 
             if (!string.IsNullOrEmpty(connectedSsid))
             {
-                if (connectedSsid.Equals(AvailableNetwork.Ssid))
+                if (connectedSsid.Equals(AvailableNetwork.Ssid) ||
+                    connectedSsid.Equals(HiddenSsid))
                 {
                     connectivityLevel = connectedProfile.GetNetworkConnectivityLevel().ToString();
                 }
@@ -84,8 +92,8 @@ namespace WiFiConnect
             OnPropertyChanged("ConnectivityLevel");
         }
 
-        public async Task UpdateWpsPushbuttonAvailable()
-        { 
+        public async Task UpdateWpsPushButtonAvailableAsync()
+        {
             IsWpsPushButtonAvailable = await IsWpsPushButtonAvailableAsync();
             OnPropertyChanged("IsWpsPushButtonAvailable");
         }
@@ -98,6 +106,8 @@ namespace WiFiConnect
         public bool IsWpsPushButtonAvailable { get; set; }
 
         public bool NetworkKeyInfoVisibility { get; set; }
+
+        public bool IsHiddenNetwork { get; set; }
 
         private bool usePassword = false;
         public bool UsePassword
@@ -131,7 +141,7 @@ namespace WiFiConnect
         {
             get
             {
-                return availableNetwork.Ssid;
+                return string.IsNullOrEmpty(AvailableNetwork.Ssid) ? "Hidden Network" : AvailableNetwork.Ssid;
             }
         }
 
@@ -139,7 +149,7 @@ namespace WiFiConnect
         {
             get
             {
-                return availableNetwork.Bssid;
+                return AvailableNetwork.Bssid;
 
             }
         }
@@ -148,7 +158,7 @@ namespace WiFiConnect
         {
             get
             {
-                return string.Format("{0}kHz", availableNetwork.ChannelCenterFrequencyInKilohertz);
+                return string.Format("{0}kHz", AvailableNetwork.ChannelCenterFrequencyInKilohertz);
             }
         }
 
@@ -156,7 +166,7 @@ namespace WiFiConnect
         {
             get
             {
-                return string.Format("{0}dBm", availableNetwork.NetworkRssiInDecibelMilliwatts);
+                return string.Format("{0}dBm", AvailableNetwork.NetworkRssiInDecibelMilliwatts);
             }
         }
 
@@ -164,9 +174,10 @@ namespace WiFiConnect
         {
             get
             {
-                return string.Format("Authentication: {0}; Encryption: {1}", availableNetwork.SecuritySettings.NetworkAuthenticationType, availableNetwork.SecuritySettings.NetworkEncryptionType);
+                return string.Format("Authentication: {0}; Encryption: {1}", AvailableNetwork.SecuritySettings.NetworkAuthenticationType, AvailableNetwork.SecuritySettings.NetworkEncryptionType);
             }
         }
+
         public String ConnectivityLevel
         {
             get;
@@ -200,12 +211,19 @@ namespace WiFiConnect
             set { domain = value; OnPropertyChanged("Domain"); }
         }
 
+        private string hiddenSsid;
+        public string HiddenSsid
+        {
+            get { return hiddenSsid; }
+            set { hiddenSsid = value; OnPropertyChanged("HiddenSsid"); }
+        }
+
         public bool IsEapAvailable
         {
             get
             {
-                return ((availableNetwork.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.Rsna) ||
-                    (availableNetwork.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.Wpa));
+                return ((AvailableNetwork.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.Rsna) ||
+                    (AvailableNetwork.SecuritySettings.NetworkAuthenticationType == NetworkAuthenticationType.Wpa));
             }
         }
 
@@ -213,36 +231,19 @@ namespace WiFiConnect
         {
             if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5, 0))
             {
-                var result = await adapter.GetWpsConfigurationAsync(availableNetwork);
+                var result = await adapter.GetWpsConfigurationAsync(AvailableNetwork);
                 if (result.SupportedWpsKinds.Contains(WiFiWpsKind.PushButton))
                     return true;
             }
 
             return false;
         }
-
-        private WiFiAvailableNetwork availableNetwork;
-        public WiFiAvailableNetwork AvailableNetwork
-        {
-            get
-            {
-                return availableNetwork;
-            }
-
-            private set
-            {
-                availableNetwork = value;
-            }
-        }
+        public WiFiAvailableNetwork AvailableNetwork { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

@@ -25,7 +25,7 @@ Visit the **Raspberry Pi 2 or 3/MinnowBoard Max** sections below depending on wh
 
 #### Raspberry Pi 2 or 3
 If you have a Raspberry Pi 2 or 3, we need to hook up power, ground, and the SPI lines to the accelerometer.
- See the [Raspberry Pi 2 and 3 pin mapping page](/Samples/PinMappingsRPi2) for more details on the RPi2 and RPi3 IO pins.
+ See the [Raspberry Pi 2 and 3 pin mapping page](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/pinmappings/pinmappingsrpi) for more details on the RPi2 and RPi3 IO pins.
 
 **Note: Make sure to power off the RPi2 or RPi3 when connecting your circuit. This is good practice to reduce the chance of an accidental short circuit during construction.**
 
@@ -52,7 +52,7 @@ Here are the schematics:
 
 #### MinnowBoard Max
 If you have a MinnowBoard Max, we need to hook up power, ground, and the SPI lines to the accelerometer.
- See the [MBM pin mapping page](/Samples/PinMappingsMBM) for more details on the MBM IO pins.
+ See the [MBM pin mapping page](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/pinmappings/pinmappingsmbm) for more details on the MBM IO pins.
 
 **Note: Make sure to power off the MBM when connecting your circuit. This is good practice to reduce the chance of an accidental short circuit during construction.**
 
@@ -125,7 +125,7 @@ public sealed partial class MainPage : Page
 }
 ```  
 
-Follow the instructions to [setup remote debugging and deploy the app](/Docs/AppDeployment.htm#csharp). The SPIAccelerometer app will deploy and start, and you should see accelerometer data show up on screen.
+Follow the instructions to [setup remote debugging and deploy the app](https://docs.microsoft.com/en-us/windows/iot-core/develop-your-app/appdeployment). The SPIAccelerometer app will deploy and start, and you should see accelerometer data show up on screen.
  If you have your accelerometer flat on a surface, the Z axis should read close to 1.000G, while X and Y are close to 0.000G. The values will fluctuate a little even if the device is standing still.
  This is normal and is due to minute vibrations and electrical noise. If you tilt or shake the sensor, you should see the values change in response. Note that this sample configures the device in 4G mode,
 so you wont be able to see G readings higher than 4Gs.
