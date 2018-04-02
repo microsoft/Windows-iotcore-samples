@@ -20,7 +20,7 @@ When everything is set up, you should be able to press F5 from Visual Studio.  T
 
 When the sample is built and executed, the app will look like this on the screen:
 
-![IoTCore Media Player running](../../../Resources/images/IoTMediaPlayer/IoTCoreMediaPlayer.png)
+![IoTCore Media Player running](../../../Resources/images/IotMediaPlayer/IoTCoreMediaPlayer.png)
 
 The sample utilizes the MediaElement object to specify what media to play, and also to start and stop playback of the media, which is found in MainPage.xaml:
 
