@@ -1,8 +1,8 @@
-# “Hello, blinky!”
+# â€œHello, blinky!â€
 
-We’ll create a simple LED blinking app and connect a LED to your Windows 10 IoT Core device.
+Weâ€™ll create a simple LED blinking app and connect a LED to your Windows 10 IoT Core device.
 
-This is a headed sample. To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/en-us/windows/iot/Docs/HeadlessMode).
+This is a headed sample. To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).
 
 Also, be aware that the GPIO APIs are only available on Windows 10 IoT Core, so this sample cannot run on your desktop.
 
@@ -14,7 +14,7 @@ Also, be aware that the GPIO APIs are only available on Windows 10 IoT Core, so 
 
 * * *
 
-You’ll need a few components:
+Youâ€™ll need a few components:
 
 *   a LED (any color you like)
 
@@ -76,13 +76,13 @@ Finally, the LED_PIN variable of _MainPage.xaml.cs_ file of the sample code will
 
 * * *
 
-1.  With the application open in Visual Studio, set the architecture in the toolbar dropdown. If you’re building for MinnowBoard Max, select `x86`. If you’re building for Raspberry Pi 2 or 3 or the DragonBoard, select `ARM`.
+1.  With the application open in Visual Studio, set the architecture in the toolbar dropdown. If youâ€™re building for MinnowBoard Max, select `x86`. If youâ€™re building for Raspberry Pi 2 or 3 or the DragonBoard, select `ARM`.
 
 2.  Next, in the Visual Studio toolbar, click on the `Local Machine` dropdown and select `Remote Machine`
 
     ![RemoteMachine Target](https://az835927.vo.msecnd.net/sites/iot/Resources/images/AppDeployment/cs-remote-machine-debugging.png)
 
-3.  At this point, Visual Studio will present the **Remote Connections** dialog. If you previously used [PowerShell](/en-us/windows/iot/Docs/PowerShell) to set a unique name for your device, you can enter it here (in this example, we’re using **my-device**). Otherwise, use the IP address of your Windows IoT Core device. After entering the device name/IP select `Universal` for Windows Authentication, then click **Select**.
+3.  At this point, Visual Studio will present the **Remote Connections** dialog. If you previously used [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) to set a unique name for your device, you can enter it here (in this example, weâ€™re using **my-device**). Otherwise, use the IP address of your Windows IoT Core device. After entering the device name/IP select `Universal` for Windows Authentication, then click **Select**.
 
     ![Remote Machine Debugging](https://az835927.vo.msecnd.net/sites/iot/Resources/images/AppDeployment/cs-remote-connections.PNG)
 
@@ -96,11 +96,11 @@ When everything is set up, you should be able to press F5 from Visual Studio. If
 
 Congratulations! You controlled one of the GPIO pins on your Windows IoT device.
 
-## Let’s look at the code
+## Letâ€™s look at the code
 
 * * *
 
-The code for this sample is pretty simple. We use a timer, and each time the ‘Tick’ event is called, we flip the state of the LED.
+The code for this sample is pretty simple. We use a timer, and each time the â€˜Tickâ€™ event is called, we flip the state of the LED.
 
 ### Timer code
 
@@ -161,7 +161,7 @@ To drive the GPIO pin, first we need to initialize it. Here is the C++ code (not
 		GpioStatus->Text = "GPIO pin initialized correctly.";
 	}
 
-Let’s break this down a little:
+Letâ€™s break this down a little:
 
 *   First, we use `GpioController::GetDefault()` to get the GPIO controller.
 
@@ -175,7 +175,7 @@ Let’s break this down a little:
 
 ### Modify the state of the GPIO pin
 
-Once we have access to the `GpioOutputPin` instance, it’s trivial to change the state of the pin to turn the LED on or off.
+Once we have access to the `GpioOutputPin` instance, itâ€™s trivial to change the state of the pin to turn the LED on or off.
 
 To turn the LED on, simply write the value `GpioPinValue.Low` to the pin:
 

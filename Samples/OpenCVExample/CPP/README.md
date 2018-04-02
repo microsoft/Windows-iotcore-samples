@@ -98,7 +98,7 @@ ___
 
     For each new DLL you want to add, you need to add the appropriate "include" directory to this field.
 
-    ![Modify Include Directories]({{site.baseurl}}/Resources/images/opencv/add_libs.PNG)
+    ![Modify Include Directories](../../../Resources/images/OpenCV/add_libs.PNG)
 
 3. Modify your Linker Properties
 
