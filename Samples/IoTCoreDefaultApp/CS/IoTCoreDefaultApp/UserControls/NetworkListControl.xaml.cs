@@ -209,6 +209,9 @@ namespace IoTCoreDefaultApp
                         WifiListViewItems.Move(itemLocation, 0);
                     }
 
+                    network.Message = String.Empty;
+                    network.IsMessageVisible = false;
+
                     var item = SwitchToItemState(network, WifiConnectedState, true);
                     if (item != null)
                     {
@@ -220,6 +223,12 @@ namespace IoTCoreDefaultApp
             }
             else
             {
+                // Entering the wrong password may cause connection attempts to timeout
+                // Disconnecting the adapter will return it to a non-busy state
+                if (status == WiFiConnectionStatus.Timeout)
+                {
+                    network.Adapter.Disconnect();
+                }
                 var resourceLoader = ResourceLoader.GetForCurrentView();
                 network.Message = resourceLoader.GetString(status.ToString() + "Text");
                 network.IsMessageVisible = true;
