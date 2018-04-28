@@ -4,7 +4,7 @@ In this sample, we'll create a UWP app to demonstrate how to play media files su
 
 ## Load the project in Visual Studio
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `Samples/IotCoreMediaPlayer` folder.  Make a copy of the folder on your disk and open the projects from Visual Studio.  BlinkyService.sln implements the app service and must be started first.  BlinkyClient.sln implements the app service client.
+You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `Samples/IotCoreMediaPlayer` folder.  Make a copy of the folder on your disk and open the projects from Visual Studio.
 
 Navigate to the IotCoreMediaPlayer project and open the project from Visual Studio.
 
