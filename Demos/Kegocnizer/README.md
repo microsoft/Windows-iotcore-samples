@@ -2,7 +2,7 @@
 
 This demo project describes the development of a device to allow beer to be dispensed to authorized users, which adheres to a identified set of company policies and state law.
 
-##The Team
+## The Team
 
 Our core team works on servicing officially supported versions of Windows 10 IoT Core, so we have skills working with Windows and IoT devices.  We also realized we needed help 
 with usability, graphics, and styling the application.
@@ -14,7 +14,7 @@ with usability, graphics, and styling the application.
 * Rutuja Shirali – Software Engineer
 * Mark Snyder – Senior Software Engineer
 
-##The Requirements
+## The Requirements
 
 It’s all about getting the beer to the developers, but the opportunity was to make the beer available while following applicable state laws and company policies, including:
 
@@ -39,7 +39,7 @@ We also used Microsoft Teams for day to day communication and managing “living
 We also wanted to make the end-result public as a sample on the Microsoft site so that others could learn from what we encountered and use our work as a roadmap to do 
 similar projects on their own.
 
-##The Design
+## The Design
 
 We firmed up the broad design quickly.  We would have a unit inside the Kegerator that handled weight, temperature, and flow, and a unit outside that housed the microcontroller 
 as well as the connected card reader.  In addition, the display monitor for the user interaction would be outside and our goal was to handle everything by hardware events with 
@@ -53,7 +53,7 @@ We also bestowed a name on our product.  We called it the Kegocnizer because it�
 
 With a broad design in place, we were ready to begin building a prototype.
 
-##Prototype
+## Prototype
 
 The technology and products involved included:
 ** Raspberry Pi 3 microcontroller
@@ -126,7 +126,7 @@ this supported the weight of the keg without significant deformation.
 
 ![Assembled](../../Resources/images/Kegocnizer/PrototypeThreeInstalled.jpg)
 
-##The User Scenarios (UX) and Keg App
+## The User Scenarios (UX) and Keg App
 
 When a user walks up to the Kegocnizer, they are either a valid user or not.  For a user that the Kegocnizer doesn’t recognize (or kegocnize) they swipe their card and get an error 
 message indicating that they cannot be served.  A user that has been previously whitelisted (or “Kegocnized”) can swipe their card and if 1) they haven’t already exceeded their 
@@ -136,7 +136,7 @@ hourly limit, or 2) the number of users per event hasn’t been exceeded, then t
 In order to support a variety of form factors, the application needed to use a responsive design approach.  Our goal was to at least support landscape and portrait orientations
 at common resolutions such as 1024x678 or 1280x1024.
 
-##Administration
+## Administration
 
 The requirements for administering the operation of the Kegocnizer fell into two categories:
 
@@ -147,14 +147,14 @@ The requirements for administering the operation of the Kegocnizer fell into two
 The list of kegocnized users and the configuration/calibration data are stored in Cosmos DB documents in the Cloud.  Thus, the data is secure across power outages and restarts. 
 It also allows the admin app to be separate and run on Windows Desktop on a PC or laptop.
 
-##Telemetry
+## Telemetry
 
 Another feature we desired was to be able to track activity over time.  For this, we utilized Azure Application Insights.  The app generates telemetry events when it is activated 
 on behalf of a kegocnized user, when it is deactivated (along with the reason), as some other events.  This will provide data that shows how often the unit is being used, how 
 many unique users visit the device, and how much beer is consumed by the average user.  As stated before, we don’t associate any identifiable attributes to the user, but the 
 data is still useful in aggregate.
 
-##Putting It All Together
+## Putting It All Together
 
 Once the hardware and software were tested to be working, we were ready to pour.  At that point, we realized we had beer issues.  We needed to learn from people experienced 
 with using kegs the fine art of serving cold beer with the proper amount of pressure and carbonation.  Luckily, we know several brew-meisters, as well as several people familiar 
@@ -167,7 +167,7 @@ We were able to set the regulator to provide the right amount of pressure (about
 for our beer (about 34 degrees F).  However, the valve seems to generate some foam on its own.  We theorize that this is due to cavitation within the valve and that using a ball 
 valve will cut down on this effect.
 
-##Calibration
+## Calibration
 
 The temperature sensor produces a value that is readily convertible to temperature, either Fahrenheit or Celsius, using straight math.  The valve and badge reader worked as-is, 
 too.  However, the flow and weight sensors needed some calibration.  The values for the weight sensor are primarily used to determine when it is time to order a refill.  The software 
@@ -175,7 +175,7 @@ needed to be configured with full and empty weight settings, since we didn’t c
 produces essentially a tick count that must be converted to ounces of beer passing through the sensor.  When we had the Kegocnizer pouring beer with minimal foam, we poured 
 an 8 ounce glass of beer and then looked at the value the sensor produced, and computed the conversion factor from there.  
 
-##Conclusion
+## Conclusion
 
 The completed product has produced a kegerator that is available on the floor to developers around the clock, while it enforces state law and company policy.  When 
 an event is underway, individuals that have been previously whitelisted may swipe their employee id and receive beer.
