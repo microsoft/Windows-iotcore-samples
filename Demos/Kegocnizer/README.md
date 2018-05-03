@@ -49,7 +49,7 @@ We also bestowed a name on our product.  We called it the Kegocnizer because itâ
 
 ![User Interface Sample](../../Resources/images/Kegocnizer/keg-ui.png)
 
-![Component Diagram](../../Resources/images/Kegocnizer/ComponentDiagram.jpg =x409)
+![Component Diagram](../../Resources/images/Kegocnizer/ComponentDiagram.jpg)
 
 With a broad design in place, we were ready to begin building a prototype.
 
