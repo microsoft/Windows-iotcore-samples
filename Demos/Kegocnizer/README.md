@@ -56,19 +56,19 @@ With a broad design in place, we were ready to begin building a prototype.
 ## Prototype
 
 The technology and products involved included:
-** Raspberry Pi 3 microcontroller
-*** We considered using a Minnowboard Max (x86) microcontroller for a while because it housed a similar number of ports and GPIO pins, and because of driver support for some 
+* Raspberry Pi 3 microcontroller
+  * We considered using a Minnowboard Max (x86) microcontroller for a while because it housed a similar number of ports and GPIO pins, and because of driver support for some 
 of the card readers we considered.  In the end, we went with the RPI3 because it was the cheapest option that satisfied our requirements.
-** Windows 10 IoT Core, RS4
-** Universal Windows Platform (UWP) for both the user application and the admin console
-** Nostalgia Electrics KRS2100 5.1 Cubic-Foot Kegorator, Draft Beer Dispenser
-** A variety of sensors:
-*** DHT11 for measuring the temperature inside the Kegerator
-*** HX711 force sensor for determine the contents of the keg, if it was full or getting close to empty
-*** DIGITEN Hall Effect Flowmeter
-*** U.S. Solid Solenoid-controlled Valve
-*** RF IDeas pcProx Plus dual frequency programmable card reader
-** A keg of Widmer Hefeweizen
+* Windows 10 IoT Core, RS4
+* Universal Windows Platform (UWP) for both the user application and the admin console
+* Nostalgia Electrics KRS2100 5.1 Cubic-Foot Kegorator, Draft Beer Dispenser
+* A variety of sensors:
+  * DHT11 for measuring the temperature inside the Kegerator
+  * HX711 force sensor for determine the contents of the keg, if it was full or getting close to empty
+  * DIGITEN Hall Effect Flowmeter
+  * U.S. Solid Solenoid-controlled Valve
+  * RF IDeas pcProx Plus dual frequency programmable card reader
+* A keg of Widmer Hefeweizen
 
 We also used a surplus case, connectors, tape, glue gun, solder, and other sundry supplies.
 
