@@ -138,9 +138,14 @@ this supported the weight of the keg without significant deformation.
 
 When a user walks up to the Kegocnizer, they are either a valid user or not.  For a user that the Kegocnizer doesn’t recognize (or Kegocnize) an error message is displayed when
 they swipe their card indicating that they cannot be served.  A user that has been previously whitelisted (or “Kegocnized”) can swipe their card, and if:
+
 1. they haven’t already exceeded their hourly limit, or 
 2. the number of users per event hasn’t been exceeded, 
-then the unit will serve beer.  As the user pours beer, the amount is monitored, and the unit shuts off if:
+
+then the unit will serve beer.  
+
+As the user pours beer, the amount is monitored, and the unit shuts off if:
+
 1. the hourly limit for this user is met, or 
 2. the timeout is reached.  
 
@@ -152,7 +157,6 @@ at common resolutions such as 1024x678 or 1280x1024.
 The requirements for administering the operation of the Kegocnizer fell into two categories:
 
 1.	functionality that a superuser needed to do, such as whitelisting new users, and
-
 2.	configuration, such as sensor calibration values and organizational parameters (such as predefined core hours, max event group size, and per-person consumption limits)
 
 The list of kegocnized users and the configuration/calibration data are stored in Cosmos DB documents in the Cloud.  Thus, the data is secure across power outages and restarts. 
