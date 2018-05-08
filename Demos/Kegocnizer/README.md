@@ -69,6 +69,7 @@ of the card readers we considered.  In the end, we went with the RPI3 because it
   * U.S. Solid Solenoid-controlled Valve
   * RF IDeas pcProx Plus dual frequency programmable card reader
 * A keg of Widmer Hefeweizen
+* A pressurized CO2 tank
 
 We also used a surplus case, connectors, tape, glue gun, solder, and other sundry supplies.
 
@@ -102,15 +103,22 @@ P2 was done on a circuit board but had several issues and needed to be redone.
 We learned a lot of lessons from this prototype regarding soldering techniques, crimping connectors, cable lengths, etc.  One of the biggest mistakes at this stage was mirroring 
 the pin map onto the circuit board so that everything was plugged into the wrong pin.
 
+We carved a groove in the side of the case for the ribbon cable to run through. The connectors were soldered onto the board and a hole was cut in the case to allow them
+to route between the board and the sensors.  During testing, we had to move the keg in and out of the refrigerator a number of times, and often this would put stress on
+the connectors, causing them to come unplugged and in a couple of instances, the crimps were pulled out and had to be redone.  In the next prototype, we plan to use aircraft 
+style connectors so that the connections are more securely fastened without requiring an unattractive hole in the case.
+
+
+
 ![Careful Soldering](../../Resources/images/Kegocnizer/Soldering.jpg)
  
 Incremental testing was also crucial.  We learned that testing each soldered connection, each cable, each component, and each connector, was a huge timesaver over waiting 
 until final assembly and trying to debug issues back to the broken component at the end.
 
-![DHT11](../../Resources/images/Kegocnizer/DHT11Breadboard.jpg)
-![HX711](../../Resources/images/Kegocnizer/HX711Breadboard.jpg)
-![Flow Assembly](../../Resources/images/Kegocnizer/ValveRelayBreadboard.jpg)
-
+Each component was tested on its own prior to integrating with the prototype. 
+![DHT11](../../Resources/images/Kegocnizer/DHT11Breadboard.jpg "DHT11 temperature sensor testing")
+![HX711](../../Resources/images/Kegocnizer/HX711Breadboard.jpg "HX711 force sensor testing")
+![Flow Assembly](../../Resources/images/Kegocnizer/ValveRelayBreadboard.jpg "Flow meter and valve testing")
 
 P3 worked, looked better, and got much more modular.  The new cables were of a more appropriate length, which allowed the keg to be removed and put back in the refrigerator 
 without inadvertently unplugging wires or putting stress on connectors.
@@ -122,16 +130,19 @@ the shape from a blank manila folder. Then we bought a sheet of ½” Rigid High
 the two sheets with the wires coming out the back.  By placing the sensors as far apart as possible from one another, and under where the keg's weight would touch the top sheet,
 this supported the weight of the keg without significant deformation.
 
-![Prototype Three](../../Resources/images/Kegocnizer/PrototypeThree.jpg)
+![Prototype Three](../../Resources/images/Kegocnizer/PrototypeThree.jpg "Prototype Three Before Final Assembly")
 
-![Assembled](../../Resources/images/Kegocnizer/PrototypeThreeInstalled.jpg)
+![Assembled](../../Resources/images/Kegocnizer/PrototypeThreeInstalled.jpg "Prototype Three Final Assembly")
 
 ## The User Scenarios (UX) and Keg App
 
-When a user walks up to the Kegocnizer, they are either a valid user or not.  For a user that the Kegocnizer doesn’t recognize (or kegocnize) they swipe their card and get an error 
-message indicating that they cannot be served.  A user that has been previously whitelisted (or “Kegocnized”) can swipe their card and if 1) they haven’t already exceeded their 
-hourly limit, or 2) the number of users per event hasn’t been exceeded, then the unit will serve beer.  As the user pours beer, the amount is monitored, and the unit shuts off if 
-1) the hourly limit for this user is met, 2) the timeout is reached.  
+When a user walks up to the Kegocnizer, they are either a valid user or not.  For a user that the Kegocnizer doesn’t recognize (or Kegocnize) an error message is displayed when
+they swipe their card indicating that they cannot be served.  A user that has been previously whitelisted (or “Kegocnized”) can swipe their card, and if:
+1. they haven’t already exceeded their hourly limit, or 
+2. the number of users per event hasn’t been exceeded, 
+then the unit will serve beer.  As the user pours beer, the amount is monitored, and the unit shuts off if:
+1. the hourly limit for this user is met, or 
+2. the timeout is reached.  
 
 In order to support a variety of form factors, the application needed to use a responsive design approach.  Our goal was to at least support landscape and portrait orientations
 at common resolutions such as 1024x678 or 1280x1024.
@@ -142,7 +153,7 @@ The requirements for administering the operation of the Kegocnizer fell into two
 
 1.	functionality that a superuser needed to do, such as whitelisting new users, and
 
-2.	configuration, such as sensor calibration values, and organizational parameters, such as predefined core hours, max event group size, and per-person consumption limits
+2.	configuration, such as sensor calibration values and organizational parameters (such as predefined core hours, max event group size, and per-person consumption limits)
 
 The list of kegocnized users and the configuration/calibration data are stored in Cosmos DB documents in the Cloud.  Thus, the data is secure across power outages and restarts. 
 It also allows the admin app to be separate and run on Windows Desktop on a PC or laptop.
