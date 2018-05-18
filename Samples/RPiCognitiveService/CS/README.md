@@ -1,5 +1,7 @@
 # Cognitive Services Demo for Windows 10 IoT Core
 
+_Special thanks to Microsoft MVP Jiong Shi for contributing this sample to the community!_
+
 We'll create a simple app that demonstrates Microsoft Cognitive Services on Windows 10 IoT Core Devices.
 
 This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/zh-cn/windows/iot-core/learn-about-hardware/headlessmode).
