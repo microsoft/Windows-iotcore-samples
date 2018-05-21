@@ -319,6 +319,12 @@ namespace WiFiConnect
             }
             else
             {
+                // Entering the wrong password may cause connection attempts to timeout
+                // Disconnecting the adapter will return it to a non-busy state
+                if (result.ConnectionStatus == WiFiConnectionStatus.Timeout)
+                {
+                    firstAdapter.Disconnect();
+                }
                 rootPage.NotifyUser(string.Format("Could not connect to {0}. Error: {1}", selectedNetwork.Ssid, (result != null ? result.ConnectionStatus : WiFiConnectionStatus.UnspecifiedFailure )), NotifyType.ErrorMessage);
                 SwitchToItemState(selectedNetwork, WifiConnectState, false);
             }
