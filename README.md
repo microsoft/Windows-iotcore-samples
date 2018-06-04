@@ -39,6 +39,9 @@ For more info about the programming models, platforms, languages, and APIs demon
 
 ## Contributions
 
+**Note**:
+* When contributing, make sure you are contributing from the **develop** branch and not the master branch. Your contribution will not be accepted if your PR is coming from the master branch. 
+
 These samples are direct from the feature teams and we welcome your input on issues and suggestions for new samples. If you would like to see new coverage or have feedback, please consider contributing. You can edit the existing content, add new content, or simply create new issues. We’ll take a look at your suggestions and will work together to incorporate them into the docs.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
