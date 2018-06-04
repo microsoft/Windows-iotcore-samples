@@ -1,4 +1,4 @@
-# Kegocnizer, v1.0
+﻿# Kegocnizer, v1.0
 
 This demo project describes the development of a device to allow beer to be dispensed to authorized users, which adheres to a identified set of company policies and state law.
 
@@ -7,7 +7,7 @@ This demo project describes the development of a device to allow beer to be disp
 Our core team works on servicing officially supported versions of Windows 10 IoT Core, so we have skills working with Windows and IoT devices.  We also realized we needed help 
 with usability, graphics, and styling the application.
 
-* Christina Ahonen – Program Manager II
+* Christine Ahonen – Program Manager II
 * Sara Clayton – Program Manager
 * Sudheer Kusuma – Senior Software Engineer
 * Dave Natsuhara – Principal Software Engineering Lead
