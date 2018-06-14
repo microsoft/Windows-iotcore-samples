@@ -25,7 +25,7 @@ Connect to the device from your development machine with PowerShell.  [See Using
 ```
 cd c:\scripts
 .\DeployDocker.ps1
-.\ConfigureFirewall.psq
+.\ConfigureFirewall.ps1
 docker pull microsoft/nanoserver:1709
 docker tag microsoft/nanoserver:1709 microsoft/nanoserver:latest
 docker images
