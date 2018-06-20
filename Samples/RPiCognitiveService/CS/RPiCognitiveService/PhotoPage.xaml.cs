@@ -36,6 +36,7 @@ namespace RPiCognitiveService
     {
         //Computer Vision Key
         string key = "your Computer Vision Key";  //API key
+        string apiroot = "Your Computer Vision API endpoint" // For instance: https://westeurope.api.cognitive.microsoft.com/vision/v1.0
         Size size_image;  //The size of the current image
         AnalysisResult thisresult;  //The result of analysis
 
@@ -340,7 +341,7 @@ namespace RPiCognitiveService
         {
             size_image = new Size((imgPhoto.Source as BitmapImage).PixelWidth, (imgPhoto.Source as BitmapImage).PixelHeight);
 
-            VisionServiceClient client = new VisionServiceClient(key);
+            VisionServiceClient client = new VisionServiceClient(key, apiroot);
             var feature = new VisualFeature[] { VisualFeature.Tags, VisualFeature.Faces, VisualFeature.Description, VisualFeature.Adult, VisualFeature.Categories };
 
             var result = await client.AnalyzeImageAsync(txtLocation.Text, feature);
