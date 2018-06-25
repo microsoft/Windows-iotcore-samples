@@ -7,7 +7,7 @@ This demo project describes the development of a device to allow beer to be disp
 Our core team works on servicing officially supported versions of Windows 10 IoT Core, so we have skills working with Windows and IoT devices.  We also realized we needed help 
 with usability, graphics, and styling the application.
 
-* Christina Ahonen – Program Manager II
+* Christine Ahonen – Program Manager II
 * Sara Clayton – Program Manager
 * Sudheer Kusuma – Senior Software Engineer
 * Dave Natsuhara – Principal Software Engineering Lead
@@ -47,7 +47,7 @@ no need for user input.  This would eliminate the need for peripherals such as m
 
 We also bestowed a name on our product.  We called it the Kegocnizer because it’s essentially a keg that recognizes.
 
-![User Interface Sample](../../Resources/images/Kegocnizer/keg-ui.png)
+![User Interface Sample](../../Resources/images/Kegocnizer/keg-ui-landscape.png)
 
 ![Component Diagram](../../Resources/images/Kegocnizer/ComponentDiagram.jpg)
 
@@ -59,7 +59,7 @@ The technology and products involved included:
 * Raspberry Pi 3 microcontroller
   * We considered using a Minnowboard Max (x86) microcontroller for a while because it housed a similar number of ports and GPIO pins, and because of driver support for some 
 of the card readers we considered.  In the end, we went with the RPI3 because it was the cheapest option that satisfied our requirements.
-* Windows 10 IoT Core, RS4
+* Windows 10 IoT Core, RS3 and beyond
 * Universal Windows Platform (UWP) for both the user application and the admin console
 * Nostalgia Electrics KRS2100 5.1 Cubic-Foot Kegorator, Draft Beer Dispenser
 * A variety of sensors:
@@ -123,8 +123,8 @@ Each component was tested on its own prior to integrating with the prototype.
 P3 worked, looked better, and got much more modular.  The new cables were of a more appropriate length, which allowed the keg to be removed and put back in the refrigerator 
 without inadvertently unplugging wires or putting stress on connectors.
 
-The weight sensors needed to be placed beneath the keg in such a way that the weight would be evenly distributed.  An empty keg can weigh a few dozen pounds, while a full 
-keg could weigh close to 200 pounds.  We were also concerned with using something that would bend and foul the readings.  We also needed to be stingy with the height of the 
+The weight sensors needed to be placed beneath the keg in such a way that the weight would be evenly distributed.  An empty keg can weigh around 30 pounds, while a full 
+keg could weigh close to 160 pounds.  We were also concerned with using something that would bend and foul the readings.  We also needed to be stingy with the height of the 
 keg from the bottom of the refrigerator, because there was only a small space for the regulator, hoses and the keg tap to fit above and behind the keg.  We made a pattern for 
 the shape from a blank manila folder. Then we bought a sheet of ½” Rigid High-Density Polyethylene and cut two pieces to fit our pattern.  We fastened the force sensors between 
 the two sheets with the wires coming out the back.  By placing the sensors as far apart as possible from one another, and under where the keg's weight would touch the top sheet,
@@ -149,8 +149,15 @@ As the user pours beer, the amount is monitored, and the unit shuts off if:
 1. the hourly limit for this user is met, or 
 2. the timeout is reached.  
 
-In order to support a variety of form factors, the application needed to use a responsive design approach.  Our goal was to at least support landscape and portrait orientations
-at common resolutions such as 1024x678 or 1280x1024.
+In order to support a variety of form factors, the application needed to use a responsive design approach.  Our goal was to at least support landscape and portrait orientations aligned with IoT Core Windows Device Portal (`http://<IPAddress>:8080/`), at common resolutions such as 1024x678 or 1280x1024.
+
+The architecture of the client application utilizes best practices.  All hardware interactations are driven through Data Access Layer(DAL) resulting in fewer moving parts in UWP layer. We used following Nuget packages:
+1. Microsoft.Data.Sqlite - as a local datastore, for storing user visits, consumption event data
+2. Microsoft.Toolkit.UWP - For responsive features, including the DockPanel and other controls
+3. Microsoft.ApplicationInsights - For logging insights events, exceptions, traces, metrics to the cloud for future analysis
+4. Azure Functions - as a remote datastore, encapsulating the access to the whitelisted users
+
+Utilizing Azure Functions allowed us to implement our remote datastore as a "black box".  Ours was implemented as an Azure Cosmos DB database.
 
 ## Administration
 
