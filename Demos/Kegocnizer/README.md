@@ -1,4 +1,4 @@
-# Kegocnizer, v1.0
+﻿# Kegocnizer, v1.0
 
 This demo project describes the development of a device to allow beer to be dispensed to authorized users, which adheres to a identified set of company policies and state law.
 
