@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="Admin.UWP.Admin_App2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Admin.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header row -->
+        <Grid Grid.Row="0" x:Name="HeaderRow" >
+            <StackPanel Orientation="Vertical">
+                <Image Source="ms-appx:///Assets/beer.png" Stretch="Uniform" Height="160" HorizontalAlignment="Center"/>
+                <TextBlock x:Uid="KegTitle" Text="{Binding [KegTitle]}" Style="{StaticResource AppTitleTextBlockStyle}" HorizontalTextAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="DataRow" Margin="0,1,0,0" >
+            <StackPanel Orientation="Vertical" Height="639" VerticalAlignment="Center" >
+                <TextBlock x:Uid="Welcome" Text="{Binding [Welcome]}" Style="{StaticResource AppBodyTextBlockStyle}" Margin="60,0,60,0"/>
+                <Button x:Uid="AdminAction1" Content="{Binding [AdminAction1]}"  Style="{StaticResource AppButtonStyle}" Click="Button_Click" Margin="0,10,0,0"/>
+                <HyperlinkButton x:Uid="AdminAction2" Content="{Binding [AdminAction2]}" Style="{StaticResource AppHyperlinkStyle}" Click="HyperlinkButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

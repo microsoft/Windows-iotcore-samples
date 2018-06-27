@@ -1,0 +1,150 @@
+﻿<Page
+    x:Class="Keg.UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Keg.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d" SizeChanged="Page_SizeChanged">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <!-- VisualState to be triggered when window width is >=720 effective pixels. -->
+                        <AdaptiveTrigger x:Name="TriggerOfVisualState" MinWindowWidth = "720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SP1.(controls:DockPanel.Dock)" Value="Left" />
+                        <Setter Target="SP2.(controls:DockPanel.Dock)" Value="Left" />
+                        <Setter Target="SP2.Visibility" Value="Visible" />
+                        
+                        <Setter Target="SP3.(controls:DockPanel.Dock)" Value="Right" />
+                        <Setter Target="SP3.Orientation" Value = "Vertical" />
+                        <Setter Target="SP3_2.Visibility" Value="Collapsed" />
+                                                
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <!-- VisualState to be triggered when window width is >=720 effective pixels. -->
+                        <AdaptiveTrigger x:Name="TriggerOfVisualStateHeight" MinWindowHeight = "550"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="GridR1.Orientation" Value="Horizontal" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <!--<VisualState>
+                    <VisualState.StateTriggers>
+                        --><!-- VisualState to be triggered when window width is >=720 effective pixels. --><!--
+                        <AdaptiveTrigger x:Name="TriggerOfVisualStateBoth" MinWindowHeight = "550" MinWindowWidth = "720"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="GridR1.Orientation" Value="Vertical" />
+                    </VisualState.Setters>
+                </VisualState>-->
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
+        <Grid.RowDefinitions>
+            
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header row -->
+        <Grid Grid.Row="0">
+            <TextBlock x:Name="CurrentTime" HorizontalAlignment="Right" Padding="0,0,5,0"/>
+        </Grid>
+        <Grid Grid.Row="1" x:Name="HeaderRow" >
+            <StackPanel Orientation="Vertical" x:Name="GridR1" HorizontalAlignment="Center" >
+                <Image Source="ms-appx:///Assets/beer.png" MinHeight="60" MaxHeight="100"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <Image Source="ms-appx:///Assets/Windows_rgb_Blk_S.png" MinHeight="45" MaxHeight="48"/>
+                    <TextBlock x:Name="KegTitle" x:Uid="KegTitle" Text="{Binding [KegTitle]}" Style="{StaticResource AppTitleTextBlockStyle}" HorizontalTextAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <TextBlock Text="Powered by Windows 10 IoT Core" HorizontalAlignment="Right" Padding="0 0 0 0" FontWeight="Bold" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" x:Name="DataRow" Margin="0,1,0,0" >
+            <controls:DockPanel LastChildFill="True">
+
+                <StackPanel x:Name="SP1" Orientation="Vertical" controls:DockPanel.Dock="Top"  VerticalAlignment="Center">
+                    <TextBlock x:Name="startScanTitle" Style="{StaticResource AppSubheaderTextBlockStyle}" Margin="60,0,60,0" VerticalAlignment="Center" HorizontalTextAlignment="Center" />
+                    <Border x:Name="WarningBorderBrush" BorderBrush="{StaticResource BorderBrush}" BorderThickness="2" Margin="60,40,60,0">
+                        <TextBlock x:Name="warningTitle" Style="{StaticResource AppTinyFontBodyTextBlockStyle}"  VerticalAlignment="Center" HorizontalTextAlignment="Center" FontFamily="Segoe UI" />
+                    </Border>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Collapsed" >
+                        <Button Content="Start Scan!" Click="ScanButton_Click" Margin="5" x:Name="StartScanButton"/>
+                        <Button Content="UnAuth Scan!" Click="Scan2Button_Click" Margin="5" />
+                        <Button Content="25+ Insert!" Click="Scan3Button_Click" Margin="5" />
+                    </StackPanel>
+
+                </StackPanel>
+                <StackPanel x:Name="SP2" BorderThickness="2" BorderBrush="Black" controls:DockPanel.Dock="Top" Visibility="Collapsed">
+                    
+                </StackPanel>
+
+                <StackPanel x:Name="SP3" Orientation="Horizontal" HorizontalAlignment="Stretch" controls:DockPanel.Dock="Bottom" VerticalAlignment="Center">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" x:Name="SP3_1">
+                        <TextBlock x:Name="TemperatureLabel" Text="{Binding [Page1TemperatureLabel]}" Style="{StaticResource AppTinyFontBodyTextBlockStyle}" HorizontalTextAlignment="Center"/>
+                        <TextBlock x:Name="TemperatureText" Style="{StaticResource AppSubheaderTextBlockStyle}" HorizontalTextAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" BorderThickness="2" BorderBrush="Black" x:Name="SP3_2" Visibility="Visible" CornerRadius="2">
+                        
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" x:Name="SP3_3">
+                        <TextBlock x:Name="PintsLabel" Text="{Binding [Page1PintsLabel]}" Style="{StaticResource AppTinyFontBodyTextBlockStyle}" HorizontalTextAlignment="Center"  />
+                        <TextBlock x:Name="PintsText" Style="{StaticResource AppSubheaderTextBlockStyle}" HorizontalTextAlignment="Center" FontFamily="Segoe UI"/>
+                        <!--<controls:RadialGauge MinWidth="100" MaxWidth="300" MinHeight="100" MaxHeight="300"
+                              x:Name="RadialGauge" 
+                              Value="60"
+                              Unit="% full"
+                                              MaxAngle="90"
+                                              MinAngle="270"
+                              ScaleTickBrush="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                              TickLength="20" RenderTransformOrigin="0.5,0.5" d:LayoutRounding="Auto">
+                            <controls:RadialGauge.RenderTransform>
+                                <CompositeTransform Rotation="0"/>
+                            </controls:RadialGauge.RenderTransform>
+                            <controls:RadialGauge.NeedleBrush>
+                                <SolidColorBrush Color="{StaticResource BeerColor}" Opacity="1" />
+                            </controls:RadialGauge.NeedleBrush>
+                            <controls:RadialGauge.TickBrush>
+                                <SolidColorBrush Color="Gray" Opacity="1" />
+                            </controls:RadialGauge.TickBrush>
+                            <controls:RadialGauge.TrailBrush>
+                                <SolidColorBrush Color="ForestGreen" Opacity="1" />
+                            </controls:RadialGauge.TrailBrush>
+                            <controls:RadialGauge.ScaleBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <LinearGradientBrush.RelativeTransform>
+                                        <CompositeTransform CenterY="0.5" CenterX="0.5" Rotation="180"/>
+                                    </LinearGradientBrush.RelativeTransform>
+                                    <GradientStop Color="{StaticResource BeerBackground}" Offset="1"/>
+                                    <GradientStop Color="White" Offset="0"/>
+                                </LinearGradientBrush>
+                            </controls:RadialGauge.ScaleBrush>
+                        </controls:RadialGauge>-->
+                    </StackPanel>
+
+                </StackPanel>
+            </controls:DockPanel>
+
+        </Grid>
+
+        <Grid Grid.Row="4" x:Name="FooterRow" >
+            
+            <Button Content="Clean!" Click="CleanButton_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</Page>
