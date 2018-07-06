@@ -1,198 +1,93 @@
-# “Hello, blinky!”
+# Flow Volume
 
-We’ll create a simple LED blinking app and connect a LED to your Windows 10 IoT Core device.
+In this sample, we will demonstrate how to use a relatively inexpensive device and a Raspberry Pi to measure the volume of liquid flowing through a hose.
 
-This is a headed sample. To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).
+Keep in mind that the GPIO APIs are only available on Windows 10 IoT Core, so this sample cannot run on your desktop.
 
-Also, be aware that the GPIO APIs are only available on Windows 10 IoT Core, so this sample cannot run on your desktop.
-
-## Load the project in Visual Studio
-
-* * *
-
-## Connect the LED to your Windows IoT device
-
-* * *
+## Set up your hardware
+___
+The hardware setup for this sample is relatively simple.
 
 You’ll need a few components:
 
-*   a LED (any color you like)
+*   we used a FL-S402B flow meter by DIGITEN
 
-*   a 220 ? resistor for the Raspberry Pi 2, Raspberry Pi 3 and the MinnowBoard Max or a 330 ? resistor for the DragonBoard
+![Flow Sensor](../../../Resources/images/FlowVolume/FlowSensor.png)
 
-*   a breadboard and a couple of connector wires
+*   a microcontroller board running Windows IoT Core (we used a Raspberry Pi 3) with a free GPIO pin
 
-![Electrical Components](https://az835927.vo.msecnd.net/sites/iot/Resources/images/Blinky/components.png)
+![Assembled Components](../../../Resources/images/FlowVolume/Assembled.png)
 
 ### For Raspberry Pi 2 or 3 (RPi2 or RPi3)
 
-1.  Connect the shorter leg of the LED to GPIO 5 (pin 29 on the expansion header) on the RPi2 or RPi3.
-2.  Connect the longer leg of the LED to the resistor.
-3.  Connect the other end of the resistor to one of the 3.3V pins on the RPi2 or RPi3.
-4.  Note that the polarity of the LED is important. (This configuration is commonly known as Active Low)
+1.  Connect the red wire to 3.3V (pin 1 on the expansion header) on the RPi3.
+2.  Connect the black wire to ground (pin 9).
+3.  Connect the yellow wire, the data pin, to the GPIO pin that we will read from (we used pin 5 for convenience, since it is right there between pins 1 and 9).
+4.  Attach to the network using the ethernet or wifi connection, as desired (we used ethernet to connect to our PC on the local network).
+5.  Connect the monitor to your device (we used an HDMI cable to connect our Raspberry Pi 3 to a standard monitor).
 
-And here is the pinout of the RPi2 and RPi3:
+For reference, here is the pinout of the RPi2 and RPi3:
 
-![](https://az835927.vo.msecnd.net/sites/iot/Resources/images/PinMappings/RP2_Pinout.png)
-
-Here is an example of what your breadboard might look like with the circuit assembled:
-
-![Image made with Fritzing(http://fritzing.org/)](https://az835927.vo.msecnd.net/sites/iot/Resources/images/Blinky/breadboard_assembled_rpi2_kit.jpg)
-
-### For MinnowBoard Max (MBM)
-
-We will connect the one end of the LED to GPIO 5 (pin 18 on the JP1 expansion header) on the MBM, the other end to the resistor, and the resistor to the 3.3 volt power supply from the MBM. Note that the polarity of the LED is important. Make sure the shorter leg (-) is connected to GPIO 5 and the longer leg (+) to the resistor or it wont light up.
-
-And here is the JP1 connector on the MBM:
-
-![](https://az835927.vo.msecnd.net/sites/iot/Resources/images/PinMappings/MBM_Pinout.png)
-
-Here is an example of what your breadboard might look like with the circuit assembled:
-
-![Image made with Fritzing(http://fritzing.org/)](https://az835927.vo.msecnd.net/sites/iot/Resources/images/Blinky/breadboard_assembled.png)
-
-### For DragonBoard 410c (DB)
-
-For reference, the functionality of the low-speed expansion connector is outlined in the following diagram
-
-![](https://az835927.vo.msecnd.net/sites/iot/Resources/images/PinMappings/DB_Pinout.png)
-
-Perform the following steps to create the circuit:
-
-1.  Connect the shorter leg of the LED to GPIO 12 (pin 24 on the expansion header) on the DB.
-2.  Connect the longer leg of the LED to the resistor.
-    *   Note that the polarity of the LED is important (this configuration is commonly known as Active Low).
-3.  Connect the other end of the resistor to 1.8V (pin 35 on the expansion header).
-
-Here is an illustration of what your breadboard might look like with the circuit assembled:
-
-![Image made with Fritzing(http://fritzing.org/)](https://az835927.vo.msecnd.net/sites/iot/Resources/images/Blinky/breadboard_assembled_db_kit.png)
-
-Finally, the LED_PIN variable of _MainPage.xaml.cs_ file of the sample code will need the following modification:
-
-	private const int LED_PIN = 12;
+![](../../../Resources/images/PinMappings/RP2_Pinout.png)
 
 ## Deploy your app
 
-* * *
-
-1.  With the application open in Visual Studio, set the architecture in the toolbar dropdown. If you’re building for MinnowBoard Max, select `x86`. If you’re building for Raspberry Pi 2 or 3 or the DragonBoard, select `ARM`.
+1.  With the application open in Visual Studio, set the architecture in the toolbar dropdown. We use `ARM` since we used the Raspberry Pi, but if you’re building for MinnowBoard Max, remember to select `x86`.
 
 2.  Next, in the Visual Studio toolbar, click on the `Local Machine` dropdown and select `Remote Machine`
 
-    ![RemoteMachine Target](https://az835927.vo.msecnd.net/sites/iot/Resources/images/AppDeployment/cs-remote-machine-debugging.png)
+    ![RemoteMachine Target](../../../Resources/images/AppDeployment/cs-remote-machine-debugging.png)
 
 3.  At this point, Visual Studio will present the **Remote Connections** dialog. If you previously used [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) to set a unique name for your device, you can enter it here (in this example, we’re using **my-device**). Otherwise, use the IP address of your Windows IoT Core device. After entering the device name/IP select `Universal` for Windows Authentication, then click **Select**.
 
-    ![Remote Machine Debugging](https://az835927.vo.msecnd.net/sites/iot/Resources/images/AppDeployment/cs-remote-connections.PNG)
+    ![Remote Machine Debugging](../../../Resources/images/AppDeployment/cs-remote-connections.PNG)
 
 4.  You can verify or modify these values by navigating to the project properties (select **Properties** in the Solution Explorer) and choosing the `Debug` tab on the left:
 
-    ![Project Properties Debug Tab](https://az835927.vo.msecnd.net/sites/iot/Resources/images/AppDeployment/cs-debug-project-properties.PNG)
+    ![Project Properties Debug Tab](../../../Resources/images/AppDeployment/cs-debug-project-properties.PNG)
 
-When everything is set up, you should be able to press F5 from Visual Studio. If there are any missing packages that you did not install during setup, Visual Studio may prompt you to acquire those now. The Blinky app will deploy and start on the Windows IoT device, and you should see the LED blink in sync with the simulation on the screen.
+When everything is set up, you should be able to press F5 from Visual Studio. If there are any missing packages that you did not install during setup, Visual Studio may prompt you to acquire those now. The app will deploy and start on the Windows IoT device, and you should see a gauge control fill the screen.
 
-![](https://az835927.vo.msecnd.net/sites/iot/Resources/images/Blinky/blinky-screenshot.png)
+![](../../../Resources/images/FlowVolume/Screenshot.png)
 
-Congratulations! You controlled one of the GPIO pins on your Windows IoT device.
+The easiest way to test is to gently blow in one end of the flow meter.  The application listens for data coming from the device and the gauge should move up and back down as the flow rises and then stops.
+
+Congratulations! You just measured the flow going through the sensor from your Windows IoT device.
 
 ## Let’s look at the code
 
-* * *
+The code for this sample is made easier by using a class to interface with such devices, found in Flow.cs.  This, in turn, is dependent upon a reusable class called Measurement, which is found in Models/Measurement.cs.
 
-The code for this sample is pretty simple. We use a timer, and each time the ‘Tick’ event is called, we flip the state of the LED.
+In order to understand how the code works, an explanation of the sensor device will help.  The device is based on the principle that a small wheel spins as there is flow through the sensor, which results in a certain number of pulses generated on the data pin.
+By counting the number of pulses and multiplying by a factor, the volume flowing through the sensor can be calculated.  Because of variations in fluid density, and other subtle factors, it is important to calibrate the factor for your application.
 
 ### Timer code
 
-Here is how you set up the timer in C#:
+Here is how you set up the application to use the Flow object in C#:
 
+``` C#
+public MainPage()
+{
+    this.InitializeComponent();
 
-	public MainPage()
-	{
-		// ...
+    // to change the calibration numbers, do it here to override the defaults within the code
+    var calibration = new Dictionary<string, object>();
+    calibration[Flow.FlowCalibrationFactorSetting] = "0.045";
+    calibration[Flow.FlowCalibrationOffsetSetting] = "0";
 
-		timer = new DispatcherTimer();
-		timer.Interval = TimeSpan.FromMilliseconds(500);
-		timer.Tick += Timer_Tick;
-		InitGPIO();
-		if (pin != null)
-		{
-			timer.Start();
-		}
+    _flow = new Flow(calibration);
+    _flow.FlowChanged += OnFlowChange;
+    //_flow.Initialize();  // start without a timer, or ...
+    _flow.Initialize(1000, 500); // start with a timer
 
-		// ...
-	}
-
-	private void Timer_Tick(object sender, object e)
-	{
-		if (pinValue == GpioPinValue.High)
-		{
-			pinValue = GpioPinValue.Low;
-			pin.Write(pinValue);
-			LED.Fill = redBrush;
-		}
-		else
-		{
-			pinValue = GpioPinValue.High;
-			pin.Write(pinValue);
-			LED.Fill = grayBrush;
-		}
-	}
-
-### Initialize the GPIO pin
-
-To drive the GPIO pin, first we need to initialize it. Here is the C# code (notice how we leverage the new WinRT classes in the Windows.Devices.Gpio namespace):
-
-
-	using Windows.Devices.Gpio;
-
-	private void InitGPIO()
-	{
-		var gpio = GpioController.GetDefault();
-
-		// Show an error if there is no GPIO controller
-		if (gpio == null)
-		{
-			pin = null;
-			GpioStatus.Text = "There is no GPIO controller on this device.";
-			return;
-		}
-
-		pin = gpio.OpenPin(LED_PIN);
-		pinValue = GpioPinValue.High;
-		pin.Write(pinValue);
-		pin.SetDriveMode(GpioPinDriveMode.Output);
-
-		GpioStatus.Text = "GPIO pin initialized correctly.";
-
-	}
-
-Let’s break this down a little:
-
-*   First, we use `GpioController.GetDefault()` to get the GPIO controller.
-
-*   If the device does not have a GPIO controller, this function will return `null`.
-
-*   Then we attempt to open the pin by calling `GpioController.OpenPin()` with the `LED_PIN` value.
-
-*   Once we have the `pin`, we set it to be off (High) by default using the `GpioPin.Write()` function.
-
-*   We also set the `pin` to run in output mode using the `GpioPin.SetDriveMode()` function.
-
-### Modify the state of the GPIO pin
-
-Once we have access to the `GpioOutputPin` instance, it’s trivial to change the state of the pin to turn the LED on or off.
-
-To turn the LED on, simply write the value `GpioPinValue.Low` to the pin:
-
-	pin.Write(GpioPinValue.Low);
-
-and of course, write `GpioPinValue.High` to turn the LED off:
-
-	pin.Write(GpioPinValue.High);
-
-
-Remember that we connected the other end of the LED to the 3.3 Volts power supply, so we need to drive the pin to low to have current flow into the LED.
+    LastMeasurement = new Keg.DAL.Models.Measurement(0, Keg.DAL.Models.Measurement.UnitsOfMeasure.Ounces);
+    LastMeasurement.PropertyChanged += OnAmountChange;
+}
+```
+As you can see, we use a Dictionary object and add to it the values we want to use to calibrate the sensor's reported values.  Then we pass the Dictionary to the Flow object's constructor.  Finally, we call Initialize to allow the object
+to setup internally.  Then we simply attach method references to the OnFlowChange event so that we get notified when readings are taken from the sensor.  The event provides to us a value that continues to increase that 
+represents the cumulative volume measured by the sensor.  Since our user interface was implemented to display sort of a rolling average of the value of the sensor, we calculate the amount added since the last event and pass
+that to the radial gauge control for display.
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)

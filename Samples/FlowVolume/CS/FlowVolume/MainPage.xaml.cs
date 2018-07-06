@@ -24,21 +24,17 @@ namespace FlowVolume
         {
             this.InitializeComponent();
 
-            // to initialize a sensor measurement object, we pass it a calibration object
-            // eventually, these will come from a specific Cosmos document that the app will passthru
-            var calibration = new Dictionary<string, object>();
-            //foreach (var c in Flow.GetDefaultCalibrationSettings()) calibration[c.Key] = c.Value;
-
             // to change the calibration numbers, do it here to override the defaults within the code
-            calibration[Flow.FlowCalibrationFactorSetting] = "0.045";//  33540000";
+            var calibration = new Dictionary<string, object>();
+            calibration[Flow.FlowCalibrationFactorSetting] = "0.045";
             calibration[Flow.FlowCalibrationOffsetSetting] = "0";
 
             _flow = new Flow(calibration);
             _flow.FlowChanged += OnFlowChange;
             //_flow.Initialize();  // start without a timer, or ...
-            _flow.Initialize(1000, 200); // start with a timer
+            _flow.Initialize(1000, 500); // start with a timer
 
-            LastMeasurement = new Keg.DAL.Models.Measurement(1, Keg.DAL.Models.Measurement.UnitsOfMeasure.Ounces);
+            LastMeasurement = new Keg.DAL.Models.Measurement(0, Keg.DAL.Models.Measurement.UnitsOfMeasure.Ounces);
             LastMeasurement.PropertyChanged += OnAmountChange;
         }
 

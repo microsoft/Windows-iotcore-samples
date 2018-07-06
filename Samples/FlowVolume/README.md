@@ -1,15 +1,14 @@
 ---
-title: Hello, blinky! sample
-ms.author: brian.fjeldstad
-description: A sample that shows how to make an LED attached to a GPIO pin blink on and off.
+title: Flow volume sample
+ms.author: mark.snyder
+description: A sample that shows how to use a FL-S402B Water Flow Sensor from a Raspberry Pi to measure the volume of liquid flowing through a hose.
 ---
 
-# “Hello, blinky!”
+# Flow Volume
 
 These are the available versions of this Windows 10 IoT Core sample:
 
 *	[C#](./CS/README.md)
-*	[C++](./Cpp/README.md)
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
