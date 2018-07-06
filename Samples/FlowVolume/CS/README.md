@@ -12,11 +12,11 @@ You’ll need a few components:
 
 *   we used a FL-S402B flow meter by DIGITEN
 
-![Flow Sensor](../../../Resources/images/FlowVolume/FlowSensor.png)
+![Flow Sensor](../../../Resources/images/FlowVolume/FlowSensor.jpg)
 
 *   a microcontroller board running Windows IoT Core (we used a Raspberry Pi 3) with a free GPIO pin
 
-![Assembled Components](../../../Resources/images/FlowVolume/Assembled.png)
+![Assembled Components](../../../Resources/images/FlowVolume/Assembled.jpg)
 
 ### For Raspberry Pi 2 or 3 (RPi2 or RPi3)
 
@@ -36,19 +36,19 @@ For reference, here is the pinout of the RPi2 and RPi3:
 
 2.  Next, in the Visual Studio toolbar, click on the `Local Machine` dropdown and select `Remote Machine`
 
-    ![RemoteMachine Target](../../../Resources/images/AppDeployment/cs-remote-machine-debugging.png)
+    ![RemoteMachine Target](../../../Resources/images/HelloWorld/cs-remote-machine-debugging.png)
 
 3.  At this point, Visual Studio will present the **Remote Connections** dialog. If you previously used [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) to set a unique name for your device, you can enter it here (in this example, we’re using **my-device**). Otherwise, use the IP address of your Windows IoT Core device. After entering the device name/IP select `Universal` for Windows Authentication, then click **Select**.
 
-    ![Remote Machine Debugging](../../../Resources/images/AppDeployment/cs-remote-connections.PNG)
+    ![Remote Machine Debugging](../../../Resources/images/HelloWorld/cs-remote-connections.PNG)
 
 4.  You can verify or modify these values by navigating to the project properties (select **Properties** in the Solution Explorer) and choosing the `Debug` tab on the left:
 
-    ![Project Properties Debug Tab](../../../Resources/images/AppDeployment/cs-debug-project-properties.PNG)
+    ![Project Properties Debug Tab](../../../Resources/images/HelloWorld/cs-debug-project-properties.PNG)
 
 When everything is set up, you should be able to press F5 from Visual Studio. If there are any missing packages that you did not install during setup, Visual Studio may prompt you to acquire those now. The app will deploy and start on the Windows IoT device, and you should see a gauge control fill the screen.
 
-![](../../../Resources/images/FlowVolume/Screenshot.png)
+![](../../../Resources/images/FlowVolume/Screenshot.jpg)
 
 The easiest way to test is to gently blow in one end of the flow meter.  The application listens for data coming from the device and the gauge should move up and back down as the flow rises and then stops.
 
