@@ -10,7 +10,7 @@ The hardware setup for this sample is relatively simple.
 
 You’ll need a few components:
 
-*   we used a FL-S402B flow meter by DIGITEN
+*   a Hall-effect flow sensor (we used a FL-S402B flow meter by DIGITEN)
 
 ![Flow Sensor](../../../Resources/images/FlowVolume/FlowSensor.jpg)
 
@@ -22,7 +22,7 @@ You’ll need a few components:
 
 1.  Connect the red wire to 3.3V (pin 1 on the expansion header) on the RPi3.
 2.  Connect the black wire to ground (pin 9).
-3.  Connect the yellow wire, the data pin, to the GPIO pin that we will read from (we used pin 5 for convenience, since it is right there between pins 1 and 9).
+3.  Connect the yellow wire, the data pin, to the GPIO-3 pin that we will read from (we used pin 5 for convenience, since it is right there between pins 1 and 9).
 4.  Attach to the network using the ethernet or wifi connection, as desired (we used ethernet to connect to our PC on the local network).
 5.  Connect the monitor to your device (we used an HDMI cable to connect our Raspberry Pi 3 to a standard monitor).
 
