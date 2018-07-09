@@ -55,7 +55,7 @@ For reference, here is the pinout of the RPi2 and RPi3:
 
     ![Project Properties Debug Tab](../../../Resources/images/HelloWorld/cs-debug-project-properties.PNG)
 
-When everything is set up, you should be able to press F5 from Visual Studio. If there are any missing packages that you did not install during setup, Visual Studio may prompt you to acquire those now. The app will deploy and start on the Windows IoT device, and you should see a gauge control fill the screen.
+When everything is set up, you should be able to press F5 from Visual Studio. If there are any missing packages that you did not install during setup, Visual Studio may prompt you to acquire those now. The app will deploy and start on the Windows IoT device, and you should see an on/off switch in the middle of the screen.
 
 ![](../../../Resources/images/ValveControl/Screenshot.jpg)
 
