@@ -1,0 +1,47 @@
+    	.stationUpdate {
+    		float:right;
+    		background:url('../img/edit.png');    		
+    	}
+    	.stationUpdate a {
+    		content:url('../img/edit.png');    		
+    	}
+    	.radioOn {
+    		background:url('../img/radioOn.png');    		
+    	}
+    	.radioOff {
+    		background:url('../img/radioOff.png');
+    	}
+    	.volumeButton {
+    		background:url('../img/volume.png');
+    	}
+    	.muteButton {
+    		background:url('../img/mute.png');
+    	}
+    	.prevButton {
+    		background:url('../img/previous.png');
+    	}
+    	.nextButton {
+    		background:url('../img/previous.png');
+    		transform: rotate(180deg);
+    	}
+    	.valuePlaceholder {
+    		visibility:hidden;
+    	}
+    	.radioButton {
+			  opacity:0.2;
+			  cursor:pointer;
+			  width: 32px;
+				height: 32px;
+				border: none;
+				background-repeat: no-repeat;
+			}
+    	.radioButton.enabled {
+			  opacity:0.55;
+			}
+			.radioButton.enabled:hover {
+			  opacity:1;
+			  transition: opacity .2s ease-in;
+			  -moz-transition: opacity .2s ease-in;
+			  -webkit-transition: opacity .2s ease-in;
+			  -o-transition: opacity .2s ease-in;
+			}

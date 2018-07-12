@@ -1,0 +1,22 @@
+<script type="text/javascript">
+		var stationName = '';
+		var stationUrl = '';
+		$(document).ready(function()
+		{
+			if (stationName)
+			{
+				$('#StationTitle').text("Update or Remove this preset station");
+				$('#name').val(stationName);
+				$('#nameOrig').val(stationName);
+				$('#url').val(stationUrl);
+				$('#submitButton').text('Update Station');
+				$('#trackAction').val('Update');
+				$('#cancelButton').text('Remove Station');
+				$("#cancelButton").click(function() {
+					$('#trackAction').val('Remove');
+					$(this).closest('form').submit();
+				});
+			}
+		});
+		
+	</script>
