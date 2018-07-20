@@ -1,0 +1,299 @@
+html,body { 
+	height:100%;
+	width:100%;
+}
+
+#stationList {
+	padding:0;
+	margin:0;
+}
+
+#stationList > .row {
+	margin: 0;
+	padding: 10px 0px 10px 25px;
+    font-size: 18px;
+}
+
+
+#stationList  .row:hover {
+ background-color: #E6E6E6 !important;
+ cursor: pointer;
+}
+
+.controlpane{
+    width: 600px; 
+    margin: auto;
+}
+ 
+body {
+	font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+.main {
+	background-color: #E6E6E6;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 20px;
+}
+.button {
+	background-color: #CCCCCC;
+	font-size:20;
+  align-items: center;
+  justify-content: center;
+  border:none;
+	margin: 20px;
+	padding: 10px;
+	min-width:100px; 
+	text-align: center;
+}
+.button:hover {
+    background-color:#E6E6E6;
+    color:black;
+    cursor: pointer;
+}
+.container {
+	background-color: #FFFFFF;
+	min-height: 720px;
+}
+
+.headerbar {
+	background-color: #CCCCCC;
+	color: #000000;
+	height: 60px;
+	font-size: 34px;
+	line-height: 40px;
+	padding: 10px;
+}
+
+.listpane {
+	background-color: #F2F2F2;
+	color: #000000;
+	font-size: 24px;
+	line-height: 28px;
+	min-height: 660px;
+}
+
+
+.listpane .row {
+	margin: 20px 10px 10px 20px;
+}
+
+.listpane .selected {
+	width:100%;
+	font-weight: 500;
+	background-color:#CCCCCC;
+	color:#000000;
+}
+
+.listpane .action {
+	font-weight: 700;
+}
+
+.listpane a{
+	text-decoration: none;
+	color: inherit;
+}
+
+div.introduction {
+	padding: 60px 0px 0px 0px;
+}
+
+div.controlpane {
+	padding: 60px 0px 0px 0px;
+}
+
+.controlpane textarea {
+	width: 100%;
+	line-height: 20px;
+	margin-top: 10px;
+}
+
+.controls ul {
+	list-style-type: none;
+	padding: 0;
+	width: 400px;
+}
+
+.controls ul li {
+	display:inline-block;
+}
+
+
+.title {
+	font-size: 18px;
+	line-height: 22px;
+	margin-bottom: 10px;
+	font-weight: 700;
+}
+
+.controls {
+	width:60%;
+	margin-top: 20px;
+	margin-left: 20px;
+}
+.center {
+	text-align:center;
+}
+
+
+
+#commonContent {
+    color:#018bcb;
+}
+
+#content {
+    position:fixed;
+    top:48px;
+    width: calc(100% - 230px);
+    height: calc(100% - 80px);
+    left: 198px;
+    padding-top:16px;
+    padding-left:32px;
+    overflow:auto;
+    z-index:5;
+}
+
+#content.fullscreen {
+    position:fixed;
+    top:48px;
+    left:0px;
+    width: 100%;
+    height: calc(100% - 48px);
+    overflow:auto;
+    z-index:5;
+}
+
+#headerLogo {
+    position:fixed;
+    z-index:5;
+    width:192px;
+    height:48px;
+    top:0px;
+    left:0px;
+    background: #050505;
+}
+
+#headerLogo img {
+    display:block;
+    height:22px;
+    margin: 12px auto;
+}
+
+#navigationBar {
+    position:fixed;
+    z-index:5;
+    width:192px;
+    top:48px;
+    left:0px;
+    background: #050505;
+    height:calc(100% - 48px);
+    overflow-y:auto;
+}
+
+#navigationBar p {
+    color:white;
+    text-transform: uppercase;
+    text-align:center;
+    font-size:small;
+    margin-top:8px;
+    margin-bottom:4px;
+}
+
+#navigationBar ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0;
+}
+
+#navigationBar a:hover {
+    background: #222222;
+    color:#38c0fd;
+}
+
+#navigationBar a.highlight:hover {
+    background:linear-gradient(90deg, #32bdfe, #65daf4);
+    color:white;
+}
+
+#navigationBar a {
+    text-decoration: none;
+    color:#018bcb;
+    text-transform: none;
+    display:block;
+    text-align: center;
+}
+
+#navigationBar .highlight {
+    color:black;
+    background : linear-gradient(90deg, #32bdfe, #65daf4);
+}
+
+#titleBar {
+    position:fixed;
+    z-index:5;
+    left:0px;
+    top:0px;
+    right:0px;
+    height:48px;
+    background: #d5d5d5;
+    z-index: -1;
+}
+
+#titleBar p {
+    font-size: x-large;
+    margin-top:4px;
+    margin-bottom:4px;
+    position:absolute;
+    left:228px;
+}
+
+.sectionHeader {
+    font-size:large;
+    font-weight: bold;
+}
+
+.symbol {
+    font-family:"Segoe UI Symbol";
+}
+
+.symbol_webdings {
+    font-family:"Webdings";
+}
+
+.subText {
+    font-size:smaller;
+}
+
+div.img {
+    margin: 5px;
+    padding: 2px;
+    border: 1px solid #018bcb;
+    height: 200px;
+    width: 200px;
+    float: left;
+    text-align: center;
+    background-color: #018bcb;
+}
+
+div.img img {
+    display: inline;
+    margin: 2px;
+    border:1px solid #018bcb;
+}
+
+div.img a {
+    color: white;
+    text-decoration: none;
+}
+
+div.img a:hover img {
+    border:1px solid #ffffff;
+}
+
+div.desc {
+    text-align: left;
+    font-weight: normal;
+    font-size: smaller;
+    width: auto;
+    margin: 2px;
+}

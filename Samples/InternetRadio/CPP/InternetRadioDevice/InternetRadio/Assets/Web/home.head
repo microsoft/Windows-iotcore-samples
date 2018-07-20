@@ -1,0 +1,72 @@
+    <script type="text/javascript">
+    	var onState = '#onState#';
+    	var radioVolume = '#radioVolume#';
+			var sliding = false;
+			
+			$(document).ready(function()
+			{
+				if (stationListJSON.length > 1)
+				{
+					$(".prevButton,.nextButton").addClass("enabled");
+				}
+				if (currentStation)
+				{
+					$("#onState").addClass("enabled");
+				}
+
+				$("#onStateVal").val(onState);
+				if (onState == "On")
+				{
+					$("#onState").toggleClass("radioOff radioOn");
+					$("#onState").click(function() { 
+						$("#onStateVal").val("Off");
+						radioForm.submit();
+					}); 
+				}
+				else
+				{
+					$("#onState").click(function() { 
+						$("#onStateVal").val("On");
+						radioForm.submit();
+					}); 
+				}
+				
+				$("#volumeSlide").val(radioVolume);
+				$("#volumeSlide").mousedown(function () { 
+					sliding = true;
+				});
+				$("#volumeSlide").mouseup(function () { 
+					sliding = false;
+					if ($("#volumeSlide").val() != radioVolume)
+					{
+						radioForm.submit();
+					}
+				});
+				$("#volumeSlide").change(function () { 
+					if (!sliding)
+					{
+						radioForm.submit();
+					}
+				});
+
+				$("#volumeButton").click(function() { 
+					$("#onStateVal").val("On");
+					$("#volumeSlide").val(100);
+					radioForm.submit();
+				}); 
+				$("#muteButton").click(function() { 
+					$("#onStateVal").val("Off");
+					$("#volumeSlide").val(0);
+					radioForm.submit();
+				}); 
+				$("#prevButton").click(function() { 
+					$("#trackAction").val("prev");
+					radioForm.submit();
+				}); 
+				$("#nextButton").click(function() { 
+					$("#trackAction").val("next");
+					radioForm.submit();
+				}); 
+   		}); //doc ready
+			
+   	</script>

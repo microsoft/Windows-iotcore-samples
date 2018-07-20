@@ -1,0 +1,43 @@
+            <form id="radioForm" method="GET" action="settings.htm">       
+              <input id="onStateVal" name="onStateVal" type="text" class="valuePlaceholder">
+              <input id="trackAction" name="trackAction" type="text" class="valuePlaceholder">
+              
+              <div class='controlpane'>
+                  <div class='row'>
+                    <div class='col-md-12 title'>
+                        Now Playing
+                    </div>
+                  </div>
+                
+                  <div class='row'>
+                    <div class='col-md-12'>
+                      #currentTrack#
+                    </div>
+                 </div>
+           
+                <div class='controls'>
+                  <div class='row'>
+                    <div class='col-md-offset-3 col-md-1'>
+                      <input type="submit" value="" id="prevButton" class="prevButton radioButton"/>
+                    </div>              		
+                    <div class='col-md-offset-1 col-md-1'>
+                      <input type="submit" value="" id="onState" class="radioOff radioButton"/>
+                    </div>              		
+                    <div class='col-md-offset-1 col-md-1'>
+                      <input type="submit" value="" id="nextButton" class="nextButton radioButton"/>
+                    </div>              		
+                  </div>
+                  <div class='row'>
+                    <div class='col-md-1'>
+                      <input type="submit" value="" id="muteButton" class="muteButton radioButton enabled"/>
+                    </div>
+                    <div class='col-md-10'>
+                      <input id="volumeSlide" name="volumeSlide" type="range">									
+                    </div>
+                    <div class='col-md-1'>
+                      <input type="submit" value="" id="volumeButton" class="volumeButton radioButton enabled"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             </form>
