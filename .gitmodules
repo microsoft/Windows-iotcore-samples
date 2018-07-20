@@ -1,0 +1,6 @@
+[submodule "Samples/InternetRadio/CPP/lib/UniversalMediaEngine"]
+	path = Samples/InternetRadio/CPP/lib/UniversalMediaEngine
+	url = https://github.com/ms-iot/UniversalMediaEngine
+[submodule "Samples/InternetRadio/CPP/lib/TextDisplay"]
+	path = Samples/InternetRadio/CPP/lib/TextDisplay
+	url = https://github.com/ms-iot/TextDisplay

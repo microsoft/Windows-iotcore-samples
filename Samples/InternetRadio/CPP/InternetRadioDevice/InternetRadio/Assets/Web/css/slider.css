@@ -1,0 +1,53 @@
+/* slider css */
+    input[type=range] {
+      -webkit-appearance: none;
+      margin: 18px 0;
+      width: 100%;
+      height:100%;
+    }
+    input[type=range]:focus {
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 3px;
+      cursor: pointer;
+      background: #CCCCCC;
+    }
+    input[type=range]::-ms-track {
+      width: 100%;
+      height: 3px;
+      cursor: pointer;
+      background: transparent;
+        border-color: transparent;
+      color: transparent;
+  }
+    input[type=range]::-webkit-slider-thumb {
+      height: 20px;
+      width: 8px;
+      border-radius: 5px;
+      background: #AAAAAA;
+      cursor: pointer;
+        -webkit-appearance: none;
+      margin-top: -10px;
+    }
+    input[type=range]::-ms-thumb {
+    height: 20px;
+      width: 8px;
+      border-radius: 5px;
+      background: #AAAAAA;
+      cursor: pointer;
+    margin-top: -10px;
+    }
+    input[type=range]::-ms-fill-lower {
+      background: #4082bc;
+    }
+    input[type=range]::-ms-fill-upper {
+        background: #CCCCCC;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      background: #E6E6E6;
+    }
+    input[type=range]::-ms-thumb:hover {
+      background: #E6E6E6;
+    }

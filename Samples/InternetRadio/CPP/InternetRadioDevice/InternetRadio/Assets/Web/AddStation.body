@@ -1,0 +1,42 @@
+            <form id="radioForm" method="GET" action="addstationset.htm">                 
+              <div class='controlpane'>
+                <div class='row'>
+                  <div id='StationTitle' class='col-md-8 title'>
+                    Add New Station
+                  </div>
+                </div>
+                
+                <div class='row'>
+                  <div id='Introduction' class='col-md-12'>
+                    Grab an audio stream URL from your favorite podcast or internet radio website and enter it below.
+                  </div>
+                </div>
+                
+                <div class='controls row'>
+                  <div class='col-md-3'>
+                      Station Name
+                  </div>
+                  <div class='col-md-9'>
+                      <input type="text" id='name' name='name' style="width:100%" />
+                      <input type="text" id='nameOrig' name='nameOrig' style="display:none" />
+                  </div>
+                </div>
+                <div class='controls row'>
+                  <div class='col-md-3'>
+                      Station URL
+                  </div>
+                  <div class='col-md-9'>
+                      <input type="text" id='url' name='url' style="width:100%" />
+                  </div>
+                </div>
+                <div class='controls row'>
+                  <div class='col-md-6'>
+                      <div id='submitButton' class='button' onclick="$(this).closest('form').submit();">Add Station</div>
+                      <input type="text" id='trackAction' name='trackAction' style="display:none" text="Add" />
+                  </div>
+                  <div class='col-md-6'>
+                      <div id='cancelButton' class='button' onclick="javascript:window.location='home.htm';">Cancel</div>
+                  </div>
+                </div>
+              </div>
+            </form>

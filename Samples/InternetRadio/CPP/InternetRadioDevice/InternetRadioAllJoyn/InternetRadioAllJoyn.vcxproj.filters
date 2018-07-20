@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>a5413059-1226-4d00-aa7e-a40652c3cc64</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="AllJoynBusObjectManager.cpp" />
+    <ClCompile Include="AllJoynHelpers.cpp" />
+    <ClCompile Include="InternetRadioConsumer.cpp" />
+    <ClCompile Include="InternetRadioProducer.cpp" />
+    <ClCompile Include="InternetRadioServiceEventAdapter.cpp" />
+    <ClCompile Include="InternetRadioServiceEventArgs.cpp" />
+    <ClCompile Include="InternetRadioSignals.cpp" />
+    <ClCompile Include="InternetRadioWatcher.cpp" />
+    <ClCompile Include="TypeConversionHelpers.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="AllJoynBusObjectManager.h" />
+    <ClInclude Include="AllJoynHelpers.h" />
+    <ClInclude Include="IInternetRadioService.h" />
+    <ClInclude Include="InternetRadioConsumer.h" />
+    <ClInclude Include="InternetRadioEventArgs.h" />
+    <ClInclude Include="InternetRadioMethodResults.h" />
+    <ClInclude Include="InternetRadioProducer.h" />
+    <ClInclude Include="InternetRadioServiceEventAdapter.h" />
+    <ClInclude Include="InternetRadioServiceEventArgs.h" />
+    <ClInclude Include="InternetRadioSignals.h" />
+    <ClInclude Include="InternetRadioStructures.h" />
+    <ClInclude Include="InternetRadioWatcher.h" />
+    <ClInclude Include="TypeConversionHelpers.h" />
+  </ItemGroup>
+</Project>

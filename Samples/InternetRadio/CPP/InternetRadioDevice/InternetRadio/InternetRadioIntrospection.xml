@@ -1,0 +1,46 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://standards.freedesktop.org/dbus/introspect-1.0.dtd">
+<node name="/InternetRadio">
+  <interface name="com.microsoft.maker.InternetRadio">
+    <annotation name="org.alljoyn.Bus.Secure" value="false"/>
+    <description language="en">Interface for an Internet Radio device</description>
+    <property name="Version" type="q" access="read">
+      <description>Interface version</description>
+      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+    </property>
+    <method name="NextPreset">
+      <description language="en"></description>
+    </method>
+    <method name="PreviousPreset">
+      <description language="en"></description>
+    </method>
+    <method name="AddPreset">
+      <description language="en"></description>
+      <arg name="presetName" type="s" direction="in"/>
+      <arg name="presetAddress" type="s" direction="in"/>
+    </method>
+    <method name="RemovePreset">
+      <description language="en"></description>
+      <arg name="presetName" type="s" direction="in"/>
+    </method>
+    <method name="PlayPreset">
+      <description language="en">Plays the given preset</description>
+      <arg name="presetName" type="s" direction="in"/>
+    </method>
+    <property name="Volume" type="d" access="readwrite">
+      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+      <description language="en">Volume level of the device</description>
+    </property>
+    <property name="CurrentlyPlaying" type="s" access="read">
+      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+      <description language="en">The currently playing preset</description>
+    </property>
+    <property name="Presets" type="s" access="read">
+      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+      <description language="en">List of presets (colon delimited)</description>
+    </property>
+    <property name="Power" type="b" access="readwrite">
+      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
+      <description language="en">List of presets (colon delimited)</description>
+    </property>
+  </interface>
+</node>
