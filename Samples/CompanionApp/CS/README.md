@@ -32,7 +32,7 @@ The general communication flow between Client and Server
 
 1. Download this sample.
 1. Connect to your IotCore device using the [Device Portal](https://developer.microsoft.com/en-us/windows/iot/docs/deviceportal), open the Onboarding page, and set the SoftAP settings SSID to be something recognizable.
-1. Connect to your IotCore device using [SSH](https://developer.microsoft.com/en-us/windows/iot/docs/ssh) or [PowerShell](https://developer.microsoft.com/en-us/windows/iot/docs/powershell) and run the following commands to enable SoftAP
+1. Connect to your IotCore device using [SSH](https://developer.microsoft.com/en-us/windows/iot/docs/ssh) or [PowerShell](https://developer.microsoft.com/en-us/windows/iot/docs/powershell) and run the following commands to enable SoftAP. If you're using PowerShell, the command will need a /f flag to run successfully.
 
     ```
     reg add hklm\system\currentcontrolset\services\mpssvc\parameters /v IoTInboundLoopbackPolicy /t REG_DWORD /d 1
@@ -51,7 +51,7 @@ The general communication flow between Client and Server
     1. Select your IotCore device's access point and click the `Connect to Access Point` button
     1. Click the `Get Networks` button
     1. Select the desired network, enter the network's password, and click the `Connect` button
-1. At this point, your IotCore device should be connected to your desired WiFi network. 
+1. At this point, your IotCore device should be connected to your desired WiFi network. If your device is not showing up, you may need to delete the profiles in "Connectivity -> Network".
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
