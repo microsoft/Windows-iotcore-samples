@@ -51,7 +51,7 @@ The general communication flow between Client and Server
     1. Select your IotCore device's access point and click the `Connect to Access Point` button
     1. Click the `Get Networks` button
     1. Select the desired network, enter the network's password, and click the `Connect` button
-1. At this point, your IotCore device should be connected to your desired WiFi network. If you're running into issues, you may need to delete the profiles in "Connectivity -> Network".
+1. At this point, your IotCore device should be connected to your desired WiFi network. If your device is not showing up, you may need to delete the profiles in "Connectivity -> Network".
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
