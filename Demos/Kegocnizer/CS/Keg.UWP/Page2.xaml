@@ -1,0 +1,117 @@
+﻿<Page
+    x:Class="Keg.UWP.Page2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Keg.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xml:lang="en-US"
+    mc:Ignorable="d" SizeChanged="Page_SizeChanged" >
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <!--VisualState to be triggered when window width is >=720 effective pixels.-->
+                        <AdaptiveTrigger x:Name="TriggerOfVisualState" MinWindowWidth = "720" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+
+                        <Setter Target="SP1.(controls:DockPanel.Dock)" Value="Left" />
+                        <Setter Target="GridConsumption.(controls:DockPanel.Dock)" Value="Left" />
+                        <Setter Target="Page2OuncesPanel.(controls:DockPanel.Dock)" Value="Right" />
+
+                        <Setter Target="GridConsumption.Orientation" Value="Horizontal" />
+                        <Setter Target="Page2OuncesPanel.Orientation" Value="Vertical" />
+
+                        <Setter Target="Page2LimitText3.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="Page2LimitText3.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="Page2LimitText2.(RelativePanel.Above)" Value="Page2LimitText3" />
+
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="7*" />
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header row -->
+        <Grid Grid.Row="1" x:Name="HeaderRow" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="80*" />
+                <ColumnDefinition Width="10*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" x:Name="BackButton" Content="{StaticResource IconBack}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent"  
+                    FontFamily="Segoe MDL2 Assets" FontSize="24" Click="BackButton_Clicked"
+                    Margin="24,0,0,0" Height="48" Width="48" VerticalAlignment="Top" FontWeight="ExtraBold" FontStretch="ExtraExpanded"/>
+            <TextBlock x:Name="KegTitle" Grid.Column="1" Style="{StaticResource AppTitleTextBlockStyle}" HorizontalAlignment="Center" HorizontalTextAlignment="Center"/>
+            <TextBlock x:Name="TimerClockText" Grid.Column="2" />
+        </Grid>
+
+        <Popup x:Name="StandardPopup" Grid.Row="1" >
+            <Border BorderBrush="Black" 
+                Background="{StaticResource ProgressBarBackground}"
+                BorderThickness="3">
+
+                <StackPanel x:Name="gdChildStackPanel" Width="400" Height="300" Opacity="50">
+                    <TextBlock x:Name="Page2ScreenTimeout" Text="{Binding Page2ScreenTimeout}" Style="{StaticResource AppBodyTextBlockStyle}"  HorizontalAlignment="Center">
+                    </TextBlock>
+
+                    <Grid Width="200" Height="200" HorizontalAlignment="Center">
+                        <Ellipse Fill="{StaticResource ProgressBarBackground}" Stroke="{StaticResource CounterStroke}" StrokeThickness="3"/>
+                        <TextBlock x:Name="CounterText" VerticalAlignment="Center" HorizontalAlignment="Center" Text="4" Foreground="{StaticResource CounterStroke}" FontSize="95" FontWeight="ExtraBlack"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Grid Grid.Row="2" x:Name="DataRow" Margin="0,0,0,0">
+            <controls:DockPanel LastChildFill="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" >
+                <StackPanel  controls:DockPanel.Dock="Top" x:Name="SP1" Orientation="Vertical">
+
+                    <TextBlock x:Name="Page2Part1Text" Style="{StaticResource AppSubheaderTextBlockStyle}" Margin="30,0,30,0" Text="DUMMY" />
+                    <TextBlock x:Name="Page2Part2Text" Style="{StaticResource AppBodyTextBlockStyle}" Margin="20,0,20,0" Text="Dummy" />
+
+                    <Image x:Name="Page2Image" Source="ms-appx:///Assets/beer.png" MinHeight="60" MaxHeight="100" />
+
+                </StackPanel>
+                <StackPanel controls:DockPanel.Dock="Top" x:Name="GridConsumption" Orientation="Vertical" HorizontalAlignment="Stretch" Margin="5">
+                    <Rectangle x:Name="AllowedLimitBar" MinHeight="20" MinWidth="20" Stroke="Black" StrokeThickness="2" RadiusX="4" RadiusY="4" Margin="5" 
+                               StrokeDashCap="Round" StrokeEndLineCap="Round" >
+                    </Rectangle>
+                </StackPanel>
+                <StackPanel controls:DockPanel.Dock="Top" x:Name="Page2OuncesPanel" Orientation="Horizontal" >
+                    <RelativePanel x:Name="RPPage2OuncesPanel" Margin="0" VerticalAlignment="Top">
+                        <TextBlock x:Name="Page2LimitText1" Text="0 Oz.(Min)" FontWeight="Bold" TextWrapping="Wrap" RelativePanel.AlignLeftWithPanel="True" />
+                        <TextBlock x:Name="Page2LimitText2" Text="0 Oz." Foreground="OrangeRed" TextWrapping="Wrap" VerticalAlignment="Bottom" Margin="10,20,0,0" />
+                        <TextBlock x:Name="Page2LimitText3" Text="Max Oz." FontWeight="Bold" TextWrapping="Wrap"  RelativePanel.AlignRightWithPanel="True" VerticalAlignment="Bottom" />
+                    </RelativePanel>
+                </StackPanel>
+            </controls:DockPanel>
+        </Grid>
+
+        <!-- Footer Row-->
+        <Grid Grid.Row="3" x:Name="FooterRow" VerticalAlignment="Top" Margin="0,1,0,0" >
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                    <Button Content="Fill!" Click="FillButton_Click" HorizontalAlignment="Center" x:Name="FillButton"/>
+                    <Button Content="Pause" Click="PauseButton_Click" HorizontalAlignment="Center" x:Name="PauseButton"/>
+                    <Button Content="Main" Click="MainButton_Click" HorizontalAlignment="Center" x:Name="CompleteButton"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,50 @@
+﻿<Page
+    x:Class="Admin.UWP.Admin_App6"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Admin.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header row -->
+        <Grid Grid.Row="0" x:Name="HeaderRow" >
+            <StackPanel Orientation="Vertical" >
+                <Button Grid.Column="0" x:Name="BackButton" Content="{StaticResource IconBack}" Background="Transparent" BorderThickness="0" BorderBrush="Transparent"  
+                    FontFamily="{StaticResource IconFontFamily}" FontSize="24"
+                    Margin="24,0,0,0" Height="48" Width="48" VerticalAlignment="Top" FontWeight="ExtraBold" FontStretch="ExtraExpanded" Click="BackButton_Click"/>
+                <TextBlock x:Uid="KegTitle" Text="{Binding [KegTitle]}" Style="{StaticResource AppTitleTextBlockStyle}" HorizontalTextAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="DataRow" >
+            <StackPanel Orientation="Vertical" >
+                <TextBlock x:Uid="OfficeHours" Text="{Binding [OfficeHours]}" Style="{StaticResource AppBodyTextBlockStyle}" HorizontalTextAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
+                    <ComboBox x:Name="cBox1" Style="{StaticResource AppComboBoxStyle}" />
+                    <ComboBox x:Name="cBox2" Style="{StaticResource AppComboBoxStyle}" />
+                    <TextBlock x:Uid="To" Text="{Binding [To]}" Style="{StaticResource AppBodyTextBlockStyle}" HorizontalTextAlignment="Center"/>
+                    <ComboBox x:Name="cBox3" Style="{StaticResource AppComboBoxStyle}" />
+                    <ComboBox x:Name="cBox4" Style="{StaticResource AppComboBoxStyle}" />
+                </StackPanel>
+                <TextBlock x:Uid="EventDuration" Text="{Binding [EventDuration]}" Style="{StaticResource AppBodyTextBlockStyle}" HorizontalTextAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <ComboBox x:Name="cBox5" Style="{StaticResource AppComboBoxStyle}" />
+                    <TextBlock x:Uid="Minutes" Text="{Binding [Minutes]}" Style="{StaticResource AppBodyTextBlockStyle}" HorizontalTextAlignment="Center"/>
+                </StackPanel>
+                <TextBlock x:Uid="ConsumptionLimit" Text="{Binding [ConsumptionLimit]}" Style="{StaticResource AppBodyTextBlockStyle}" HorizontalTextAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <ComboBox x:Name="cBox6" Style="{StaticResource AppComboBoxStyle}" />
+                    <TextBlock x:Uid="Pints" Text="{Binding [Pints]}" Style="{StaticResource AppBodyTextBlockStyle}" HorizontalTextAlignment="Center"/>
+                </StackPanel>
+                <Button Content="Save Settings" Style="{StaticResource AppButtonStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveSettings" Margin="0,200,0,0"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
