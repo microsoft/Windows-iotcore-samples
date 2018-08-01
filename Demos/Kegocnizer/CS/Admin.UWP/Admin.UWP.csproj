@@ -193,10 +193,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Keg.DAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Keg.DAL\bin\x64\Release\Keg.DAL.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Keg.DAL\Keg.DAL.csproj">
+      <Project>{9fd08840-1057-4af7-92ab-21c710121b5f}</Project>
+      <Name>Keg.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
