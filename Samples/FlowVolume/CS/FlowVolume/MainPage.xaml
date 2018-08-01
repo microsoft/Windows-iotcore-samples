@@ -1,0 +1,16 @@
+﻿<Page
+    x:Class="FlowVolume.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FlowVolume"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <controls:RadialGauge x:Name="rpms" Maximum="10" TickSpacing="1" Value="{x:Bind LastMeasurement.Amount}"/>
+        <TextBox x:Name="labelRpms" Text="Not set yet."/>
+    </Grid>
+</Page>
