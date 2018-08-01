@@ -44,7 +44,7 @@ The sample app when deployed displays 2 buttons `Initialize Audio and Video` and
   
 ### Initialize Audio Only:  
   
-* `Start Audio Record` when clicked will begin recording. When done press `Stop Audio Record` to save the video. Audio is automtically played back.  
+* `Start Audio Record` when clicked will begin recording. When done press `Stop Audio Record` to save the audio. Audio is automtically played back.  
   
 **NOTE:** In order to hear the audio, an audio device (ex: earphones) must be connected to the analog audio output on Raspberry Pi2. On MinnowBoard Max, audio output is available via HDMI  
   
@@ -58,7 +58,7 @@ The code for this sample uses the [Windows.Media.Capture](https://msdn.microsoft
  
 For accessing the web cam, the microphone, and the default storage folders, you must add the following capabilities to the **Package.appxmanifest** file in your project:  
 
-<img src="../../../Resources/images/PMWebCamOptions.png">
+![WebcamOptionsAppXManifest](../../../Resources/images/PMWebCamOptions.PNG)
 
 **NOTE:** You can also add capabilities directly by opening the **Package.appxmanifest** file in an XML editor (Right Click on the file -> Open with -> XML (Text) Editor) and adding the capabilities below:
  

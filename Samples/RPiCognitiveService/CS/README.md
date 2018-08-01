@@ -1,5 +1,7 @@
 # Cognitive Services Demo for Windows 10 IoT Core
 
+_Special thanks to Microsoft MVP Jiong Shi for contributing this sample to the community!_
+
 We'll create a simple app that demonstrates Microsoft Cognitive Services on Windows 10 IoT Core Devices.
 
 This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/zh-cn/windows/iot-core/learn-about-hardware/headlessmode).
@@ -18,11 +20,11 @@ You will need the following components:
 
 For this part, we will create Vision Services that we used on Azure Portal. Login to the [Azure Portal](https://portal.azure.com) with your username and password. Click “Create a resource” in the Search bar, input “Computer Vision API”. Then click “Create” to start the creation process. Input your computer vision name, location, pricing tier (F0 is enough for this project) and resource group. After the resource is created, go to your Computer Vision API page, click Keys under Resource management, copy Key 1 to your local document for further use. 
 
-Next, you will create your “Emotion API” and “Face API” just as “Computer Vision API” above. Remember to copy the API Keys to your local document for further use.
+Next, you will create your “Face API” just as “Computer Vision API” above. Remember to copy the API Keys to your local document for further use.
 
 ## Step 2: Deploy and Run UWP Application on Windows 10 IoT Core device
 
-We can make a copy of the folder on your disk and open the project from Visual Studio. Please make sure that you install Visual Studio 2017 and Windows Software Development Kit (SDK) version 16299 for Windows 10. Then, copy and paste your “Computer Vision API”, “Emotion API” and “Face API” that you get in Step 1 to “FacePage.xaml.cs” and “PhotoPage.xaml.cs”.
+We can make a copy of the folder on your disk and open the project from Visual Studio. Please make sure that you install Visual Studio 2017 and Windows Software Development Kit (SDK) version 16299 for Windows 10. Then, copy and paste your “Computer Vision API” and “Face API” that you get in Step 1 to “FacePage.xaml.cs” and “PhotoPage.xaml.cs”.
 
 If you want this app running on RPi or Dragon Board, choose ARM and Remote Machine (For Minnow Board MAX, please choose x64), input the IP address of the device, press Debug button. After the deployment, we can see the app running on device.
 
