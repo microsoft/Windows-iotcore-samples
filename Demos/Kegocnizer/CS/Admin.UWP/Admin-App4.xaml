@@ -1,0 +1,32 @@
+﻿<Page
+    x:Class="Admin.UWP.Admin_App4"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Admin.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header row -->
+        <Grid Grid.Row="0" x:Name="HeaderRow" >
+            <StackPanel Orientation="Vertical" >
+                <TextBlock x:Uid="KegTitle" Text="{Binding [KegTitle]}" Style="{StaticResource AppTitleTextBlockStyle}"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="DataRow" Margin="0,1,0,0" >
+            <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                <TextBlock x:Uid="AddUser1" Text="{Binding [AddUser1]}" Style="{StaticResource AppTitleTextBlockStyle}" />
+                <Image Source="Assets/beer.gif" HorizontalAlignment="Center" Height="405" Margin="509,0,495,0" Width="496" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
