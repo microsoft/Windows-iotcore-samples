@@ -1,0 +1,116 @@
+﻿<Page
+    x:Class="HeartDiseasePrediction.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HeartDiseasePrediction"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="0">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF1E3B70" Offset="0"/>
+                <GradientStop Color="#FF4FD7FF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <!--HEADER-->
+        <Grid Grid.Row="0" HorizontalAlignment="Left" Margin="12,0">
+            <Viewbox>
+                <StackPanel Orientation="Horizontal">
+                    <!--<Image Source="Assets/AdvantechLogo.png" Width="300"/>-->
+                    <TextBlock Text="Windows Maching Learning" FontSize="100" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Viewbox>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Viewbox>
+                <StackPanel Margin="20, 0" HorizontalAlignment="Center">
+                    <TextBlock Text="Heart Disease Prediction" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,8"/>
+                    <!--<TextBlock Text="Azure ML with UCI Heart Disease Data Set"/>-->
+  
+
+                    <StackPanel Orientation="Horizontal" Margin="0, 2">
+                        <!--<TextBlock Text="thallium heart scan / 心臟灌流掃描" TextWrapping="Wrap" Width="180"/>-->
+                        <TextBlock Text="thallium heart scan" TextWrapping="Wrap" Width="180"/>
+                        <ComboBox x:Name="comboBoxThal" Width="140">
+                            <x:String>3: normal</x:String>
+                            <x:String>6: fixed defect</x:String>
+                            <x:String>7: reversable defect</x:String>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 2">
+                        <!--<TextBlock Text="chest pain type / 胸腔疼痛類型" TextWrapping="Wrap" Width="180"/>-->
+                        <TextBlock Text="chest pain type" TextWrapping="Wrap" Width="180"/>
+                        <ComboBox x:Name="comboBoxCp" Width="140">
+                            <x:String>1: typical angina</x:String>
+                            <x:String>2: atypical angina</x:String>
+                            <x:String>3: non-anginal pain</x:String>
+                            <x:String>4: asymptomatic</x:String>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 2">
+                        <!--<TextBlock Text="number of major vessels / 透視攝影大血管數量" TextWrapping="Wrap" Width="180"/>-->
+                        <TextBlock Text="number of major vessels" TextWrapping="Wrap" Width="180"/>
+                        <ComboBox x:Name="comboBoxCa" Width="140">
+                            <x:String>0</x:String>
+                            <x:String>1</x:String>
+                            <x:String>2</x:String>
+                            <x:String>3</x:String>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 2">
+                        <!--<TextBlock Text="ST depression induced by exercise / 運動ST段壓低" TextWrapping="Wrap" Width="180"/>-->
+                        <TextBlock Text="ST depression induced by exercise" TextWrapping="Wrap" Width="180"/>
+                        <TextBox x:Name="textBoxOldpeak" Width="140"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 2">
+                        <!--<TextBlock Text="exercise induced angina / 運動誘發心絞痛" TextWrapping="Wrap" Width="180"/>-->
+                        <TextBlock Text="exercise induced angina" TextWrapping="Wrap" Width="180"/>
+                        <ComboBox x:Name="comboBoxExang" Width="140">
+                            <x:String>0: no</x:String>
+                            <x:String>1: yes</x:String>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 2">
+                        <!--<TextBlock Text="maximum heart rate / 最大心跳" TextWrapping="Wrap" Width="180"/>-->
+                        <TextBlock Text="maximum heart rate" TextWrapping="Wrap" Width="180"/>
+                        <TextBox x:Name="textBoxThalach" Width="140"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 2">
+                        <!--<TextBlock Text="slope of the peak exercise / 運動心電圖走向" TextWrapping="Wrap" Width="180"/>-->
+                        <TextBlock Text="slope of the peak exercise" TextWrapping="Wrap" Width="180"/>
+                        <ComboBox x:Name="comboBoxSlope" Width="140">
+                            <x:String>1: upsloping</x:String>
+                            <x:String>2: flat</x:String>
+                            <x:String>3: downsloping</x:String>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 2">
+                        <!--<TextBlock Text="age (in years) / 年齡" TextWrapping="Wrap" Width="180"/>-->
+                        <TextBlock Text="age (in years)" TextWrapping="Wrap" Width="180"/>
+                        <TextBox x:Name="textBoxAge" Width="140"/>
+                    </StackPanel>
+
+                    <Button Click="Button_Click" Content="Predict" HorizontalAlignment="Stretch" Margin="5"/>
+                    <TextBlock x:Name="textBlockResult" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="5"/>
+                    <TextBlock x:Name="icon" FontSize="52" HorizontalAlignment="Center" Margin="-10"/>
+                </StackPanel>
+            </Viewbox>
+
+            <ProgressRing x:Name="ring" Width="100" Height="100"/>
+        </Grid>
+
+        <!--FOOTER LOGOS-->
+        <Viewbox Grid.Row="2" Margin="10,0" VerticalAlignment="Center" >
+            <TextBlock Text="Powered by Windows 10 UWP, Windows ML, UCI Heart Disease Data Set" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
+        </Viewbox>
+    </Grid>
+</Page>
