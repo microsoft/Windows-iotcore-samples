@@ -1,5 +1,5 @@
 ---
-title: SPI Display sample
+title: Advantech Medical Heart Disease Prediction
 ms.author: saclayt
 description: Learn how to conduct local ML experiments using medical data.
 ---
@@ -8,7 +8,7 @@ description: Learn how to conduct local ML experiments using medical data.
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[C#](./CS/README.md)
+*	[C#](./HeartDiseasePrediction-CS/README.md)
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
