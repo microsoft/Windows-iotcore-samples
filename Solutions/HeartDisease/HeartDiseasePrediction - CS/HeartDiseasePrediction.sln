@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeartDiseasePrediction", "HeartDiseasePrediction\HeartDiseasePrediction.csproj", "{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "HeartDiseaseModel", "HeartDiseaseModel\HeartDiseaseModel.pyproj", "{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|ARM.ActiveCfg = Debug|ARM
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|ARM.Build.0 = Debug|ARM
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|ARM.Deploy.0 = Debug|ARM
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|x64.ActiveCfg = Debug|x64
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|x64.Build.0 = Debug|x64
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|x64.Deploy.0 = Debug|x64
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|x86.ActiveCfg = Debug|x86
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|x86.Build.0 = Debug|x86
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Debug|x86.Deploy.0 = Debug|x86
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|Any CPU.ActiveCfg = Release|x86
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|ARM.ActiveCfg = Release|ARM
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|ARM.Build.0 = Release|ARM
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|ARM.Deploy.0 = Release|ARM
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|x64.ActiveCfg = Release|x64
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|x64.Build.0 = Release|x64
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|x64.Deploy.0 = Release|x64
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|x86.ActiveCfg = Release|x86
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|x86.Build.0 = Release|x86
+		{1DFDA6CF-C537-4DB1-8097-3A91AF7030A0}.Release|x86.Deploy.0 = Release|x86
+		{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}.Release|x64.ActiveCfg = Release|Any CPU
+		{AB5EA355-ED6D-4EAC-BA66-12552FF5CFDD}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2CC7AEC-F1E1-4A63-9FFA-53308CBBA9EE}
+	EndGlobalSection
+EndGlobal
