@@ -240,20 +240,6 @@ namespace SystemUpdate
             ActiveHoursPopup.HorizontalOffset = (SettingsGrid.ActualHeight / 2) - (ActiveHoursBorder.ActualHeight / 2);
         }
 
-        //private void CancelUpdates_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        // If the Cancel succeeds the State will return to Idle
-        //        SystemUpdateManager.StartCancelUpdates();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // still seeing not supported error here, even with reg key
-        //        Debug.WriteLine(ex.ToString());
-        //    }
-        //}
-
         /// <summary>
         /// Update the flight ring UI to match the current state
         /// </summary>

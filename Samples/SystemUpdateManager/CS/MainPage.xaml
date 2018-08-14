@@ -47,7 +47,6 @@
             <StackPanel x:Name="ButtonPanel" Orientation="Vertical">
                 <Button x:Name="CheckForUpdates" Content="Check for updates" Click="CheckForUpdates_Click" Visibility="Collapsed" Margin="0,5"/>
                 <Button x:Name="RestartNow" Content="Restart now" Click="RebootNow_Click" Visibility="Collapsed" Margin="0,5"/>
-                <!--<Button x:Name="CancelUpdates" Content="Cancel Updates" Click="CancelUpdates_Click"  Visibility="Collapsed" Margin="0,5"/>-->
             </StackPanel>
             <StackPanel x:Name="StatePanel" Orientation="Horizontal" Margin="0,0,0,25">
                 <TextBlock Text="State: " FontWeight="Bold" Margin="0,0,12,0" TextWrapping="WrapWholeWords"/>
@@ -179,7 +178,6 @@
                         <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
                         <Setter Target="ItemProgressPanel.Visibility" Value="Visible"/>
                         <Setter Target="SessionProgressPanel.Visibility" Value="Visible"/>
-                        <!--<Setter Target="CancelUpdates.Visibility" Value="Visible"/>-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Installing">
@@ -190,7 +188,6 @@
                         <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
                         <Setter Target="ItemProgressPanel.Visibility" Value="Visible"/>
                         <Setter Target="SessionProgressPanel.Visibility" Value="Visible"/>
-                        <!--<Setter Target="CancelUpdates.Visibility" Value="Visible"/>-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="RebootRequired">
@@ -200,7 +197,6 @@
                         <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
                         <Setter Target="ItemProgressPanel.Visibility" Value="Visible"/>
                         <Setter Target="SessionProgressPanel.Visibility" Value="Collapsed"/>
-                        <!--<Setter Target="CancelUpdates.Visibility" Value="Visible"/>-->
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Finalizing">

@@ -13,17 +13,17 @@ The system update process has the following states:
 1. Detect – Determine if any update packages are available.
 2. Download – Download the update packages from the server.
 3. Stage – Unpack the update packages and stage them to be committed later.
-4. Wait for reboot into the Update OS.  The Update OS is an OS that shows gears while the OS changes are being committed.  This is part of the lite servicing stack like what is used on Windows Mobile.  On desktop the flow would be different.
-5. Commit.  Boot into the Update OS which shows gears on IoTCore, in order to commit update package changes.
+4. Wait for reboot into the Update OS.  The Update OS shows gears on Windows 10 IoTCore while the OS changes are being committed.
+5. Commit.  Boot into the Update OS which shows gears while system update changes are committed.
 6. Reboot into updated Main OS.  At this point the update process is complete.
 
-Installing a update package includes staging the update package by extracting the files and settings to a staging area, and then later committing the staged changes. Update packages cannot be rolled back on IoTCore once the commit phase begins.  Uncommitted update packages which have only been staged can be discarded if necessary by cancelling the update.  Once the commit process is started it cannot be interrupted.
+Installing an update package includes staging the update package by extracting the files and settings to a staging area, and then later committing the staged changes. Update packages cannot be rolled back on Windows 10 IoTCore once the commit phase begins.  Uncommitted update packages which have only been staged can be discarded if necessary by cancelling the update.  Once the commit process is started it cannot be interrupted.
 
 The automatic update process is controlled by policy.  An OEM can control the policy through a policy manager like MDM, or DUC(Device Update Center).
 
 Interactive update process sessions are controlled by the device user.  Policies that would defer the automatic update process may be overridden during an interactive update process session.  For example the user can scan for update packages, and download them with an interactive process session when an automatic update process session would be blocked from performing these actions by the current policies.  The interactive update process may also stage the update packages.  Staging update packages unpacks the packages and prepares the files and settings in the package to be committed.
 
-Once the update packages are downloaded and staged the interactive update process may be continued by the developer by rebooting into the update OS and commiting the update packages.  The Update OS is a very small OS that has the sole purpose of committing update packages.  On IoTCore the Update OS shows a screen with moving gears.  Rebooting into the Update OS can be done in response to user input or as part of the business logic of a single purpose device.  A normal system reboot will not change to the UpdateOS, RebootToCompleteInstall() must be called.  Alternatively the developer may choose to wait until the next scheduled automatic update process reboot window as configured by current policies (outside of active hours for example.)
+Once the update packages are downloaded and staged, the interactive update process may be continued by the developer by rebooting into the update OS and commiting the update packages.  The Update OS is a very small OS that has the sole purpose of committing update packages.  On Windows 10 IoTCore the Update OS shows a screen with moving gears.  Rebooting into the Update OS can be done in response to user input or as part of the business logic of a single purpose device.  A normal system reboot will not change to the UpdateOS, RebootToCompleteInstall() must be called.  Alternatively the developer may choose to wait until the next scheduled automatic update process reboot window as configured by current policies (outside of active hours for example.)
 
 ## Before You Install
 
@@ -276,7 +276,7 @@ The flight ring can be empty, Canary, Selfhost, or user-defined.  If the value i
 
 ## Block Automatic Reboots
 
-To tell the update service that the system updates aren’t allowed call **SystemUpdateManager.UnblockAutomaticRebootAsync(id)** where **id** is a unique string composed of numbers letters and dashes. When the critical code execution is completed the code should call **SystemUpdateManager.UnblockAutomaticRebootAsync()** for each **id** that was passed into **BlockAutomaticRebootAsync()**
+To tell the update service that the system updates aren’t allowed, call **SystemUpdateManager.UnblockAutomaticRebootAsync(id)** where **id** is a unique string composed of numbers letters and dashes. When the critical code execution is completed the code should call **SystemUpdateManager.UnblockAutomaticRebootAsync()** for each **id** that was passed into **BlockAutomaticRebootAsync()**
 
     if (BlockAutoReboot.IsOn)
     {
