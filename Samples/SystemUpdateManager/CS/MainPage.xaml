@@ -1,0 +1,221 @@
+﻿<Page
+    x:Class="SystemUpdate.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SystemUpdate"
+    xmlns:viewModel="using:SystemUpdate.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Name="UpdateItemTemplate" x:DataType="viewModel:UpdateItemViewModel">
+            <Border Margin="2" Width="500">
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Title: " FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind Title}" FontWeight="Bold"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Description: " FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind Description}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Id: " FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind Id}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Revision: "/>
+                        <TextBlock Text="{x:Bind Revision}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Download" Margin="0,0,25,0"/>
+                        <ProgressBar x:Name="ItemDownloadProgressBar" Width="200" Height="16" Minimum="0.0" Maximum="1.0" Value="{x:Bind DownloadProgress, Mode=OneWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Install" Margin="0,0,25,0"/>
+                        <ProgressBar x:Name="ItemInstallProgressBar" Width="200" Height="16" Minimum="0.0" Maximum="1.0" Value="{x:Bind InstallProgress, Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid x:Name="SettingsGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel Padding="15">
+            <StackPanel x:Name="ButtonPanel" Orientation="Vertical">
+                <Button x:Name="CheckForUpdates" Content="Check for updates" Click="CheckForUpdates_Click" Visibility="Collapsed" Margin="0,5"/>
+                <Button x:Name="RestartNow" Content="Restart now" Click="RebootNow_Click" Visibility="Collapsed" Margin="0,5"/>
+            </StackPanel>
+            <StackPanel x:Name="StatePanel" Orientation="Horizontal" Margin="0,0,0,25">
+                <TextBlock Text="State: " FontWeight="Bold" Margin="0,0,12,0" TextWrapping="WrapWholeWords"/>
+                <TextBlock x:Name="UpdateStateTextBlock"/>
+                <StackPanel x:Name="AttentionRequiredPanel" Orientation="Horizontal" Visibility="Collapsed">
+                    <TextBlock Text="-" Margin="12,0,12,0"/>
+                    <TextBlock x:Name="AttentionRequiredTextBlock"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel x:Name="SessionProgressPanel" Orientation="Vertical" Visibility="Collapsed"  Margin="0,0,0,25">
+                <TextBlock Text="Overall Progress" FontWeight="Bold"/>
+                <StackPanel Orientation="Horizontal" Margin="15,2">
+                    <TextBlock Text="Download" Margin="0,0,25,0"/>
+                    <ProgressBar x:Name="SessionDownloadProgressBar" Width="200" Height="16" Minimum="0.0" Maximum="1.0" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="15,2">
+                    <TextBlock Text="Install" Margin="0,0,25,0"/>
+                    <ProgressBar x:Name="SessionInstallProgressBar" Width="200" Height="16" Minimum="0.0" Maximum="1.0" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel x:Name="ItemProgressPanel" Visibility="Collapsed" Margin="0,0,0,25">
+                <TextBlock Text="Item Progress" FontWeight="Bold"/>
+                <ListView x:Name="UpdateItemsListView" ItemTemplate="{StaticResource UpdateItemTemplate}"/>
+            </StackPanel>
+            <StackPanel x:Name="LinkButtonPanel" Margin="0,0,0,25">
+                <HyperlinkButton x:Name="ChangeActiveHours" Content="Change active hours" Click="ChangeActiveHours_Click"/>
+                <HyperlinkButton x:Name="LastError" Content="Last Error Info" Click="LastError_Click"/>
+            </StackPanel>
+            <StackPanel x:Name="FlightRingPanel" Margin="0,0,0,25">
+                <TextBlock Text="Flight Ring" FontWeight="Bold" />
+                <ComboBox x:Name="FlightRingCombo" SelectionChanged="FlightRingCombo_SelectionChanged">
+                    <x:String>None</x:String>
+                    <x:String>Canary</x:String>
+                    <x:String>Selfhost</x:String>
+                </ComboBox>
+            </StackPanel>
+            <ToggleSwitch x:Name="BlockAutoReboot" Header="Block Automatic Reboot" OffContent="Not Blocked" OnContent="Blocked" IsOn="False" Toggled="BlockAutoReboot_Toggled" Margin="0,0,0,25"/>
+            <StackPanel x:Name="UpToDateStatePanel">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Last Checked: "/>
+                    <TextBlock x:Name="LastChecked"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Last Installed: "/>
+                    <TextBlock x:Name="LastInstalled"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+
+        <Popup x:Name="ActiveHoursPopup">
+            <Border x:Name="ActiveHoursBorder" BorderThickness="2" BorderBrush="LightGray" Padding="12,12,14,12" Loaded="ActiveHoursBorder_Loaded">
+                <StackPanel x:Name="ActiveHoursPanel"  Orientation="Vertical" Width="400" VerticalAlignment="Stretch">
+                    <TextBlock Text="Active hours" FontWeight="Bold" FontSize="24" Margin="0,0,0,12"/>
+                    <TextBlock TextWrapping="WrapWholeWords" Text="Set active hours to let us know when you typically use this device. We won't automatically restart it during active hours, and we won't restart without checking if you're using it" Margin="0,0,0,12"/>
+                    <TimePicker x:Name="StartTime" Header="Start time" Margin="0,0,0,12" MinuteIncrement="0"/>
+                    <TimePicker x:Name="EndTime" Header="End time" Margin="0,0,0,12" MinuteIncrement="0"/>
+                    <TextBlock x:Name="ActiveHoursErrorText" Visibility="Collapsed" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="SaveActiveHours" Content="Save" Click="SaveActiveHours_Click" Margin="12,0,0,0" Width="120"/>
+                        <Button x:Name="CancelActiveHours" Content="Cancel" Click="CancelActiveHours_Click" Margin="12,0,0,0" Width="120"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="LastErrorInfoPopup">
+            <Border x:Name="LastErrorInfoBorder" BorderThickness="2" BorderBrush="LightGray" Padding="12,12,14,12" Loaded="LastErrorInfoBorder_Loaded">
+                <StackPanel Width="400" VerticalAlignment="Stretch">
+                    <StackPanel x:Name="LastErrorInfoPanel" >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="State: "/>
+                            <TextBlock x:Name="ErrorStateTextBlock"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="HResult: "/>
+                            <TextBlock x:Name="HResultTextBlock"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Interactive Update Session: "/>
+                            <TextBlock x:Name="IsInteractiveTextBlock" />
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock x:Name="NoErrorText" Text="No Error Data" Visibility="Collapsed" Margin="15" HorizontalAlignment="Center"/>
+                    <Button x:Name="CloseLastErrorInfoButton" Content="Close" Click="CloseLastErrorInfoButton_Click"  Margin="12,0,0,0" Width="120" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="DefaultLayout" />
+                <VisualState x:Name="UnknownState" />
+                <VisualState x:Name="NotSupported" >
+                    <VisualState.Setters>
+                        <Setter Target="CheckForUpdates.Visibility" Value="Collapsed"/>
+                        <Setter Target="CheckForUpdates.IsEnabled" Value="false"/>
+                        <Setter Target="RestartNow.Visibility" Value="Collapsed"/>
+                        <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="ItemProgressPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="LinkButtonPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="FlightRingPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="BlockAutoReboot.Visibility" Value="Collapsed"/>
+                        <Setter Target="UpToDateStatePanel.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Idle" >
+                    <VisualState.Setters>
+                        <Setter Target="CheckForUpdates.Visibility" Value="Visible"/>
+                        <Setter Target="CheckForUpdates.IsEnabled" Value="true"/>
+                        <Setter Target="RestartNow.Visibility" Value="Collapsed"/>
+                        <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="ItemProgressPanel.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Detecting" >
+                    <VisualState.Setters>
+                        <Setter Target="CheckForUpdates.Visibility" Value="Visible"/>
+                        <Setter Target="CheckForUpdates.IsEnabled" Value="false"/>
+                        <Setter Target="RestartNow.Visibility" Value="Collapsed"/>
+                        <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Downloading">
+                    <VisualState.Setters>
+                        <Setter Target="CheckForUpdates.Visibility" Value="Collapsed"/>
+                        <Setter Target="CheckForUpdates.IsEnabled" Value="false"/>
+                        <Setter Target="RestartNow.Visibility" Value="Collapsed"/>
+                        <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="ItemProgressPanel.Visibility" Value="Visible"/>
+                        <Setter Target="SessionProgressPanel.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Installing">
+                    <VisualState.Setters>
+                        <Setter Target="CheckForUpdates.Visibility" Value="Collapsed"/>
+                        <Setter Target="CheckForUpdates.IsEnabled" Value="false"/>
+                        <Setter Target="RestartNow.Visibility" Value="Collapsed"/>
+                        <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="ItemProgressPanel.Visibility" Value="Visible"/>
+                        <Setter Target="SessionProgressPanel.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="RebootRequired">
+                    <VisualState.Setters>
+                        <Setter Target="CheckForUpdates.Visibility" Value="Collapsed"/>
+                        <Setter Target="RestartNow.Visibility" Value="Visible"/>
+                        <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="ItemProgressPanel.Visibility" Value="Visible"/>
+                        <Setter Target="SessionProgressPanel.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Finalizing">
+                    <VisualState.Setters>
+                        <Setter Target="CheckForUpdates.Visibility" Value="Collapsed"/>
+                        <Setter Target="RestartNow.Visibility" Value="Collapsed"/>
+                        <Setter Target="AttentionRequiredPanel.Visibility" Value="Collapsed"/>
+                        <Setter Target="ItemProgressPanel.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="AttentionRequired">
+                    <VisualState.Setters>
+                        <Setter Target="CheckForUpdates.Visibility" Value="Collapsed"/>
+                        <Setter Target="RestartNow.Visibility" Value="Collapsed"/>
+                        <Setter Target="AttentionRequiredPanel.Visibility" Value="Visible"/>
+                        <Setter Target="ItemProgressPanel.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</Page>
