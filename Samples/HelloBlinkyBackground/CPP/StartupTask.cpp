@@ -18,20 +18,33 @@ StartupTask::StartupTask()
 
 void StartupTask::Run(IBackgroundTaskInstance^ taskInstance)
 {
+	taskInstance->Canceled += ref new BackgroundTaskCanceledEventHandler(this, &StartupTask::OnCanceled);
+
 	Deferral = taskInstance->GetDeferral();
 	InitGpio();
+
 	TimerElapsedHandler ^handler = ref new TimerElapsedHandler(
 		[this](ThreadPoolTimer ^timer)
 	{
-		pinValue = (pinValue == GpioPinValue::High) ? GpioPinValue::Low : GpioPinValue::High;
-		pin->Write(pinValue);
+		BackgroundTaskDeferral^ deferral = Deferral.Get();
+		if (_cancelRequested == false) {
+			pinValue = (pinValue == GpioPinValue::High) ? GpioPinValue::Low : GpioPinValue::High;
+			pin->Write(pinValue);
+		}
+		else {
+			timer->Cancel();
+			//
+			// Indicate that the background task has completed.
+			//
+			deferral->Complete();
+		}
+		
 	});
 
 	TimeSpan interval;
 	interval.Duration = 500 * 1000 * 10;
-	Timer = ThreadPoolTimer::CreatePeriodicTimer(handler, interval);
+	Timer = ThreadPoolTimer::CreatePeriodicTimer(ref new TimerElapsedHandler(handler), interval);
 
-	
 }
 
 void StartupTask::InitGpio()
@@ -42,3 +55,7 @@ void StartupTask::InitGpio()
 	pin->SetDriveMode(GpioPinDriveMode::Output);
 }
 
+void StartupTask::OnCanceled(IBackgroundTaskInstance^ sender, BackgroundTaskCancellationReason reason) {
+	_cancelRequested = true;
+	_cancelReason = reason;
+}

@@ -33,15 +33,17 @@ namespace BlinkyHeadlessCpp
     public:
 		StartupTask();
         virtual void Run(Windows::ApplicationModel::Background::IBackgroundTaskInstance^ taskInstance);
-
+		void OnCanceled(Windows::ApplicationModel::Background::IBackgroundTaskInstance^ sender, Windows::ApplicationModel::Background::BackgroundTaskCancellationReason reason);
 	private:
 		void InitGpio();
 	private:
-		Platform::Agile<Windows::ApplicationModel::Background::BackgroundTaskDeferral> Deferral;
+		Platform::Agile<Windows::ApplicationModel::Background::BackgroundTaskDeferral^> Deferral;
 		Windows::ApplicationModel::Background::IBackgroundTaskInstance^ TaskInstance;
 		Windows::System::Threading::ThreadPoolTimer ^Timer;
 		Windows::Devices::Gpio::GpioPinValue pinValue;
 		const int LED_PIN = 5;
 		Windows::Devices::Gpio::GpioPin ^pin;
+		Windows::ApplicationModel::Background::BackgroundTaskCancellationReason _cancelReason = Windows::ApplicationModel::Background::BackgroundTaskCancellationReason::Abort;
+		volatile bool _cancelRequested = false;
     };
 }
