@@ -1,4 +1,4 @@
-# Azure HelloWorld Sample
+# Azure Hello World Sample
 
 These are the available versions of this Windows 10 IoT Core sample:
 

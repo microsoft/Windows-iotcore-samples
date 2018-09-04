@@ -1,0 +1,10 @@
+### YamlMime:Sample
+sample:
+- name: GPIO Test Tool
+  description: Tool for exercising GPIO pin configuration capabilities on Windows 10 IoT Core.
+  generateZip: false
+  author: christopher.co
+  languages:
+  - cpp
+  technologies:
+  - windows-iot
