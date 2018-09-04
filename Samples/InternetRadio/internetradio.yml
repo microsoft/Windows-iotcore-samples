@@ -1,0 +1,10 @@
+### YamlMime:Sample
+sample:
+- name: Internet Radio
+  description: A sample for a streaming audio device.
+  generateZip: false
+  author: schmittjoseph
+  languages:
+  - cpp
+  technologies:
+  - windows-iot

@@ -1,10 +1,10 @@
 ---
-title: Serial UART Sample sample
+title: Serial UART sample
 ms.author: lamadio
 description: Communicate between a desktop and an IoT device over a serial interface.
 ---
 
-# Serial Sample
+# Serial UART Sample
 
 These are the available versions of this Windows 10 IoT Core sample:
 
