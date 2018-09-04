@@ -1,0 +1,10 @@
+### YamlMime:Sample
+sample:
+- name: Cognitive Services
+  description: An app that allows you to leverage the power of cognitive services.
+  generateZip: false
+  author: brian.fjeldstad
+  languages:
+  - csharp
+  technologies:
+  - windows-iot

@@ -1,6 +1,6 @@
 # Windows 10 IoT GoPiGoXbox Sample
 
-This sample enable you to control your GoPiGo with your Xbox controller.  It demonstrates how to read inputs from the Xbox controller, translate these inputs as commands ('move forward',  ' move backward', etc) and issue these commands to the GoPiGo robot.
+This sample enables you to control your GoPiGo with your Xbox controller.  It demonstrates how to read inputs from the Xbox controller, translate these inputs as commands ('move forward',  ' move backward', etc) and issue these commands to the GoPiGo robot.
 
 
 ### Project Description

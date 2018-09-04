@@ -1,0 +1,9 @@
+### YamlMime:Sample
+sample:
+- name: Azure Weather Station
+  description: Build a weather station with Azure and Windows 10 IoT Core.
+  author: saraclay
+  languages:
+  - csharp
+  technologies:
+  - windows-iot

@@ -1,10 +1,10 @@
 ---
-title: Advantech Medical Heart Disease Prediction
+title: Medical Heart Disease Prediction
 ms.author: saclayt
 description: Learn how to conduct local ML experiments using medical data.
 ---
 
-# Advantech Medical Heart Disease Prediction
+# Medical Heart Disease Prediction
 
 These are the available versions of this Windows 10 IoT Core sample:
 

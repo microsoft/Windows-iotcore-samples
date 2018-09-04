@@ -1,7 +1,7 @@
 Windows 10 IoT Core sample code
 ===============
 
-[Documentation for this sample](https://developer.microsoft.com/en-us/windows/iot/samples/deviceiocontroller) 
+Our team is currently working on the documentation for this sample. If you need to use this urgently, please file an issue. 
 
 ## How to download:
 
