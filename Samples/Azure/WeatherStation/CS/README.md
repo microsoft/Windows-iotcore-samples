@@ -1,5 +1,7 @@
 # Azure Weather Station
 
+## Adapted from [here](https://blogs.msdn.microsoft.com/iot/2016/01/26/using-power-bi-to-visualize-sensor-data-from-windows-10-iot-core/).
+
 ## Introduction
 Building a weather station is the rite of passage for beginning IoT enthusiasts. It's easy to put together from inexpensive components and provides immediate gratification. For example, you can blow air on your sensor and watch the temperature graph spike up or down. You can leave the weather station in your home and monitor humidity and temperature remotely. The list goes on.
 
