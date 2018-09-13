@@ -6,6 +6,6 @@ This medical tablet is specifically designed for doctors and nurses. The model t
 
 This sample includes 1) the UWP project and 2) code for the ML model.
 
-![Diagram of solution components](../../../Resources/images/AdvantechMedicalHeart/image.jpg)
+![Diagram of solution components](../../../Resources/images/AdvantechMedicalHeart/Medical_WinML.jpg)
 
 A UWP app is designed for heart disease prediction based on the data set from UC Irvine. This data set can be found [here](https://archive.ics.uci.edu/ml/datasets/heart+Disease). We use CNTK to train the model and port it to ONNX (Open Neural Network Exchange) format for Windows ML to consume on the tablet device. With Windows ML, the prediction can be done directly on the edge device without network connection, which is critical for hospital environments. 
