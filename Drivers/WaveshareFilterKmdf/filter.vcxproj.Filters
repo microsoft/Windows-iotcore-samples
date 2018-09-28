@@ -34,7 +34,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Inf Include="..\filter.inx">
+    <Inf Include="filter.inx">
       <Filter>Driver Files</Filter>
     </Inf>
   </ItemGroup>
