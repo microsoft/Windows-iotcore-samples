@@ -54,6 +54,7 @@ public class UltrasonicSensor
     }
 
     // busy wait for milliseconds
+    // source: http://www.iot-developer.net/windows-iot/uwp-programming-in-c/timer-and-timing/stopwatch
     private void Wait(double milliseconds)
     {
         long initialTick = stopwatch.ElapsedTicks;
