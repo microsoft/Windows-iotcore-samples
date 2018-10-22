@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Windows.Devices.Gpio;
+using Windows.Foundation;
 
 public class UltrasonicSensor
 {
@@ -8,9 +9,9 @@ public class UltrasonicSensor
     private GpioPin driverPin;
     private GpioPin echoPin;
     private GpioController gpioController;
+    private GpioChangeReader changeReader;
 
-    public double lastDelay = 0.0;
-    public double riseTime = 0.0;
+    private double lastDelay = 0.0;
     private Stopwatch stopwatch;
 
     public UltrasonicSensor()
@@ -30,22 +31,38 @@ public class UltrasonicSensor
         driverPin.Write(GpioPinValue.Low);
         driverPin.SetDriveMode(GpioPinDriveMode.Output);
         echoPin.SetDriveMode(GpioPinDriveMode.InputPullDown);
+
+        changeReader = new GpioChangeReader(echoPin);
+        changeReader.Polarity = GpioChangePolarity.Both; // one measurement results in one rising and one falling edge
+        changeReader.Start();
+
+        // we use the stopwatch to time the trigger pulse
         stopwatch = Stopwatch.StartNew();
         stopwatch.Start();
     }
 
     public void Trigger()
     {
+        changeReader.Clear();
+        var a = changeReader.WaitForItemsAsync(2); // two edges, measure the time between
+        a.Completed = GpioValueChanged;
+
         // trigger an echo
         driverPin.Write(GpioPinValue.High);
         Wait(0.1); // datasheet says 10us would do but this too is fine
         driverPin.Write(GpioPinValue.Low);
-        stopwatch.Restart();
-        Wait(0.1); // let the output settle
-        while (stopwatch.ElapsedMilliseconds < 400 && echoPin.Read() == GpioPinValue.Low) { } // busy wait to make sure output is still low
-        riseTime = stopwatch.ElapsedTicks;
-        while (stopwatch.ElapsedMilliseconds < 400 && echoPin.Read() == GpioPinValue.High) { } // wait until the output falls again
-        lastDelay = (stopwatch.ElapsedTicks - riseTime) / Stopwatch.Frequency;
+    }
+
+    void GpioValueChanged(IAsyncAction action, AsyncStatus status) {
+        var events = changeReader.GetAllItems();
+        if (events.Count < 2)
+        {
+            // fail silently
+            return;
+        }
+        var first = events[0];
+        var second = events[1];
+        lastDelay = (second.RelativeTime - first.RelativeTime).TotalSeconds;
     }
 
     public double GetCentimeters()
@@ -61,9 +78,6 @@ public class UltrasonicSensor
         long initialElapsed = stopwatch.ElapsedMilliseconds;
         double desiredTicks = milliseconds / 1000.0 * Stopwatch.Frequency;
         double finalTick = initialTick + desiredTicks;
-        while (stopwatch.ElapsedTicks < finalTick)
-        {
-
-        }
+        while (stopwatch.ElapsedTicks < finalTick) ; // busy wait
     }
 }
