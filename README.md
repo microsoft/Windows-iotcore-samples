@@ -160,7 +160,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
  <tr>
   <td><a href="Samples/ShiftRegister">Shift Register</a></td>
   <td><a href="Samples/MemoryStatus">Memory Status</a></td>
-   <td><a href="Samples/ContainerWebSocketCS">Container Web Socket</a></td>
+   <td><a href="Samples/ContainerWebSocket">Container Web Socket</a></td>
  </tr>
   <tr>
   <td><a href="Samples/CustomDeviceAccessor">Custom Device Accessor</a></td>
