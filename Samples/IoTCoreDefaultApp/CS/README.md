@@ -1,83 +1,169 @@
-# IoT Core Default App 
+---
+title: Windows 10 IoT Core Default App
+author: saraclay
+ms.author: saclayt
+ms.date: 08/08/2018
+ms.topic: article
+description: Learn about the Windows 10 IoT Core Default App and its features.
+keywords: windows iot, windows 10 iot core, default app
+---
 
-We'll create a default app to demonstrate how to create a simple startup app that has some basic device management for your Windows 10 IoT Core device.
+# Windows 10 IoT Core Default App Overview
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
+> [!TIP]
+> If you find that you'd like to see a feature added to this sample app, [open an issue](https://docs.microsoft.com/en-us/windows/iot-core/develop-your-app/iotcoredefaultapp) on GitHub to let us know. 
 
-### IoT Core Default App contents
+When you initially flash Windows 10 IoT Core, you will be presented with the Windows 10 IoT Core Default App upon startup, which looks like this:
 
-The IoT Core Default App provides a good example of creating a user experience for IoT Core devices.
+![Screenshot of the IoT Core Default App](../../../Resources/images/iotcoredefaultapp/DeviceInfoPage-Screenshot.jpg)
 
-#### Set up
+The purpose of this application is not only to provide you with a friendly shell to interact with when you first boot up Windows 10 IoT Core, but we have open-sourced the code for this application [here](http://github.com/Microsoft/Windows-iotcore-samples/tree/master/Samples/IoTCoreDefaultApp/CS) so that you can plug and play with these features on your own custom application(s).
 
-Upon first boot, you will be taken through a quick set up experience. Set the language and connect to Wi-Fi. If you don't have a USB Wi-Fi adapter, you can always connect later. 
+This article will give you a rundown of the different features that the Windows 10 IoT Core Default App offers as well as how you can leverage these different features for your own applications.
 
-![DefaultApp setup on Windows 10 IoT Core](../../../Resources/images/iotcoredefaultapp/defaultapp_oobe.png)
+## Leveraging the IoT Core Default App 
 
-#### Device Info
+The IoT Core Default App can be customized and extended, or you can use the source code as an example for your own app. To try this out for yourself, download the zip of our samples or check out the code for the IoT Core Default App [here](https://github.com/Microsoft/Windows-iotcore-samples/tree/master/Samples/IoTCoreDefaultApp/CS). For any questions, please file an issue on our samples repo [here](https://github.com/Microsoft/Windows-iotcore-samples/issues).
 
-This is the main page for you to get started. The default app is intended to help you link your PC to your device. All of the development, debugging and design happens on your PC! 
+As shown under the [Settings section](https://docs.microsoft.com/en-us/windows/iot-core/develop-your-app/iotcoredefaultapp#settings
+) below, in some cases, you may configure default settings and features on your customer system on behalf of the end user. However, if you turn these settings and features on by default or if diagnostics are above the basic setting, you must:
 
-![DefaultApp on Windows 10 IoT Core](../../../Resources/images/iotcoredefaultapp/DefaultAppRpi2.png)
+* Notify the end user that these features have been enable and provide the end user with the link to Microsoft's Privacy Statement web page [here](http://go.microsoft.com/fwlink/?LinkId=521839). 
+* Secure consent from the relevant end user to enable such features by default (as required by applicable law).
+* Provide end users the ability to change the Diagnostics setting back to the basic setting.
+* If you enable Microsoft Accounts and you have access to end user data, if the end user deletes the Microsoft Account, you must enable simultaneous deletion of all the end user's Microsoft Account data on the device. 
 
-Use the device name and IP address listed here when connecting to you device.
+## Out-of-Box Experience (OOBE)
 
-#### Tutorials
+The out-of-box experience for the IoT Core Default App is as lean as it gets. The first pages will ask for a default language and wi-fi settings. From there, in order for your app to be GDPR-compliant, you must have a diagnostic data screen and, if you're planning to track location, you will need to have a location permissions screen too. Examples of both are shown below. 
 
-A quick set of instructions on how to get your board connected to your PC. If you're on the web, you can find the same set of instructions [here](/GetStarted)
+![Location settings for OOBE](../../../Resources/images/iotcoredefaultapp/OOBE3.jpg)
+![Diagnostic settings for OOBE](../../../Resources/images/iotcoredefaultapp/OOBE4.jpg)
 
-![DefaultApp tutorials on Windows 10 IoT Core](../../../Resources/images/iotcoredefaultapp/defaultapp_tutorial.png)
+## Command Bar
+The Command Bar is the persistant horizonatal bar located at the bottom of the screen. This provides easy access to the following funtionality:
+- Forward and backward page navigation
+- Basic device info without leaving the current page
+- Turning fullscreen mode on or off
+- Advance shortcuts
+- Page specific buttons
 
-#### Settings
+There are a lot buttons in the Command Bar, and sometimes those buttons can be confusing or hidden. To expand the Command Bar and access those buttons, please press the menu button in the bottom right:
 
-From settings, you can reconfigure your language, connect via Wi-Fi and connect to a Bluetooth device.
+![How to expand Command Bar](../../../Resources/images/iotcoredefaultapp/CommandBar.gif)
 
-![DefaultApp settings on Windows 10 IoT Core](../../../Resources/images/iotcoredefaultapp/defaultapp_settings.png)
+## Start Menu - Play
 
-### Load the project in Visual Studio
+The Start Menu is where most plug and play features live.
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\IotCoreDefaultApp`.  The sample code is C#. Make a copy of the folder on your disk and open the project from Visual Studio.
+### Weather
+Using data from the National Weather Service, the weather page renders weather information in your current location.
 
-Once the project is open and builds, the next step is to [deploy](https://github.com/MicrosoftDocs/windows-iotcore-docs/blob/master/windows-iotcore/develop-your-app/AppDeployment.md) the application to your device.
+### Web Browser
+The web browser allows you to pull up most sites from the web.
 
-When everything is set up, you should be able to press F5 from Visual Studio.  The IoT Core Default App will deploy and start on the Windows IoT device.  
+### Music
+This page will play MP3 and WAV files from the **Music Library**, that can be accessed via the [Windows Device Portal](../manage-your-device/DevicePortal.md).  To upload files to the music player, you will need to navigate to the Windows Device Portal, click on the "Apps" dropdown, navigate to "File Explorer", select "Music" and upload your files from there.
 
-Note that this is the same code that is shipped as the startup app in Windows IoT Core images by default.
 
-### Set your app as the Startup App
+![How to upload music files](../../../Resources/images/iotcoredefaultapp/music.gif)
 
-1. You can set your app to be the 'Startup App' for your Windows IoT Core device, so that when the device reboot, it will start your app automatically. To do so, you'll need to run a command line utility called iotstartup on the Windows IoT Core device. We will do this using PowerShell.
+### Slideshow
+This page will display any PNG or JPEG image files from the **Pictures Library**, that can be accessed via the [Windows Device Portal](../manage-your-device/DevicePortal.md). To upload images to the slideshow, you will need to navigate to the Windows Device Portal, click on the "Apps" dropdown, navigate to "File Explorer", select "Pictures" and upload your files from there.
 
-1. Start a PowerShell (PS) session with your Windows IoT Core device as described [here](/Docs/PowerShell).
 
-1. From the PS session, type (for simplicity, we will assume the app's name is HelloWorld, **please substitute your app's actual name**):
+![How to upload music files](../../../Resources/images/iotcoredefaultapp/slideshow.gif)
 
-        [192.168.0.243]: PS C:\> iotstartup list HelloWorld
+### Draw
+This page allows you to test out Windows 10 IoT Core's inking capabilities.
 
-    and you should see the full name of the UWP application, i.e. something like:
+## Start Menu - Explore 
 
-        Headed   : HelloWorld_n2pe7ts0w7wey!App
+### Apps 
+This page allows you to launch other foreground applications installed on the device. Launching an application will suspend IoT Core Default App, which can be relaunched by using App Manager in [Windows Device Portal](../manage-your-device/DevicePortal.md).
 
-    the utility is confirming that your app is an 'headed' application, and is installed correctly.
+Nothing special is needed to have your foreground application listed in the page, simply [install](AppInstaller.md) or [deploy](AppDeployment.md) the application. After successful installation or deployment, re-navigate to the Apps page to refresh the list of applications.
 
-1. Now, it's easy to set this app as the 'Startup App'. Just type the command:
+Note that there are a couple of auto-generated OS related applications that we filter out, you can find the list of app names [here](http://github.com/Microsoft/Windows-iotcore-samples/tree/master/Samples/IoTCoreDefaultApp/CS/Views/AppLauncherPage.xaml.cs).
 
-        [192.168.0.243]: PS C:\> iotstartup add headed HelloWorld
+### Notifications
+This page will list the past 20 notifications since IoT Core Default App was launched. When IoT Core Default App is running in debug mode, buttons are added that will create test notifications.
 
-    The utility will confirm that the new Startup headed app is now your app:
+### Logs
+This page will list any auto-generated crash or error logs, which then can be taken off the device and analyzed.
 
-        AppId changed to HelloWorld_n2pe7ts0w7wey!App
+### GitHub
+This page will take you to the open-sourced GitHub location of the IoT Core Default App code.
 
-1. Go ahead and restart your Windows IoT Core device. From the PS session, you can issue the shutdown command:
+## Start Menu - Windows Device Portal
 
-        [192.168.0.243]: PS C:\> shutdown /r /t 0
+The pages in this section leverage the Windows Device Portal REST APIs, which requires you to sign in using your Windows Device Portal credentials.
 
-1. Once the device has restarted, you'll see your app start automatically.
+## Device Information
 
-1. At this point, you can revert back to using the DefaultApp as your 'Startup App'. Just type the command:
+This page allows you to see the different features for your device including Ethernet, OS version, connected devices, and more.
 
-        [192.168.0.243]: PS C:\> iotstartup add headed IoTCoreDefaultApp
+## Command Line
 
-    The utility will confirm that the new Startup headed app is now IoTCoreDefaultApp:
+This page allows you to run commands directly on your device.
 
-        AppId changed to IoTCoreDefaultApp_kwmcxzszfer2y!App
+To enable this feature you have to set a registry key so that the app can run the commands. The first time you try to run a command you will see a link that allows you to set the registry key using a call to Windows Device Portal. Click the link to enable your device to run commands.
+
+Some commands require administrator access. For security purposes the app uses a non-admin account by default to run commands. If you need to run a command as an admin you can type "RunAsAdmin <your command>" in the command line prompt.
+
+## Settings
+You'll be able to configure a number of settings here including Wi-Fi, Bluetooth, power options, and more.
+
+### App Settings
+The **App Settings** section allows you to configure various settings for pages in the app.  
+
+Some of the settings you can customize are:
+
+##### General Settings
+* Set the default page that appears when the app is started
+* Enable/disable the screensaver
+
+##### Weather Settings
+* Change the location
+  > This feature is only enabled if you have provided a valid [Bing Map Service Token](https://msdn.microsoft.com/en-us/library/ff428642.aspx).  To pass the token to the app, create a **MapToken.config** file in the LocalState folder of the app (e.g. C:\Data\USERS\\[User Account]\AppData\Packages\\[Package Full Name]\LocalState\MapToken.config) and restart the app.
+* Expand the map
+* Enable/disable map flipping so that the map and the weather switch places periodically to prevent screen burn-in
+
+##### Web Browser Settings
+* Set the home page for the Web Browser
+
+##### Slideshow Settings
+* Set the slideshow interval
+
+##### Appearance
+* Use MDL2 Assets instead of Emojis for the tile icons
+* Set the tile width and height
+* Set UI scaling - Automatic scaling is set by default
+* Set the tile color
+
+#### System
+Change the language, keyboard layout, and time zone.
+
+#### Network & Wi-Fi
+View network adapter properties or connect to an available Wi-Fi network.
+
+#### Bluetooth
+Pair with a Bluetooth device.
+
+#### App Updates
+Check for app updates or change automatic update settings.
+
+#### Power Options
+Restart or shutdown the device.
+
+#### Diagnostics
+Select the amount of diagnostic data you wish to provide Microsoft.  We encourage users to opt into **Full** diagnostic data so we can diagnose issues quickly and make improvements to the product.
+
+##### Basic 
+Send only info about your device, its settings and capabilities, and whether it is performing properly.
+
+##### Full
+Send all Basic diagnostic data, along with info about websites you browse and how you use apps and features, plus additional info about device health, device activity, and enhanced error reporting.
+
+#### Location
+Allow or deny the app access to your location.
