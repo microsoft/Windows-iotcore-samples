@@ -1,0 +1,147 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:PageBase
+    x:Class="SmartDisplay.Views.WebBrowserPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    Loaded="OnPageLoaded"
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.05*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0.05*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Grid.ColumnSpan="4" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="8" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    Command="{x:Bind ViewModel.ActionCommand}"
+                    CommandParameter="NavigateBack"
+                    IsEnabled="{x:Bind ViewModel.CanGoBack, Mode=OneWay}"
+                    Content="{StaticResource IconBrowserBack}"
+                    Style="{StaticResource BrowserButtonStyle}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{x:Bind ViewModel.ActionCommand}"
+                    CommandParameter="NavigateForward"
+                    IsEnabled="{x:Bind ViewModel.CanGoForward, Mode=OneWay}"
+                    Content="{StaticResource IconBrowserNext}"
+                    Style="{StaticResource BrowserButtonStyle}" />
+                <Button
+                    Grid.Column="2"
+                    Command="{x:Bind ViewModel.ActionCommand}"
+                    CommandParameter="Refresh"
+                    Content="{x:Bind ViewModel.RefreshButtonContent, Mode=OneWay}"
+                    Style="{StaticResource BrowserButtonStyle}" />
+                <Button
+                    Grid.Column="3"
+                    Command="{x:Bind ViewModel.ActionCommand}"
+                    CommandParameter="NavigateHome"
+                    Content="{StaticResource IconBrowserHome}"
+                    Style="{StaticResource BrowserButtonStyle}" />
+                <AutoSuggestBox
+                    x:Uid="WebAddress"
+                    x:Name="WebAddress"
+                    Grid.Column="4"
+                    Height="Auto"
+                    AutoMaximizeSuggestionArea="True"
+                    IsSuggestionListOpen="True"
+                    Style="{StaticResource BrowserAddressBarStyle}"
+                    TextBoxStyle="{StaticResource AutoSuggestBoxTextBoxStyle}"
+                    UpdateTextOnSelect="true"
+                    Text="{x:Bind ViewModel.TargetUrl, Mode=TwoWay}"
+                    FocusEngaged="WebAddress_FocusEngaged"
+                    KeyUp="WebAddress_KeyUp"
+                    LostFocus="WebAddress_LostFocus"
+                    QuerySubmitted="WebAddress_QuerySubmitted"
+                    SuggestionChosen="WebAddress_SuggestionChosen"
+                    TextChanged="WebAddress_TextChanged">
+                    <AutoSuggestBox.QueryIcon>
+                        <SymbolIcon Foreground="{StaticResource DarkAccentBrush}" Symbol="Find" />
+                    </AutoSuggestBox.QueryIcon>
+                </AutoSuggestBox>
+            </Grid>
+
+            <StackPanel
+                Grid.Row="1"
+                Grid.ColumnSpan="5"
+                Padding="0,0,0,-10">
+                <ProgressBar
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Foreground="{StaticResource DarkAccentBrush}"
+                    IsIndeterminate="{x:Bind ViewModel.InProgress, Mode=OneWay}" />
+            </StackPanel>
+
+            <WebView
+                x:Name="WebView"
+                Grid.Row="2"
+                Margin="5,0,5,5"
+                Visibility="{x:Bind ViewModel.IsMessageVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='Invert'}"
+                ContainsFullScreenElementChanged="WebView_ContainsFullScreenElementChanged"
+                DOMContentLoaded="WebView_DOMContentLoaded"
+                FrameDOMContentLoaded="WebView_FrameDOMContentLoaded"
+                FrameNavigationStarting="WebView_NavigationStarting"
+                LongRunningScriptDetected="WebView_LongRunningScriptDetected"
+                NavigationCompleted="WebView_NavigationCompleted"
+                NavigationStarting="WebView_NavigationStarting"
+                NewWindowRequested="WebView_NewWindowRequested"
+                UnviewableContentIdentified="WebView_UnviewableContentIdentified"
+                ScrollViewer.ZoomMode="Enabled" />
+
+            <StackPanel
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Visibility="{x:Bind ViewModel.IsMessageVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Image
+                    HorizontalAlignment="Center"
+                    Source="/Assets/NetworkWarning.png"
+                    Stretch="None" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="20"
+                    Text="{x:Bind ViewModel.MessageLine1, Mode=OneWay}" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="20"
+                    Text="{x:Bind ViewModel.MessageLine2, Mode=OneWay}" />
+                <Button
+                    x:Uid="NetworkPreferencesButton"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    BorderBrush="AliceBlue"
+                    Command="{x:Bind ViewModel.ActionCommand}"
+                    CommandParameter="NetworkPreferences"
+                    />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ctrl:PageBase>

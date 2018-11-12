@@ -1,0 +1,290 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<UserControl
+    x:Class="SmartDisplay.Controls.NetworkListControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate x:Name="WiFiInitialState">
+            <ctrl:NetworkListControlTemplate SignalBars="{Binding SignalBars, Mode=OneWay, Converter={StaticResource GlyphConverter}}" SsidText="{Binding Ssid}" />
+        </DataTemplate>
+        <DataTemplate x:Name="WiFiConnectedState">
+            <ctrl:NetworkListControlTemplate SignalBars="{Binding SignalBars, Mode=OneWay, Converter={StaticResource GlyphConverter}}" SsidText="{Binding Ssid}">
+                <ctrl:NetworkListControlTemplate.PanelContent>
+                    <StackPanel>
+                        <TextBlock
+                            x:Uid="NetworkConnected"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}" />
+                    </StackPanel>
+                </ctrl:NetworkListControlTemplate.PanelContent>
+            </ctrl:NetworkListControlTemplate>
+        </DataTemplate>
+        <DataTemplate x:Name="WiFiConnectState">
+            <ctrl:NetworkListControlTemplate SignalBars="{Binding SignalBars, Mode=OneWay, Converter={StaticResource GlyphConverter}}" SsidText="{Binding Ssid}">
+                <ctrl:NetworkListControlTemplate.PanelContent>
+                    <StackPanel Margin="0,10,0,0">
+                        <CheckBox
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Left"
+                            Checked="ConnectAutomaticallyCheckBox_Changed"
+                            IsChecked="{Binding Path=ConnectAutomatically, Mode=TwoWay}"
+                            Style="{StaticResource SmartDisplayCheckBoxStyle}"
+                            Unchecked="ConnectAutomaticallyCheckBox_Changed">
+                            <TextBlock
+                                x:Uid="ConnectAutomatically"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyTextBlockStyle}" />
+                        </CheckBox>
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Left"
+                            Foreground="Red"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{Binding Message}"
+                            Visibility="{Binding IsMessageVisible}" />
+                        <Button
+                            x:Uid="ConnectButton"
+                            Width="120"
+                            Height="32"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Click="ConnectButton_Click" />
+                    </StackPanel>
+                </ctrl:NetworkListControlTemplate.PanelContent>
+            </ctrl:NetworkListControlTemplate>
+        </DataTemplate>
+        <DataTemplate x:Name="WiFiConnectedMoreOptions">
+            <ctrl:NetworkListControlTemplate SignalBars="{Binding SignalBars, Mode=OneWay, Converter={StaticResource GlyphConverter}}" SsidText="{Binding Ssid}">
+                <ctrl:NetworkListControlTemplate.PanelContent>
+                    <StackPanel>
+                        <TextBlock
+                            x:Uid="NetworkConnected"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}" />
+                        <Button
+                            x:Uid="DisconnectButton"
+                            Width="120"
+                            Height="32"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Click="DisconnectButton_Click" />
+                    </StackPanel>
+                </ctrl:NetworkListControlTemplate.PanelContent>
+            </ctrl:NetworkListControlTemplate>
+        </DataTemplate>
+        <DataTemplate x:Name="WiFiPasswordState">
+            <ctrl:NetworkListControlTemplate SignalBars="{Binding SignalBars, Mode=OneWay, Converter={StaticResource GlyphConverter}}" SsidText="{Binding Ssid}">
+                <ctrl:NetworkListControlTemplate.PanelContent>
+                    <StackPanel Margin="0,10,0,0">
+                        <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
+                            <TextBlock
+                                x:Uid="NetworkPasswordPrompt"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyTextBlockStyle}" />
+                            <PasswordBox
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Loaded="WiFiPasswordBox_Loaded"
+                                Password="{Binding Path=Password, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                            <Button
+                                Height="32"
+                                Margin="0,0,10,10"
+                                Click="PushButtonConnect_Click"
+                                Visibility="{Binding Path=IsWpsPushButtonAvailable}">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon
+                                        FontFamily="{StaticResource IconFontFamily}"
+                                        FontSize="20"
+                                        Glyph="{StaticResource IconWps}" />
+                                    <TextBlock x:Uid="Wps" Margin="12,0,0,0" />
+                                </StackPanel>
+                            </Button>
+                            <Button
+                                x:Uid="NextButton"
+                                Width="120"
+                                Height="32"
+                                Margin="0,0,10,10"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Click="NextButton_Click" />
+                            <Button
+                                x:Uid="CancelButton"
+                                Width="120"
+                                Height="32"
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Click="CancelButton_Click" />
+                        </StackPanel>
+                    </StackPanel>
+                </ctrl:NetworkListControlTemplate.PanelContent>
+            </ctrl:NetworkListControlTemplate>
+        </DataTemplate>
+        <DataTemplate x:Name="WiFiEapPasswordState">
+            <ctrl:NetworkListControlTemplate SignalBars="{Binding SignalBars, Mode=OneWay, Converter={StaticResource GlyphConverter}}" SsidText="{Binding Ssid}">
+                <ctrl:NetworkListControlTemplate.PanelContent>
+                    <StackPanel Margin="0,20,0,0">
+                        <CheckBox IsChecked="{Binding Path=UsePassword, Mode=TwoWay}" Visibility="{Binding Path=IsEapAvailable}">
+                            <TextBlock
+                                x:Uid="UsePassword"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyTextBlockStyle}" />
+                        </CheckBox>
+                        <StackPanel
+                            HorizontalAlignment="Stretch"
+                            Orientation="Vertical"
+                            Visibility="{Binding Path=UsePassword}">
+                            <TextBlock
+                                x:Uid="Username"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                            <TextBox
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Text="{Binding Path=UserName, Mode=TwoWay}" />
+                            <TextBlock
+                                x:Uid="Domain"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                            <TextBox
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Text="{Binding Path=Domain, Mode=TwoWay}" />
+                            <TextBlock
+                                x:Uid="Password"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                            <PasswordBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Password="{Binding Path=Password, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel
+                            Margin="0,5,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                            <Button
+                                x:Uid="NextButton"
+                                Width="120"
+                                Height="32"
+                                Margin="0,0,10,10"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Click="NextButton_Click" />
+                            <Button
+                                x:Uid="CancelButton"
+                                Width="120"
+                                Height="32"
+                                Margin="0,0,0,10"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Click="CancelButton_Click" />
+                        </StackPanel>
+                    </StackPanel>
+                </ctrl:NetworkListControlTemplate.PanelContent>
+            </ctrl:NetworkListControlTemplate>
+        </DataTemplate>
+        <DataTemplate x:Name="WiFiConnectingState">
+            <ctrl:NetworkListControlTemplate SignalBars="{Binding SignalBars, Mode=OneWay, Converter={StaticResource GlyphConverter}}" SsidText="{Binding Ssid}">
+                <ctrl:NetworkListControlTemplate.PanelContent>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <ProgressRing Foreground="White" IsActive="True" />
+                            <TextBlock
+                                x:Uid="NetworkConnectingMessage"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyTextBlockStyle}" />
+                        </StackPanel>
+                        <Button
+                            x:Uid="CancelButton"
+                            Width="120"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Click="CancelButton_Click" />
+                    </StackPanel>
+                </ctrl:NetworkListControlTemplate.PanelContent>
+            </ctrl:NetworkListControlTemplate>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <!--  Wi-Fi List  -->
+    <Grid Style="{StaticResource NetworkListControlGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="12" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            x:Uid="WiFi"
+            Grid.Row="0"
+            HorizontalAlignment="Left"
+            Style="{StaticResource SettingHeaderStyle}" />
+        <Button
+            x:Uid="WifiRefresh"
+            x:Name="RefreshButton"
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            Click="RefreshButton_Click" />
+        <ProgressRing
+            x:Name="RefreshProgressRing"
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            Foreground="White"
+            IsActive="True"
+            Visibility="Collapsed" />
+        <ListView
+            x:Name="WiFiListView"
+            Grid.Row="2"
+            IsItemClickEnabled="True"
+            ItemClick="WiFiListView_ItemClick"
+            ItemContainerStyle="{StaticResource WiFiListViewItemStyle}"
+            ItemTemplate="{StaticResource WiFiInitialState}"
+            SelectionChanged="WiFiListView_SelectionChanged"
+            SelectionMode="Single"
+            Style="{StaticResource NetworkListControlListStyle}" />
+        <TextBlock
+            x:Uid="NoNetworks"
+            x:Name="NoWiFiFoundText"
+            Grid.Row="2"
+            MaxWidth="446"
+            Margin="12,0,0,0"
+            HorizontalAlignment="Stretch"
+            Style="{StaticResource BodyTextBlockStyle}"
+            Visibility="Collapsed" />
+    </Grid>
+</UserControl>

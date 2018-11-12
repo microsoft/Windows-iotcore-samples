@@ -1,0 +1,29 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<UserControl
+    x:Class="SmartDisplay.Controls.Screensaver"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    IsEnabledChanged="IsScreensaverEnabledChanged"
+    SizeChanged="ScreensaverSizeChanged"
+    Visibility="{x:Bind Path=ViewModel.IsScreensaverVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+    mc:Ignorable="d">
+
+    <Canvas Background="Black">
+
+        <Image
+            Canvas.Left="{x:Bind ViewModel.LeftImagePosition, Mode=OneWay}"
+            Canvas.Top="{x:Bind ViewModel.TopImagePosition, Mode=OneWay}"
+            Width="{x:Bind ViewModel.ImageWidth, Mode=OneWay}"
+            Height="{x:Bind ViewModel.ImageHeight, Mode=OneWay}"
+            Source="{x:Bind ViewModel.ImageSource, Mode=OneWay}"
+            Stretch="Uniform"
+            Visibility="{x:Bind Path=ViewModel.IsImageVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+    </Canvas>
+
+</UserControl>

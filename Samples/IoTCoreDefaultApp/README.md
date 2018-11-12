@@ -1,6 +1,7 @@
 ---
 title: IoT Core Default App sample
-ms.author: namkedia
+author: saraclay
+ms.author: saclayt
 description: A full featured sample app - The current IoT Core default application.
 ---
 

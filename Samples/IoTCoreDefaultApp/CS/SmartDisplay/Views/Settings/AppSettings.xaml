@@ -1,0 +1,90 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:PageBase
+    x:Class="SmartDisplay.Views.Settings.AppSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
+
+    <ctrl:TitleContentFrame x:Name="Container">
+        <ctrl:TitleContentFrame.TitleContent>
+            <StackPanel>
+                <TextBlock Style="{ThemeResource SmartDisplayPageTitleTextBlockStyle}" x:Uid="AppPreferences" />
+                <TextBlock
+                    Style="{StaticResource SettingInvalidInputStyle}"
+                    Text="{x:Bind ViewModel.Status, Mode=OneWay}"
+                    Visibility="{x:Bind Path=ViewModel.IsStatusVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
+        </ctrl:TitleContentFrame.TitleContent>
+        <ctrl:TitleContentFrame.ContentContainer>
+            <StackPanel
+                x:Name="AppSettingsContainer"
+                MaxWidth="500"
+                HorizontalAlignment="Left"
+                Orientation="Vertical">
+                <TextBlock Margin="0,0,0,20" Text="{x:Bind ViewModel.EtwProviderGuid}" />
+
+                <StackPanel Orientation="Vertical" Style="{StaticResource SettingPaneStyle}">
+                    <TextBlock x:Uid="GeneralSettingHeader" Style="{StaticResource SettingHeaderStyle}" />
+                    <!--  Default Page  -->
+                    <ComboBox
+                        x:Uid="DefaultAppPageComboBox"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{x:Bind ViewModel.PagesCollection}"
+                        SelectedItem="{x:Bind ViewModel.AppDefaultPage, Mode=TwoWay}"
+                        Style="{StaticResource SettingControlStyle}" />
+
+                    <!--  Screensaver Toggle  -->
+                    <ToggleSwitch
+                        x:Uid="EnableScreensaver"
+                        IsOn="{x:Bind ViewModel.ScreensaverEnabled, Mode=TwoWay}"
+                        Style="{StaticResource SettingControlStyle}" />
+                </StackPanel>
+
+                <!--  Weather Settings  -->
+                <StackPanel Orientation="Vertical" Style="{StaticResource SettingPaneStyle}">
+                    <TextBlock x:Uid="WeatherSettingHeader" Style="{StaticResource SettingHeaderStyle}" />
+                    <ctrl:WeatherSettingsControl Width="{x:Bind ViewModel.Width, Mode=OneWay}" />
+                </StackPanel>
+
+                <!--  Browser Settings  -->
+                <StackPanel Orientation="Vertical" Style="{StaticResource SettingPaneStyle}">
+                    <TextBlock x:Uid="BrowserSettingHeader" Style="{StaticResource SettingHeaderStyle}" />
+                    <ctrl:BrowserSettingsControl Width="{x:Bind ViewModel.Width, Mode=OneWay}" />
+                </StackPanel>
+
+                <!--  Slideshow Settings  -->
+                <StackPanel Orientation="Vertical" Style="{StaticResource SettingPaneStyle}">
+                    <TextBlock x:Uid="SlideshowSettingHeader" Style="{StaticResource SettingHeaderStyle}" />
+                    <ctrl:SlideshowSettingsControl Width="{x:Bind ViewModel.Width, Mode=OneWay}" />
+                </StackPanel>
+
+                <!--  Start Page Tiles  -->
+                <StackPanel Orientation="Vertical" Style="{StaticResource SettingPaneStyle}">
+                    <TextBlock x:Uid="TileSettingHeader" Style="{StaticResource SettingHeaderStyle}" />
+                    <ctrl:TileSettingsControl Width="{x:Bind ViewModel.Width, Mode=OneWay}" />
+                </StackPanel>
+
+                <!--  Telemetry Settings  -->
+                <StackPanel
+                    Orientation="Vertical"
+                    Style="{StaticResource SettingPaneStyle}"
+                    Visibility="{x:Bind Path=ViewModel.AreTelemetryControlsVisible, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock x:Uid="TelemetrySettingHeader" Style="{StaticResource SettingHeaderStyle}" />
+
+                    <ToggleSwitch
+                        x:Uid="SendTelemetryToggle"
+                        IsOn="{x:Bind ViewModel.AppEnableTelemetry, Mode=TwoWay}"
+                        Style="{StaticResource SettingControlStyle}" />
+                </StackPanel>
+            </StackPanel>
+        </ctrl:TitleContentFrame.ContentContainer>
+    </ctrl:TitleContentFrame>
+</ctrl:PageBase>
