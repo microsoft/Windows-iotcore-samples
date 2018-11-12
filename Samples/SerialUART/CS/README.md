@@ -2,7 +2,7 @@
 
 We'll create a simple app that allows communication between a desktop and an IoT device over a serial interface.
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](//github.com/MicrosoftDocs/windows-iotcore-docs/blob/master/windows-iotcore/learn-about-hardware/HeadlessMode.md).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).
 
 ### Load the project in Visual Studio
 
@@ -19,7 +19,7 @@ You have two options for wiring up your board:
 
 #### <a name="MBM_UART"></a>On-board UART (MinnowBoard Max)
 
-The MinnowBoard Max has two on-board UARTs. See the [MBM pin mapping page](https://github.com/MicrosoftDocs/windows-iotcore-docs/blob/master/windows-iotcore/learn-about-hardware/PinMappings/PinMappingsMBM.md) for more details on the MBM GPIO pins. 
+The MinnowBoard Max has two on-board UARTs. See the [MBM pin mapping page](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/pinmappings/pinmappingsmbm) for more details on the MBM GPIO pins. 
 
 * UART1 uses GPIO pins 6, 8, 10, and 12. 
 * UART2 uses GPIO pins 17 and 19. 
@@ -39,7 +39,7 @@ Make the following connections:
 
 #### <a name="RPi2_UART"></a>On-board UART (Rasperry Pi2)
 
-The Rasperry Pi 2 or 3 has one on-board UART. See the [Raspberry Pi 2 and 3 Pin Mappings page](https://github.com/MicrosoftDocs/windows-iotcore-docs/blob/master/windows-iotcore/learn-about-hardware/PinMappings/PinMappingsRPI.md) for more details on the GPIO pins. 
+The Rasperry Pi 2 or 3 has one on-board UART. See the [Raspberry Pi 2 and 3 Pin Mappings page](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/pinmappings/pinmappingsrpi) for more details on the GPIO pins. 
 
 * UART0 uses GPIO pins 6 (GND), 8 (TX) and 10 (RX). 
 
