@@ -1,0 +1,246 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:PageBase
+    x:Class="SmartDisplay.Views.DeviceInfoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:SmartDisplay.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="deviceInfoPage"
+    DataContext="{x:Bind ViewModel.LanguageManager}"
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ItemsPanelTemplate x:Key="NetworkInfoPanelTemplate">
+            <ItemsWrapGrid
+                IsHitTestVisible="False"
+                MaximumRowsOrColumns="2"
+                Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="NetworkInfoDataTemplate" x:DataType="local:NetworkInfoDataTemplate">
+            <StackPanel
+                Width="200"
+                MinHeight="200"
+                Orientation="Vertical">
+                <TextBlock
+                    Margin="0,4,0,0"
+                    FontSize="{Binding ElementName='deviceInfoPage', Path=ViewModel.SubtitleFontSize}"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="{x:Bind NetworkName, Mode=OneWay}" />
+                <TextBlock
+                    Margin="0,4,0,0"
+                    Style="{StaticResource BaseTextBlockStyle}"
+                    Text="{Binding ElementName='deviceInfoPage', Path=DataContext[Ipv6Text]}" />
+                <TextBlock
+                    Margin="0,0,0,0"
+                    Foreground="{StaticResource PaleTextBrush}"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Text="{x:Bind NetworkIpv6, Mode=OneWay}" />
+                <TextBlock
+                    Margin="0,14,0,0"
+                    Style="{StaticResource BaseTextBlockStyle}"
+                    Text="{Binding ElementName='deviceInfoPage', Path=DataContext[Ipv4Text]}" />
+                <TextBlock
+                    Margin="0,0,0,0"
+                    Foreground="{StaticResource PaleTextBrush}"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Text="{x:Bind NetworkIpv4, Mode=OneWay}" />
+                <TextBlock
+                    Margin="0,14,0,0"
+                    Style="{StaticResource BaseTextBlockStyle}"
+                    Text="{Binding ElementName='deviceInfoPage', Path=DataContext[StatusText]}" />
+                <TextBlock
+                    Margin="0,0,0,10"
+                    Foreground="{StaticResource PaleTextBrush}"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Text="{x:Bind NetworkStatus, Mode=OneWay}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <ScrollViewer
+        Grid.Row="0"
+        Margin="-15,0,-15,0"
+        HorizontalScrollMode="Disabled">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  Maker image security notice row  -->
+            <Grid
+                Grid.Row="0"
+                Background="Gray"
+                Visibility="{x:Bind Path=ViewModel.MakerImageBannerVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="60" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        x:Uid="MakerImageNotice"
+                        Grid.Column="0"
+                        Style="{StaticResource MakerNoticeTextStyle}" />
+                    <Button
+                        Name="SecurityNoticeLearnMoreButton"
+                        Grid.Column="1"
+                        Command="{x:Bind ViewModel.SecurityNoticeLearnMoreCommand}"
+                        Content="Learn More"
+                        Style="{StaticResource LearnMoreButtonStyle}" />
+                    <Button
+                        Name="CloseNoticeButton"
+                        Grid.Column="2"
+                        Command="{x:Bind ViewModel.SecurityNoticeCloseCommand}"
+                        Style="{StaticResource CloseNoticeButtonStyle}">
+                        <TextBlock
+                            FontFamily="{StaticResource IconFontFamily}"
+                            Text="&#xE711;"
+                            TextAlignment="Center" />
+                    </Button>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!--  Left panel  -->
+                <Grid HorizontalAlignment="Right">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="44" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid HorizontalAlignment="Center">
+                        <Ellipse
+                            Width="240"
+                            Height="240"
+                            Margin="24,16,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Fill="{StaticResource AccentBrush}" />
+                        <Image
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Source="{x:Bind ViewModel.BoardImage, Mode=OneWay}"
+                            Stretch="None" />
+                    </Grid>
+                    <RichTextBlock Grid.Row="2">
+                        <Paragraph>
+                            <InlineUIContainer>
+                                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" x:Uid="DeviceInfoPageVisit" />
+                            </InlineUIContainer>
+                            <InlineUIContainer>
+                                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" x:Uid="WindowsOnDevicesUrl" />
+                            </InlineUIContainer>
+                            <InlineUIContainer>
+                                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" x:Uid="DeviceInfoPageStartDeveloping" />
+                            </InlineUIContainer>
+                        </Paragraph>
+                    </RichTextBlock>
+                    <TextBlock
+                        x:Uid="NetworkInformation"
+                        Grid.Row="4"
+                        FontFamily="Segoe UI Regular"
+                        FontSize="16" />
+                    <ListView
+                        Grid.Row="5"
+                        ItemContainerStyle="{StaticResource DeviceInfoNetworkListViewItemStyle}"
+                        ItemTemplate="{StaticResource NetworkInfoDataTemplate}"
+                        ItemsPanel="{StaticResource NetworkInfoPanelTemplate}"
+                        ItemsSource="{x:Bind ViewModel.NetworkCollection, Mode=OneWay}" />
+                </Grid>
+                <!--  Right Panel  -->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="72" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="24" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Foreground="{StaticResource AccentBrush}"
+                        Style="{StaticResource SubheaderTextBlockStyle}"
+                        Text="{x:Bind ViewModel.BoardName, Mode=OneWay}" />
+                    <StackPanel Grid.Row="2">
+                        <TextBlock
+                            x:Uid="DeviceInfoPageDeviceName"
+                            Style="{StaticResource DeviceInfoLabelTextStyle}" />
+                        <TextBlock
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind ViewModel.DeviceName, Mode=OneWay}" />
+                        <TextBlock
+                            x:Uid="DeviceInfoPageNetwork"
+                            Style="{StaticResource DeviceInfoLabelTextStyle}" />
+                        <TextBlock
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind ViewModel.NetworkName, Mode=OneWay}" />
+                        <TextBlock
+                            x:Uid="DeviceInfoPageIPAddress"
+                            Style="{StaticResource DeviceInfoLabelTextStyle}" />
+                        <TextBlock
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind ViewModel.IPAddress, Mode=OneWay}" />
+                        <TextBlock
+                            x:Uid="DeviceInfoPageOSVersion"
+                            Style="{StaticResource DeviceInfoLabelTextStyle}" />
+                        <TextBlock
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind ViewModel.OSVersion, Mode=OneWay}" />
+                        <TextBlock
+                            x:Uid="DeviceInfoPageAppBuild"
+                            Style="{StaticResource DeviceInfoLabelTextStyle}" />
+                        <TextBlock
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind ViewModel.AppBuild, Mode=OneWay}" />
+                        <TextBlock
+                            x:Uid="DeviceInfoAzureHubName"
+                            Style="{StaticResource DeviceInfoLabelTextStyle}"
+                            Visibility="{x:Bind Path=ViewModel.IsIoTHubAvailable, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind ViewModel.AzureHub, Mode=OneWay}"
+                            Visibility="{x:Bind Path=ViewModel.IsIoTHubAvailable, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock
+                            x:Uid="DeviceInfoAzureDeviceId"
+                            Style="{StaticResource DeviceInfoLabelTextStyle}"
+                            Visibility="{x:Bind Path=ViewModel.IsIoTHubAvailable, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock
+                            Foreground="{StaticResource PaleTextBrush}"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Text="{x:Bind ViewModel.AzureDeviceId, Mode=OneWay}"
+                            Visibility="{x:Bind Path=ViewModel.IsIoTHubAvailable, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="4">
+                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" x:Uid="ConnectedDevices" />
+                        <ItemsControl Foreground="{StaticResource PaleTextBrush}" ItemsSource="{x:Bind ViewModel.DevicesCollection, Mode=OneWay}" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</ctrl:PageBase>

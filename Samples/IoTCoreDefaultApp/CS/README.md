@@ -10,7 +10,6 @@ keywords: windows iot, windows 10 iot core, default app
 
 # Windows 10 IoT Core Default App Overview
 
-> [!TIP]
 > If you find that you'd like to see a feature added to this sample app, [open an issue](https://docs.microsoft.com/en-us/windows/iot-core/develop-your-app/iotcoredefaultapp) on GitHub to let us know. 
 
 When you initially flash Windows 10 IoT Core, you will be presented with the Windows 10 IoT Core Default App upon startup, which looks like this:

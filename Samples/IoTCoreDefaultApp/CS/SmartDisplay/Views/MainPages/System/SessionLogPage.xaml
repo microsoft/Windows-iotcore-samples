@@ -1,0 +1,48 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:PageBase
+    x:Class="SmartDisplay.Views.MainPages.SessionLogPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:log="using:SmartDisplay.Contracts"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ctrl:TitleContentFrame>
+        <ctrl:TitleContentFrame.TitleContent>
+            <TextBlock x:Uid="SessionLogPageTitle"/>
+        </ctrl:TitleContentFrame.TitleContent>
+        <ctrl:TitleContentFrame.ContentContainer>
+            <ListView
+                IsHitTestVisible="False"
+                ItemContainerStyle="{StaticResource NoPaddingListViewItemStyle}"
+                ItemsSource="{x:Bind ViewModel.LogEntries}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="log:LogOutputEventArgs">
+                        <StackPanel Padding="0,5,0,10" Orientation="Vertical">
+                            <TextBlock Style="{StaticResource SessionLogTextStyle}" Text="{x:Bind Text}" />
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    Style="{StaticResource SessionLogSubtitleStyle}"
+                                    Text="{x:Bind Timestamp}" />
+
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    Style="{StaticResource SessionLogSubtitleStyle}"
+                                    Text="{x:Bind CallerMemberName}" />
+
+                                <TextBlock Style="{StaticResource SessionLogSubtitleStyle}" Text="{x:Bind LoggingLevel}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ctrl:TitleContentFrame.ContentContainer>
+    </ctrl:TitleContentFrame>
+</ctrl:PageBase>

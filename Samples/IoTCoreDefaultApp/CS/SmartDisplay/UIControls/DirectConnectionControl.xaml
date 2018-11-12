@@ -1,0 +1,46 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<UserControl
+    x:Class="SmartDisplay.Controls.DirectConnectionControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <!--  Direct Connections  -->
+    <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
+        <TextBlock
+            x:Uid="DirectConnections"
+            Margin="0,0,0,12"
+            Style="{StaticResource SettingHeaderStyle}" />
+        <TextBlock
+            x:Uid="NoNetworks"
+            x:Name="NoneFoundText"
+            Style="{StaticResource BodyTextBlockStyle}"
+            Visibility="Collapsed" />
+        <Grid x:Name="DirectConnectionStackPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                Margin="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource IconFontFamily}"
+                FontSize="24"
+                Text="{StaticResource ResourceKey=IconEthernet}" />
+            <TextBlock
+                x:Uid="Ethernet"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Style="{StaticResource BodyTextBlockStyle}" />
+        </Grid>
+    </StackPanel>
+</UserControl>

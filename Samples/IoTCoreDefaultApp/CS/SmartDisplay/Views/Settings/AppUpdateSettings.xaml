@@ -1,0 +1,135 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:PageBase
+    x:Class="SmartDisplay.Views.Settings.AppUpdateSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
+
+    <ctrl:TitleContentFrame>
+        <ctrl:TitleContentFrame.TitleContent>
+            <TextBlock
+                x:Uid="AppUpdatePreferences"
+                Style="{ThemeResource SmartDisplayPageTitleTextBlockStyle}" />
+        </ctrl:TitleContentFrame.TitleContent>
+        <ctrl:TitleContentFrame.ContentContainer>
+            <StackPanel>
+                <StackPanel Style="{StaticResource AppUpdateSettingsPanelStyle}">
+                    <!--  Update Info  -->
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ViewModel.AppVersionInfoText, Mode=OneWay}" />
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ViewModel.LastUpdateCheckCountText, Mode=OneWay}" />
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ViewModel.LastUpdateCheckTimeText, Mode=OneWay}" />
+
+                    <!--  Update buttons  -->
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Button
+                            Margin="0,0,10,0"
+                            Command="{x:Bind ViewModel.UpdateCommand}"
+                            Content="{x:Bind ViewModel.UpdateButtonText, Mode=OneWay}"
+                            IsEnabled="{x:Bind ViewModel.CheckUpdateButtonsEnabled, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.UpdateButtonsEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Button
+                            x:Uid="CheckUpdatesButton"
+                            Width="150"
+                            Margin="0,0,10,0"
+                            Command="{x:Bind ViewModel.CheckForUpdatesCommand}"
+                            IsEnabled="{x:Bind ViewModel.CheckUpdateButtonsEnabled, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.AdvanceButtonsEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Button
+                            x:Uid="DownloadUpdatesButton"
+                            Width="150"
+                            Margin="0,0,10,0"
+                            Command="{x:Bind ViewModel.DownloadUpdatesCommand}"
+                            CommandParameter="{StaticResource TrueBoolean}"
+                            IsEnabled="{x:Bind ViewModel.DownloadButtonEnabled, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.AdvanceButtonsEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Button
+                            x:Uid="InstallUpdatesButton"
+                            Width="150"
+                            Command="{x:Bind ViewModel.InstallUpdatesCommand}"
+                            IsEnabled="{x:Bind ViewModel.InstallButtonEnabled, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.AdvanceButtonsEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    </StackPanel>
+
+                    <!--  App update status  -->
+                    <StackPanel
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Bottom"
+                        Orientation="Vertical">
+                        <ProgressBar
+                            Height="10"
+                            Margin="0,10,0,10"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Maximum="100"
+                            Value="{x:Bind ViewModel.UpdateProgressBarValue, Mode=TwoWay}" />
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Text="{x:Bind ViewModel.UpdateInfoText, Mode=OneWay}"
+                            TextWrapping="Wrap"
+                            Visibility="{x:Bind ViewModel.UpdateInfoText, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!--  Auto update options  -->
+                <StackPanel Style="{StaticResource AppUpdateSettingsPanelStyle}">
+                    <TextBlock x:Uid="AppUpdateAutoUpdateTitle" Style="{StaticResource SettingHeaderStyle}" />
+                    <ToggleSwitch x:Uid="AppUpdateAutoUpdateToggle" IsOn="{x:Bind ViewModel.AutoUpdateInstallEnabled, Mode=TwoWay}" />
+
+                    <!--  Active Hours  -->
+                    <TextBlock
+                        x:Uid="AppUpdateActiveHours"
+                        Margin="0,10,10,0"
+                        TextWrapping="Wrap" />
+                    <TimePicker
+                        x:Uid="StartTimePicker"
+                        Margin="0,10,10,0"
+                        IsEnabled="{x:Bind ViewModel.AutoUpdateInstallEnabled, Mode=OneWay}"
+                        MinuteIncrement="00"
+                        Time="{x:Bind ViewModel.ActiveTimeStart, Mode=TwoWay}" />
+                    <TimePicker
+                        x:Uid="EndTimePicker"
+                        Margin="0,10,10,0"
+                        IsEnabled="{x:Bind ViewModel.AutoUpdateInstallEnabled, Mode=OneWay}"
+                        MinuteIncrement="00"
+                        Time="{x:Bind ViewModel.ActiveTimeEnd, Mode=TwoWay}" />
+                    <TextBlock
+                        x:Uid="AppUpdateActiveHoursInvalid"
+                        Margin="0,10,10,0"
+                        Foreground="Yellow"
+                        TextWrapping="Wrap"
+                        Visibility="{x:Bind Path=ViewModel.IsActiveTimeInvalidTextVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </StackPanel>
+
+                <!--  Advanced Options  -->
+                <StackPanel Style="{StaticResource AppUpdateSettingsPanelStyle}">
+                    <TextBlock x:Uid="AppUpdateAdvancedTitle" Style="{StaticResource SettingHeaderStyle}" />
+                    <TextBlock
+                        x:Uid="AppUpdateAdvancedToggle"
+                        HorizontalAlignment="Left"
+                        TextWrapping="Wrap" />
+                    <ToggleSwitch Margin="0,0,0,10" IsOn="{x:Bind ViewModel.AdvancedOptionsEnabled, Mode=TwoWay}" />
+                </StackPanel>
+            </StackPanel>
+        </ctrl:TitleContentFrame.ContentContainer>
+    </ctrl:TitleContentFrame>
+</ctrl:PageBase>

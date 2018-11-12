@@ -1,0 +1,1 @@
+﻿Logs are auto-generated when the app crashes due to an unhandled exception.  However, you can also manually generate a log by tapping on the command bar below and selecting "Quick-Save Log".
