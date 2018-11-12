@@ -1,0 +1,84 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:OOBEPageBase
+    x:Class="SmartDisplay.Views.OOBEWelcomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{StaticResource OOBEBackgroundBrush}"
+    DataContext="{x:Bind ViewModel.LanguageManager}"
+    mc:Ignorable="d">
+
+    <ctrl:OOBEPageTemplate x:Uid="OOBEWelcomePage" NextButtonCommand="{x:Bind ViewModel.NextButtonCommand}">
+        <ctrl:OOBEPageTemplate.PanelContent>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    x:Uid="OOBELanguageSelect"
+                    Grid.Row="0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontWeight="Normal"
+                    Style="{ThemeResource BaseTextBlockStyle}" />
+
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <ListView
+                            Grid.Row="1"
+                            Margin="0,0,20,0"
+                            HorizontalContentAlignment="Stretch"
+                            ItemContainerStyle="{ThemeResource LanguageSelectionListViewItemStyle}"
+                            ItemsSource="{x:Bind ViewModel.LanguagesListViewItems, Mode=OneWay}"
+                            SelectedItem="{x:Bind ViewModel.LanguagesListViewSelectedItem, Mode=TwoWay}"
+                            SelectionMode="Single" />
+                    </Grid>
+
+                    <ScrollViewer Grid.Column="1">
+                        <StackPanel>
+                            <TextBlock x:Uid="OOBEWelcomeDeviceName" Style="{StaticResource BaseTextBlockStyle}" />
+                            <TextBlock
+                                Foreground="{StaticResource PaleTextBrush}"
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind ViewModel.DeviceName, Mode=OneWay}" />
+                            <TextBlock
+                                x:Uid="OOBEWelcomeIPAddress"
+                                Margin="0,16,0,0"
+                                Style="{StaticResource BaseTextBlockStyle}" />
+                            <TextBlock
+                                Foreground="{StaticResource PaleTextBrush}"
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind ViewModel.IPv4Address, Mode=OneWay}" />
+                            <TextBlock
+                                x:Uid="OOBEWelcomeOSVersion"
+                                Margin="0,16,0,0"
+                                Style="{StaticResource BaseTextBlockStyle}" />
+                            <TextBlock
+                                Foreground="{StaticResource PaleTextBrush}"
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind ViewModel.OSVersion, Mode=OneWay}" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+        </ctrl:OOBEPageTemplate.PanelContent>
+    </ctrl:OOBEPageTemplate>
+</ctrl:OOBEPageBase>

@@ -1,0 +1,66 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:OOBEPageBase
+    x:Class="SmartDisplay.Views.OOBEPermissionsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{StaticResource OOBEBackgroundBrush}"
+    mc:Ignorable="d">
+
+    <ctrl:OOBEPageTemplate
+        x:Uid="OOBEPermissionsPage"
+        NextButtonCommand="{x:Bind ViewModel.NextButtonCommand}"
+        NextButtonText="{x:Bind ViewModel.NextButtonText, Mode=OneWay}">
+        <ctrl:OOBEPageTemplate.PanelContent>
+            <Grid>
+                <ListView
+                    Margin="150,0"
+                    IsItemClickEnabled="True"
+                    ItemContainerStyle="{StaticResource OOBEListViewItemExpanded}"
+                    ItemsSource="{x:Bind ViewModel.OOBELocationListViewCollection, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="ctrl:OOBEListViewItem">
+                            <Grid Style="{StaticResource OOBEListViewItemGridStyle}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--  Icon  -->
+                                <TextBlock
+                                    Grid.Column="0"
+                                    FontFamily="{StaticResource OOBEIconFontFamily}"
+                                    Style="{StaticResource OOBEListViewItemIconStyle}"
+                                    Text="{x:Bind Icon}" />
+
+                                <!--  Text  -->
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Style="{StaticResource OOBEListViewItemTitleStyle}"
+                                        Text="{x:Bind Title}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Style="{StaticResource OOBEListViewItemDescriptionStyle}"
+                                        Text="{x:Bind Description}" />
+                                </Grid>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ctrl:OOBEPageTemplate.PanelContent>
+    </ctrl:OOBEPageTemplate>
+</ctrl:OOBEPageBase>

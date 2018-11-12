@@ -1,0 +1,285 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:PageBase
+    x:Class="SmartDisplay.Views.WeatherPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:Weather="using:SmartDisplay.Weather"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{x:Bind ViewModel.LeftColumnWidth, Mode=OneWay}" />
+            <ColumnDefinition Width="{x:Bind ViewModel.RightColumnWidth, Mode=OneWay}" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="{x:Bind ViewModel.MapColumnProperty, Mode=OneWay}">
+            <Maps:MapControl
+                x:Name="mapControl"
+                x:Load="True"
+                Center="{x:Bind ViewModel.MapCenter, Mode=OneWay}"
+                ColorScheme="{x:Bind ViewModel.ColorScheme, Mode=OneWay}"
+                Layers="{x:Bind ViewModel.MapLayers, Mode=OneWay}"
+                TrafficFlowVisible="True"
+                ZoomLevel="13" />
+        </Grid>
+        <Grid Grid.Column="{x:Bind ViewModel.WeatherColumnProperty, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Viewbox Grid.Row="0" VerticalAlignment="Top" Visibility="{x:Bind Path=ViewModel.WeatherControlVisibility, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Width="450" Height="500">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="1">
+
+                        <!--  Date and time  -->
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,20,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="38px"
+                                Style="{StaticResource SegoeUILightTextStyle}"
+                                Text="{x:Bind ViewModel.CurrentTime, Mode=OneWay}" />
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="18px"
+                                Style="{StaticResource SegoeUILightTextStyle}"
+                                Text="{x:Bind ViewModel.CurrentDate, Mode=OneWay}" />
+                        </StackPanel>
+                        <StackPanel
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+
+                            <!--  Weather icon, shows an emoji icon or image depending on the input  -->
+                            <Viewbox
+                                Width="60"
+                                Height="60"
+                                Margin="0,0,15,0">
+                                <ContentControl
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Content="{x:Bind Path=ViewModel.CurrentWeatherIcon, Mode=OneWay, Converter={StaticResource TextToImageConverter}}" />
+                            </Viewbox>
+
+                            <!--  Current temperature reading  -->
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="48px"
+                                Style="{StaticResource SegoeUILightTextStyle}"
+                                Text="{x:Bind ViewModel.CurrentTemperature, Mode=OneWay}" />
+                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Column="{x:Bind ViewModel.TodaysWeatherColumnProperty, Mode=OneWay}" Grid.ColumnSpan="{x:Bind ViewModel.WeatherColumnSpanProperty, Mode=OneWay}">
+                                <!--  Current weather description  -->
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="18px"
+                                    Style="{StaticResource SegoeUILightTextStyle}"
+                                    Text="{x:Bind ViewModel.CurrentWeather, Mode=OneWay}"
+                                    TextAlignment="Center"
+                                    TextWrapping="WrapWholeWords" />
+
+                                <!--  Current location string  -->
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="16px"
+                                    Style="{StaticResource SegoeUILightTextStyle}"
+                                    Text="{x:Bind ViewModel.CurrentLocation, Mode=OneWay}"
+                                    TextAlignment="Center"
+                                    TextWrapping="WrapWholeWords" />
+                                <StackPanel
+                                    Margin="0,5,0,0"
+                                    HorizontalAlignment="Center"
+                                    Orientation="Horizontal">
+
+                                    <!--  Additional information (e.g. humidity, wind speed)  -->
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        FontSize="12px"
+                                        Style="{StaticResource SegoeUILightTextStyle}"
+                                        Text="{x:Bind ViewModel.CurrentAdditionalInfo, Mode=OneWay}" />
+
+                                    <!--  Hardware sensor reading (if connected)  -->
+                                    <StackPanel
+                                        Grid.Row="{x:Bind ViewModel.SensorRowProperty, Mode=OneWay}"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="{x:Bind ViewModel.SensorColumnSpanProperty, Mode=OneWay}"
+                                        Margin="15,0,0,0"
+                                        Orientation="Horizontal"
+                                        Visibility="{x:Bind Path=ViewModel.SensorEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock
+                                            x:Uid="WeatherPageSensorOutputHeader"
+                                            Margin="0,0,5,0"
+                                            HorizontalAlignment="Center"
+                                            FontSize="12px"
+                                            Style="{StaticResource SegoeUILightTextStyle}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            FontSize="12px"
+                                            Style="{StaticResource SegoeUILightTextStyle}"
+                                            Text="{x:Bind ViewModel.SensorTemperatureAndHumidity, Mode=OneWay}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--  Forecast title label  -->
+                            <TextBlock
+                                x:Uid="ForecastHeader"
+                                Grid.Row="0"
+                                FontSize="18px"
+                                Style="{StaticResource SegoeUILightTextStyle}" />
+
+                            <!--  Horizontal divider  -->
+                            <Rectangle
+                                Grid.Row="1"
+                                Height="1"
+                                HorizontalAlignment="Stretch"
+                                Fill="White" />
+
+                            <!--  5 day weather forecast  -->
+                            <GridView
+                                x:Name="ForecastGrid"
+                                Grid.Row="2"
+                                Margin="0,5,0,0"
+                                VerticalAlignment="Stretch"
+                                ItemsSource="{x:Bind ViewModel.Forecast}"
+                                SelectionMode="None">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsWrapGrid
+                                            ItemWidth="75"
+                                            MaximumRowsOrColumns="5"
+                                            Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                                <GridView.ItemTemplate>
+                                    <DataTemplate x:DataType="Weather:ForecastDay">
+                                        <StackPanel
+                                            Width="75"
+                                            MinHeight="200"
+                                            VerticalAlignment="Top">
+                                            <!--  Day of the week  -->
+                                            <TextBlock
+                                                Margin="0,0,0,2"
+                                                FontSize="14px"
+                                                Style="{StaticResource WeatherForecastTextStyle}"
+                                                Text="{x:Bind Day, Mode=OneWay}" />
+                                            <!--  Temperature in Fahrenheit  -->
+                                            <TextBlock
+                                                Margin="0,0,0,2"
+                                                FontSize="18px"
+                                                Style="{StaticResource WeatherForecastTextStyle}"
+                                                Text="{x:Bind TempF, Mode=OneWay}"
+                                                Visibility="{Binding ElementName=ForecastGrid, Path=DataContext.FahrenheitEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <!--  Temperature in Celsius  -->
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                FontSize="18px"
+                                                Style="{StaticResource WeatherForecastTextStyle}"
+                                                Text="{x:Bind TempC, Mode=OneWay}"
+                                                Visibility="{Binding ElementName=ForecastGrid, Path=DataContext.CelsiusEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            <!--  Weather icon  -->
+                                            <Viewbox
+                                                Width="40"
+                                                Height="40"
+                                                Margin="0,0,0,5"
+                                                HorizontalAlignment="Left">
+                                                <ContentControl
+                                                    VerticalAlignment="Center"
+                                                    HorizontalContentAlignment="Stretch"
+                                                    VerticalContentAlignment="Stretch"
+                                                    Content="{x:Bind Icon, Mode=OneWay, Converter={StaticResource TextToImageConverter}}" />
+                                            </Viewbox>
+                                            <!--  Short weather description  -->
+                                            <TextBlock
+                                                Width="70"
+                                                FontSize="14px"
+                                                Style="{StaticResource WeatherForecastTextStyle}"
+                                                Text="{x:Bind Desc, Mode=OneWay}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>
+                        </Grid>
+                    </StackPanel>
+
+                    <!--  Fahrenheit/Celsius toggle buttons  -->
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Width="30px"
+                        Background="Transparent">
+                        <Button
+                            BorderBrush="DimGray"
+                            BorderThickness="0,0,0,1"
+                            Command="{x:Bind ViewModel.SelectFahrenheitCommand}"
+                            Content="F"
+                            FontWeight="{x:Bind ViewModel.FahrenheitEnabled, Mode=OneWay, Converter={StaticResource BooleanToFontWeightConverter}}"
+                            Style="{StaticResource TempUnitButtonStyle}" />
+                        <Button
+                            Command="{x:Bind ViewModel.SelectCelsiusCommand}"
+                            Content="C"
+                            FontWeight="{x:Bind ViewModel.CelsiusEnabled, Mode=OneWay, Converter={StaticResource BooleanToFontWeightConverter}}"
+                            Style="{StaticResource TempUnitButtonStyle}" />
+                    </StackPanel>
+                </Grid>
+
+            </Viewbox>
+            <Viewbox Visibility="{x:Bind Path=ViewModel.WeatherErrorPageVisibility, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Vertical" Width="500" Padding="30">
+                    <TextBlock
+                        x:Uid="WeatherPageErrorPanel"
+                        FontWeight="Light"
+                        FontSize="20"
+                        HorizontalTextAlignment="Center" 
+                        HorizontalAlignment="Center"
+                        TextWrapping="Wrap"
+                        />
+                </StackPanel>
+            </Viewbox>
+            <Viewbox Grid.Row="1" VerticalAlignment="Bottom" Visibility="{x:Bind Path=ViewModel.WeatherControlVisibility, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel
+                    Margin="2"
+                    HorizontalAlignment="Left"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        x:Uid="WeatherProvidedBy"
+                        Margin="0,0,3,0"
+                        Style="{StaticResource WeatherAttributionTextStyle}" />
+                    <TextBlock Style="{StaticResource WeatherAttributionTextStyle}" Text="{x:Bind ViewModel.WeatherProviderString, Mode=OneWay}" />
+                </StackPanel>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</ctrl:PageBase>

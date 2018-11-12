@@ -1,0 +1,145 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:PageBase
+    x:Class="SmartDisplay.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="NavBarItemTemplate" x:DataType="ctrl:NavBarDataItem">
+            <Grid Height="50" Background="{x:Bind Background, Mode=OneWay}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="150" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    Height="20"
+                    MinHeight="8"
+                    Margin="5,5,5,5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="{StaticResource IconFontFamily}"
+                    FontSize="20"
+                    Foreground="{StaticResource SplitViewPaneTextColor}"
+                    Text="{x:Bind Icon, Mode=OneWay}" />
+                <ContentPresenter
+                    Grid.Column="1"
+                    Margin="3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{x:Bind Content, Mode=OneWay}"
+                    Foreground="{StaticResource SplitViewPaneTextColor}"
+                    TextWrapping="Wrap" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Viewbox>
+        <Grid Width="{x:Bind ViewModel.PageWidth, Mode=OneWay}" Height="{x:Bind ViewModel.PageHeight, Mode=OneWay}">
+            <SplitView
+                Width="{x:Bind ViewModel.PageWidth, Mode=OneWay}"
+                Height="{x:Bind ViewModel.PageHeight, Mode=OneWay}"
+                Background="Black"
+                CompactPaneLength="{x:Bind ViewModel.CompactPaneLength, Mode=OneWay}"
+                DisplayMode="CompactOverlay"
+                IsPaneOpen="{x:Bind ViewModel.MenuOpen, Mode=TwoWay}"
+                OpenPaneLength="200"
+                PaneBackground="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                Visibility="Visible">
+                <SplitView.Pane>
+                    <Grid Visibility="{x:Bind ViewModel.IsNavBarVisible, Mode=OneWay}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--  Top part of navigation menu - Start, Device Info, Command Line  -->
+                        <ListView
+                            Grid.Row="0"
+                            IsItemClickEnabled="True"
+                            ItemClick="{x:Bind ViewModel.ItemClick}"
+                            ItemContainerStyle="{StaticResource NavBarItemStyle}"
+                            ItemTemplate="{StaticResource NavBarItemTemplate}"
+                            ItemsSource="{x:Bind ViewModel.TopNavBarItems, Mode=OneWay}"
+                            SelectedItem="{x:Bind ViewModel.TopSelectedNavBarItem, Mode=TwoWay}"
+                            SelectionMode="Single" />
+
+                        <!--  Bottom part of navigation menu - Sign In, Settings  -->
+                        <ListView
+                            Grid.Row="1"
+                            IsItemClickEnabled="True"
+                            ItemClick="{x:Bind ViewModel.ItemClick}"
+                            ItemContainerStyle="{StaticResource NavBarItemStyle}"
+                            ItemTemplate="{StaticResource NavBarItemTemplate}"
+                            ItemsSource="{x:Bind ViewModel.BottomNavBarItems, Mode=OneWay}"
+                            SelectedItem="{x:Bind ViewModel.BottomSelectedNavBarItem, Mode=TwoWay}"
+                            SelectionMode="Single" />
+                    </Grid>
+                </SplitView.Pane>
+                <SplitView.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Frame x:Name="_contentFrame" Grid.RowSpan="2">
+                            <Frame.ContentTransitions>
+                                <TransitionCollection>
+                                    <NavigationThemeTransition />
+                                </TransitionCollection>
+                            </Frame.ContentTransitions>
+                        </Frame>
+
+                        <ctrl:LoadingPanelControl
+                            x:Name="_loadingPanel"
+                            Grid.RowSpan="3"
+                            Width="{x:Bind ViewModel.PageWidth, Mode=OneWay}"
+                            Background="{x:Bind ViewModel.LoadingPanelBackgroundBrush, Mode=OneWay}" />
+
+                        <ctrl:SidePopupControl
+                            Grid.Row="0"
+                            Width="{StaticResource SidePaneWidth}"
+                            Height="{x:Bind ViewModel.PageHeight, Mode=Oneway}"
+                            Content="{x:Bind ViewModel.SidePaneContent, Mode=OneWay}"
+                            HeaderText="{x:Bind ViewModel.SidePaneTitle, Mode=OneWay}"
+                            IsOpen="{x:Bind ViewModel.IsSidePaneOpen, Mode=TwoWay}" />
+
+                        <CommandBar
+                            x:Name="_commandBar"
+                            Grid.Row="2"
+                            VerticalAlignment="Bottom"
+                            Background="{x:Bind ViewModel.CommandBarBackgroundColor, Mode=OneWay}"
+                            ClosedDisplayMode="{x:Bind ViewModel.CommandBarClosedDisplayMode, Mode=OneWay}"
+                            IsOpen="{x:Bind ViewModel.CommandBarOpen, Mode=TwoWay}"
+                            Visibility="{x:Bind ViewModel.IsCommandBarVisible, Mode=OneWay}" />
+                    </Grid>
+                </SplitView.Content>
+            </SplitView>
+
+            <ctrl:JumboNotificationControl
+                x:Name="_jumboNotification"
+                Width="{x:Bind ViewModel.PageWidth, Mode=OneWay}"
+                Height="{x:Bind ViewModel.JumboHeight, Mode=OneWay}"
+                VerticalAlignment="Center" />
+
+            <ctrl:NotificationControl
+                x:Name="_notification"
+                Width="{x:Bind ViewModel.PageWidth, Mode=OneWay}"
+                Height="75"
+                VerticalAlignment="Top" />
+
+            <ctrl:Screensaver
+                Width="{x:Bind ViewModel.PageWidth, Mode=OneWay}"
+                Height="{x:Bind ViewModel.PageHeight, Mode=Oneway}"
+                IsEnabled="{x:Bind Path=ViewModel.ScreensaverEnabled, Mode=OneWay}" />
+        </Grid>
+    </Viewbox>
+</ctrl:PageBase>

@@ -1,0 +1,40 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+-->
+
+<ctrl:SettingsUserControlBase
+    x:Class="SmartDisplay.Controls.WeatherSettingsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:SmartDisplay.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Background="{x:Bind ViewModel.BackgroundColor, Mode=OneWay}" Orientation="Vertical">
+        <TextBlock
+            Style="{StaticResource SettingInvalidInputStyle}"
+            Text="{x:Bind ViewModel.Status, Mode=OneWay}"
+            Visibility="{x:Bind Path=ViewModel.IsStatusVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <TextBox
+            x:Uid="WeatherLocationTextBox"
+            Width="{x:Bind ViewModel.Width}"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            IsEnabled="{x:Bind ViewModel.IsWeatherLocationEnabled, Mode=OneWay}"
+            Style="{StaticResource SettingControlStyle}"
+            Text="{x:Bind ViewModel.WeatherLocationString, Mode=TwoWay}"
+            TextWrapping="Wrap" />
+
+        <ToggleSwitch
+            x:Uid="ExpandMapToggle"
+            IsOn="{x:Bind ViewModel.MapSizeExpanded, Mode=TwoWay}"
+            Style="{StaticResource SettingControlStyle}" />
+
+        <ToggleSwitch
+            x:Uid="MapFlipToggle"
+            IsOn="{x:Bind ViewModel.MapFlipEnabled, Mode=TwoWay}"
+            Style="{StaticResource SettingControlStyle}" />
+    </StackPanel>
+</ctrl:SettingsUserControlBase>

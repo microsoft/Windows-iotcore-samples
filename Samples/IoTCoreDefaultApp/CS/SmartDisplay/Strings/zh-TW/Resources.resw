@@ -1,0 +1,1515 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AadV2CheckBox.Content" xml:space="preserve">
+    <value>使用 AAD v2</value>
+  </data>
+  <data name="AccessRevokedText" xml:space="preserve">
+    <value>存取已撤銷</value>
+  </data>
+  <data name="AdapterDescription.Text" xml:space="preserve">
+    <value>描述:</value>
+  </data>
+  <data name="AdapterDHCPServer.Text" xml:space="preserve">
+    <value>DHCP 伺服器:</value>
+  </data>
+  <data name="AdapterDNS.Text" xml:space="preserve">
+    <value>DNS:</value>
+  </data>
+  <data name="AdapterGatewayAddress.Text" xml:space="preserve">
+    <value>閘道位址:</value>
+  </data>
+  <data name="AdapterIPv4Address.Text" xml:space="preserve">
+    <value>IPv4 位址:</value>
+  </data>
+  <data name="AdapterName.Text" xml:space="preserve">
+    <value>名稱:</value>
+  </data>
+  <data name="AdapterPhysicalAddress.Text" xml:space="preserve">
+    <value>實體位址:</value>
+  </data>
+  <data name="AdapterSubnetMask.Text" xml:space="preserve">
+    <value>子網路遮罩:</value>
+  </data>
+  <data name="AdapterType.Text" xml:space="preserve">
+    <value>類型:</value>
+  </data>
+  <data name="AppBuildText" xml:space="preserve">
+    <value>應用程式版本</value>
+  </data>
+  <data name="AppLauncherPageTileText" xml:space="preserve">
+    <value>應用程式</value>
+  </data>
+  <data name="AppLauncherDialogPrompt" xml:space="preserve">
+    <value>您即將啟動外部應用程式。您必須使用 Windows 裝置入口網站回到此應用程式。是否要繼續？</value>
+    <comment>Dialog prompt for launching external apps</comment>
+  </data>
+  <data name="AppLauncherTitle.Text" xml:space="preserve">
+    <value>App</value>
+  </data>
+  <data name="AppPreferences.Text" xml:space="preserve">
+    <value>App 設定</value>
+  </data>
+  <data name="AppUpdateActiveHours.Text" xml:space="preserve">
+    <value>設定使用時間，讓我們知道您平常使用此裝置的時間。我們不會在使用時間期間自動重新開機。</value>
+  </data>
+  <data name="AppUpdateActiveHoursInvalid.Text" xml:space="preserve">
+    <value>無法儲存新的開始及結束時間，因為它們是相同的。請選擇新的時間，或關閉功能。</value>
+  </data>
+  <data name="AppUpdateAdvancedTitle.Text" xml:space="preserve">
+    <value>進階選項</value>
+    <comment>Advanced section title</comment>
+  </data>
+  <data name="AppUpdateAdvancedToggle.Text" xml:space="preserve">
+    <value>控制每個擷取、下載和安裝更新步驟。</value>
+  </data>
+  <data name="AppUpdateAutoUpdateTitle.Text" xml:space="preserve">
+    <value>自動更新選項</value>
+    <comment>Auto-Update section title</comment>
+  </data>
+  <data name="AppUpdateAutoUpdateToggle.Header" xml:space="preserve">
+    <value>讓 App 在使用時間外安裝 App 更新</value>
+  </data>
+  <data name="AppUpdateDialogHeaderText" xml:space="preserve">
+    <value>App 更新</value>
+    <comment>App update display dialog header </comment>
+  </data>
+  <data name="AppUpdateLastUpdateCheckText" xml:space="preserve">
+    <value>上次檢查: {0} {1}</value>
+    <comment>{0} is date, {1} is time</comment>
+  </data>
+  <data name="AppUpdateNoLastUpdateTimeText" xml:space="preserve">
+    <value>無法判斷上次檢查更新的時間</value>
+  </data>
+  <data name="AppUpdatePreferences.Text" xml:space="preserve">
+    <value>App 更新</value>
+    <comment>Label for setting item to check for app updates</comment>
+  </data>
+  <data name="AuthAadPageDescription" xml:space="preserve">
+    <value>登入 MSA 和 AAD</value>
+  </data>
+  <data name="AuthAadSignInMessage" xml:space="preserve">
+    <value>請使用您的組織帳戶登入 AAD。</value>
+  </data>
+  <data name="AuthAadSignInTitle" xml:space="preserve">
+    <value>Azure AD (AAD) 登入</value>
+  </data>
+  <data name="AuthAadString" xml:space="preserve">
+    <value>AAD</value>
+  </data>
+  <data name="AuthAadV1Description" xml:space="preserve">
+    <value>驗證 Microsoft Graph 與其他資源</value>
+  </data>
+  <data name="AuthAadV2Description" xml:space="preserve">
+    <value>僅驗證 Microsoft Graph</value>
+  </data>
+  <data name="AuthCancelText" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="AuthDefaultAadDescription" xml:space="preserve">
+    <value>您的組織帳戶</value>
+  </data>
+  <data name="AuthDialogFormat" xml:space="preserve">
+    <value>如果您在任何時候受困，無法結束登入精靈，請等待 {0} 秒後應該會返回應用程式。</value>
+  </data>
+  <data name="AuthLoadingSigningInText" xml:space="preserve">
+    <value>正在登入...</value>
+  </data>
+  <data name="AuthLoadingSigningOutText" xml:space="preserve">
+    <value>正在登出...</value>
+  </data>
+  <data name="AuthMsaOnlyPageDescription" xml:space="preserve">
+    <value>在這裡登入您的 Microsoft 帳戶</value>
+  </data>
+  <data name="AuthMsaSignInTitle" xml:space="preserve">
+    <value>Microsoft 帳戶 (MSA) 登入</value>
+  </data>
+  <data name="AuthMsaString" xml:space="preserve">
+    <value>MSA</value>
+  </data>
+  <data name="AuthPageTileText" xml:space="preserve">
+    <value>驗證</value>
+  </data>
+  <data name="AuthPageTitle.Text" xml:space="preserve">
+    <value>Microsoft 登入</value>
+  </data>
+  <data name="AuthSignInFailedFormatText" xml:space="preserve">
+    <value>登入失敗 ({0})</value>
+  </data>
+  <data name="AuthSignInSuccessfulFormatText" xml:space="preserve">
+    <value>登入成功 ({0})</value>
+  </data>
+  <data name="AuthSignInText" xml:space="preserve">
+    <value>登入</value>
+  </data>
+  <data name="AuthSignOutSuccessfulFormatText" xml:space="preserve">
+    <value>已登出: {0}</value>
+  </data>
+  <data name="AuthSignOutText" xml:space="preserve">
+    <value>登出</value>
+  </data>
+  <data name="AutoPlayToggle.Header" xml:space="preserve">
+    <value>自動播放</value>
+    <comment>Music player page auto-play toggle text</comment>
+  </data>
+  <data name="AutoScalingToggle.Header" xml:space="preserve">
+    <value>自動縮放</value>
+  </data>
+  <data name="BatteryLowErrorText" xml:space="preserve">
+    <value>更新失敗，因為電力偏低。</value>
+    <comment>App update error, low battery</comment>
+  </data>
+  <data name="BluetoothAttemptingToPairFormat" xml:space="preserve">
+    <value>正在嘗試與 {0} ({1}) 配對。</value>
+    <comment>Text displayed when a Bluetooth pairing attempt starts</comment>
+  </data>
+  <data name="BluetoothConfirmOnlyFormat" xml:space="preserve">
+    <value>正在與 {0} ({1}) 配對。</value>
+    <comment>Text displayed when ConfirmOnly ceremony is invoked</comment>
+  </data>
+  <data name="BluetoothConfirmPinMatchFormat" xml:space="preserve">
+    <value>裝置上顯示的 PIN 是否符合: {0}?</value>
+    <comment>Text displayed when ConfirmPinMatch ceremony is invoked</comment>
+  </data>
+  <data name="BluetoothDeviceNameUnknownText" xml:space="preserve">
+    <value>不明</value>
+    <comment>Text displayed when the Bluetooth device name is unknown</comment>
+  </data>
+  <data name="BluetoothDeviceStatePairedText" xml:space="preserve">
+    <value>目前已配對</value>
+    <comment>Text displayed for labeling the pairing status of a Bluetooth device </comment>
+  </data>
+  <data name="BluetoothDeviceStateReadyToPairText" xml:space="preserve">
+    <value>準備好進行配對</value>
+    <comment>Text displayed for labeling the pairing status of a Bluetooth device</comment>
+  </data>
+  <data name="BluetoothDeviceStateUnknownText" xml:space="preserve">
+    <value>未知的狀態</value>
+    <comment>Text displayed for labeling the pairing status of a Bluetooth device</comment>
+  </data>
+  <data name="BluetoothDisplayPinFormat" xml:space="preserve">
+    <value>請在您要配對的裝置上輸入下列 PIN: {0}</value>
+    <comment>Text displayed when DisplayPin ceremony is invoked</comment>
+  </data>
+  <data name="BluetoothEnterPIN.Text" xml:space="preserve">
+    <value>輸入 PIN: </value>
+    <comment>Text displayed on prompt for user to enter a pairing PIN</comment>
+  </data>
+  <data name="BluetoothInboundPairingRequestFormat" xml:space="preserve">
+    <value>來自 {0} ({1}) 的連入配對要求。</value>
+    <comment>Text displayed when an inbound pairing request is received</comment>
+  </data>
+  <data name="BluetoothInboundRegistrationAlreadyDoneFormat" xml:space="preserve">
+    <value>此裝置已針對連入配對註冊。(支援的模式: {0})</value>
+    <comment>Text displayed when inbound pairing handler registration has already been completed</comment>
+  </data>
+  <data name="BluetoothInboundRegistrationFailed" xml:space="preserve">
+    <value>無法針對連入配對註冊</value>
+    <comment>Text displayed when Inbound pairing handler registration fails</comment>
+  </data>
+  <data name="BluetoothInboundRegistrationSucceededFormat" xml:space="preserve">
+    <value>已順利針對連入配對註冊。(支援的模式: {0})</value>
+    <comment>Text displayed when inbound pairing handler registration succeeds</comment>
+  </data>
+  <data name="BluetoothIncorrectEnteredPIN" xml:space="preserve">
+    <value>您輸入的 PIN 不正確。</value>
+    <comment>Text displayed after user enters a PIN that does not match the device PIN</comment>
+  </data>
+  <data name="BluetoothNoDeviceAvailableFormat" xml:space="preserve">
+    <value>在此裝置上找不到可用的藍牙介面卡: \n{0}</value>
+    <comment>Text displayed on systems which do not have a Bluetooth adapter (the new line before {0} is deliberate and should be kept)</comment>
+  </data>
+  <data name="BluetoothPairButton.Content" xml:space="preserve">
+    <value>配對</value>
+    <comment>Text displayed on the button used to pair the selected Bluetooth device</comment>
+  </data>
+  <data name="BluetoothPairingFailureFormat" xml:space="preserve">
+    <value>無法與 {0} ({1}) 配對。</value>
+    <comment>Text displayed when a Bluetooth pairing attempt fails</comment>
+  </data>
+  <data name="BluetoothPairingSuccessFormat" xml:space="preserve">
+    <value>已順利與 {0} ({1}) 配對。</value>
+    <comment>Text displayed when a Bluetooth pairing attempt succeeds</comment>
+  </data>
+  <data name="BluetoothPreferences.Text" xml:space="preserve">
+    <value>藍牙</value>
+    <comment>Title for Bluetooth settings page</comment>
+  </data>
+  <data name="BluetoothProtectionLevelDefaultText" xml:space="preserve">
+    <value>預設</value>
+    <comment>Text label for the corresponding device pairing protection level</comment>
+  </data>
+  <data name="BluetoothProtectionLevelEncryptionAuthenticationText" xml:space="preserve">
+    <value>加密與驗證</value>
+    <comment>Text label for the corresponding device pairing protection level</comment>
+  </data>
+  <data name="BluetoothProtectionLevelEncryptionText" xml:space="preserve">
+    <value>加密</value>
+    <comment>Text label for the corresponding device pairing protection level</comment>
+  </data>
+  <data name="BluetoothProtectionLevelNoneText" xml:space="preserve">
+    <value>無</value>
+    <comment>Text label for the corresponding device pairing protection level</comment>
+  </data>
+  <data name="BluetoothStartedWatching" xml:space="preserve">
+    <value>您的裝置目前可供探索，而且已準備好與其他藍牙裝置配對。</value>
+    <comment>Text displayed when StartWatcher is invoked</comment>
+  </data>
+  <data name="BluetoothStoppedWatching" xml:space="preserve">
+    <value>您的裝置不會再搜尋其他藍牙裝置。</value>
+    <comment>Text displayed when StopWatcher is invoked</comment>
+  </data>
+  <data name="BluetoothUnpairButton.Content" xml:space="preserve">
+    <value>解除配對</value>
+    <comment>Text displayed on the button used to unpair the selected Bluetooth device</comment>
+  </data>
+  <data name="BluetoothUnpairingFailureFormat" xml:space="preserve">
+    <value>無法從 {0} ({1}) 解除配對。</value>
+    <comment>Text displayed when a Bluetooth unpairing attempt fails</comment>
+  </data>
+  <data name="BluetoothUnpairingSuccessFormat" xml:space="preserve">
+    <value>已順利從 {0} ({1}) 解除配對。</value>
+    <comment>Text displayed when a Bluetooth unpairing attempt succeeds</comment>
+  </data>
+  <data name="BluetoothWatcherToggle.Header" xml:space="preserve">
+    <value>藍牙</value>
+    <comment>Header label for the Bluetooth watcher toggle switch</comment>
+  </data>
+  <data name="BrowserHomePageTextBox.Header" xml:space="preserve">
+    <value>首頁</value>
+  </data>
+  <data name="BrowserSettingHeader.Text" xml:space="preserve">
+    <value>網頁瀏覽器</value>
+  </data>
+  <data name="CancelButton.Content" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="CdNotSupported" xml:space="preserve">
+    <value>目前不支援變更目錄。請在您的命令中使用完整路徑。</value>
+  </data>
+  <data name="ChangeTimeZoneTitleText.Header" xml:space="preserve">
+    <value>時區</value>
+    <comment>Time zone text</comment>
+  </data>
+  <data name="CheckForUpdatesText" xml:space="preserve">
+    <value>正在檢查更新...</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="CheckUpdatesButton.Content" xml:space="preserve">
+    <value>檢查更新</value>
+  </data>
+  <data name="ClearAccountsButton.Content" xml:space="preserve">
+    <value>清除帳戶</value>
+  </data>
+  <data name="ClearAccountsFailText" xml:space="preserve">
+    <value>清除您的帳戶時發生問題</value>
+  </data>
+  <data name="ClearAccountsPromptFormat" xml:space="preserve">
+    <value>這將會清除下列的 Windows 帳戶:
+{0}
+
+要繼續嗎?</value>
+  </data>
+  <data name="ClearAccountsSuccessText" xml:space="preserve">
+    <value>已清除帳戶</value>
+  </data>
+  <data name="ClearingProgressText" xml:space="preserve">
+    <value>正在清除帳戶...</value>
+  </data>
+  <data name="ClearPageButton.Content" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="CloseText" xml:space="preserve">
+    <value>關閉</value>
+  </data>
+  <data name="CmdNotEnabled" xml:space="preserve">
+    <value>不允許裝置執行命令列處理程式。
+若要啟用此功能，請在裝置上以「系統管理員」身分執行以下命令:
+
+    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+
+您可以在 IoT Windows 裝置入口網站的 [處理程序] 頁面中執行此命令，或使用 PowerShell 連線到您的 Windows IoT 裝置。
+如需詳細資訊，請瀏覽 http://go.microsoft.com/fwlink/p/?LinkId=698488
+ </value>
+    <comment>New lines need to be preserved {Locked='reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"', 'Windows', 'PowerShell', 'http://go.microsoft.com/fwlink/p/?LinkId=698488'}</comment>
+  </data>
+  <data name="CmdTextAdminCommandFailure" xml:space="preserve">
+    <value>無法以系統管理員身分執行命令: {0}</value>
+  </data>
+  <data name="CmdTextEnabledFailure" xml:space="preserve">
+    <value>無法啟用裝置上的命令列處理程式 (cmd.exe): {0}</value>
+  </data>
+  <data name="CmdTextEnabledSuccess" xml:space="preserve">
+    <value>已成功啟用裝置上的命令列處理程式 (cmd.exe)。</value>
+  </data>
+  <data name="ColorPickerTextBlock.Text" xml:space="preserve">
+    <value>磚色彩</value>
+  </data>
+  <data name="CommandBarBackButton" xml:space="preserve">
+    <value>返回</value>
+    <comment>Back UI navigation</comment>
+  </data>
+  <data name="CommandBarDeviceInfoButton" xml:space="preserve">
+    <value>顯示裝置資訊</value>
+  </data>
+  <data name="CommandBarForwardButton" xml:space="preserve">
+    <value>向前</value>
+    <comment>Forward UI navigation</comment>
+  </data>
+  <data name="CommandBarFullscreenButton" xml:space="preserve">
+    <value>切換全螢幕</value>
+  </data>
+  <data name="CommandBarMultiViewButton" xml:space="preserve">
+    <value>複製檢視</value>
+    <comment>Clone current view to another display</comment>
+  </data>
+  <data name="CommandBarSaveLogButton" xml:space="preserve">
+    <value>快速儲存記錄</value>
+  </data>
+  <data name="CommandBarSessionLogButton" xml:space="preserve">
+    <value>工作階段記錄</value>
+  </data>
+  <data name="CommandBarSetDefaultButton" xml:space="preserve">
+    <value>設定預設頁面</value>
+  </data>
+  <data name="CommandCancelled" xml:space="preserve">
+    <value>已取消命令。</value>
+  </data>
+  <data name="CommandLine.PlaceholderText" xml:space="preserve">
+    <value>輸入命令列</value>
+    <comment>Placeholder for command line input text box</comment>
+  </data>
+  <data name="CommandLineError" xml:space="preserve">
+    <value>執行命令列時發生錯誤: {0}</value>
+  </data>
+  <data name="CommandLinePageTileText" xml:space="preserve">
+    <value>命令列</value>
+  </data>
+  <data name="CommandLineText" xml:space="preserve">
+    <value>命令列</value>
+    <comment>Title for command line page</comment>
+  </data>
+  <data name="CommandTimeoutText" xml:space="preserve">
+    <value>在沒有輸出 {0} 秒後，命令逾時。</value>
+  </data>
+  <data name="ComputerNameText" xml:space="preserve">
+    <value>電腦名稱</value>
+  </data>
+  <data name="ConfirmationTitleText" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="ConnectAutomatically.Text" xml:space="preserve">
+    <value>自動連線</value>
+  </data>
+  <data name="ConnectAutomaticallyText" xml:space="preserve">
+    <value>自動連線</value>
+  </data>
+  <data name="ConnectButton.Content" xml:space="preserve">
+    <value>連線</value>
+  </data>
+  <data name="ConnectButtonContent" xml:space="preserve">
+    <value>連線</value>
+  </data>
+  <data name="ConnectedDevices.Text" xml:space="preserve">
+    <value>已連線的裝置</value>
+  </data>
+  <data name="ConnectionErrorText" xml:space="preserve">
+    <value>更新失敗。請連線到 Wi-Fi，然後再試一次。</value>
+    <comment>App update error, poor connection</comment>
+  </data>
+  <data name="ContinueButton.Content" xml:space="preserve">
+    <value>繼續</value>
+  </data>
+  <data name="CouldNotParseOutputFailure" xml:space="preserve">
+    <value>無法剖析命令輸出</value>
+  </data>
+  <data name="CurrentRingText" xml:space="preserve">
+    <value>目前通道</value>
+    <comment>ring is flight ring of device</comment>
+  </data>
+  <data name="DB410Name" xml:space="preserve">
+    <value>DragonBoard 410c</value>
+    <comment>Board name</comment>
+  </data>
+  <data name="DefaultAppPageComboBox.Header" xml:space="preserve">
+    <value>預設 App 頁面</value>
+  </data>
+  <data name="DefaultLanguageTimeout.Text" xml:space="preserve">
+    <value>我們將會自動選擇預設語言...</value>
+  </data>
+  <data name="DeletedLogsText" xml:space="preserve">
+    <value>已刪除 {0} 個記錄</value>
+    <comment>{0} is plural number of logs</comment>
+  </data>
+  <data name="DeletedLogText" xml:space="preserve">
+    <value>已刪除 {0} 個記錄</value>
+    <comment>{0} is singular number of logs</comment>
+  </data>
+  <data name="DeleteLogConfirmText" xml:space="preserve">
+    <value>要刪除 {0} 個記錄嗎?</value>
+    <comment>{0} is singular number of logs</comment>
+  </data>
+  <data name="DeleteLogsConfirmText" xml:space="preserve">
+    <value>要刪除 {0} 個記錄嗎?</value>
+    <comment>{0} is plural number of logs</comment>
+  </data>
+  <data name="DeleteSelectedButtonText" xml:space="preserve">
+    <value>已刪除選取項目</value>
+  </data>
+  <data name="DeviceInfoAzureDeviceId.Text" xml:space="preserve">
+    <value>Azure 裝置識別碼</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoAzureHubName.Text" xml:space="preserve">
+    <value>Azure IoT 中樞</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoDialogButton" xml:space="preserve">
+    <value>前往裝置頁面</value>
+  </data>
+  <data name="DeviceInfoDialogMessage" xml:space="preserve">
+    <value>IP 位址: {0}
+作業系統版本: {1}
+應用程式版本: {2}</value>
+  </data>
+  <data name="DeviceInfoPageAppBuild.Text" xml:space="preserve">
+    <value>App 版本</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoPageDeviceName.Text" xml:space="preserve">
+    <value>裝置名稱</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoPageIPAddress.Text" xml:space="preserve">
+    <value>IP 位址</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoPageNetwork.Text" xml:space="preserve">
+    <value>網路</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoPageOSVersion.Text" xml:space="preserve">
+    <value>OS 版本</value>
+    <comment>Label for OS Version field in main page</comment>
+  </data>
+  <data name="DeviceInfoPageStartDeveloping.Text" xml:space="preserve">
+    <value> 開始開發</value>
+    <comment>Part of "Visit www.windowsondevices.com to start developing"</comment>
+  </data>
+  <data name="DeviceInfoPageTileText" xml:space="preserve">
+    <value>裝置資訊</value>
+  </data>
+  <data name="DeviceInfoPageVisit.Text" xml:space="preserve">
+    <value>瀏覽</value>
+    <comment>Part of "Visit www.windowsondevices.com to start developing"</comment>
+  </data>
+  <data name="DevicePortalSignInDescription.Text" xml:space="preserve">
+    <value>您嘗試存取的頁面要求使用 Windows 裝置入口網站 (WDP) API。請使用 WDP 認證登入以繼續。</value>
+  </data>
+  <data name="DevicePortalSignInError" xml:space="preserve">
+    <value>登入時發生問題。</value>
+  </data>
+  <data name="DevicePortalSignInSuccess" xml:space="preserve">
+    <value>已成功登入裝置入口網站!</value>
+  </data>
+  <data name="DevicePortalVerifyCredentials.Text" xml:space="preserve">
+    <value>正在驗證裝置入口網站認證...</value>
+  </data>
+  <data name="DialogWeatherErrorMessage" xml:space="preserve">
+    <value>取得天氣時發生問題，再試一次?</value>
+  </data>
+  <data name="DirectConnections.Text" xml:space="preserve">
+    <value>直接連線</value>
+  </data>
+  <data name="DisconnectButton.Content" xml:space="preserve">
+    <value>中斷連線</value>
+    <comment>This disconnects the connected network</comment>
+  </data>
+  <data name="DisplayLanguageUpdateSuccessText" xml:space="preserve">
+    <value>已更新顯示語言: {0}</value>
+  </data>
+  <data name="Domain.Text" xml:space="preserve">
+    <value>網域</value>
+  </data>
+  <data name="DownloadCompleteText" xml:space="preserve">
+    <value>下載完成!</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="DownloadErrorText" xml:space="preserve">
+    <value>下載失敗。請稍後再試!</value>
+  </data>
+  <data name="DownloadStartedText" xml:space="preserve">
+    <value>正在下載更新</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="DownloadUpdatesButton.Content" xml:space="preserve">
+    <value>下載更新</value>
+  </data>
+  <data name="DrawPageTileText" xml:space="preserve">
+    <value>繪圖</value>
+  </data>
+  <data name="EmailedLogsText" xml:space="preserve">
+    <value>「{0} 個記錄檔已傳送至 {1}」</value>
+    <comment>{0} is plural number of logs, {1} is email address</comment>
+  </data>
+  <data name="EmailedLogText" xml:space="preserve">
+    <value>「{0} 個記錄已傳送至 {1}」</value>
+    <comment>{0} is singular number of logs, {1} is email address</comment>
+  </data>
+  <data name="EmailLogDalogTitle" xml:space="preserve">
+    <value>電子郵件記錄</value>
+  </data>
+  <data name="EmailLogDialogMessage" xml:space="preserve">
+    <value>您想要以電子郵件傳送 {0} 給自己嗎?</value>
+    <comment>{0} is filename</comment>
+  </data>
+  <data name="EmailLogErrorText" xml:space="preserve">
+    <value>以電子郵件傳送您的記錄時發生問題: {0}</value>
+    <comment>{0} is exception message</comment>
+  </data>
+  <data name="EmailLogNoMessage" xml:space="preserve">
+    <value>您可在 [記錄] 頁面找到您的記錄</value>
+  </data>
+  <data name="EmailLogSelfText" xml:space="preserve">
+    <value>「要傳送 {0} 個記錄給您自己嗎?」</value>
+    <comment>{0} is singular number of logs</comment>
+  </data>
+  <data name="EmailLogsProblemText" xml:space="preserve">
+    <value>以電子郵件傳送您的記錄時發生問題: {0}</value>
+    <comment>{0} is an exception message</comment>
+  </data>
+  <data name="EmailLogsSelfText" xml:space="preserve">
+    <value>要以電子郵件傳送 {0} 個記錄檔給自己嗎?</value>
+    <comment>{0} is plural number of logs</comment>
+  </data>
+  <data name="EmailLogsText" xml:space="preserve">
+    <value>電子郵件記錄</value>
+  </data>
+  <data name="EmailSelectedButtonText" xml:space="preserve">
+    <value>已選取電子郵件</value>
+  </data>
+  <data name="EnableCmdText" xml:space="preserve">
+    <value>啟用命令列處理程式</value>
+  </data>
+  <data name="EnableScreensaver.Header" xml:space="preserve">
+    <value>螢幕保護裝置</value>
+    <comment>Toggle switch for enabling the screensaver</comment>
+  </data>
+  <data name="EndTimePicker.Header" xml:space="preserve">
+    <value>結束時間</value>
+  </data>
+  <data name="ErrorDialogTitle" xml:space="preserve">
+    <value>錯誤</value>
+  </data>
+  <data name="ErrorRetrievingWeather" xml:space="preserve">
+    <value>擷取天氣資訊時發生問題</value>
+  </data>
+  <data name="Ethernet.Text" xml:space="preserve">
+    <value>乙太網路</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="EtwProviderGUIDLabelText" xml:space="preserve">
+    <value>ETW 提供者 GUID: {0}</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
+    <value>正在以 DefaultAccount 的身分執行命令</value>
+  </data>
+  <data name="ExpandMapToggle.Header" xml:space="preserve">
+    <value>展開地圖</value>
+  </data>
+  <data name="ExploreCategoryText" xml:space="preserve">
+    <value>探索</value>
+  </data>
+  <data name="FileSavedText" xml:space="preserve">
+    <value>已儲存檔案: {0}</value>
+    <comment>{0} is a filename</comment>
+  </data>
+  <data name="FlightingPageTileText" xml:space="preserve">
+    <value>正式發行前小眾測試</value>
+    <comment>Device servicing flighting</comment>
+  </data>
+  <data name="FlightingPageTitle.Text" xml:space="preserve">
+    <value>正式發行前小眾測試資訊</value>
+    <comment>Device servicing flighting</comment>
+  </data>
+  <data name="FlightingRingChange" xml:space="preserve">
+    <value>正式發行前小眾測試版通道已變更至 {0}!</value>
+    <comment>Success message to change the flight ring of the device. {0} is the flight ring name.</comment>
+  </data>
+  <data name="FlightingRingError" xml:space="preserve">
+    <value>變更您的正式發行前小眾測試版通道時發生錯誤</value>
+  </data>
+  <data name="ForecastHeader.Text" xml:space="preserve">
+    <value>預測</value>
+    <comment>Weather forecast</comment>
+  </data>
+  <data name="FullScreenDialogText" xml:space="preserve">
+    <value>您即將進入全螢幕模式。若要結束，您必須按鍵盤上的 [Esc]。要繼續嗎?</value>
+  </data>
+  <data name="FullScreenDialogTitle" xml:space="preserve">
+    <value>全螢幕模式</value>
+  </data>
+  <data name="FullScreenNotificationText" xml:space="preserve">
+    <value>按下 [Esc] 結束全螢幕模式。</value>
+  </data>
+  <data name="GeneralSettingHeader.Text" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="GenericBoardName" xml:space="preserve">
+    <value>IoTCore 電路板</value>
+    <comment>A generic board name</comment>
+  </data>
+  <data name="GitHubPageTileText" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="HelpButtonText" xml:space="preserve">
+    <value>說明</value>
+  </data>
+  <data name="HelpPageTitle.Text" xml:space="preserve">
+    <value>說明</value>
+  </data>
+  <data name="HelpText" xml:space="preserve">
+    <value>說明</value>
+  </data>
+  <data name="InputLanguageUpdateSuccessText" xml:space="preserve">
+    <value>已更新輸入鍵盤語言: {0}</value>
+  </data>
+  <data name="InstallCompleteText" xml:space="preserve">
+    <value>安裝完成!</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="InstallErrorText" xml:space="preserve">
+    <value>安裝失敗。請稍後再試!</value>
+  </data>
+  <data name="InstallStartedText" xml:space="preserve">
+    <value>正在安裝更新</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="InstallUpdatesButton.Content" xml:space="preserve">
+    <value>安裝更新</value>
+  </data>
+  <data name="InvalidCredentialText" xml:space="preserve">
+    <value>無效的認證</value>
+  </data>
+  <data name="InvalidLocationErrorText" xml:space="preserve">
+    <value>'{0}' 是無效的位置。</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="InvalidNumericalValueErrorText" xml:space="preserve">
+    <value>'{0}' 是無效的值。值必須大於或等於 1。</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="InvalidValueText" xml:space="preserve">
+    <value>'{0}' 是無效的值。</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="Ipv4Text" xml:space="preserve">
+    <value>IPv4</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="Ipv6Text" xml:space="preserve">
+    <value>IPv6</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="KeyboardTitleText.Header" xml:space="preserve">
+    <value>鍵盤配置</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="LanguageApplyButton.Content" xml:space="preserve">
+    <value>重新啟動這個應用程式以套用新設定</value>
+  </data>
+  <data name="LanguageText" xml:space="preserve">
+    <value>語言</value>
+  </data>
+  <data name="LanguageTitleText.Header" xml:space="preserve">
+    <value>語言</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="LoadingText" xml:space="preserve">
+    <value>正在載入...</value>
+  </data>
+  <data name="LoadingWeatherInfoText" xml:space="preserve">
+    <value>正在載入天氣資訊...</value>
+  </data>
+  <data name="LogMailedText" xml:space="preserve">
+    <value>記錄已經傳送至 {0}</value>
+    <comment>{0} is email address</comment>
+  </data>
+  <data name="LogSavedText" xml:space="preserve">
+    <value>記錄已儲存至: {0}</value>
+    <comment>{0} is filename</comment>
+  </data>
+  <data name="LogsPageTileText" xml:space="preserve">
+    <value>記錄</value>
+  </data>
+  <data name="LogsPageTitle.Text" xml:space="preserve">
+    <value>記錄</value>
+  </data>
+  <data name="OOBEWelcomeDeviceName.Text" xml:space="preserve">
+    <value>裝置名稱</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="OOBEWelcomeIPAddress.Text" xml:space="preserve">
+    <value>IP 位址</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="OOBEWelcomeOSVersion.Text" xml:space="preserve">
+    <value>作業系統版本</value>
+    <comment>Label for OS Version field in main page</comment>
+  </data>
+  <data name="MakerImageNotice.Text" xml:space="preserve">
+    <value>這是專為建立原型而設計的 Windows 10 IoT 核心版測試映像。如果您打算商業化，則必須使用自訂 FFU，以獲得最佳安全性。</value>
+    <comment>Maker Imager Security Notice</comment>
+  </data>
+  <data name="MapFlipToggle.Header" xml:space="preserve">
+    <value>允許翻轉地圖以防止螢幕烙印</value>
+  </data>
+  <data name="MapServiceToken.Content" xml:space="preserve">
+    <value>Bing 地圖服務權杖</value>
+  </data>
+  <data name="MapServiceTokenRequiredTitle" xml:space="preserve">
+    <value>需要 Bing 地圖服務權杖</value>
+  </data>
+  <data name="MapTokenLinkText" xml:space="preserve">
+    <value>http://go.microsoft.com/fwlink/p/?LinkId=614880</value>
+  </data>
+  <data name="MBMName" xml:space="preserve">
+    <value>MinnowBoard Max</value>
+    <comment>Board name</comment>
+  </data>
+  <data name="MsaPanelDescription.Text" xml:space="preserve">
+    <value>Outlook.com、Hotmail、Live.com、MSN</value>
+  </data>
+  <data name="MsaPanelTitle.Text" xml:space="preserve">
+    <value>Microsoft 帳戶 (MSA)</value>
+  </data>
+  <data name="MusicPlayerCurrentlyPlayingText" xml:space="preserve">
+    <value>目前正在播放</value>
+    <comment>Music player page status text (currently playing)</comment>
+  </data>
+  <data name="MusicPlayerDefaultText" xml:space="preserve">
+    <value>選取一首歌曲，然後按一下 [播放]。</value>
+    <comment>Music player page status text (default)</comment>
+  </data>
+  <data name="MusicPlayerInstructionsText" xml:space="preserve">
+    <value>請將一個或多個音訊檔案新增至 [音樂] 資料夾。
+您可以在 Windows 裝置入口網站使用 [App] &gt; [檔案總管] 新增音樂。</value>
+    <comment>Music player page instructions text</comment>
+  </data>
+  <data name="MusicPlayerLoadingPanelText" xml:space="preserve">
+    <value>正在載入音樂</value>
+    <comment>Music player page loading panel text</comment>
+  </data>
+  <data name="MusicPlayerLoadingText" xml:space="preserve">
+    <value>正在載入</value>
+    <comment>Music player page status text (loading)</comment>
+  </data>
+  <data name="MusicPlayerNoMusicFoundText" xml:space="preserve">
+    <value>找不到任何音樂</value>
+    <comment>Music player page no music found prompt text</comment>
+  </data>
+  <data name="MusicPlayerPageReloadButtonText" xml:space="preserve">
+    <value>再試一次</value>
+    <comment>Music player page reload button text (no files prompt)</comment>
+  </data>
+  <data name="MusicPlayerPageTileText" xml:space="preserve">
+    <value>音樂</value>
+  </data>
+  <data name="MusicPlayerPageTitle.Text" xml:space="preserve">
+    <value>音樂</value>
+  </data>
+  <data name="MusicPlayerPausedText" xml:space="preserve">
+    <value>已暫停</value>
+    <comment>Music player page status text (paused)</comment>
+  </data>
+  <data name="MusicPlayerPlayingText" xml:space="preserve">
+    <value>正在播放</value>
+    <comment>Music player page status text (playing)</comment>
+  </data>
+  <data name="NavbarAuthNoAccount" xml:space="preserve">
+    <value>登入</value>
+  </data>
+  <data name="NavbarAuthUnknownAccount" xml:space="preserve">
+    <value>不明</value>
+  </data>
+  <data name="NavbarMenuButton" xml:space="preserve">
+    <value>功能表</value>
+  </data>
+  <data name="NetworkAdapterProperties.Text" xml:space="preserve">
+    <value>網路介面卡</value>
+  </data>
+  <data name="NetworkConnected.Text" xml:space="preserve">
+    <value>已連線</value>
+  </data>
+  <data name="NetworkConnectedText" xml:space="preserve">
+    <value>已連線</value>
+  </data>
+  <data name="NetworkConnectingMessage.Text" xml:space="preserve">
+    <value>正在檢查網路需求</value>
+  </data>
+  <data name="NetworkConnectingMessageText" xml:space="preserve">
+    <value>正在檢查網路需求</value>
+  </data>
+  <data name="NetworkConnectivityLevel_ConstrainedInternetAccess" xml:space="preserve">
+    <value>受限的網際網路存取</value>
+  </data>
+  <data name="NetworkConnectivityLevel_InternetAccess" xml:space="preserve">
+    <value>本機和網際網路存取</value>
+  </data>
+  <data name="NetworkConnectivityLevel_LocalAccess" xml:space="preserve">
+    <value>僅限本機網路存取</value>
+  </data>
+  <data name="NetworkConnectivityLevel_None" xml:space="preserve">
+    <value>沒有連線能力</value>
+  </data>
+  <data name="NetworkInformation.Text" xml:space="preserve">
+    <value>網路資訊</value>
+  </data>
+  <data name="NetworkNotAvailableText" xml:space="preserve">
+    <value>網路無法使用</value>
+  </data>
+  <data name="NetworkPasswordPrompt.Text" xml:space="preserve">
+    <value>輸入網路安全性金鑰</value>
+  </data>
+  <data name="NetworkPasswordPromptText" xml:space="preserve">
+    <value>輸入網路安全性金鑰</value>
+  </data>
+  <data name="NetworkPreferences.Text" xml:space="preserve">
+    <value>網路與 Wi-Fi</value>
+  </data>
+  <data name="NetworkPreferencesButton.Content" xml:space="preserve">
+    <value>網路與 Wi-Fi</value>
+  </data>
+  <data name="NetworkProperties.Content" xml:space="preserve">
+    <value>檢視網路內容</value>
+  </data>
+  <data name="NetworkPropertiesText" xml:space="preserve">
+    <value>網路內容</value>
+  </data>
+  <data name="NetworkRedirectText" xml:space="preserve">
+    <value>您即將被重新導向到此 Wi-Fi 網路的網頁驗證入口網站。要繼續嗎?</value>
+  </data>
+  <data name="NetworkRedirectTitle" xml:space="preserve">
+    <value>網路重新導向</value>
+  </data>
+  <data name="NextButton.Content" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="NextButtonContent" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="NoAccountsText" xml:space="preserve">
+    <value>找不到帳戶</value>
+  </data>
+  <data name="NoButton.Content" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="NoDeviceNameText" xml:space="preserve">
+    <value>無裝置名稱</value>
+  </data>
+  <data name="NoInternetConnectionText" xml:space="preserve">
+    <value>沒有網際網路連線</value>
+  </data>
+  <data name="NoLogsSelectedText" xml:space="preserve">
+    <value>未選取任何記錄</value>
+  </data>
+  <data name="NoMusicFoundPanel.Text" xml:space="preserve">
+    <value>找不到任何音樂</value>
+    <comment>Music player page panel text</comment>
+  </data>
+  <data name="NoNetworks.Text" xml:space="preserve">
+    <value>找不到任何網路</value>
+  </data>
+  <data name="NoPendingDownloadsText" xml:space="preserve">
+    <value>沒有可下載的擱置中更新。</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="NoPendingInstallsText" xml:space="preserve">
+    <value>沒有可安裝的擱置中更新。</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="NotificationsPageTileText" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="NotificationsPageTitle.Text" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="NoUpdatesFoundText" xml:space="preserve">
+    <value>找不到新更新。</value>
+    <comment>Format string displayed when no app updates are found</comment>
+  </data>
+  <data name="OkButtonText" xml:space="preserve">
+    <value>確定</value>
+    <comment>Button content text for the Bluetooth settings page</comment>
+  </data>
+  <data name="OOBELanguageSelect.Text" xml:space="preserve">
+    <value>選擇語言</value>
+  </data>
+  <data name="OOBENetworkPage.SubtitleText" xml:space="preserve">
+    <value>讓我們開始連線</value>
+  </data>
+  <data name="OOBENetworkPage.TitleText" xml:space="preserve">
+    <value>歡迎使用 Windows 10 IoT 核心版</value>
+  </data>
+  <data name="OOBEWelcomePage.SubtitleText" xml:space="preserve">
+    <value>讓我們先了解一些基礎知識。</value>
+  </data>
+  <data name="OOBEWelcomePage.TitleText" xml:space="preserve">
+    <value>歡迎使用 Windows 10 IoT 核心版</value>
+  </data>
+  <data name="OSEditionIDText" xml:space="preserve">
+    <value>作業系統版本識別碼</value>
+  </data>
+  <data name="OSEditionText" xml:space="preserve">
+    <value>作業系統版本</value>
+  </data>
+  <data name="OSInfoPageTileText" xml:space="preserve">
+    <value>作業系統資訊</value>
+  </data>
+  <data name="OSInfoPageTitle.Text" xml:space="preserve">
+    <value>作業系統資訊</value>
+  </data>
+  <data name="OSVersionNotAvailable" xml:space="preserve">
+    <value>無法使用</value>
+    <comment>Text shown when we cannot retrieve the OS Version</comment>
+  </data>
+  <data name="OSVersionText" xml:space="preserve">
+    <value>作業系統版本</value>
+  </data>
+  <data name="PackagesPageTileText" xml:space="preserve">
+    <value>套件</value>
+    <comment>Software packages</comment>
+  </data>
+  <data name="PackagesPageTitle.Text" xml:space="preserve">
+    <value>已安裝套件</value>
+    <comment>Software packages</comment>
+  </data>
+  <data name="PageSettingsButtonText" xml:space="preserve">
+    <value>頁面設定</value>
+  </data>
+  <data name="PagesText" xml:space="preserve">
+    <value>頁面</value>
+  </data>
+  <data name="Password.Text" xml:space="preserve">
+    <value>密碼</value>
+  </data>
+  <data name="PhotoPageLoading" xml:space="preserve">
+    <value>正在載入圖片</value>
+    <comment>Default text when no images are available</comment>
+  </data>
+  <data name="PhotoPageNoImagesHint" xml:space="preserve">
+    <value>請將影像新增至 [圖片] 資料夾。
+您可以在 Windows 裝置入口網站使用 [App] &gt; [檔案總管] 新增影像。</value>
+  </data>
+  <data name="PhotoPageNoImagesText" xml:space="preserve">
+    <value>找不到影像</value>
+    <comment>Default text when no images are available</comment>
+  </data>
+  <data name="PlatformText" xml:space="preserve">
+    <value>平台</value>
+  </data>
+  <data name="PlayCategoryText" xml:space="preserve">
+    <value>播放</value>
+  </data>
+  <data name="PowerPreferences.Text" xml:space="preserve">
+    <value>電源選項</value>
+    <comment>Label for Setting item to control Power (shutdown/restart)</comment>
+  </data>
+  <data name="PrivacyBasic.Content" xml:space="preserve">
+    <value>基本：傳送與您的裝置、設定和功能相關的資訊，並確認是否正確執行。</value>
+  </data>
+  <data name="PrivacyFull.Content" xml:space="preserve">
+    <value>完整：傳送所有基本診斷資料，您瀏覽的網站和使用應用程式與功能的方式，以及有關裝置健康情況、裝置活動和更進一步的錯誤報告等額外資訊。</value>
+  </data>
+  <data name="PrivacyLevelChangeFailed" xml:space="preserve">
+    <value>我們無法變更隱私權設定。請驗證您的使用者名稱和密碼，並再試一次。</value>
+  </data>
+  <data name="PrivacyPrompt.Text" xml:space="preserve">
+    <value>選取您想傳送給 Microsoft 的診斷資料數量。診斷資料用於協助維持 Windows 的安全性和最新資訊、疑難排解和改善產品。無論您選擇的是 [基本] 或是 [完整]，您的裝置都將享有同樣的安全性並且可正常運作。</value>
+  </data>
+  <data name="DiagnosticDataSettings.Text" xml:space="preserve">
+    <value>診斷資料</value>
+    <comment>Label for Setting item to control Privacy</comment>
+  </data>
+  <data name="PrivacySignInDescription" xml:space="preserve">
+    <value>請輸入您的認證，設定此裝置的隱私權等級。</value>
+  </data>
+  <data name="PrivacySignInTitle" xml:space="preserve">
+    <value>設定您的隱私權等級</value>
+  </data>
+  <data name="RefreshButton" xml:space="preserve">
+    <value>重新整理</value>
+    <comment>Refresh button</comment>
+  </data>
+  <data name="RepeatToggle.Header" xml:space="preserve">
+    <value>重複歌曲</value>
+    <comment>Music player page repeat toggle text</comment>
+  </data>
+  <data name="RestartButton.Content" xml:space="preserve">
+    <value>重新啟動</value>
+  </data>
+  <data name="RestartText" xml:space="preserve">
+    <value>重新啟動</value>
+    <comment>Restart entry in the shutdown menu</comment>
+  </data>
+  <data name="Rpi2Name" xml:space="preserve">
+    <value>Raspberry Pi 2</value>
+    <comment>Board name</comment>
+  </data>
+  <data name="Rpi3Name" xml:space="preserve">
+    <value>Raspberry Pi 3</value>
+    <comment>Board name</comment>
+  </data>
+  <data name="RunAsAdminUsage" xml:space="preserve">
+    <value>使用方式: RunAsAdmin command
+
+範例:
+&gt; RunAsdmin TZUTIL /s "Pacific Standard Time"
+&gt; RunAsdmin SetComputerName MyNewDeviceName</value>
+  </data>
+  <data name="SaveButtonText" xml:space="preserve">
+    <value>儲存</value>
+  </data>
+  <data name="ScalingFactorTextBox.Header" xml:space="preserve">
+    <value>縮放係數</value>
+  </data>
+  <data name="SelectAllButtonText" xml:space="preserve">
+    <value>全選</value>
+  </data>
+  <data name="SendTelemetryToggle.Header" xml:space="preserve">
+    <value>傳送遙測</value>
+  </data>
+  <data name="SensorUnavailableText" xml:space="preserve">
+    <value>無法使用</value>
+  </data>
+  <data name="SessionLogPageTitle.Text" xml:space="preserve">
+    <value>工作階段記錄</value>
+  </data>
+  <data name="SetDefaultPageErrorText" xml:space="preserve">
+    <value>將預設頁面設定為 {0} 時發生問題。</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="SettingsPageTileText" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="ShuffleToggle.Header" xml:space="preserve">
+    <value>隨機播放</value>
+    <comment>Music player page shuffle toggle text</comment>
+  </data>
+  <data name="ShutdownButton.Content" xml:space="preserve">
+    <value>關機</value>
+  </data>
+  <data name="ShutdownText" xml:space="preserve">
+    <value>關機</value>
+    <comment>Shutdown entry in the shutdown menu</comment>
+  </data>
+  <data name="SignInAADMessage" xml:space="preserve">
+    <value>登入您的 Azure AD 帳戶以使用此功能。</value>
+  </data>
+  <data name="SkipButton.Content" xml:space="preserve">
+    <value>跳過</value>
+  </data>
+  <data name="SkipStep.Text" xml:space="preserve">
+    <value>跳過此步驟</value>
+  </data>
+  <data name="SlideshowIntervalTextBox.Header" xml:space="preserve">
+    <value>投影片放映間隔 (秒)</value>
+  </data>
+  <data name="SlideshowPageTileText" xml:space="preserve">
+    <value>幻燈片秀</value>
+  </data>
+  <data name="SlideshowSettingHeader.Text" xml:space="preserve">
+    <value>幻燈片秀</value>
+  </data>
+  <data name="StartPageTileText" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="StartPageTitle.Text" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="StartTimePicker.Header" xml:space="preserve">
+    <value>開始時間</value>
+  </data>
+  <data name="StatusText" xml:space="preserve">
+    <value>狀態</value>
+    <comment>Status of the network connection (e.g. not connected, limited, etc.)</comment>
+  </data>
+  <data name="SubmitButton.Content" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="SuccessText" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="SystemPreferences.Text" xml:space="preserve">
+    <value>系統</value>
+  </data>
+  <data name="SystemSettingsUpdateErrorText" xml:space="preserve">
+    <value>嘗試更新您的系統設定時發生問題。</value>
+    <comment>Used within system settings</comment>
+  </data>
+  <data name="TelemetryLevelText" xml:space="preserve">
+    <value>遙測層級</value>
+  </data>
+  <data name="TelemetrySettingHeader.Text" xml:space="preserve">
+    <value>遙測</value>
+  </data>
+  <data name="TestJumboNotificationButtonText" xml:space="preserve">
+    <value>測試大型通知</value>
+  </data>
+  <data name="TestNotificationButtonText" xml:space="preserve">
+    <value>測試通知</value>
+  </data>
+  <data name="TestNotificationMessage" xml:space="preserve">
+    <value>Windows 10 IoT 是 Windows 10 家族的成員，它為物聯網帶來了企業級的助力、安全性和管理性，此外亦利用了 Windows 的內嵌體驗、生態系統及雲端連線能力，讓組織可以安全、可快速佈建、可輕鬆管理，且與整體雲端策略完美匹配的裝置來打造自己的物聯網。</value>
+  </data>
+  <data name="TileHeightTextBox.Header" xml:space="preserve">
+    <value>磚高度</value>
+  </data>
+  <data name="TileSettingHeader.Text" xml:space="preserve">
+    <value>個人化</value>
+  </data>
+  <data name="TileWidthTextBox.Header" xml:space="preserve">
+    <value>磚寬度</value>
+  </data>
+  <data name="TimeoutText" xml:space="preserve">
+    <value>連線逾時</value>
+  </data>
+  <data name="TimeZoneUpdateSuccessText" xml:space="preserve">
+    <value>已更新時區: {0}</value>
+  </data>
+  <data name="UnableToCommunicateWeatherText" xml:space="preserve">
+    <value>錯誤: 無法與天氣服務進行通訊</value>
+  </data>
+  <data name="UnknownErrorText" xml:space="preserve">
+    <value>由於不明錯誤，更新失敗。</value>
+    <comment>App update error, unknown</comment>
+  </data>
+  <data name="UnselectAllButtonText" xml:space="preserve">
+    <value>取消全選</value>
+  </data>
+  <data name="UnspecifiedFailureText" xml:space="preserve">
+    <value>未指定的失敗</value>
+  </data>
+  <data name="UpdateAdvancedOptions.Text" xml:space="preserve">
+    <value>進階選項</value>
+  </data>
+  <data name="UpdateButtonCheckText" xml:space="preserve">
+    <value>立即檢查</value>
+  </data>
+  <data name="UpdateButtonInstallText" xml:space="preserve">
+    <value>立即安裝</value>
+  </data>
+  <data name="UpdatePendingCountText" xml:space="preserve">
+    <value>{0} 個暫止的更新</value>
+    <comment>{0} is singular amount of updates</comment>
+  </data>
+  <data name="UpdatesFoundText" xml:space="preserve">
+    <value>找到 {0} 個新更新。</value>
+    <comment>Format string displayed when new app updates are found. {0} is a number</comment>
+  </data>
+  <data name="UpdatesPendingCountText" xml:space="preserve">
+    <value>{0} 個暫止的更新</value>
+    <comment>{0} is plural amount of updates</comment>
+  </data>
+  <data name="UseMDL2Icons.Header" xml:space="preserve">
+    <value>使用 MDL2 磚圖示</value>
+  </data>
+  <data name="UsePassword.Text" xml:space="preserve">
+    <value>使用密碼</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>使用者名稱</value>
+  </data>
+  <data name="WDPCategoryText" xml:space="preserve">
+    <value>Windows 裝置入口網站</value>
+  </data>
+  <data name="WDPPreferences.Text" xml:space="preserve">
+    <value>裝置入口網站設定</value>
+    <comment>Label for Setting item to control Device Portal settings (time zone)</comment>
+  </data>
+  <data name="WDPTitle.Text" xml:space="preserve">
+    <value>Windows 裝置入口網站</value>
+  </data>
+  <data name="WeatherLocationCoordinates" xml:space="preserve">
+    <value>目前位置 ({0}，{1})</value>
+    <comment>{0}, {1} are latitude and longitude numbers rounded to 1 decimal place</comment>
+  </data>
+  <data name="WeatherLocationTextBox.Header" xml:space="preserve">
+    <value>您的位置</value>
+  </data>
+  <data name="WeatherMapPinLabel" xml:space="preserve">
+    <value>您的位置</value>
+    <comment>Label for map pin</comment>
+  </data>
+  <data name="WeatherMapPinUnknownLabel" xml:space="preserve">
+    <value>未知的位置</value>
+    <comment>Label for map pin</comment>
+  </data>
+  <data name="WeatherPageSensorOutputHeader.Text" xml:space="preserve">
+    <value>感應器:</value>
+    <comment>Label for temperature sensor output</comment>
+  </data>
+  <data name="WeatherPageTileText" xml:space="preserve">
+    <value>天氣</value>
+  </data>
+  <data name="WeatherPageErrorPanel.Text" xml:space="preserve">
+    <value>載入天氣頁面時發生錯誤。
+
+請按畫面右下方的 [重新整理] 按鈕，重新載入此頁面。
+
+如果您沒有天氣 API 金鑰，請瀏覽 weatherunlocked.com。將金鑰儲存在應用程式本地狀態資料夾中的 "WeatherTokens.config" 中。然後重新整理頁面。</value>
+  </data>
+  <data name="WeatherProvidedBy.Text" xml:space="preserve">
+    <value>天氣資料提供者:</value>
+  </data>
+  <data name="WeatherSettingHeader.Text" xml:space="preserve">
+    <value>天氣</value>
+  </data>
+  <data name="WebAddress.PlaceholderText" xml:space="preserve">
+    <value>輸入網址</value>
+  </data>
+  <data name="WebBrowserPageTileText" xml:space="preserve">
+    <value>網頁瀏覽器</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>歡迎使用 Windows IoT 核心版</value>
+  </data>
+  <data name="WiFi.Text" xml:space="preserve">
+    <value>Wi-Fi</value>
+    <comment>Label for Wi-Fi list in options page</comment>
+  </data>
+  <data name="WifiRefresh.Content" xml:space="preserve">
+    <value>重新整理</value>
+    <comment>Refresh button</comment>
+  </data>
+  <data name="WindowsOnDevicesUrl.Text" xml:space="preserve">
+    <value> www.windowsondevices.com</value>
+    <comment>Part of "Visit www.windowsondevices.com to start developing"</comment>
+  </data>
+  <data name="LastCheckedText" xml:space="preserve">
+    <value>上次檢查：</value>
+    <comment>For a timestamp</comment>
+  </data>
+  <data name="LastUpdatedText" xml:space="preserve">
+    <value>上次更新：</value>
+    <comment>For a timestamp</comment>
+  </data>
+  <data name="UpdatedStateText" xml:space="preserve">
+    <value>更新狀態：</value>
+  </data>
+  <data name="StatusMessageText" xml:space="preserve">
+    <value>狀態訊息：</value>
+  </data>
+  <data name="WindowsUpdatePageTileText" xml:space="preserve">
+    <value>Windows Update</value>
+  </data>
+  <data name="WindowsUpdatePageTitle.Text" xml:space="preserve">
+    <value>Windows Update</value>
+  </data>
+  <data name="WorkingDirectoryInvalid" xml:space="preserve">
+    <value>無效的工作目錄: {0}</value>
+  </data>
+  <data name="Wps.Text" xml:space="preserve">
+    <value>WPS</value>
+  </data>
+  <data name="LocationPermissionLabel.Text" xml:space="preserve">
+    <value>允許這個應用程式存取您的位置</value>
+  </data>
+  <data name="OOBEPermissionsPage.SubtitleText" xml:space="preserve">
+    <value>選擇設定，選取 [接受] 以保存。您可以隨時變更這些設定。</value>
+  </data>
+  <data name="OOBEPermissionsPage.TitleText" xml:space="preserve">
+    <value>讓 Microsoft 使用您所在的位置</value>
+  </data>
+  <data name="OOBETimeout.Text" xml:space="preserve">
+    <value>自動繼續…</value>
+  </data>
+  <data name="AcceptButton.Content" xml:space="preserve">
+    <value>接受</value>
+  </data>
+  <data name="LocationPermissionPromptText" xml:space="preserve">
+    <value>是否讓 {0} 存取您的精確位置？</value>
+    <comment>{0} is the name of a page</comment>
+  </data>
+  <data name="LocationSettings.Text" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="LocationPermissionPromptDescription" xml:space="preserve">
+    <value>若要稍後變更，請至設定 &gt; 權限。</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="LocationOOBEDescriptionOffText" xml:space="preserve">
+    <value>您無法體驗以位置為基礎的相關服務，例如地圖和天氣，或其他需要取得您所在地才能運作的服務。</value>
+  </data>
+  <data name="LocationOOBEDescriptionOnText" xml:space="preserve">
+    <value>取得像地圖與天氣等以位置為基礎的相關服務。讓應用程式取得您的所在位置。Microsoft 將使用您的位置資料改善位置相關服務。</value>
+  </data>
+  <data name="BasicTelemetryDescription.Text" xml:space="preserve">
+    <value>僅傳送有關您裝置的設定、功能以及是否正常運行等資訊。診斷資料用於協助維持 Windows 的安全性和最新資訊、疑難排解和改善產品。無論您選擇的是 [基本] 或是 [完整]，您的裝置都將享有同樣的安全性並且可正常運作。</value>
+  </data>
+  <data name="BasicTelemetryTitle.Text" xml:space="preserve">
+    <value>基本</value>
+  </data>
+  <data name="FullTelemetryDescription.Text" xml:space="preserve">
+    <value>傳送所有基本診斷資料，您瀏覽的網站和使用應用程式與功能的方式，以及有關裝置健康情況、裝置活動狀況和更進一步的錯誤報告等額外資訊。診斷資料用於協助維持 Windows 的安全性和最新資訊、疑難排解和改善產品。無論您選擇的是 [基本] 或是 [完整]，您的裝置都將享有同樣的安全性並且可正常運作。</value>
+  </data>
+  <data name="FullTelemetryTitle.Text" xml:space="preserve">
+    <value>完整</value>
+  </data>
+  <data name="OOBETelemetryLevel.SubtitleText" xml:space="preserve">
+    <value>為您的裝置選擇隱私權設定，然後選取 [接受] 來儲存它。</value>
+  </data>
+  <data name="OOBETelemetryLevel.TitleText" xml:space="preserve">
+    <value>傳送診斷資料給 Microsoft</value>
+  </data>
+  <data name="DiagnosticSettingsText" xml:space="preserve">
+    <value>診斷</value>
+  </data>
+  <data name="LocationSettingsDescription.Text" xml:space="preserve">
+    <value>若您允許存取，您將授權此應用程式使用您裝置上的功能，以此判定您的位置， Microsoft 將使用您位置的資料來改善位置服務。拒絕存取會阻止 Windows 提供位置給此應用程式。</value>
+  </data>
+  <data name="KnowYourPrivacyOptionsHeader.Text" xml:space="preserve">
+    <value>了解您的隱私權選項</value>
+  </data>
+  <data name="KnowYourPrivacyOptionsSubtitle.Text" xml:space="preserve">
+    <value>了解這項設定將如何影響您的隱私權。</value>
+  </data>
+  <data name="PrivacyLearnMoreLink.Content" xml:space="preserve">
+    <value>取得更多關於這些設定的詳細資訊</value>
+  </data>
+  <data name="PrivacyStatementHyperlink.Content" xml:space="preserve">
+    <value>隱私權聲明</value>
+  </data>
+  <data name="YesButton.Content" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="YesButtonText" xml:space="preserve">
+    <value>是</value>
+    <comment>Button content text for the Bluetooth settings page</comment>
+  </data>
+</root>

@@ -1,0 +1,1615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AadV2CheckBox.Content" xml:space="preserve">
+    <value>Use AAD v2</value>
+  </data>
+  <data name="AcceptButton.Content" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="AccessRevokedText" xml:space="preserve">
+    <value>Access Revoked</value>
+  </data>
+  <data name="AdapterDescription.Text" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="AdapterDHCPServer.Text" xml:space="preserve">
+    <value>DHCP Server:</value>
+  </data>
+  <data name="AdapterDNS.Text" xml:space="preserve">
+    <value>DNS:</value>
+  </data>
+  <data name="AdapterGatewayAddress.Text" xml:space="preserve">
+    <value>Gateway Address:</value>
+  </data>
+  <data name="AdapterIPv4Address.Text" xml:space="preserve">
+    <value>IPv4 Address:</value>
+  </data>
+  <data name="AdapterName.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="AdapterPhysicalAddress.Text" xml:space="preserve">
+    <value>Physical Address:</value>
+  </data>
+  <data name="AdapterSubnetMask.Text" xml:space="preserve">
+    <value>Subnet Mask:</value>
+  </data>
+  <data name="AdapterType.Text" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="AppBuildText" xml:space="preserve">
+    <value>App Version</value>
+  </data>
+  <data name="AppLauncherDialogPrompt" xml:space="preserve">
+    <value>You are about to launch an external app.  You will need to use Windows Device Portal to return to this app.  Continue?</value>
+    <comment>Dialog prompt for launching external apps</comment>
+  </data>
+  <data name="AppLauncherPageTileText" xml:space="preserve">
+    <value>Apps</value>
+  </data>
+  <data name="AppLauncherTitle.Text" xml:space="preserve">
+    <value>Apps</value>
+  </data>
+  <data name="AppPreferences.Text" xml:space="preserve">
+    <value>App Settings</value>
+  </data>
+  <data name="AppUpdateActiveHours.Text" xml:space="preserve">
+    <value>Set active hours to let us know when you typically use this device. We won't automatically restart during active hours.</value>
+  </data>
+  <data name="AppUpdateActiveHoursInvalid.Text" xml:space="preserve">
+    <value>Unable to save new Start and End times, as they are the same. Please pick new times or turn off feature.</value>
+  </data>
+  <data name="AppUpdateAdvancedTitle.Text" xml:space="preserve">
+    <value>Advanced Options</value>
+    <comment>Advanced section title</comment>
+  </data>
+  <data name="AppUpdateAdvancedToggle.Text" xml:space="preserve">
+    <value>Control each of the Fetch, Download, and Install update steps.</value>
+  </data>
+  <data name="AppUpdateAutoUpdateTitle.Text" xml:space="preserve">
+    <value>Auto-Update Options</value>
+    <comment>Auto-Update section title</comment>
+  </data>
+  <data name="AppUpdateAutoUpdateToggle.Header" xml:space="preserve">
+    <value>Let app install app updates outside of active hours</value>
+  </data>
+  <data name="AppUpdateDialogHeaderText" xml:space="preserve">
+    <value>App Updates</value>
+    <comment>App update display dialog header </comment>
+  </data>
+  <data name="AppUpdateInfoFormat" xml:space="preserve">
+    <value>{0}: {1}</value>
+    <comment>{0} is status text, {1} is version number</comment>
+  </data>
+  <data name="AppUpdateLastUpdateCheckText" xml:space="preserve">
+    <value>Last checked: {0}, {1}</value>
+    <comment>{0} is date, {1} is time</comment>
+  </data>
+  <data name="AppUpdateNoLastUpdateTimeText" xml:space="preserve">
+    <value>Unable to determine when last checked for updates</value>
+  </data>
+  <data name="AppUpdatePreferences.Text" xml:space="preserve">
+    <value>App Updates</value>
+    <comment>Label for setting item to check for app updates</comment>
+  </data>
+  <data name="AuthAadPageDescription" xml:space="preserve">
+    <value>Sign in to MSA and AAD</value>
+  </data>
+  <data name="AuthAadSignInMessage" xml:space="preserve">
+    <value>Please sign in to AAD using your organization account.</value>
+  </data>
+  <data name="AuthAadSignInTitle" xml:space="preserve">
+    <value>Azure AD (AAD) Sign In</value>
+  </data>
+  <data name="AuthAadString" xml:space="preserve">
+    <value>AAD</value>
+  </data>
+  <data name="AuthAadTitle" xml:space="preserve">
+    <value>Azure AD (AAD) Account</value>
+  </data>
+  <data name="AuthAadTitleVersionedFormat" xml:space="preserve">
+    <value>Azure AD (AAD {0}) Account</value>
+    <comment>{0} is a version string, ex: "v1", "v2", "v3"...</comment>
+  </data>
+  <data name="AuthAadV1Description" xml:space="preserve">
+    <value>Authenticates Microsoft Graph and other resources</value>
+  </data>
+  <data name="AuthAadV2Description" xml:space="preserve">
+    <value>Authenticates Microsoft Graph only</value>
+  </data>
+  <data name="AuthCancelText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AuthDefaultAadDescription" xml:space="preserve">
+    <value>Your organization account</value>
+  </data>
+  <data name="AuthDialogFormat" xml:space="preserve">
+    <value>If you get stuck at any point and cannot exit the sign in wizard, please wait {0} seconds, and you should return back to the app.</value>
+  </data>
+  <data name="AuthLoadingSigningInText" xml:space="preserve">
+    <value>Signing in...</value>
+  </data>
+  <data name="AuthLoadingSigningOutText" xml:space="preserve">
+    <value>Signing out...</value>
+  </data>
+  <data name="AuthMsaOnlyPageDescription" xml:space="preserve">
+    <value>Sign in to your Microsoft Account here</value>
+  </data>
+  <data name="AuthMsaSignInTitle" xml:space="preserve">
+    <value>Microsoft Account (MSA) Sign In</value>
+  </data>
+  <data name="AuthMsaString" xml:space="preserve">
+    <value>MSA</value>
+  </data>
+  <data name="AuthPageTileText" xml:space="preserve">
+    <value>Authentication</value>
+  </data>
+  <data name="AuthPageTitle.Text" xml:space="preserve">
+    <value>Microsoft Sign In</value>
+  </data>
+  <data name="AuthSignInFailedFormatText" xml:space="preserve">
+    <value>Sign in failed ({0})</value>
+  </data>
+  <data name="AuthSignInSuccessfulFormatText" xml:space="preserve">
+    <value>Sign in successful ({0})</value>
+  </data>
+  <data name="AuthSignInText" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="AuthSignOutSuccessfulFormatText" xml:space="preserve">
+    <value>Signed out: {0}</value>
+  </data>
+  <data name="AuthSignOutText" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="AutoPlayToggle.Header" xml:space="preserve">
+    <value>Auto-Play</value>
+    <comment>Music player page auto-play toggle text</comment>
+  </data>
+  <data name="AutoScalingToggle.Header" xml:space="preserve">
+    <value>Auto Scaling</value>
+  </data>
+  <data name="BasicTelemetryDescription.Text" xml:space="preserve">
+    <value>Send only info about your device, its settings and capabilities, and whether it is performing properly. Diagnostic data is used to help keep Windows secure and up to date, troubleshoot problems, and make product improvements. Regardless of whether you select Basic or Full, your device will be equally secure and will operate normally.</value>
+  </data>
+  <data name="BasicTelemetryTitle.Text" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="BatteryLowErrorText" xml:space="preserve">
+    <value>Update failed due to low battery.</value>
+    <comment>App update error, low battery</comment>
+  </data>
+  <data name="BluetoothAttemptingToPairFormat" xml:space="preserve">
+    <value>Attempting to pair with {0} ({1}).</value>
+    <comment>Text displayed when a Bluetooth pairing attempt starts</comment>
+  </data>
+  <data name="BluetoothConfirmOnlyFormat" xml:space="preserve">
+    <value>Pairing with {0} ({1}).</value>
+    <comment>Text displayed when ConfirmOnly ceremony is invoked</comment>
+  </data>
+  <data name="BluetoothConfirmPinMatchFormat" xml:space="preserve">
+    <value>Does the PIN shown on the device match: {0}?</value>
+    <comment>Text displayed when ConfirmPinMatch ceremony is invoked</comment>
+  </data>
+  <data name="BluetoothDeviceNameUnknownText" xml:space="preserve">
+    <value>Unknown</value>
+    <comment>Text displayed when the Bluetooth device name is unknown</comment>
+  </data>
+  <data name="BluetoothDeviceStatePairedText" xml:space="preserve">
+    <value>Currently paired</value>
+    <comment>Text displayed for labeling the pairing status of a Bluetooth device </comment>
+  </data>
+  <data name="BluetoothDeviceStateReadyToPairText" xml:space="preserve">
+    <value>Ready to pair</value>
+    <comment>Text displayed for labeling the pairing status of a Bluetooth device</comment>
+  </data>
+  <data name="BluetoothDeviceStateUnknownText" xml:space="preserve">
+    <value>Unknown state</value>
+    <comment>Text displayed for labeling the pairing status of a Bluetooth device</comment>
+  </data>
+  <data name="BluetoothDisplayPinFormat" xml:space="preserve">
+    <value>Please enter the following PIN on the device you wish to pair: {0}</value>
+    <comment>Text displayed when DisplayPin ceremony is invoked</comment>
+  </data>
+  <data name="BluetoothEnterPIN.Text" xml:space="preserve">
+    <value>Enter the PIN: </value>
+    <comment>Text displayed on prompt for user to enter a pairing PIN</comment>
+  </data>
+  <data name="BluetoothInboundPairingRequestFormat" xml:space="preserve">
+    <value>Inbound pairing request from {0} ({1}).</value>
+    <comment>Text displayed when an inbound pairing request is received</comment>
+  </data>
+  <data name="BluetoothInboundRegistrationAlreadyDoneFormat" xml:space="preserve">
+    <value>This device is already registered for inbound pairing. (Supported ceremonies: {0})</value>
+    <comment>Text displayed when inbound pairing handler registration has already been completed</comment>
+  </data>
+  <data name="BluetoothInboundRegistrationFailed" xml:space="preserve">
+    <value>Failed to register for inbound pairing.</value>
+    <comment>Text displayed when Inbound pairing handler registration fails</comment>
+  </data>
+  <data name="BluetoothInboundRegistrationSucceededFormat" xml:space="preserve">
+    <value>Successfully registered for inbound pairing. (Supported ceremonies: {0})</value>
+    <comment>Text displayed when inbound pairing handler registration succeeds</comment>
+  </data>
+  <data name="BluetoothIncorrectEnteredPIN" xml:space="preserve">
+    <value>The PIN you entered is incorrect.</value>
+    <comment>Text displayed after user enters a PIN that does not match the device PIN</comment>
+  </data>
+  <data name="BluetoothNoDeviceAvailableFormat" xml:space="preserve">
+    <value>No usable Bluetooth adapter can be found on this device: \n{0}</value>
+    <comment>Text displayed on systems which do not have a Bluetooth adapter (the new line before {0} is deliberate and should be kept)</comment>
+  </data>
+  <data name="BluetoothPairButton.Content" xml:space="preserve">
+    <value>Pair</value>
+    <comment>Text displayed on the button used to pair the selected Bluetooth device</comment>
+  </data>
+  <data name="BluetoothPairingFailureFormat" xml:space="preserve">
+    <value>Failed to pair with {0} ({1}).</value>
+    <comment>Text displayed when a Bluetooth pairing attempt fails</comment>
+  </data>
+  <data name="BluetoothPairingSuccessFormat" xml:space="preserve">
+    <value>Successfully paired with {0} ({1}).</value>
+    <comment>Text displayed when a Bluetooth pairing attempt succeeds</comment>
+  </data>
+  <data name="BluetoothPreferences.Text" xml:space="preserve">
+    <value>Bluetooth</value>
+    <comment>Title for Bluetooth settings page</comment>
+  </data>
+  <data name="BluetoothProtectionLevelDefaultText" xml:space="preserve">
+    <value>Default</value>
+    <comment>Text label for the corresponding device pairing protection level</comment>
+  </data>
+  <data name="BluetoothProtectionLevelEncryptionAuthenticationText" xml:space="preserve">
+    <value>Encryption and authentication</value>
+    <comment>Text label for the corresponding device pairing protection level</comment>
+  </data>
+  <data name="BluetoothProtectionLevelEncryptionText" xml:space="preserve">
+    <value>Encryption</value>
+    <comment>Text label for the corresponding device pairing protection level</comment>
+  </data>
+  <data name="BluetoothProtectionLevelNoneText" xml:space="preserve">
+    <value>None</value>
+    <comment>Text label for the corresponding device pairing protection level</comment>
+  </data>
+  <data name="BluetoothStartedWatching" xml:space="preserve">
+    <value>Your device is now discoverable and ready to pair with other Bluetooth devices.</value>
+    <comment>Text displayed when StartWatcher is invoked</comment>
+  </data>
+  <data name="BluetoothStoppedWatching" xml:space="preserve">
+    <value>Your device is no longer searching for other Bluetooth devices.</value>
+    <comment>Text displayed when StopWatcher is invoked</comment>
+  </data>
+  <data name="BluetoothUnpairButton.Content" xml:space="preserve">
+    <value>Unpair</value>
+    <comment>Text displayed on the button used to unpair the selected Bluetooth device</comment>
+  </data>
+  <data name="BluetoothUnpairingFailureFormat" xml:space="preserve">
+    <value>Failed to unpair from {0} ({1}).</value>
+    <comment>Text displayed when a Bluetooth unpairing attempt fails</comment>
+  </data>
+  <data name="BluetoothUnpairingSuccessFormat" xml:space="preserve">
+    <value>Successfully unpaired from {0} ({1}).</value>
+    <comment>Text displayed when a Bluetooth unpairing attempt succeeds</comment>
+  </data>
+  <data name="BluetoothWatcherToggle.Header" xml:space="preserve">
+    <value>Bluetooth</value>
+    <comment>Header label for the Bluetooth watcher toggle switch</comment>
+  </data>
+  <data name="BrowserHomePageTextBox.Header" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
+  <data name="BrowserSettingHeader.Text" xml:space="preserve">
+    <value>Web Browser</value>
+  </data>
+  <data name="CancelButton.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CdNotSupported" xml:space="preserve">
+    <value>Change Directory not currently supported. Please use full paths in your commands.</value>
+  </data>
+  <data name="ChangeTimeZoneTitleText.Header" xml:space="preserve">
+    <value>Time zone</value>
+    <comment>Time zone text</comment>
+  </data>
+  <data name="CheckConnectionText" xml:space="preserve">
+    <value>Check connection and try again</value>
+  </data>
+  <data name="CheckForUpdatesText" xml:space="preserve">
+    <value>Checking for updates...</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="CheckUpdatesButton.Content" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="ClearAccountsButton.Content" xml:space="preserve">
+    <value>Clear Accounts</value>
+  </data>
+  <data name="ClearAccountsFailText" xml:space="preserve">
+    <value>There was a problem clearing your accounts</value>
+  </data>
+  <data name="ClearAccountsPromptFormat" xml:space="preserve">
+    <value>This will clear the following Windows accounts: 
+{0}
+
+Continue?</value>
+  </data>
+  <data name="ClearAccountsSuccessText" xml:space="preserve">
+    <value>Accounts have been cleared</value>
+  </data>
+  <data name="ClearedWDPCredentialsText" xml:space="preserve">
+    <value>Cleared WDP Credentials</value>
+    <comment>WDP is acronym for Windows Device Portal</comment>
+  </data>
+  <data name="ClearingProgressText" xml:space="preserve">
+    <value>Clearing accounts...</value>
+  </data>
+  <data name="ClearPageButton.Content" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ClearWDPCredentialsButton" xml:space="preserve">
+    <value>Clear WDP Credentials</value>
+    <comment>WDP is acronym for Windows Device Portal</comment>
+  </data>
+  <data name="CloseButton" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CloseText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CmdNotEnabled" xml:space="preserve">
+    <value>Your device is not allowed to run the command line processor.
+To enable it, run the following command as "Administrator" on your device:
+
+    reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"
+
+You can run the command in IoT Windows Device Portal's Processes page, or use PowerShell to connect to your Windows IoT device.
+For more information, please visit http://go.microsoft.com/fwlink/p/?LinkId=698488
+    </value>
+    <comment>New lines need to be preserved {Locked='reg ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\EmbeddedMode\ProcessLauncher" /v AllowedExecutableFilesList /t REG_MULTI_SZ /d "c:\windows\system32\cmd.exe\0"', 'Windows', 'PowerShell', 'http://go.microsoft.com/fwlink/p/?LinkId=698488'}</comment>
+  </data>
+  <data name="CmdTextAdminCommandFailure" xml:space="preserve">
+    <value>Failed to run command as Administrator: {0}</value>
+  </data>
+  <data name="CmdTextEnabledFailure" xml:space="preserve">
+    <value>Failed to enable Command Line Processor (cmd.exe) on your device: {0}</value>
+  </data>
+  <data name="CmdTextEnabledSuccess" xml:space="preserve">
+    <value>Successfully enabled Command Line Processor (cmd.exe) on your device.</value>
+  </data>
+  <data name="ColorPickerTextBlock.Text" xml:space="preserve">
+    <value>Tile Color</value>
+  </data>
+  <data name="CommandBarBackButton" xml:space="preserve">
+    <value>Back</value>
+    <comment>Back UI navigation</comment>
+  </data>
+  <data name="CommandBarDeviceInfoButton" xml:space="preserve">
+    <value>Show Device Info</value>
+  </data>
+  <data name="CommandBarForwardButton" xml:space="preserve">
+    <value>Forward</value>
+    <comment>Forward UI navigation</comment>
+  </data>
+  <data name="CommandBarFullscreenButton" xml:space="preserve">
+    <value>Toggle Fullscreen</value>
+  </data>
+  <data name="CommandBarMultiViewButton" xml:space="preserve">
+    <value>Clone View</value>
+    <comment>Clone current view to another display</comment>
+  </data>
+  <data name="CommandBarSaveLogButton" xml:space="preserve">
+    <value>Quick-Save Log</value>
+  </data>
+  <data name="CommandBarSessionLogButton" xml:space="preserve">
+    <value>Session Log</value>
+  </data>
+  <data name="CommandBarSetDefaultButton" xml:space="preserve">
+    <value>Set Default Page</value>
+  </data>
+  <data name="CommandCancelled" xml:space="preserve">
+    <value>Command canceled.</value>
+  </data>
+  <data name="CommandLine.PlaceholderText" xml:space="preserve">
+    <value>Enter command line</value>
+    <comment>Placeholder for command line input text box</comment>
+  </data>
+  <data name="CommandLineError" xml:space="preserve">
+    <value>Error running command line: {0}</value>
+  </data>
+  <data name="CommandLinePageTileText" xml:space="preserve">
+    <value>Command Line</value>
+  </data>
+  <data name="CommandLineText" xml:space="preserve">
+    <value>Command line</value>
+    <comment>Title for command line page</comment>
+  </data>
+  <data name="CommandTimeoutText" xml:space="preserve">
+    <value>Command timed out after {0} seconds of no output.</value>
+  </data>
+  <data name="ComputerNameText" xml:space="preserve">
+    <value>Computer Name</value>
+  </data>
+  <data name="ConfirmationTitleText" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ConnectAutomatically.Text" xml:space="preserve">
+    <value>Connect automatically</value>
+  </data>
+  <data name="ConnectAutomaticallyText" xml:space="preserve">
+    <value>Connect automatically</value>
+  </data>
+  <data name="ConnectButton.Content" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="ConnectButtonContent" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="ConnectedDevices.Text" xml:space="preserve">
+    <value>Connected Devices</value>
+  </data>
+  <data name="ConnectionErrorText" xml:space="preserve">
+    <value>Update failed. Please connect to Wi-Fi and try again.</value>
+    <comment>App update error, poor connection</comment>
+  </data>
+  <data name="ContinueButton.Content" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="CouldNotParseOutputFailure" xml:space="preserve">
+    <value>Could not parse command output</value>
+  </data>
+  <data name="CurrentRingText" xml:space="preserve">
+    <value>Current Ring</value>
+    <comment>ring is flight ring of device</comment>
+  </data>
+  <data name="DB410Name" xml:space="preserve">
+    <value>DragonBoard 410c</value>
+    <comment>Board name</comment>
+  </data>
+  <data name="DefaultAppPageComboBox.Header" xml:space="preserve">
+    <value>Default App Page</value>
+  </data>
+  <data name="DefaultLanguageTimeout.Text" xml:space="preserve">
+    <value>We're choosing the default language automatically...</value>
+  </data>
+  <data name="DeletedLogsText" xml:space="preserve">
+    <value>Deleted {0} logs</value>
+    <comment>{0} is plural number of logs</comment>
+  </data>
+  <data name="DeletedLogText" xml:space="preserve">
+    <value>Deleted {0} log</value>
+    <comment>{0} is singular number of logs</comment>
+  </data>
+  <data name="DeleteLogConfirmText" xml:space="preserve">
+    <value>Delete {0} log?</value>
+    <comment>{0} is singular number of logs</comment>
+  </data>
+  <data name="DeleteLogsConfirmText" xml:space="preserve">
+    <value>Delete {0} logs?</value>
+    <comment>{0} is plural number of logs</comment>
+  </data>
+  <data name="DeleteSelectedButtonText" xml:space="preserve">
+    <value>Delete Selected</value>
+  </data>
+  <data name="DeviceInfoAzureDeviceId.Text" xml:space="preserve">
+    <value>Azure Device ID</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoAzureHubName.Text" xml:space="preserve">
+    <value>Azure IoT Hub</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoButton" xml:space="preserve">
+    <value>Device Info</value>
+  </data>
+  <data name="DeviceInfoDialogButton" xml:space="preserve">
+    <value>Go To Device Page</value>
+  </data>
+  <data name="DeviceInfoDialogMessage" xml:space="preserve">
+    <value>IP Address: {0}
+OS Version: {1}
+App Version: {2}</value>
+  </data>
+  <data name="DeviceInfoDialogTitle" xml:space="preserve">
+    <value>Device Info</value>
+  </data>
+  <data name="DeviceInfoPageAppBuild.Text" xml:space="preserve">
+    <value>App Version</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoPageDeviceName.Text" xml:space="preserve">
+    <value>Device Name</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoPageIPAddress.Text" xml:space="preserve">
+    <value>IP Address</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoPageNetwork.Text" xml:space="preserve">
+    <value>Network</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="DeviceInfoPageOSVersion.Text" xml:space="preserve">
+    <value>OS Version</value>
+    <comment>Label for OS Version field in main page</comment>
+  </data>
+  <data name="DeviceInfoPageStartDeveloping.Text" xml:space="preserve">
+    <value> to start developing</value>
+    <comment>Part of "Visit www.windowsondevices.com to start developing"</comment>
+  </data>
+  <data name="DeviceInfoPageTileText" xml:space="preserve">
+    <value>Device Info</value>
+  </data>
+  <data name="DeviceInfoPageVisit.Text" xml:space="preserve">
+    <value>Visit</value>
+    <comment>Part of "Visit www.windowsondevices.com to start developing"</comment>
+  </data>
+  <data name="DevicePortalSignInDescription.Text" xml:space="preserve">
+    <value>The page you are trying to access requires use of Windows Device Portal (WDP) APIs.  Please sign in using your WDP credentials to proceed.</value>
+  </data>
+  <data name="DevicePortalSignInError" xml:space="preserve">
+    <value>There was a problem signing in.</value>
+  </data>
+  <data name="DevicePortalSignInSuccess" xml:space="preserve">
+    <value>Successfully signed into Device Portal!</value>
+  </data>
+  <data name="DevicePortalVerifyCredentials.Text" xml:space="preserve">
+    <value>Verifying Device Portal Credentials...</value>
+  </data>
+  <data name="DeviceTwinUpdatedSettingsFormat" xml:space="preserve">
+    <value>Device Twin properties have been applied to Settings ({0})</value>
+    <comment>{0} is the name of the settings</comment>
+  </data>
+  <data name="DiagnosticDataSettings.Text" xml:space="preserve">
+    <value>Diagnostic Data</value>
+    <comment>Label for Setting item to control Privacy</comment>
+  </data>
+  <data name="DiagnosticSettingsText" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
+  <data name="DialogWeatherErrorMessage" xml:space="preserve">
+    <value>There was a problem getting the weather, try again?</value>
+  </data>
+  <data name="DirectConnections.Text" xml:space="preserve">
+    <value>Direct connections</value>
+  </data>
+  <data name="DisconnectButton.Content" xml:space="preserve">
+    <value>Disconnect</value>
+    <comment>This disconnects the connected network</comment>
+  </data>
+  <data name="DisplayLanguageUpdateSuccessText" xml:space="preserve">
+    <value>Display language updated: {0}</value>
+  </data>
+  <data name="Domain.Text" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="DownloadCompleteText" xml:space="preserve">
+    <value>Download Complete!</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="DownloadErrorText" xml:space="preserve">
+    <value>Download failed. Please try again later!</value>
+  </data>
+  <data name="DownloadStartedText" xml:space="preserve">
+    <value>Downloading Update</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="DownloadUpdatesButton.Content" xml:space="preserve">
+    <value>Download updates</value>
+  </data>
+  <data name="DrawPageTileText" xml:space="preserve">
+    <value>Draw</value>
+  </data>
+  <data name="EmailedLogsText" xml:space="preserve">
+    <value>"{0} logs sent to {1}"</value>
+    <comment>{0} is plural number of logs, {1} is email address</comment>
+  </data>
+  <data name="EmailedLogText" xml:space="preserve">
+    <value>"{0} log sent to {1}"</value>
+    <comment>{0} is singular number of logs, {1} is email address</comment>
+  </data>
+  <data name="EmailLogDalogTitle" xml:space="preserve">
+    <value>Email Log</value>
+  </data>
+  <data name="EmailLogDialogMessage" xml:space="preserve">
+    <value>Would you like to email {0} to yourself?</value>
+    <comment>{0} is filename</comment>
+  </data>
+  <data name="EmailLogErrorText" xml:space="preserve">
+    <value>There was a problem emailing your log: {0}</value>
+    <comment>{0} is exception message</comment>
+  </data>
+  <data name="EmailLogNoMessage" xml:space="preserve">
+    <value>You can find your logs on the Logs page</value>
+  </data>
+  <data name="EmailLogSelfText" xml:space="preserve">
+    <value>"Email {0} log to yourself?"</value>
+    <comment>{0} is singular number of logs</comment>
+  </data>
+  <data name="EmailLogsProblemText" xml:space="preserve">
+    <value>There was a problem emailing your logs: {0}</value>
+    <comment>{0} is an exception message</comment>
+  </data>
+  <data name="EmailLogsSelfText" xml:space="preserve">
+    <value>Email {0} logs to yourself?</value>
+    <comment>{0} is plural number of logs</comment>
+  </data>
+  <data name="EmailLogsText" xml:space="preserve">
+    <value>Email Logs</value>
+  </data>
+  <data name="EmailSelectedButtonText" xml:space="preserve">
+    <value>Email Selected</value>
+  </data>
+  <data name="EnableCmdText" xml:space="preserve">
+    <value>Enable Command Line Processor</value>
+  </data>
+  <data name="EnableScreensaver.Header" xml:space="preserve">
+    <value>Screensaver</value>
+    <comment>Toggle switch for enabling the screensaver</comment>
+  </data>
+  <data name="EndTimePicker.Header" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="ErrorDialogTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorRetrievingWeather" xml:space="preserve">
+    <value>There was a problem retrieving weather info</value>
+  </data>
+  <data name="Ethernet.Text" xml:space="preserve">
+    <value>Ethernet</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="EtwProviderGUIDLabelText" xml:space="preserve">
+    <value>ETW Provider GUID: {0}</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
+    <value>Executing commands as DefaultAccount</value>
+  </data>
+  <data name="ExpandMapToggle.Header" xml:space="preserve">
+    <value>Expand Map</value>
+  </data>
+  <data name="ExploreCategoryText" xml:space="preserve">
+    <value>Explore</value>
+  </data>
+  <data name="FileSavedText" xml:space="preserve">
+    <value>File saved: {0}</value>
+    <comment>{0} is a filename</comment>
+  </data>
+  <data name="FlightingPageTileText" xml:space="preserve">
+    <value>Flighting</value>
+    <comment>Device servicing flighting</comment>
+  </data>
+  <data name="FlightingPageTitle.Text" xml:space="preserve">
+    <value>Flighting Info</value>
+    <comment>Device servicing flighting</comment>
+  </data>
+  <data name="FlightingRingChange" xml:space="preserve">
+    <value>Flight Ring has been changed to {0}!</value>
+    <comment>Success message to change the flight ring of the device. {0} is the flight ring name.</comment>
+  </data>
+  <data name="FlightingRingError" xml:space="preserve">
+    <value>There was a problem changing your flight ring</value>
+  </data>
+  <data name="ForecastHeader.Text" xml:space="preserve">
+    <value>Forecast</value>
+    <comment>Weather forecast</comment>
+  </data>
+  <data name="FullScreenDialogText" xml:space="preserve">
+    <value>You are about to enter full screen mode.  To exit, you must press [Esc] on the keyboard.  Continue?</value>
+  </data>
+  <data name="FullScreenDialogTitle" xml:space="preserve">
+    <value>Full Screen Mode</value>
+  </data>
+  <data name="FullScreenNotificationText" xml:space="preserve">
+    <value>Press [Esc] to exit full screen mode.</value>
+  </data>
+  <data name="FullTelemetryDescription.Text" xml:space="preserve">
+    <value>Send all Basic diagnostic data, along with info about the websites you browse and how you use apps and features, plus additional info about device health, device activity, and enhanced error reporting. Diagnostic data is used to help keep Windows secure and up to date, troubleshoot problems, and make product improvements. Regardless of whether you select Basic or Full, your device will be equally secure and will operate normally.</value>
+  </data>
+  <data name="FullTelemetryTitle.Text" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="GeneralSettingHeader.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GenericBoardName" xml:space="preserve">
+    <value>IoTCore Board</value>
+    <comment>A generic board name</comment>
+  </data>
+  <data name="GitHubPageTileText" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="HelpButtonText" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HelpPagePlaceholderText" xml:space="preserve">
+    <value>"Sorry, there doesn't seem to be any help here."</value>
+  </data>
+  <data name="HelpPageTitle.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HelpText" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HumidityText" xml:space="preserve">
+    <value>Humidity: {0}%</value>
+    <comment>{0} is the humidity reading</comment>
+  </data>
+  <data name="InputLanguageUpdateSuccessText" xml:space="preserve">
+    <value>Input keyboard language updated: {0}</value>
+  </data>
+  <data name="InstallCompleteText" xml:space="preserve">
+    <value>Install complete!</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="InstallErrorText" xml:space="preserve">
+    <value>Install failed. Please try again later!</value>
+  </data>
+  <data name="InstallStartedText" xml:space="preserve">
+    <value>Installing Update</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="InstallUpdatesButton.Content" xml:space="preserve">
+    <value>Install updates</value>
+  </data>
+  <data name="InvalidCredentialText" xml:space="preserve">
+    <value>Invalid Credential</value>
+  </data>
+  <data name="InvalidLocationErrorText" xml:space="preserve">
+    <value>'{0}' is an invalid location.</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="InvalidNumericalValueErrorText" xml:space="preserve">
+    <value>'{0}' is an invalid value.  Value must be greater than or equal to 1.</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="InvalidValueText" xml:space="preserve">
+    <value>'{0}' is an invalid value.</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="Ipv4Text" xml:space="preserve">
+    <value>IPv4</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="Ipv6Text" xml:space="preserve">
+    <value>IPv6</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="KeyboardTitleText.Header" xml:space="preserve">
+    <value>Keyboard layout</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="KnowYourPrivacyOptionsHeader.Text" xml:space="preserve">
+    <value>Know your privacy options</value>
+  </data>
+  <data name="KnowYourPrivacyOptionsSubtitle.Text" xml:space="preserve">
+    <value>Learn how this setting impacts your privacy.</value>
+  </data>
+  <data name="LanguageApplyButton.Content" xml:space="preserve">
+    <value>Restart this app to apply new settings</value>
+  </data>
+  <data name="LanguageText" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LanguageTitleText.Header" xml:space="preserve">
+    <value>Language</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="LastCheckedText" xml:space="preserve">
+    <value>Last Checked:</value>
+    <comment>For a timestamp</comment>
+  </data>
+  <data name="LastUpdatedText" xml:space="preserve">
+    <value>Last Updated:</value>
+    <comment>For a timestamp</comment>
+  </data>
+  <data name="LoadingText" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="LoadingWeatherInfoText" xml:space="preserve">
+    <value>Loading weather info...</value>
+  </data>
+  <data name="LocationOOBEDescriptionOffText" xml:space="preserve">
+    <value>You won’t be able to get location-based experiences like maps and weather or enjoy other services that require your location to work.</value>
+  </data>
+  <data name="LocationOOBEDescriptionOnText" xml:space="preserve">
+    <value>Get location-based experiences like maps and weather.  Let this app request your location.  Microsoft will use location data to improve location services.</value>
+  </data>
+  <data name="LocationPermissionLabel.Text" xml:space="preserve">
+    <value>Allow this app to access your location</value>
+  </data>
+  <data name="LocationPermissionPromptDescription" xml:space="preserve">
+    <value>To change this later, go to Settings &gt; Permissions.</value>
+  </data>
+  <data name="LocationPermissionPromptText" xml:space="preserve">
+    <value>Let {0} access your precise location?</value>
+    <comment>{0} is the name of a page</comment>
+  </data>
+  <data name="LocationSettings.Text" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="LocationSettingsDescription.Text" xml:space="preserve">
+    <value>If you allow access, you will enable this app to use your device’s capabilities to determine your location and Microsoft will use your location data to improve location services. Denying access blocks Windows from providing location to this app.</value>
+  </data>
+  <data name="LogMailedText" xml:space="preserve">
+    <value>Log has been sent to {0}</value>
+    <comment>{0} is email address</comment>
+  </data>
+  <data name="LogSavedText" xml:space="preserve">
+    <value>Log saved to: {0}</value>
+    <comment>{0} is filename</comment>
+  </data>
+  <data name="LogsPageTileText" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="LogsPageTitle.Text" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="MakerImageNotice.Text" xml:space="preserve">
+    <value>This is a Windows 10 IoT Core test image designed for prototyping only. If you are looking to commercialize, you must use a custom FFU for optimal security.</value>
+    <comment>Maker Imager Security Notice</comment>
+  </data>
+  <data name="MapFlipToggle.Header" xml:space="preserve">
+    <value>Allow Map Flipping To Prevent Screen Burn-in</value>
+  </data>
+  <data name="MapServiceToken.Content" xml:space="preserve">
+    <value>Bing Map Service Token</value>
+  </data>
+  <data name="MapServiceTokenRequiredTitle" xml:space="preserve">
+    <value>Bing Map Service Token Required</value>
+  </data>
+  <data name="MapTokenLinkText" xml:space="preserve">
+    <value>http://go.microsoft.com/fwlink/p/?LinkId=614880</value>
+  </data>
+  <data name="MBMName" xml:space="preserve">
+    <value>MinnowBoard Max</value>
+    <comment>Board name</comment>
+  </data>
+  <data name="MsaPanelDescription.Text" xml:space="preserve">
+    <value>Outlook.com, Hotmail, Live.com, MSN</value>
+  </data>
+  <data name="MsaPanelTitle.Text" xml:space="preserve">
+    <value>Microsoft Account (MSA)</value>
+  </data>
+  <data name="MultiViewWindowTitle" xml:space="preserve">
+    <value>Multi-View Window</value>
+  </data>
+  <data name="MusicPlayerCurrentlyPlayingText" xml:space="preserve">
+    <value>Currently playing</value>
+    <comment>Music player page status text (currently playing)</comment>
+  </data>
+  <data name="MusicPlayerDefaultText" xml:space="preserve">
+    <value>Select a song and click play.</value>
+    <comment>Music player page status text (default)</comment>
+  </data>
+  <data name="MusicPlayerInstructionsText" xml:space="preserve">
+    <value>Please add one or more audio files to the Music folder.
+You can add music in Windows Device Portal using Apps &gt; File explorer.</value>
+    <comment>Music player page instructions text</comment>
+  </data>
+  <data name="MusicPlayerLoadingPanelText" xml:space="preserve">
+    <value>Loading Music</value>
+    <comment>Music player page loading panel text</comment>
+  </data>
+  <data name="MusicPlayerLoadingText" xml:space="preserve">
+    <value>Loading</value>
+    <comment>Music player page status text (loading)</comment>
+  </data>
+  <data name="MusicPlayerNoMusicFoundText" xml:space="preserve">
+    <value>No music found</value>
+    <comment>Music player page no music found prompt text</comment>
+  </data>
+  <data name="MusicPlayerPageReloadButtonText" xml:space="preserve">
+    <value>Try Again</value>
+    <comment>Music player page reload button text (no files prompt)</comment>
+  </data>
+  <data name="MusicPlayerPageTileText" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="MusicPlayerPageTitle.Text" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="MusicPlayerPausedText" xml:space="preserve">
+    <value>Paused</value>
+    <comment>Music player page status text (paused)</comment>
+  </data>
+  <data name="MusicPlayerPlayingText" xml:space="preserve">
+    <value>Playing</value>
+    <comment>Music player page status text (playing)</comment>
+  </data>
+  <data name="MusicPlayerStatusFormat" xml:space="preserve">
+    <value>{0}: {1}</value>
+    <comment>{0} is a status string, {1} is the music file display name</comment>
+  </data>
+  <data name="NavbarAuthNoAccount" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="NavbarAuthUnknownAccount" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="NavbarMenuButton" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="NetworkAdapterProperties.Text" xml:space="preserve">
+    <value>Network Adapters</value>
+  </data>
+  <data name="NetworkConnected.Text" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="NetworkConnectedText" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="NetworkConnectingMessage.Text" xml:space="preserve">
+    <value>Checking network requirements</value>
+  </data>
+  <data name="NetworkConnectingMessageText" xml:space="preserve">
+    <value>Checking network requirements</value>
+  </data>
+  <data name="NetworkConnectivityLevel_ConstrainedInternetAccess" xml:space="preserve">
+    <value>Limited Internet access</value>
+  </data>
+  <data name="NetworkConnectivityLevel_InternetAccess" xml:space="preserve">
+    <value>Local and Internet access</value>
+  </data>
+  <data name="NetworkConnectivityLevel_LocalAccess" xml:space="preserve">
+    <value>Local network access only</value>
+  </data>
+  <data name="NetworkConnectivityLevel_None" xml:space="preserve">
+    <value>No connectivity</value>
+  </data>
+  <data name="NetworkInformation.Text" xml:space="preserve">
+    <value>NETWORK INFORMATION</value>
+  </data>
+  <data name="NetworkNotAvailableText" xml:space="preserve">
+    <value>Network Not Available</value>
+  </data>
+  <data name="NetworkPasswordPrompt.Text" xml:space="preserve">
+    <value>Enter the network security key</value>
+  </data>
+  <data name="NetworkPasswordPromptText" xml:space="preserve">
+    <value>Enter the network security key</value>
+  </data>
+  <data name="NetworkPreferences.Text" xml:space="preserve">
+    <value>Network &amp; Wi-Fi</value>
+  </data>
+  <data name="NetworkPreferencesButton.Content" xml:space="preserve">
+    <value>Network &amp; Wi-Fi</value>
+  </data>
+  <data name="NetworkProperties.Content" xml:space="preserve">
+    <value>View network properties</value>
+  </data>
+  <data name="NetworkPropertiesText" xml:space="preserve">
+    <value>Network Properties</value>
+  </data>
+  <data name="NetworkRedirectText" xml:space="preserve">
+    <value>You are about to be redirected to this Wi-Fi network's captive portal. Continue?</value>
+  </data>
+  <data name="NetworkRedirectTitle" xml:space="preserve">
+    <value>Network Redirect</value>
+  </data>
+  <data name="NextButton.Content" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="NextButtonContent" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="NoAccountsText" xml:space="preserve">
+    <value>No accounts found</value>
+  </data>
+  <data name="NoButton.Content" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NoDeviceNameText" xml:space="preserve">
+    <value>No Device Name</value>
+  </data>
+  <data name="NoInternetConnectionText" xml:space="preserve">
+    <value>No Internet Connection</value>
+  </data>
+  <data name="NoLogsSelectedText" xml:space="preserve">
+    <value>No logs selected</value>
+  </data>
+  <data name="NoMusicFoundPanel.Text" xml:space="preserve">
+    <value>No music found</value>
+    <comment>Music player page panel text</comment>
+  </data>
+  <data name="NoNetworks.Text" xml:space="preserve">
+    <value>None found</value>
+  </data>
+  <data name="NoPendingDownloadsText" xml:space="preserve">
+    <value>There are no pending updates to download.</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="NoPendingInstallsText" xml:space="preserve">
+    <value>There are no pending updates to install.</value>
+    <comment>App update status</comment>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NotificationsPageTileText" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="NotificationsPageTitle.Text" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="NoUpdatesFoundText" xml:space="preserve">
+    <value>No new updates found.</value>
+    <comment>Format string displayed when no app updates are found</comment>
+  </data>
+  <data name="OkButtonText" xml:space="preserve">
+    <value>Ok</value>
+    <comment>Button content text for the Bluetooth settings page</comment>
+  </data>
+  <data name="OOBELanguageSelect.Text" xml:space="preserve">
+    <value>Choose your language</value>
+  </data>
+  <data name="OOBENetworkPage.SubtitleText" xml:space="preserve">
+    <value>Let's get connected</value>
+  </data>
+  <data name="OOBENetworkPage.TitleText" xml:space="preserve">
+    <value>Welcome to Windows 10 IoT Core</value>
+  </data>
+  <data name="OOBEPermissionsPage.SubtitleText" xml:space="preserve">
+    <value>Choose your settings, then select 'Accept' to save them.  You can change these settings at any time.</value>
+  </data>
+  <data name="OOBEPermissionsPage.TitleText" xml:space="preserve">
+    <value>Let Microsoft use your location</value>
+  </data>
+  <data name="OOBETelemetryLevel.SubtitleText" xml:space="preserve">
+    <value>Choose a privacy setting for your device, then select 'Accept' to save it.</value>
+  </data>
+  <data name="OOBETelemetryLevel.TitleText" xml:space="preserve">
+    <value>Send diagnostic data to Microsoft</value>
+  </data>
+  <data name="OOBETimeout.Text" xml:space="preserve">
+    <value>Continuing automatically...</value>
+  </data>
+  <data name="OOBEWelcomeDeviceName.Text" xml:space="preserve">
+    <value>Device Name</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="OOBEWelcomeIPAddress.Text" xml:space="preserve">
+    <value>IP Address</value>
+    <comment>Field label</comment>
+  </data>
+  <data name="OOBEWelcomeOSVersion.Text" xml:space="preserve">
+    <value>OS Version</value>
+    <comment>Label for OS Version field in main page</comment>
+  </data>
+  <data name="OOBEWelcomePage.SubtitleText" xml:space="preserve">
+    <value>Let's get some basic stuff out of the way.</value>
+  </data>
+  <data name="OOBEWelcomePage.TitleText" xml:space="preserve">
+    <value>Welcome to Windows 10 IoT Core</value>
+  </data>
+  <data name="OSEditionIDText" xml:space="preserve">
+    <value>OS Edition ID</value>
+  </data>
+  <data name="OSEditionText" xml:space="preserve">
+    <value>OS Edition</value>
+  </data>
+  <data name="OSInfoPageTileText" xml:space="preserve">
+    <value>OS Info</value>
+  </data>
+  <data name="OSInfoPageTitle.Text" xml:space="preserve">
+    <value>OS Info</value>
+  </data>
+  <data name="OSVersionNotAvailable" xml:space="preserve">
+    <value>Not Available</value>
+    <comment>Text shown when we cannot retrieve the OS Version</comment>
+  </data>
+  <data name="OSVersionText" xml:space="preserve">
+    <value>OS Version</value>
+  </data>
+  <data name="PackagesPageTileText" xml:space="preserve">
+    <value>Packages</value>
+    <comment>Software packages</comment>
+  </data>
+  <data name="PackagesPageTitle.Text" xml:space="preserve">
+    <value>Installed Packages</value>
+    <comment>Software packages</comment>
+  </data>
+  <data name="PageSettingsButtonText" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
+  <data name="PagesText" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Password.Text" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PhotoPageLoading" xml:space="preserve">
+    <value>Loading Pictures</value>
+    <comment>Default text when no images are available</comment>
+  </data>
+  <data name="PhotoPageNoImagesHint" xml:space="preserve">
+    <value>Please add images to the Pictures folder.
+You can add images in Windows Device Portal using Apps &gt; File explorer.</value>
+  </data>
+  <data name="PhotoPageNoImagesText" xml:space="preserve">
+    <value>No images found</value>
+    <comment>Default text when no images are available</comment>
+  </data>
+  <data name="PlatformText" xml:space="preserve">
+    <value>Platform</value>
+  </data>
+  <data name="PlayCategoryText" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="PowerPreferences.Text" xml:space="preserve">
+    <value>Power Options</value>
+    <comment>Label for Setting item to control Power (shutdown/restart)</comment>
+  </data>
+  <data name="PrivacyBasic.Content" xml:space="preserve">
+    <value>Basic: Send only info about your device, its settings and capabilities, and whether it is performing properly.</value>
+  </data>
+  <data name="PrivacyFull.Content" xml:space="preserve">
+    <value>Full: Send all Basic diagnostic data, along with info about websites you browse and how you use apps and features, plus additional info about device health, device activity, and enhanced error reporting.</value>
+  </data>
+  <data name="PrivacyLearnMoreLink.Content" xml:space="preserve">
+    <value>Get more info about these settings</value>
+  </data>
+  <data name="PrivacyLevelChangeFailed" xml:space="preserve">
+    <value>We were unable to change the privacy setting. Verify your username and password and try again.</value>
+  </data>
+  <data name="PrivacyPrompt.Text" xml:space="preserve">
+    <value>Choose how much diagnostic data you want to send to Microsoft. Diagnostic data is used to help keep Windows secure and up to date, troubleshoot problems, and make product improvements. Regardless of which option you select, your device will be equally secure and will operate normally.</value>
+  </data>
+  <data name="PrivacySignInDescription" xml:space="preserve">
+    <value>Enter your credentials to set the privacy level on this device.</value>
+  </data>
+  <data name="PrivacySignInTitle" xml:space="preserve">
+    <value>Set your privacy level</value>
+  </data>
+  <data name="PrivacyStatementHyperlink.Content" xml:space="preserve">
+    <value>Privacy statement</value>
+  </data>
+  <data name="RefreshButton" xml:space="preserve">
+    <value>Refresh</value>
+    <comment>Refresh button</comment>
+  </data>
+  <data name="RepeatToggle.Header" xml:space="preserve">
+    <value>Repeat Song</value>
+    <comment>Music player page repeat toggle text</comment>
+  </data>
+  <data name="RestartButton.Content" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="RestartText" xml:space="preserve">
+    <value>Restart</value>
+    <comment>Restart entry in the shutdown menu</comment>
+  </data>
+  <data name="Rpi2Name" xml:space="preserve">
+    <value>Raspberry Pi 2</value>
+    <comment>Board name</comment>
+  </data>
+  <data name="Rpi3Name" xml:space="preserve">
+    <value>Raspberry Pi 3</value>
+    <comment>Board name</comment>
+  </data>
+  <data name="RunAsAdminUsage" xml:space="preserve">
+    <value>Usage: RunAsAdmin command
+
+Examples:
+&gt; RunAsdmin TZUTIL /s "Pacific Standard Time"
+&gt; RunAsdmin SetComputerName MyNewDeviceName</value>
+  </data>
+  <data name="SaveButtonText" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ScalingFactorTextBox.Header" xml:space="preserve">
+    <value>Scaling Factor</value>
+  </data>
+  <data name="SelectAllButtonText" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="SendTelemetryToggle.Header" xml:space="preserve">
+    <value>Send Telemetry</value>
+  </data>
+  <data name="SensorUnavailableText" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="SessionLogPageTitle.Text" xml:space="preserve">
+    <value>Session Log</value>
+  </data>
+  <data name="SetDefaultPageErrorText" xml:space="preserve">
+    <value>There was a problem setting the default page to {0}.</value>
+    <comment>Format string for app settings page</comment>
+  </data>
+  <data name="SetDefaultPageSuccessFormat" xml:space="preserve">
+    <value>Default page has been set to {0}</value>
+    <comment>{0} is name of page</comment>
+  </data>
+  <data name="SettingsPageTileText" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="ShuffleToggle.Header" xml:space="preserve">
+    <value>Shuffle</value>
+    <comment>Music player page shuffle toggle text</comment>
+  </data>
+  <data name="ShutdownButton.Content" xml:space="preserve">
+    <value>Shut down</value>
+  </data>
+  <data name="ShutdownText" xml:space="preserve">
+    <value>Shut down</value>
+    <comment>Shutdown entry in the shutdown menu</comment>
+  </data>
+  <data name="SignInAADMessage" xml:space="preserve">
+    <value>Sign in to your Azure AD account to use this feature.</value>
+  </data>
+  <data name="SkipButton.Content" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="SkipStep.Text" xml:space="preserve">
+    <value>Skip this step</value>
+  </data>
+  <data name="SlideshowIntervalTextBox.Header" xml:space="preserve">
+    <value>Slideshow Interval (seconds)</value>
+  </data>
+  <data name="SlideshowPageTileText" xml:space="preserve">
+    <value>Slideshow</value>
+  </data>
+  <data name="SlideshowSettingHeader.Text" xml:space="preserve">
+    <value>Slideshow</value>
+  </data>
+  <data name="StartPageTileText" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="StartPageTitle.Text" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="StartTimePicker.Header" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="StatusMessageText" xml:space="preserve">
+    <value>Status Message:</value>
+  </data>
+  <data name="StatusText" xml:space="preserve">
+    <value>Status</value>
+    <comment>Status of the network connection (e.g. not connected, limited, etc.)</comment>
+  </data>
+  <data name="SubmitButton.Content" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="SuccessText" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="SystemPreferences.Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="SystemSettingsUpdateErrorText" xml:space="preserve">
+    <value>There was an issue trying to update your system settings.</value>
+    <comment>Used within system settings</comment>
+  </data>
+  <data name="TelemetryLevel0Text" xml:space="preserve">
+    <value>Security</value>
+    <comment>Name of telemetry level 0</comment>
+  </data>
+  <data name="TelemetryLevel1Text" xml:space="preserve">
+    <value>Basic</value>
+    <comment>Name of telemetry level 1</comment>
+  </data>
+  <data name="TelemetryLevel2Text" xml:space="preserve">
+    <value>Enhanced</value>
+    <comment>Name of telemetry level 2</comment>
+  </data>
+  <data name="TelemetryLevel3Text" xml:space="preserve">
+    <value>Full</value>
+    <comment>Name of telemetry level 3</comment>
+  </data>
+  <data name="TelemetryLevelText" xml:space="preserve">
+    <value>Telemetry Level</value>
+  </data>
+  <data name="TelemetryLevelUnknownFormat" xml:space="preserve">
+    <value>Unknown: {0}</value>
+    <comment>{0} is value of telemetry value</comment>
+  </data>
+  <data name="TelemetrySettingHeader.Text" xml:space="preserve">
+    <value>Telemetry</value>
+  </data>
+  <data name="TestJumboNotificationButtonText" xml:space="preserve">
+    <value>Test Jumbo Notification</value>
+  </data>
+  <data name="TestNotificationButtonText" xml:space="preserve">
+    <value>Test Notification</value>
+  </data>
+  <data name="TestNotificationMessage" xml:space="preserve">
+    <value>Windows 10 IoT is a member of the Windows 10 family that brings enterprise-class power, security and manageability to the Internet of Things. It leverages Windows' embedded experience, ecosystem and cloud connectivity, allowing organizations to create their Internet of Things with secure devices that can be quickly provisioned, easily managed, and seamlessly connected to an overall cloud strategy.</value>
+  </data>
+  <data name="TileHeightTextBox.Header" xml:space="preserve">
+    <value>Tile Height</value>
+  </data>
+  <data name="TileSettingHeader.Text" xml:space="preserve">
+    <value>Personalization</value>
+  </data>
+  <data name="TileWidthTextBox.Header" xml:space="preserve">
+    <value>Tile Width</value>
+  </data>
+  <data name="TimeoutText" xml:space="preserve">
+    <value>Connection Timed Out</value>
+  </data>
+  <data name="TimeZoneUpdateSuccessText" xml:space="preserve">
+    <value>Time zone updated: {0}</value>
+  </data>
+  <data name="UnableToCommunicateWeatherText" xml:space="preserve">
+    <value>Error: Unable to communicate with the weather service</value>
+  </data>
+  <data name="UnknownErrorText" xml:space="preserve">
+    <value>Update failed due to unknown error.</value>
+    <comment>App update error, unknown</comment>
+  </data>
+  <data name="UnselectAllButtonText" xml:space="preserve">
+    <value>Unselect All</value>
+  </data>
+  <data name="UnspecifiedFailureText" xml:space="preserve">
+    <value>Unspecified Failure</value>
+  </data>
+  <data name="UpdateAdvancedOptions.Text" xml:space="preserve">
+    <value>Advanced Options</value>
+  </data>
+  <data name="UpdateButtonCheckText" xml:space="preserve">
+    <value>Check Now</value>
+  </data>
+  <data name="UpdateButtonInstallText" xml:space="preserve">
+    <value>Install Now</value>
+  </data>
+  <data name="UpdatedStateText" xml:space="preserve">
+    <value>Updated State:</value>
+  </data>
+  <data name="UpdatePendingCountText" xml:space="preserve">
+    <value>{0} pending update</value>
+    <comment>{0} is singular amount of updates</comment>
+  </data>
+  <data name="UpdatesFoundText" xml:space="preserve">
+    <value>{0} new updates found.</value>
+    <comment>Format string displayed when new app updates are found. {0} is a number</comment>
+  </data>
+  <data name="UpdatesPendingCountText" xml:space="preserve">
+    <value>{0} pending updates</value>
+    <comment>{0} is plural amount of updates</comment>
+  </data>
+  <data name="UseMDL2Icons.Header" xml:space="preserve">
+    <value>Use MDL2 Tile Icons</value>
+  </data>
+  <data name="UsePassword.Text" xml:space="preserve">
+    <value>Use password</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="WDPCategoryText" xml:space="preserve">
+    <value>Windows Device Portal</value>
+  </data>
+  <data name="WDPPreferences.Text" xml:space="preserve">
+    <value>Device Portal Settings</value>
+    <comment>Label for Setting item to control Device Portal settings (time zone)</comment>
+  </data>
+  <data name="WDPTitle.Text" xml:space="preserve">
+    <value>Windows Device Portal</value>
+  </data>
+  <data name="WeatherLocationCoordinates" xml:space="preserve">
+    <value>Current Location ({0}, {1})</value>
+    <comment>{0}, {1} are latitude and longitude numbers rounded to 1 decimal place</comment>
+  </data>
+  <data name="WeatherLocationTextBox.Header" xml:space="preserve">
+    <value>Your Location</value>
+  </data>
+  <data name="WeatherMapPinLabel" xml:space="preserve">
+    <value>Your Location</value>
+    <comment>Label for map pin</comment>
+  </data>
+  <data name="WeatherMapPinUnknownLabel" xml:space="preserve">
+    <value>Unknown Location</value>
+    <comment>Label for map pin</comment>
+  </data>
+  <data name="WeatherPageErrorPanel.Text" xml:space="preserve">
+    <value>Error loading the Weather page. 
+
+Click on the Refresh button at the bottom right of the screen to reload this page.
+
+If you don't have Weather API keys, navigate to weatherunlocked.com. Save the keys in "WeatherTokens.config" in this App's Local State folder. Then Refresh the page.</value>
+  </data>
+  <data name="WeatherPageSensorOutputHeader.Text" xml:space="preserve">
+    <value>Sensor:</value>
+    <comment>Label for temperature sensor output</comment>
+  </data>
+  <data name="WeatherPageTileText" xml:space="preserve">
+    <value>Weather</value>
+  </data>
+  <data name="WeatherProvidedBy.Text" xml:space="preserve">
+    <value>Weather provided by: </value>
+  </data>
+  <data name="WeatherSettingHeader.Text" xml:space="preserve">
+    <value>Weather</value>
+  </data>
+  <data name="WeatherWindSpeedFormat" xml:space="preserve">
+    <value>Wind Speed: {0} at {1}</value>
+    <comment>{0} is the wind direction and {1} is the wind speed.</comment>
+  </data>
+  <data name="WebAddress.PlaceholderText" xml:space="preserve">
+    <value>Enter web address</value>
+  </data>
+  <data name="WebBrowserPageTileText" xml:space="preserve">
+    <value>Web Browser</value>
+  </data>
+  <data name="WebNavigationErrorFormat" xml:space="preserve">
+    <value>Error: {0} - {1}</value>
+    <comment>{0} is the error number and {1} is the error name.</comment>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Welcome to Windows IoT Core</value>
+  </data>
+  <data name="WiFi.Text" xml:space="preserve">
+    <value>Wi-Fi</value>
+    <comment>Label for Wi-Fi list in options page</comment>
+  </data>
+  <data name="WifiRefresh.Content" xml:space="preserve">
+    <value>Refresh</value>
+    <comment>Refresh button</comment>
+  </data>
+  <data name="WifiSettingsButton" xml:space="preserve">
+    <value>WiFi Settings</value>
+  </data>
+  <data name="WindowsOnDevicesUrl.Text" xml:space="preserve">
+    <value> www.windowsondevices.com</value>
+    <comment>Part of "Visit www.windowsondevices.com to start developing"</comment>
+  </data>
+  <data name="WindowsUpdatePageTileText" xml:space="preserve">
+    <value>Windows Update</value>
+  </data>
+  <data name="WindowsUpdatePageTitle.Text" xml:space="preserve">
+    <value>Windows Update</value>
+  </data>
+  <data name="WindowsUpdateState1" xml:space="preserve">
+    <value>Update in progress</value>
+    <comment>Windows Update status based on id</comment>
+  </data>
+  <data name="WindowsUpdateState2" xml:space="preserve">
+    <value>Staging</value>
+    <comment>Windows Update status based on id</comment>
+  </data>
+  <data name="WindowsUpdateState3" xml:space="preserve">
+    <value>Pending reboot</value>
+    <comment>Windows Update status based on id</comment>
+  </data>
+  <data name="WindowsUpdateStateDefault" xml:space="preserve">
+    <value>No update</value>
+    <comment>Windows Update status based on id</comment>
+  </data>
+  <data name="WorkingDirectoryInvalid" xml:space="preserve">
+    <value>Invalid working directory: {0}</value>
+  </data>
+  <data name="Wps.Text" xml:space="preserve">
+    <value>WPS</value>
+  </data>
+  <data name="YesButton.Content" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="YesButtonText" xml:space="preserve">
+    <value>Yes</value>
+    <comment>Button content text for the Bluetooth settings page</comment>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+</root>
