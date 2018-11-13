@@ -68,7 +68,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
  <tr>
   <td><a href="Samples/HelloBlinkyBackground">HelloBlinkyBackground</a></td>
   <td><a href="Samples/NFCForIoT">NFCForIoT</a></td>
-  <td><a href="Samples/PotentiometerSensor">Potentiomete rSensor</a></td>
+  <td><a href="Samples/PotentiometerSensor">Potentiometer Sensor</a></td>
  </tr>
  <tr>
   <td><a href="Samples/PushButton">Push Button</a></td>
