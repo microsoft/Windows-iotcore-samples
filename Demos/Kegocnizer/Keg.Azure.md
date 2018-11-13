@@ -101,6 +101,7 @@ All the GetConfig changes can be validated by seeing View Files
   c. Select function.json
 	
 Note: Azure functions can be mapped to Items Collection directly from CosmosDB resource as well, see below.
+
 Under same Azure Cosmos DB resource created OR Go to Go to 'kegocnizerdemodb' resource created
   * Click on 'Add Azure Function' ( left Pane)
   * Select Collection created ( ex: Items)
@@ -111,12 +112,16 @@ Under same Azure Cosmos DB resource created OR Go to Go to 'kegocnizerdemodb' re
 Note: You can configure Add methods with more restrictive access using Authorization Levels. But that is not covered here.
 
 e. Testing Azure Methods Created above
+
   a. Check if you are able to run the Host ( as per configuration above, this is url, it might be different for you)
     https://kegocnizerdemofunctions.azurewebsites.net/
-  b. Test AddConfig
-    Navigate to AddConfig Method and Click Run Button. There is Logs Pane in bottom of the screen to see host output. 
+
+b. Test AddConfig
+  * Navigate to AddConfig Method and Click Run Button. There is Logs Pane in bottom of the screen to see host output. 
+    
     Sample Output:
-```
+    
+``` C#
 2018-05-22T21:19:44 No new trace in the past 1 min(s). 
 2018-05-22T21:20:31.240 [Info] Script for function 'AddConfig' changed. Reloading. 
 2018-05-22T21:20:31.459 [Info] Compilation succeeded. 
@@ -135,12 +140,12 @@ e. Testing Azure Methods Created above
 This Guid is to be updated in Constants.cs under KEGSETTINGSGUID
 		
   d. Test AddUser
-    Same as above
+    * Same as above
   e. Test GetUser
-    Same as above, but while updating the parameter, go to database, update the hashcode to some value and test with that value here. Because we are getting user by hashcode and not exactly with id. See the SQL Query of GetUser
+    * Same as above, but while updating the parameter, go to database, update the hashcode to some value and test with that value here. Because we are getting user by hashcode and not exactly with id. See the SQL Query of GetUser
 
   f. Getting the Application Insights Instrumentation Key
-    You can get this in multiple ways as we are using same Application Insights Key for Function Apps, Keg UWP, KegAdmin. You could choose to use different though.
+    * You can get this in multiple ways as we are using same Application Insights Key for Function Apps, Keg UWP, KegAdmin. You could choose to use different though.
 	
     * Navigate to KegocnizerDemo Resource Group and look for application insights
     * Open it and look for Keys(Properties) - this value is to be updated in Constants.cs under INSTRUMENTKEY
