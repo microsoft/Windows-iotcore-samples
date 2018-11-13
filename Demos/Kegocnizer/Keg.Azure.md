@@ -113,7 +113,7 @@ Note: You can configure Add methods with more restrictive access using Authoriza
 
 e. Testing Azure Methods Created above
 
-  a. Check if you are able to run the Host ( as per configuration above, this is url, it might be different for you)
+  * Check if you are able to run the Host ( as per configuration above, this is url, it might be different for you)
     https://kegocnizerdemofunctions.azurewebsites.net/
 
 b. Test AddConfig
@@ -132,6 +132,7 @@ b. Test AddConfig
 ```
 
   c. Test GetConfig
+
     * Copy the above generated Id guid and go to GetConfig Method
     * Right Pane, Expand Test Pane at the Right of window and Select HTTP Method = Get
     * Add Parameter and enter
@@ -140,18 +141,22 @@ b. Test AddConfig
 This Guid is to be updated in Constants.cs under KEGSETTINGSGUID
 		
   d. Test AddUser
+
     * Same as above
+
   e. Test GetUser
+
     * Same as above, but while updating the parameter, go to database, update the hashcode to some value and test with that value here. Because we are getting user by hashcode and not exactly with id. See the SQL Query of GetUser
 
   f. Getting the Application Insights Instrumentation Key
+  
     * You can get this in multiple ways as we are using same Application Insights Key for Function Apps, Keg UWP, KegAdmin. You could choose to use different though.
-	
     * Navigate to KegocnizerDemo Resource Group and look for application insights
     * Open it and look for Keys(Properties) - this value is to be updated in Constants.cs under INSTRUMENTKEY
 	
   g. Getting the KegConfig
-    Navigate to the database and get appropriate KegConfig after updating the value either using Admin App or manually. 
+
+    * Navigate to the database and get appropriate KegConfig after updating the value either using Admin App or manually. 
 
 ## Source of the Azure Functions referenced by the steps above
 
