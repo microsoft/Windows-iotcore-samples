@@ -19,46 +19,46 @@ a. Create CosmosDB in Azure
 Wait a few moments while Azure creates the Azure Cosmos DB resource.
 
 b. Go to above resource once created
-	Click on Data Explorer
-	Click on 'New Database' and enter 'KegocnizerData' and Ok
-	Once database got created, Click on tilde symbol adjacent to database created and select 'New Collection'
-	Collection id : Items, Partition Key: /type
-	Click OK
+  * Click on Data Explorer
+  * Click on 'New Database' and enter 'KegocnizerData' and Ok
+  * Once database got created, Click on tilde symbol adjacent to database created and select 'New Collection'
+  * Collection id : Items, Partition Key: /type
+  * Click OK
 
 c. Create Function App
-	Click on '+ Create a resource'
-	Search for 'Function App'
-	Enter:  App name: 'KegocnizerDemoFunctions'
-	Select appropriate subscription
-	Use same 'KegocnizerDemo' Resource Group
-	OS: Windows
-	Hosting Plan: 'Consumption Plan'
-	Location: West US or appropriate
-	Storage: 'kegocnizerdemostorage'
-	Application Insights: On
-	Application Insights Location: 'West US2' or appropriate
+  * Click on '+ Create a resource'
+  * Search for 'Function App'
+  * Enter:  App name: 'KegocnizerDemoFunctions'
+  * Select appropriate subscription
+  * Use same 'KegocnizerDemo' Resource Group
+  * OS: Windows
+  * Hosting Plan: 'Consumption Plan'
+  * Location: West US or appropriate
+  * Storage: 'kegocnizerdemostorage'
+  * Application Insights: On
+  * Application Insights Location: 'West US2' or appropriate
 	
 d. Navigate to Azure Function created above
 
-  Method: AddConfig
-	Click '+' adjacent to Functions to create new Method
-	Select 'HTTP trigger' template
-	Select c# as Language, and enter 'AddConfig' as Name
-	Select AuthroizationLevel: Anonymous
-	And Click on 'Create'
-	Once 'AddConfig' method is created, 
-	Expand AddConfig and Select 'Integrate'
-	Under Outputs:
-		Click on '+New Output' to add Azure Cosmos DB from the available list
-		Being selected that added Azure Cosmos DB, 
-			a. Change the database name : KegocnizerData  [ This is name of database created ]
-			b. Collection Name: Items
-			c. Click on 'new' for Azure Cosmos DB account connection and select KegocnizerDemodb account
-	Under Triggers 'HTTP(req)
-		Make sure Authorization level is 'Anonymous', POST HTTP methods
-	Select AddConfig Function in left pane
-	In the space provided on the right: run.csx, copy code from Functions.txt under Method: AddConfig 
-	And Click Save
+  * Method: AddConfig
+    * Click '+' adjacent to Functions to create new Method
+    * Select 'HTTP trigger' template
+    * Select c# as Language, and enter 'AddConfig' as Name
+    * Select AuthroizationLevel: Anonymous
+    * And Click on 'Create'
+    * Once 'AddConfig' method is created, 
+    * Expand AddConfig and Select 'Integrate'
+      * Under Outputs: 
+        * Click on '+New Output' to add Azure Cosmos DB from the available list
+          * Being selected that added Azure Cosmos DB, 
+            a. Change the database name : KegocnizerData  [ This is name of database created ]
+            b. Collection Name: Items
+            c. Click on 'new' for Azure Cosmos DB account connection and select KegocnizerDemodb account
+        * Under Triggers 'HTTP(req)
+          * Make sure Authorization level is 'Anonymous', POST HTTP methods
+        * Select AddConfig Function in left pane
+        * In the space provided on the right: run.csx, copy code from Functions.txt under Method: AddConfig 
+        * And Click Save
 	
   Method: AddUser
 	Same as above steps, except
@@ -116,6 +116,7 @@ e. Testing Azure Methods Created above
 	b. Test AddConfig
 	Navigate to AddConfig Method and Click Run Button. There is Logs Pane in bottom of the screen to see host output. 
 	Sample Output:
+```
 		2018-05-22T21:19:44 No new trace in the past 1 min(s). 
 		2018-05-22T21:20:31.240 [Info] Script for function 'AddConfig' changed. Reloading. 
 		2018-05-22T21:20:31.459 [Info] Compilation succeeded. 
@@ -123,7 +124,8 @@ e. Testing Azure Methods Created above
 		2018-05-22T21:20:32.397 [Info] AddConfig: Adding new KegConfig ... 
 		2018-05-22T21:20:32.397 [Info] AddConfig: Adding KegConfig complete. 
 		2018-05-22T21:20:32.506 [Info] Function completed (Success, Id=f0f2be78-ba13-4145-9304-3c592bcb8b41, Duration=324ms) 
-		
+```
+
 	c. Test GetConfig
 		Copy the above generated Id guid and go to GetConfig Method
 		Right Pane, Expand Test Pane at the Right of window and Select HTTP Method = Get
