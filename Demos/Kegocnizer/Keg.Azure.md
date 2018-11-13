@@ -94,15 +94,17 @@ d. Navigate to Azure Function created above
         * Collection name: Items
       * Outputs:
         * No change
-	
+
 All the GetConfig changes can be validated by seeing View Files
-  a. Click on GetConfig on Left Pane
-  b. Expand 'View files' available on the right side of window collapsed.
-  c. Select function.json
+
+  * Click on GetConfig on Left Pane
+  * Expand 'View files' available on the right side of window collapsed.
+  * Select function.json
 	
 Note: Azure functions can be mapped to Items Collection directly from CosmosDB resource as well, see below.
 
 Under same Azure Cosmos DB resource created OR Go to Go to 'kegocnizerdemodb' resource created
+
   * Click on 'Add Azure Function' ( left Pane)
   * Select Collection created ( ex: Items)
   * Select the newly created Azure Function 'KegocnizerDemoFunctions'
@@ -116,8 +118,9 @@ e. Testing Azure Methods Created above
   * Check if you are able to run the Host ( as per configuration above, this is url, it might be different for you)
     https://kegocnizerdemofunctions.azurewebsites.net/
 
-b. Test AddConfig
-  * Navigate to AddConfig Method and Click Run Button. There is Logs Pane in bottom of the screen to see host output. 
+  * Test AddConfig
+
+    * Navigate to AddConfig Method and Click Run Button. There is Logs Pane in bottom of the screen to see host output. 
     
     Sample Output:
     
@@ -131,7 +134,7 @@ b. Test AddConfig
 2018-05-22T21:20:32.506 [Info] Function completed (Success, Id=f0f2be78-ba13-4145-9304-3c592bcb8b41, Duration=324ms) 
 ```
 
-  c. Test GetConfig
+  * Test GetConfig
 
     * Copy the above generated Id guid and go to GetConfig Method
     * Right Pane, Expand Test Pane at the Right of window and Select HTTP Method = Get
@@ -140,23 +143,23 @@ b. Test AddConfig
 		
 This Guid is to be updated in Constants.cs under KEGSETTINGSGUID
 		
-  d. Test AddUser
+  * Test AddUser
 
     * Same as above
 
-  e. Test GetUser
+  * Test GetUser
 
     * Same as above, but while updating the parameter, go to database, update the hashcode to some value and test with that value here. Because we are getting user by hashcode and not exactly with id. See the SQL Query of GetUser
 
-  f. Getting the Application Insights Instrumentation Key
+f. Getting the Application Insights Instrumentation Key
   
-    * You can get this in multiple ways as we are using same Application Insights Key for Function Apps, Keg UWP, KegAdmin. You could choose to use different though.
-    * Navigate to KegocnizerDemo Resource Group and look for application insights
-    * Open it and look for Keys(Properties) - this value is to be updated in Constants.cs under INSTRUMENTKEY
+  * You can get this in multiple ways as we are using same Application Insights Key for Function Apps, Keg UWP, KegAdmin. You could choose to use different though.
+  * Navigate to KegocnizerDemo Resource Group and look for application insights
+  * Open it and look for Keys(Properties) - this value is to be updated in Constants.cs under INSTRUMENTKEY
 	
-  g. Getting the KegConfig
+g. Getting the KegConfig
 
-    * Navigate to the database and get appropriate KegConfig after updating the value either using Admin App or manually. 
+  * Navigate to the database and get appropriate KegConfig after updating the value either using Admin App or manually. 
 
 ## Source of the Azure Functions referenced by the steps above
 
