@@ -68,8 +68,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
  <tr>
   <td><a href="Samples/HelloBlinkyBackground">HelloBlinkyBackground</a></td>
   <td><a href="Samples/NFCForIoT">NFCForIoT</a></td>
-  <td><a href="Samples/PotentiometerSensor">Potentiometer Sensor</a></td>
- </tr>
+  <td><a href="Samples/PotentiometerSensor">Potentiometer Sensor</a></td> </tr>
  <tr>
   <td><a href="Samples/PushButton">Push Button</a></td>
   <td><a href="Samples/RGBLED">RGB LED</a></td>
@@ -105,23 +104,22 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
   <td><a href="Samples/HelloWorld">HelloWorld</a></td>
  </tr>
  <tr>
-  <td><a href="Samples/IotBrowser">IoT Browser</a></td>
+  <td><a href="Samples/IoTBrowser">IoT Browser</a></td>
   <td><a href="Samples/IoTCoreDefaultApp">IoTCore DefaultApp</a></td>
   <td><a href="Samples/IoTCoreMediaPlayer">IoTCore MediaPlayer</a></td>
  </tr>
  <tr>
-  <td><a href="Samples/IotOnboarding">IoT Onboarding</a></td>
+  <td><a href="Samples/IoTOnboarding">IoT Onboarding</a></td>
   <td><a href="Samples/CognitiveServicesExample">Cognitive Services</a></td>
   <td><a href="Samples/CompanionApp">Companion App</a></td>
  </tr>
   <tr>
-  <td><a href="Samples/IoTHomeAppSample">IoT Home App</a></td>
   <td><a href="Samples/OpenCVExample">OpenCV Example</a></td>
   <td><a href="Samples/SerialUART">Serial UART</a></td>
+  <td><a href="Samples/WebcamApp">Webcam App</a></td>
  </tr>
   <tr>
-  <td><a href="Samples/WebcamApp">Webcam App</a></td>
-  <td><a href="Samples/WiFiConnector">WiFi Connector</a></td>
+ <td><a href="Samples/WiFiConnector">WiFi Connector</a></td>
  </tr>
 </table>
 
