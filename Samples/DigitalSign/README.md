@@ -1,6 +1,6 @@
 ---
-topic:sample
-urlFragment:digital-sign
+topic: sample
+urlFragment: digital-sign
 languages:
 -csharp
 products:
