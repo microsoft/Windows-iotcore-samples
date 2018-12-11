@@ -1,7 +1,11 @@
----
-title: Companion App sample
-ms.author: brian.fjeldstad
-description: Create a simple app (for Windows Phone 10 or Android) that can configure your device's Wifi.
+--- 
+topic: sample
+urlFragment: companion-app
+languages:
+-csharp
+products:
+-windows
+description: This sample is intended to show how to remotely configure an IotCore device when it is not attached to a network.
 ---
 
 # Companion App
