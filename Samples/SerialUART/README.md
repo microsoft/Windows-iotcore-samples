@@ -1,6 +1,11 @@
 ---
-title: Serial UART sample
-ms.author: lamadio
+topic: sample
+urlFragment: serial-uart
+languages:
+-cpp
+-csharp
+products:
+-windows
 description: Communicate between a desktop and an IoT device over a serial interface.
 ---
 
