@@ -1,7 +1,11 @@
 ---
-title: RPi Cognitive Service Sample
-ms.author: Jiong Shi
-description: Microsoft Cognitive Services App Designed for Windows 10 IoT Core Devices.
+topic: sample
+urlFragment: rpi-cognitive-service
+languages:
+-csharp
+products:
+-windows
+description: A Microsoft Cognitive Services app designed for Windows 10 IoT Core devices.
 ---
 
 # RPi Cognitive Service Sample
