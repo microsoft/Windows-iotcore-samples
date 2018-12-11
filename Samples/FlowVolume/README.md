@@ -1,7 +1,11 @@
 ---
-title: Flow volume sample
-ms.author: mark.snyder
-description: A sample that shows how to use a FL-S402B Water Flow Sensor from a Raspberry Pi to measure the volume of liquid flowing through a hose.
+topic: sample
+urlFragment: flow-volume
+languages:
+-csharp
+products:
+-windows
+description: This sample demonstrates how to use a relatively inexpensive device and a Raspberry Pi to measure the volume of liquid flowing through a hose.
 ---
 
 # Flow Volume

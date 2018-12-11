@@ -1,3 +1,13 @@
+--- 
+topic: sample
+urlFragment: congitive-services
+languages:
+-csharp
+products:
+-windows
+description: Create a UWP app that identifies faces in a photo and determine the emotions in those photos using Microsoft's Cognitive Services API.
+---
+
 # Cognitive Services
 
 These are the available versions of this Windows 10 IoT Core sample:

@@ -1,6 +1,10 @@
 ---
-title: NFC for IoT sample
-ms.author: lamadio
+topic: sample
+urlFragment: nfc-iot
+languages: 
+-csharp
+products:
+-windows
 description: Learn how use NFC on IoT Core.
 ---
 

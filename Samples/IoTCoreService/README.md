@@ -1,6 +1,10 @@
 ---
-title: IoT Core Service sample
-ms.author: namkedia
+topic: sample
+urlFragment: iotcore-service
+languages: 
+-cpp
+products:
+-windows
 description: A simple shared host service for Windows 10 IoT Core.
 ---
 

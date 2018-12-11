@@ -1,6 +1,11 @@
 ---
-title: Foreground App with Background App sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: foregroundapp-backgroundapp
+languages:
+-csharp
+-cpp
+products:
+-windows
 description: An example of building a foreground app and background app within the same APPX file.
 ---
 

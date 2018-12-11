@@ -1,6 +1,10 @@
 ---
-title: IoT Blocky sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: iot-blockly
+languages: 
+-csharp
+products:
+-windows
 description: A sample that shows how to leverage various pieces of open source software to create a "block" development experience on Raspberry Pi.
 ---
 

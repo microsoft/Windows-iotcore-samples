@@ -1,3 +1,13 @@
+---
+topic: sample
+urlFragment: ultrasonic-hcsr04
+languages:
+-csharp
+products:
+-windows
+description: This sample demonstrates using the HC-SR04 ultrasonic sensor.
+---
+
 # HC-SR04 Ultrasonic sensor
 
 This sample demonstrates using the HC-SR04 ultrasonic sensor. It is driven with a trigger signal

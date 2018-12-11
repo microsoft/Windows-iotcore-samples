@@ -1,6 +1,10 @@
 ---
-title: Valve control sample
-ms.author: mark.snyder
+topic: sample
+urlFragment: valve-control
+languages:
+-csharp
+products:
+-windows
 description: A sample that shows how to use a solenoid-controlled valve from a Raspberry Pi to turn on and off the flow of liquid through a hose.
 ---
 

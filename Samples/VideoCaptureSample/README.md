@@ -1,6 +1,10 @@
 ---
-title: Video Capture sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: video-capture
+languages:
+-csharp
+products:
+-windows
 description: Initialize a video capture device, record video to a file, preview video feed, and playback recorded video.
 ---
 

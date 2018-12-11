@@ -1,6 +1,10 @@
 ---
-title: System Update Manager sample
-ms.author: paulmon
+topic: sample
+urlFragment: system-update-manager
+languages:
+-csharp
+products:
+-windows
 description: Use System Update Manager to control system updates.
 ---
 

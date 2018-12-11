@@ -1,3 +1,13 @@
+--- 
+topic: sample
+urlFragment: pet-recognition-door
+languages:
+-cpp
+products:
+-windows
+description: Building a pet recognition door with Windows 10 IoT Core.
+---
+
 # Pet Recognition Door 
 This project employs computer vision to ensure that your cat will have exclusive entry access to your home. The door is motion-activated, and will unlock only when it detects a cat face.
 

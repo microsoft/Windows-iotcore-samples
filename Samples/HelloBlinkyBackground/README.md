@@ -1,6 +1,12 @@
 ---
-title: Hello, blinky! background service sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: hello-blinky-background
+languages: 
+-csharp
+-cpp
+-vb
+products:
+-windows
 description: A sample that shows how to make an LED attached to a GPIO pin blink on and off from a background service.
 ---
 
