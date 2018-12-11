@@ -1,6 +1,6 @@
 --- 
 topic: sample
-urlFragment: navigation-robot
+urlFragment: appservice-blinky
 languages:
 -csharp
 -cpp
