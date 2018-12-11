@@ -1,7 +1,11 @@
 ---
-title: Digital Sign sample
-ms.author: robsol
-description: Create a basic digital sign similar to screen saver with slideshow images and audio.
+topic:sample
+urlFragment:digital-sign
+languages:
+-csharp
+products:
+-windows
+description: This sample showcases a Digital Sign UWP running on Windows IoT Core.
 ---
 
 # Digital Sign
