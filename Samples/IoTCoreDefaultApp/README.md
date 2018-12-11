@@ -1,8 +1,11 @@
 ---
-title: IoT Core Default App sample
-author: saraclay
-ms.author: saclayt
-description: A full featured sample app - The current IoT Core default application.
+topic: sample
+urlFragment: iotcore-defaultapp
+languages: 
+-csharp
+products:
+-windows
+description: The current IoT Core Default App, a fully featured sample app.
 ---
 
 # IoT Core Default App
