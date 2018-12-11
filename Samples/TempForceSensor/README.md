@@ -1,6 +1,10 @@
 ---
-title: Temperature and force sensor
-ms.author: lamadio
+topic: sample
+urlFragment: temp-force-sensor
+languages:
+-csharp
+products:
+-windows
 description: Control a basic temperature and force sensor.
 ---
 
