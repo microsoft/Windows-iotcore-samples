@@ -1,7 +1,12 @@
----
-title: App Service Shared Notepad sample
-ms.author: brian.fjeldstad
-description: An app service that provides clients the ability to share a notepad-like editing experience.
+--- 
+topic: sample
+urlFragment: appservice-sharednotepad
+languages:
+-csharp
+-cpp
+products:
+-windows
+description: Create a simple notepad app service as well as two simple app service clients.
 ---
 
 # AppServiceSharedNotepad
