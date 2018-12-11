@@ -1,7 +1,12 @@
----
-title: App Service Blinky sample
-ms.author: brian.fjeldstad
-description: An app service to blink an LED and a client app to call it.
+--- 
+topic: sample
+urlFragment: navigation-robot
+languages:
+-csharp
+-cpp
+products:
+-windows
+description: Create a simple Blinky app service and connect a LED to your Windows IoT Core device.
 ---
 
 # AppServiceBlinky
