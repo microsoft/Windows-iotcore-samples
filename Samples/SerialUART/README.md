@@ -1,11 +1,10 @@
 ---
 topic: sample
 urlFragment: serial-uart
-languages:
--cpp
--csharp
+languages: 
+- csharp
 products:
--windows
+- windows
 description: Communicate between a desktop and an IoT device over a serial interface.
 ---
 
