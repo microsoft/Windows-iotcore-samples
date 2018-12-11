@@ -1,6 +1,10 @@
 ---
-title: IoT Connector sample
-ms.author: artemz
+topic: sample
+urlFragment: iot-connector
+languages: 
+-csharp
+products:
+-windows
 description: Demonstrate device to device communication with Azure IoT Hub.
 ---
 
