@@ -5,7 +5,7 @@ languages:
 -cpp
 products:
 -windows
-description:This sample shows how to access devices from UWP applications using familiar win32 APIs like CreateFile(), ReadFile(), WriteFile(), and DeviceIoControl().
+description: This sample shows how to access devices from UWP applications using familiar win32 APIs like CreateFile(), ReadFile(), WriteFile(), and DeviceIoControl().
 ---
 
 # Custom Device Accessor
