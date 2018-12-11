@@ -1,6 +1,6 @@
 ---
-topic:sample
-urlFragment:custom-device-accessor
+topic: sample
+urlFragment: custom-device-accessor
 languages:
 -cpp
 products:
