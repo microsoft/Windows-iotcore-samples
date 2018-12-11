@@ -1,7 +1,11 @@
 ---
-title: Custom Device Accessor
-ms.author: brian.fjeldstad
-description: Use CreateFile() and DeviceIoControl() to access custom devices from UWP.
+topic:sample
+urlFragment:custom-device-accessor
+languages:
+-cpp
+products:
+-windows
+description:This sample shows how to access devices from UWP applications using familiar win32 APIs like CreateFile(), ReadFile(), WriteFile(), and DeviceIoControl().
 ---
 
 # Custom Device Accessor
