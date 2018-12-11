@@ -1,6 +1,10 @@
 ---
-title: Webcam App sample
-ms.author: lamadio
+topic: sample
+urlFragment: webcam-app
+languages:
+-csharp
+products:
+-windows
 description: Create an app that initializes a web cam, takes pictures, and records video and audio.
 ---
 
