@@ -1,6 +1,6 @@
 ---
-topic:sample
-urlFragment:deviceIO-controller
+topic: sample
+urlFragment: deviceIO-controller
 languages:
 -cpp
 products:
