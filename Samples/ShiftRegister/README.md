@@ -1,6 +1,10 @@
 ---
-title: Shift Register sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: shift-register
+languages:
+-csharp
+products:
+-windows
 description: Connect an 8-bit serial-in, parallel-out shift register to your device to toggle eight LED's.
 ---
 
