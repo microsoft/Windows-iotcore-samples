@@ -61,3 +61,9 @@ But, for the sample you must update the creds in the deployment.json file to pro
 
 TODO: point to various ways to do this.
 simplest imho is VSCode with Azure IoT Edge extension.
+
+
+
+
+
+
