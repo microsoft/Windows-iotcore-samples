@@ -143,6 +143,7 @@ For additional Windows samples, see [Windows on GitHub](http://microsoft.github.
  </tr>
  <tr>
   <td><a href="Samples/Azure/IoTHubClients">IoT Hub Clients</a></td>
+  <td><a href="Samples/EdgeModules">Azure IoT Edge Modules</a></td>
  </tr>
 </table>
 
