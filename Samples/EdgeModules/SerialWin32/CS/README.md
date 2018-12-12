@@ -36,7 +36,7 @@ For this sample, obtain an [FTDI Serial TTL-232 cable](https://www.adafruit.com/
 
 ## Build and Publish the Sample App
 
-Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory:
+Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory. This example shows publishing for win-arm runtime. Change this to win-x64 for X64 devices.
 
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> dotnet publish -r win-arm
@@ -85,7 +85,7 @@ PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> cp .\Dockerfil
 In order to deploy modules to your device, you will need access to a container respository.  
 Refer to the "Create a container registry" section in [Tutorial: Develop a C# IoT Edge module and deploy to your simulated device](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-csharp-module)
 
-When following the sample, consider "{ACR_*}" notation, to replace those values with the correct values for your container repository.
+When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
 
 Be sure to log into the container respository from your device.
 
@@ -101,9 +101,9 @@ to refer to the address of our container.
 ### For ARM32
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> $Container = "{ACR_NAME}.azurecr.io/serialwin32:1.0.0-arm32"
+PS C:\data\modules\SerialWin32> $Container = "{ACR_NAME}.azurecr.io/serialwin32:1.0.0-arm32"
 
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker build . -f .\Dockerfile.windows-arm32 -t $Container
+PS DC:\data\modules\SerialWin32> docker build . -f .\Dockerfile.windows-arm32 -t $Container
 
 Sending build context to Docker daemon  49.54MB
 
@@ -152,7 +152,7 @@ Step 5/5 : CMD [ "SerialWin32.exe", "-rte", "-dPID_6001" ]
 Removing intermediate container 1aedd449ffa4
  ---> d6cbd51600e3
 Successfully built d6cbd51600e3
-Successfully tagged {ACR_NAME}.azurecr.io/serialwin32:1.0.0-x64
+    Successfully tagged {ACR_NAME}.azurecr.io/serialwin32:1.0.0-x64
 ```
 
 ## Test the sample app on the device
@@ -243,11 +243,6 @@ The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serial-
         "runtime": {
           "settings": {
             "registryCredentials": {
-              "jiriatest": {
-                "username": "d3e6e3bc-2e38-4887-9073-2cf796462b15",
-                "password": "71181f94-a9b9-4b98-96a8-01c4ae8dff94",
-                "address": "edgeshared.azurecr.io"
-              },
               "{ACR_NAME}": {
                 "username": "{ACR_USER}",
                 "password": "{ACR_PASSWORD}",
