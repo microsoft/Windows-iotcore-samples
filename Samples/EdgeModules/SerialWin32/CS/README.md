@@ -6,7 +6,7 @@ This sample demonstrates how to author a module for Azure IoT Edge to communicat
 
 ### Windows IoT Enterprise
 
-These instructions will work on any PC running Windows 10, including Windows 10 IoT Enterprise, running build 17763.
+These instructions will work on any PC running Windows 10 IoT, including Windows 10 IoT Enterprise, running build 17763.
 
 ### Windows IoT Core
 
@@ -36,7 +36,7 @@ For this sample, obtain an [FTDI Serial TTL-232 cable](https://www.adafruit.com/
 
 ## Build and Publish the Sample App
 
-Clone or downloald the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory:
+Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory:
 
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> dotnet publish -r win-arm
@@ -85,13 +85,12 @@ PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> cp .\Dockerfil
 In order to deploy modules to your device, you will need access to a container respository.  
 Refer to the "Create a container registry" section in [Tutorial: Develop a C# IoT Edge module and deploy to your simulated device](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-csharp-module)
 
-For this sample, I am using jcoliz.azurecr.io. 
-When following the sample, change this to your own repository of course.
+When following the sample, consider "{ACR_*}" notation, to replace those values with the correct values for your container repository.
 
 Be sure to log into the container respository from your device.
 
 ```
-PS C:\data\modules\SerialWin32> docker login {repository}.azurecr.io {username} {password}
+PS C:\data\modules\SerialWin32> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
 ```
 
 ## Containerize the sample app
@@ -102,7 +101,7 @@ to refer to the address of our container.
 ### For ARM32
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> $Container = "{repository}.azurecr.io/serialwin32:1.0.0-arm32"
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> $Container = "{ACR_NAME}.azurecr.io/serialwin32:1.0.0-arm32"
 
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker build . -f .\Dockerfile.windows-arm32 -t $Container
 
@@ -123,7 +122,7 @@ Step 5/5 : CMD [ "SerialWin32.exe", "-rtf", "-dPID_6001" ]
 Removing intermediate container bc730d1a363d
  ---> dd5bea81a0bf
 Successfully built dd5bea81a0bf
-Successfully tagged {repository}.azurecr.io/serialwin32:1.0.0-arm32
+Successfully tagged {ACR_NAME}.azurecr.io/serialwin32:1.0.0-arm32
 ```
 
 ### For X64
@@ -131,7 +130,7 @@ Successfully tagged {repository}.azurecr.io/serialwin32:1.0.0-arm32
 The x64 containers can be build directly on the PC, even if you plan to run them on an x64 Windows 10 IoT Core device.
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> $Container = "{repository}.azurecr.io/serialwin32:1.0.0-x64"
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> $Container = "{ACR_NAME}.azurecr.io/serialwin32:1.0.0-x64"
 
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker build . -f .\Dockerfile.windows-x64 -t $Container
 
@@ -153,7 +152,7 @@ Step 5/5 : CMD [ "SerialWin32.exe", "-rte", "-dPID_6001" ]
 Removing intermediate container 1aedd449ffa4
  ---> d6cbd51600e3
 Successfully built d6cbd51600e3
-Successfully tagged {repository}.azurecr.io/serialwin32:1.0.0-x64
+Successfully tagged {ACR_NAME}.azurecr.io/serialwin32:1.0.0-x64
 ```
 
 ## Test the sample app on the device
@@ -217,7 +216,7 @@ Now, we push the container into the repository which we built earlier. At this p
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker push $Container
 
-The push refers to repository [jcoliz.azurecr.io/serialwin32]
+The push refers to repository [{ACR_NAME}.azurecr.io/serialwin32]
 bf4863b963b0: Preparing
 3ed1316f55e1: Preparing
 b4d9f6916bae: Preparing
@@ -235,7 +234,7 @@ bf4863b963b0: Pushed
 
 In the repo, you will find separate deployment.{arch}.json files for each architecture.
 Choose the deployment file corresponding to your deployment atchitecture, then fill in the details for your container image.
-Search for "ACR_" and replace those values with the correct values for your container repository.
+Search for "{ACR_*}" and replace those values with the correct values for your container repository.
 The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serial-module:1.0.0-arm32
 
 ```
@@ -249,10 +248,10 @@ The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serial-
                 "password": "71181f94-a9b9-4b98-96a8-01c4ae8dff94",
                 "address": "edgeshared.azurecr.io"
               },
-              "ACR_NAME": {
-                "username": "ACR_USER",
-                "password": "ACR_PASSWORD",
-                "address": "ACR_ADDRESS"
+              "{ACR_NAME}": {
+                "username": "{ACR_USER}",
+                "password": "{ACR_PASSWORD}",
+                "address": "{ACR_NAME}.azurecr.io"
               }
             }
           }
@@ -261,7 +260,7 @@ The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serial-
         "modules": {
           "serial": {
             "settings": {
-              "image": "ACR_IMAGE",
+              "image": "{ACR_IMAGE}",
               "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/86E0D1E0-8089-11D0-9CE4-08003E301F73\"}],\"Isolation\":\"Process\"}}"
             }
           }
@@ -312,7 +311,7 @@ First, find the module container:
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker ps
 
 CONTAINER ID        IMAGE                                                                           COMMAND                  CREATED              STATUS              PORTS                                                                  NAMES
-b4107d30a29d        {repository}.azurecr.io/serialwin32:1.0.2-arm32                                       "SerialWin32.exe -rt…"   About a minute ago   Up About a minute                                                                          serialwin32
+b4107d30a29d        {ACR_NAME}.azurecr.io/serialwin32:1.0.2-arm32                                       "SerialWin32.exe -rt…"   About a minute ago   Up About a minute                                                                          serialwin32
 56170371f8f5        edgeshared.azurecr.io/microsoft/azureiotedge-hub:1809_insider-windows-arm32     "dotnet Microsoft.Az…"   3 days ago           Up 6 minutes        0.0.0.0:443->443/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:8883->8883/tcp   edgeHub
 27c147e5c760        edgeshared.azurecr.io/microsoft/azureiotedge-agent:1809_insider-windows-arm32   "dotnet Microsoft.Az…"   3 days ago           Up 7 minutes                                                                               edgeAgent
 ```
