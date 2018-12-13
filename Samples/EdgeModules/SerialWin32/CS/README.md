@@ -4,7 +4,15 @@ This sample demonstrates how to author a module for Azure IoT Edge to communicat
 
 ## Host OS
 
-These instructions will work on a PC running Windows 10 IoT Enterprise or Windows IoT Core build 17763. Only the x64 architecture is supported currently. Arm32 will come in the future.
+### Windows IoT Enterprise
+
+These instructions will work on any PC running Windows 10 IoT, including Windows 10 IoT Enterprise, running build 17763.
+
+### Windows IoT Core
+
+These instructions will work on any board running Windows 10 IoT Core build 17763, such as an NXP i.MX6-based board, or a Raspberry Pi 3.
+
+If you don't already have one of these, I recommend the [SolidRun Hummingboard Edge](https://www.solid-run.com/nxp-family/hummingboard/imx6-win-10-iot-core/).
 
 ## API Surface
 
@@ -28,16 +36,48 @@ For this sample, obtain an [FTDI Serial TTL-232 cable](https://www.adafruit.com/
 
 ## Build and Publish the Sample App
 
-Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory.
+Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory. This example shows publishing for win-arm runtime. Change this to win-x64 for X64 devices.
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> dotnet publish -r win-x64
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> dotnet publish -r win-arm
 Microsoft (R) Build Engine version 15.8.166+gd4e8d81a88 for .NET Core
 Copyright (C) Microsoft Corporation. All rights reserved.
 
   Restore completed in 53.44 ms for D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS\SerialWin32.csproj.
-  SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS\bin\Debug\netcoreapp2.1\win-x64\SerialWin32.dll
-  SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS\bin\Debug\netcoreapp2.1\win-x64\publish\
+  SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS\bin\Debug\netcoreapp2.1\win-arm\SerialWin32.dll
+  SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS\bin\Debug\netcoreapp2.1\win-arm\publish\
+```
+
+## ARM32: Copy to device
+
+To build an container module for ARM32 devices, it must be done on an ARM32 device. 
+So you'll need to copy the built app to the ARM32 device.
+In this case, I first mapped the Q drive to my device.
+
+For X64 containers, you can skip this step and build the container on your development machine.
+
+```
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> robocopy .\bin\Debug\netcoreapp2.1\win-arm\publish\ q:\data\modules\SerialWin32
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows
+-------------------------------------------------------------------------------
+
+  Started : Tuesday, November 20, 2018 8:01:02 AM
+   Source : D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS\bin\Debug\netcoreapp2.1\win-arm\publish\
+     Dest : q:\data\modules\SerialWin32\
+
+    Files : *.*
+
+  Options : *.* /DCOPY:DA /COPY:DAT /R:1000000 /W:30
+
+------------------------------------------------------------------------------
+```
+
+While you're here, copy the Dockerfile over to the device as well.
+
+```
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> cp .\Dockerfile.windows-arm32 q:\data\modules\SerialWin32
 ```
 
 ## Create a personal container repository
@@ -57,6 +97,35 @@ PS C:\data\modules\SerialWin32> docker login {ACR_NAME}.azurecr.io {ACR_USER} {A
 
 Build the container on the device. For the remainder of this sample, we will use the environment variable $Container
 to refer to the address of our container.
+
+### For ARM32
+
+```
+PS C:\data\modules\SerialWin32> $Container = "{ACR_NAME}.azurecr.io/serialwin32:1.0.0-arm32"
+
+PS DC:\data\modules\SerialWin32> docker build . -f .\Dockerfile.windows-arm32 -t $Container
+
+Sending build context to Docker daemon  49.54MB
+
+Step 1/5 : FROM mcr.microsoft.com/windows/nanoserver/insider:10.0.17763.55
+ ---> 208b271ba3b0
+Step 2/5 : ARG EXE_DIR=.
+ ---> Using cache
+ ---> c2b3fa12c3ea
+Step 3/5 : WORKDIR /app
+ ---> Using cache
+ ---> 7f11b8ea6afc
+Step 4/5 : COPY $EXE_DIR/ ./
+ ---> ad291836fbe3
+Step 5/5 : CMD [ "SerialWin32.exe", "-rtf", "-dPID_6001" ]
+ ---> Running in bc730d1a363d
+Removing intermediate container bc730d1a363d
+ ---> dd5bea81a0bf
+Successfully built dd5bea81a0bf
+Successfully tagged {ACR_NAME}.azurecr.io/serialwin32:1.0.0-arm32
+```
+
+### For X64
 
 The x64 containers can be build directly on the PC, even if you plan to run them on an x64 Windows 10 IoT Core device.
 
@@ -158,7 +227,7 @@ b4d9f6916bae: Mounted from serial-module
 bf4863b963b0: Pushed
 6d34deee1fa7: Mounted from serial-module
 3ed1316f55e1: Pushed
-1.0.0-x64: digest: sha256:9593c87a18198915118ecbdc7f5a308dbe34a15ef898bac3fb5d06730ae6d30a size: 1464
+1.0.0-arm32: digest: sha256:9593c87a18198915118ecbdc7f5a308dbe34a15ef898bac3fb5d06730ae6d30a size: 1464
 ```
 
 ## Edit the deployment.json file
@@ -166,7 +235,7 @@ bf4863b963b0: Pushed
 In the repo, you will find separate deployment.{arch}.json files for each architecture.
 Choose the deployment file corresponding to your deployment atchitecture, then fill in the details for your container image.
 Search for "{ACR_*}" and replace those values with the correct values for your container repository.
-The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serial-module:1.0.0-x64
+The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serial-module:1.0.0-arm32
 
 ```
     "$edgeAgent": {
@@ -237,9 +306,9 @@ First, find the module container:
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker ps
 
 CONTAINER ID        IMAGE                                                                           COMMAND                  CREATED              STATUS              PORTS                                                                  NAMES
-b4107d30a29d        {ACR_NAME}.azurecr.io/serialwin32:1.0.2-x64                                       "SerialWin32.exe -rt…"   About a minute ago   Up About a minute                                                                          serialwin32
-56170371f8f5        edgeshared.azurecr.io/microsoft/azureiotedge-hub:1809_insider-windows-x64     "dotnet Microsoft.Az…"   3 days ago           Up 6 minutes        0.0.0.0:443->443/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:8883->8883/tcp   edgeHub
-27c147e5c760        edgeshared.azurecr.io/microsoft/azureiotedge-agent:1809_insider-windows-x64   "dotnet Microsoft.Az…"   3 days ago           Up 7 minutes                                                                               edgeAgent
+b4107d30a29d        {ACR_NAME}.azurecr.io/serialwin32:1.0.2-arm32                                       "SerialWin32.exe -rt…"   About a minute ago   Up About a minute                                                                          serialwin32
+56170371f8f5        edgeshared.azurecr.io/microsoft/azureiotedge-hub:1809_insider-windows-arm32     "dotnet Microsoft.Az…"   3 days ago           Up 6 minutes        0.0.0.0:443->443/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:8883->8883/tcp   edgeHub
+27c147e5c760        edgeshared.azurecr.io/microsoft/azureiotedge-agent:1809_insider-windows-arm32   "dotnet Microsoft.Az…"   3 days ago           Up 7 minutes                                                                               edgeAgent
 ```
 
 Then, use the ID for the serialwin32 container to check the logs
