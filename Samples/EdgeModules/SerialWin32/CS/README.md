@@ -42,8 +42,8 @@ Copyright (C) Microsoft Corporation. All rights reserved.
 
 ## Create a personal container repository
 
-In order to deploy modules to your device, you will need access to a container respository.  
-Refer to the "Create a container registry" section in [Tutorial: Develop a C# IoT Edge module and deploy to your simulated device](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-csharp-module)
+In order to deploy modules to your device, you will need access to a container respository. 
+Refer to [Quickstart: Create a private container registry using the Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
 
 When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
 
