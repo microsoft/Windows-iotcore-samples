@@ -15,9 +15,9 @@
                             "address": "edgeshared.azurecr.io"
                           },
                           "IoTEdgeWinML": {
-                            "username": "IoTEdgeWinMLContainerRegistry",
-                            "password": "",
-                            "address": "iotedgewinmlcontainerregistry.azurecr.io"
+                            "username": "<user name for your edge module container registry here>",
+                            "password": "<your password>",
+                            "address": "<url for your edge module container registry here>"
                           }                          
                         }
                     }
@@ -47,7 +47,7 @@
                         "status": "running",
                         "restartPolicy": "always",
                         "settings": {
-                            "image": "iotedgewinmlcontainerregistry.azurecr.io/iotuap:17763.arm32.ConsoleDotNetCoreWinML-l",
+                            "image": "<url for your version of the edge module in your container repository>",
                             "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/E5323777-F976-4f5b-9B55-B94699C46E44\"},{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/5B45201D-F2F2-4F3B-85BB-30FF1F953599\"}]}}"
                         }
                     }

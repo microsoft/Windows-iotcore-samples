@@ -1,79 +1,88 @@
 # Windows IoT Edge WinML Sample
 
-This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with a .netcore c# console app to demonstrate Camera capture and Windows Machine Learning(WinML) to do image recognition from an Azure IoT Edge Module in a docker process isolation container(aka Argon container)
+This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with a .NET Core C# console app to demonstrate Camera capture and Windows Machine Learning(WinML) to do image recognition from an Azure IoT Edge Module in a docker process isolation container(aka Argon container)
 
 ## App Overview
 
-This sample contains a .onnx model trained with Azure Custom Vision Service ( <https://azure.microsoft.com/en-us/services/cognitive-services/custom-vision-service/> ) to recognize a pear, an apple, grapes, and a pen.
+This sample contains a .onnx model trained with [Azure Custom Vision Service]( https://azure.microsoft.com/en-us/services/cognitive-services/custom-vision-service/ ) to recognize a pear, an apple, grapes, and a pen.
 There are example photos of the objects in the resources directory of the project.
-When the object recognized changes the new object label is reported back to Azure IoT Hub in the module properties twin and also as a device2cloud
-telemetry stream message that can be capture to a storage account or sent to an event hub <https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-d2c>
+When the object recognized changes the new object label is reported back to Azure IoT Hub in the module properties twin and also as a [device2cloud](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-d2c)
+telemetry stream message that can be capture to a storage account or sent to an event hub 
 
 You can change the model by providing a different model file and updating the loss dictionary in model.cs with new labels.
-The code assumes the model input and output features are in the form of a standard Azure Customer Vision Server *CoreML* format model converted to .onnx with the standard python onnx image conversion tools. <https://github.com/onnx/onnxmltools>
+The code assumes the model input and output features are in the form of a standard Azure Customer Vision Server *CoreML* format model converted to .onnx with the [standard Python ONNX image conversion tools](https://github.com/onnx/onnxmltools).  
 If you do change models you may also want to change the property names to match the new label type in the updateobject methods in the AzureConnection class in AzureHelper.cs
 
 The sample currently uses the CPU to do the WinML because that's available on all iot core boards.  To choose GPU evaluation you can change the LearningModelDeviceKind in the CreateModelAsync function in model.cs
-However, as of this writing -- November 2018, there are no supported GPU drivers for any IoT Core capable devices that have been upgraded to a sufficiently recent WDDM driver version(>=WDDM 2.4) to work in process isolation containers.
+However, as of this writing -- December 2018, there are no supported GPU drivers for any IoT Core capable devices that have been upgraded to a sufficiently recent WDDM driver version(>=WDDM 2.4) to work in process isolation containers and are also provided in a universal driver package which is necessary to add a driver to an IoT Core image.  We expect this to change soon and plan to update this readme when something is available.
 
 ## Other things of interest in this sample
 
-* the deployment.json file demonstrates container creation options for exposing camera and gpu into the container.
+* The deployment.json file demonstrates container creation options for exposing camera and gpu into the container.
 
 ### Prerequisites
 
-* azure subscription with the following resources:
-    * iot hub <https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal>
-    * storage  <https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account>
-    * container registry  <https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal>
-* hardware:
-    * board with IoT Core installed
+* Azure subscription with the following resources:
+    * [IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal)
+    * [Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account)
+    * [Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal)
+* Hardware:
+    * An x64 Board with an 1809 version of IoT Core installed.
     * USB web cam
-* required packages to install
-    * windows sdk for 1809 <https://developer.microsoft.com/en-us/windows/downloads/sdk-archive>
-    * .netcore 2.2 (TODO: provide url)
-    * azure device client for iot edge <https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks>
-    * either visual studio, vscode, or .net core dotnet.exe build environment
+* Required packages to install
+    * [Windows sdk for 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
+    * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
+    * [Azure device client for iot edge](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
+    * Either Visual Studio, VSCode, or the .NET Core dotnet.exe build environment
 
 ### Build and Publish the app
-
-#### Visual Studio
-
-1. load the solution
-2. right click on the cs project and select publish
-    __*note*__ Visual Studio won't allow you to select win-arm from the publish configuration dialog. but, if you edit the properties\FolderProfile.pubxml file directly with VS or another editor and set RuntimeIdentifier to win-arm the publish button will
-    do the right thing after that.
 
 #### Dotnet CLI
 
 1. cd to the directory container the .csproj
 2. dotnet publish
 
-#### VsCode
+#### VSCode
 
-1. see <https://docs.microsoft.com/en-us/azure/iot-edge/how-to-develop-csharp-module>
+1. See [Edge development How-To](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-develop-csharp-module)
 
-### build module container for the app
+#### Visual Studio
 
-#### container build for arm32
+1. Load the solution
+2. Right click on the cs project and select publish.  
+    __*note:*__ Visual Studio won't allow you to select win-arm from the publish configuration dialog. But, if you edit the properties\FolderProfile.pubxml file directly with VS or another editor and set RuntimeIdentifier to win-arm the publish button will do the right thing after that.
 
-* pull dotnet iotuap container
-* copy the app and docker file to the device.  there is a template docker file in ConsoleDotNetCoreWinML\cs\ConsoleDotNetCoreWinML\Properties\Dockerfile.IoTUAP
-* docker build -f \<path to dockerfile\> -t \<your_container_repo/iotuap:17763.arm32.ConsoleDotNetCoreWinML-l\>
+### Build module container for the app
 
-#### container build for amd64
+#### Container build for amd64
 
-* This is the same as arm32. It can't be done from dev desktop since the container support for target guest is not present due to the win32kmin/full issue.  It can be done by running the IoTUAP vmgen1 in hyper-v and installing docker inside that VM, or it can be done on real hardware.
+Unfortunately, this can't be done from a developer desktop since the iot core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
 
-### update deployment.nocreds.json
+* Obtain an x64 machine with IoT Core installed.
+* ssh into a command prompt on the machine.
+* Install Docker on the IoT Core machine
+    * Download x64 [docker.exe](https://master.mobyproject.org/windows/x86_64/docker.exe) 
+    * And x64 [dockerd.exe](https://master.mobyproject.org/windows/x86_64/dockerd.exe)
+    * Copy them to the IoT Core machine and put docker.exe in the path.
+    * from a command prompt run 'dockerd.exe --register-service'
+    * sc.exe start docker
+* Copy your app to the machine
+* (TODO: Edit the dockerfile in properties\Dockerfile.IoTUAP to point to real repo with Windows IoT Core + .NET Core)
+* Copy properties\Dockerfile.IoTUAP to the machine
+* Do 'docker login' with creds to your container registry.
+* Do 'docker build -f < path to dockerfile.iotuap > -t <registry/repo:tag> .' to build the image.
+* docker push  <registry/repo:tag>
 
-the "preview" creds in the deployment.json are public read-only creds to the standard edge runtime modules.  But, for the sample you must update the creds in the deployment.json file to provide access to your module container repository where you've stored the module you just built.
+### Update deployment.nocreds.json
 
-### deploy the module
+The "preview" creds in the deployment.json are public read-only creds to the standard edge runtime modules.  But, for the sample you must update the creds in the deployment.json file to provide access to your module container repository where you've stored the module you just built. And, you must update the image url in the module section with the correct url for your module image.
 
-There are multiple ways to do this.
-<https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-portal>
-<https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-cli>
-<https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-vscode>
+### Deploy the module
 
-imho, simplest to get started with is VSCode with Azure IoT Edge extension. but, for larger scale scripting with CLI is likely preferable.
+There are multiple ways to do this:
+
+* [Azure web portal](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-portal)
+* [Azure Command Line CLI](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-cli)
+* [VSCode plugin](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-VSCode)
+
+The recommended way to get started is VSCode with the Azure IoT Edge extension. But, for larger scale production deployments scripting with CLI is likely preferable.
