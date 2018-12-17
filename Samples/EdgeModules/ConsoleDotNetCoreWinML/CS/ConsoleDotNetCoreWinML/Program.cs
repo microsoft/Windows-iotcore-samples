@@ -122,11 +122,9 @@ namespace ConsoleDotNetCoreWinML
                 throw new ApplicationException(string.Format("can't find source {0}", source));
             }
             Log.WriteLine("have frame source that matches chosen source info id");
-            // TODO: investigate MediaCaptureVideoProfile, MediaCaptureVideoProfileDescription as a possibly simpler way to do this.
-            // NO: MediaCaptureVideoProfile don't have frame reader variant only photo, preview, and redircord.
-
-            // this returns tons of apparent duplicates that can be distinguised using any properties available on the winrt interfaces.
-            // i suspect this is because not all the properties on the actual underlying MFVIDEOFORMAT are exposed on the winrt VideoFrameFormat
+            // MediaCaptureVideoProfile doesn't have frame reader variant only photo, preview, and record.
+            // so we will enumerate and select instead of just declaring what we want and having the system
+            // give us the closest match
             var formats = source.SupportedFormats;
             Log.WriteLine("have formats");
             MediaFrameFormat format = null;

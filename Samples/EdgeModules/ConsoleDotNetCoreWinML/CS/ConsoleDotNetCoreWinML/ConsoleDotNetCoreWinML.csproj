@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RuntimeFrameworkVersion>2.2.0-rtm-27109-04</RuntimeFrameworkVersion> <!-- modify build in this line -->
-    <RuntimeIdentifier>win-arm</RuntimeIdentifier> <!-- make self-contained -->
+    <RuntimeFrameworkVersion>2.2.0</RuntimeFrameworkVersion> <!-- modify build in this line -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier> <!-- make self-contained -->
   </PropertyGroup>
 
   <ItemGroup>
