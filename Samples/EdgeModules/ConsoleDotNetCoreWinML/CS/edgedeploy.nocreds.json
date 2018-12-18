@@ -9,11 +9,6 @@
                         "minDockerVersion": "v1.25",
                         "loggingOptions": "",
                         "registryCredentials": {
-                          "Preview" : {
-                            "username": "d3e6e3bc-2e38-4887-9073-2cf796462b15",
-                            "password": "71181f94-a9b9-4b98-96a8-01c4ae8dff94",
-                            "address": "edgeshared.azurecr.io"
-                          },
                           "IoTEdgeWinML": {
                             "username": "<user name for your edge module container registry here>",
                             "password": "<your password>",
@@ -26,7 +21,7 @@
                     "edgeAgent": {
                         "type": "docker",
                         "settings": {
-                            "image": "edgeshared.azurecr.io/microsoft/azureiotedge-agent:1809_insider-windows-arm32",
+                            "image": "mcr.microsoft.com/azureiotedge-agent:1.0",
                             "createOptions": ""
                         }
                     },
@@ -35,7 +30,7 @@
                         "status": "running",
                         "restartPolicy": "always",
                         "settings": {
-                            "image": "edgeshared.azurecr.io/microsoft/azureiotedge-hub:1809_insider-windows-arm32",
+                            "image": "mcr.microsoft.com/azureiotedge-hub:1.0",
                             "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5671/tcp\":[{\"HostPort\":\"5671\"}], \"8883/tcp\":[{\"HostPort\":\"8883\"}],\"443/tcp\":[{\"HostPort\":\"443\"}]}}}"
                         }
                     }
