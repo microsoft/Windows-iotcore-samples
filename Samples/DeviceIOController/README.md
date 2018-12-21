@@ -1,3 +1,13 @@
+---
+topic: sample
+urlFragment: deviceIO-controller
+languages:
+-cpp
+products:
+-windows
+description: Sample for leveraging Device IO Controller.
+---
+
 Windows 10 IoT Core sample code
 ===============
 

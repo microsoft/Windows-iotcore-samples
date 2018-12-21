@@ -1,4 +1,14 @@
-# “IoT Onboarding”
+---
+topic: sample
+urlFragment: iot-onboarding
+languages: 
+-csharp
+products:
+-windows
+description: This sample illustrates a technique for remotely joining your Headless IoT Device (an IoT device without a display) to your home Wi-Fi network.
+---
+
+IoT Onboarding
 
 These are the available versions of this Windows 10 IoT Core sample:
 

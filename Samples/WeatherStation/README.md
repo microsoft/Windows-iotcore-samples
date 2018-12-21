@@ -1,6 +1,12 @@
 ---
-title: Weather Station sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: weather-station
+languages:
+-cpp
+-csharp
+-vb
+products:
+-windows
 description: Communicate with an I2C/SPI based temperature and pressure sensor.
 ---
 

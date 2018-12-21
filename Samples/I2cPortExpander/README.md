@@ -1,6 +1,10 @@
 ---
-title: I2C Port Expander
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: I2CPortExpander
+languages: 
+-csharp
+products:
+-windows
 description: A sample that shows how to use a port expander to read the status of a tactile switch and control an LED.
 ---
 

@@ -1,6 +1,11 @@
 ---
-title: Hello, blinky! sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: hello-blinky
+languages: 
+-csharp
+-cpp
+products:
+-windows
 description: A sample that shows how to make an LED attached to a GPIO pin blink on and off.
 ---
 

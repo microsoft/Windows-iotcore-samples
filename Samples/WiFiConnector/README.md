@@ -1,3 +1,13 @@
+---
+topic: sample
+urlFragment: wifi-connector
+languages:
+-csharp
+products:
+-windows
+description: Learn how to find and connect to WiFi networks using a Universal Windows Platform (UWP) app that makes use of the Windows.Devices.WiFi.WiFiAdapter API.
+---
+
 # WiFi Connector
 
 These are the available versions of this Windows 10 IoT Core sample:

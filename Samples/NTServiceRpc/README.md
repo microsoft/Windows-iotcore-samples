@@ -1,3 +1,13 @@
+---
+topic: sample
+urlFragment: NTService-RPC
+languages:
+-csharp
+products:
+-windows
+description: This sample demonstrates the use of a NT service with an UWP app
+---
+
 # Windows NT Service Remote Procedure Call
 
 These are the available versions of this Windows 10 IoT Core sample:

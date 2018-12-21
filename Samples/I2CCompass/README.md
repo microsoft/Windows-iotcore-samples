@@ -1,4 +1,14 @@
-﻿# “I2C Compass”
+---
+topic: sample
+urlFragment: I2CCompass
+languages: 
+-csharp
+products:
+-windows
+description: This sample uses I2C on Windows IoT Core to communicate with an HMC5883L Magnetometer device.
+---
+
+I2C Compass
 
 These are the available versions of this Windows 10 IoT Core sample:
 

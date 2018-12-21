@@ -1,6 +1,10 @@
 ---
-title: VibrationDevice sample
-ms.author: mahmoud.saleh
+topic: sample
+urlFragment: vibration-device
+languages:
+-csharp
+products:
+-windows
 description: A sample that shows how to use the vibration device on supported hardware.
 ---
 

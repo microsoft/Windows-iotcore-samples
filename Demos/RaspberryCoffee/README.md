@@ -1,3 +1,13 @@
+--- 
+topic: sample
+urlFragment: raspberry-coffee
+languages:
+-csharp
+products:
+-windows
+description: Building a coffee maker that is controllable with your phone using Windows 10 IoT Core.
+---
+
 # Raspberry Coffee
 This project is a coffee maker that can be controlled using your phone's built-in virtual assistant. The coffee maker used here is from Black and Decker, and is connected to a Raspberry Pi 2.
 

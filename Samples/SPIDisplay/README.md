@@ -1,10 +1,14 @@
 ---
-title: SPI Display sample
-ms.author: lamadio
+topic: sample
+urlFragment: spi-display
+languages:
+-csharp
+products:
+-windows
 description: Write lines of text to an SPI LED display.
 ---
 
-# “SPI Display”
+# SPI Display
 
 These are the available versions of this Windows 10 IoT Core sample:
 

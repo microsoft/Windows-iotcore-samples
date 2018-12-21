@@ -1,3 +1,13 @@
+---
+topic: sample
+urlFragment: bustools
+languages:
+-csharp
+products:
+-windows
+description: IoT Bus tools to interact with Gpio, I2c, Spi and UART.
+---
+
 # Windows IoT Bus Tools
 
 This folder contains tools that let you interact with Gpio, I2c, Spi, and UART on the command line. They will run on any edition of Windows, including Windows IoT Core and Windows Enterprise. The tools are:

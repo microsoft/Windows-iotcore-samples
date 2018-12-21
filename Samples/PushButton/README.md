@@ -1,6 +1,10 @@
 ---
-title: Push Button sample
-ms.author: lamadio
+topic: sample
+urlFragment: push-button
+languages:
+-csharp
+products:
+-windows
 description: Make an LED blink with the push of a button.
 ---
 
