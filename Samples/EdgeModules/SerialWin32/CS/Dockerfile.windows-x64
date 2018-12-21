@@ -1,0 +1,9 @@
+FROM mcr.microsoft.com/windows/nanoserver/insider:10.0.17763.55
+
+ARG EXE_DIR=bin/Debug/netcoreapp2.1/win-x64/publish
+
+WORKDIR /app
+
+COPY $EXE_DIR/ ./
+
+CMD [ "SerialWin32.exe", "-rte", "-dPID_6001" ]
