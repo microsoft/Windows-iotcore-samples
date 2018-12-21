@@ -1,6 +1,10 @@
 ---
-title: Hello, world! sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: hello-world
+languages: 
+-csharp
+products:
+-windows
 description: Create and deploy your first IoT Core app.
 ---
 

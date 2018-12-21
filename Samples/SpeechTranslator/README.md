@@ -1,6 +1,10 @@
 ---
-title: Speech Translator sample
-ms.author: brian.fjeldstad
+topic: sample
+urlFragment: speech-translator
+languages:
+-csharp
+products:
+-windows
 description: Translate your speech to different languages.
 ---
 

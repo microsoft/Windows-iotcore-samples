@@ -1,3 +1,13 @@
+--- 
+topic: sample
+urlFragment: facial-recognition-door
+languages:
+-csharp
+products:
+-windows
+description: Building a facial recognition door with Windows 10 IoT Core.
+---
+
 # Windows IoT Facial Recognition Door
 Home security systems are a growing field of projects for Makers. A self-built system is not only less expensive than a bulky professional installation, but it also allows for total control and customization to suit your needs. 
 

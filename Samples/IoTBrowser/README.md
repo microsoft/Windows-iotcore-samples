@@ -1,6 +1,10 @@
 ---
-title: IoT Browser sample
-ms.author: artemz
+topic: sample
+urlFragment: iot-browser
+languages: 
+-csharp
+products:
+-windows
 description: Build a simple web browser for Windows 10 IoT Core.
 ---
 

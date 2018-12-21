@@ -1,3 +1,13 @@
+--- 
+topic: sample
+urlFragment: accelerometer
+languages:
+-csharp
+products:
+-windows
+description: Create a simple app with an SPI accelerometer build with Windows 10 IoT Core.
+---
+
 # “SPI Accelerometer”
 
 These are the available versions of this Windows 10 IoT Core sample:

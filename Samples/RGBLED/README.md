@@ -1,6 +1,10 @@
 ---
-title: RGB LED sample
-ms.author: lamadio
+topic: sample
+urlFragment: rgb-led
+languages:
+-csharp
+products:
+-windows
 description: A sample that makes an LED blink red, green, and blue.
 ---
 

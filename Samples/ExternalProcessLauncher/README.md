@@ -1,7 +1,11 @@
 ---
-title: External Process Launcher sample
-ms.author: msaleh
-description: Launch an external process (exe) from a Universal Windows Platform (UWP) app.
+topic: sample
+urlFragment: external-process-launcher
+languages:
+-csharp
+products:
+-windows
+description: We'll learn how to launch an external process (exe) from a Universal Windows Platform (UWP) app using the Windows.System.ProcessLauncher API.
 ---
 
 # “External Process Launcher”

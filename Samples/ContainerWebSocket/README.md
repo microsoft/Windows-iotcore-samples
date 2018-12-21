@@ -1,3 +1,13 @@
+--- 
+topic: sample
+urlFragment: container-websocket
+languages:
+-csharp
+products:
+-windows
+description: This sample is designed to work with Windows containers on Windows IoT Core and Windows IoT Enterprise.
+---
+
 # WebSocket Docker Interop
 
 These are the available versions of this Windows 10 IoT Core sample:

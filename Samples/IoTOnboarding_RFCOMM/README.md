@@ -1,6 +1,10 @@
 ---
-title: IoT Onboarding - Bluetooth(RFCOMM) sample
-ms.author: marcha
+topic: sample
+urlFragment: iot-onboarding-rfcomm
+languages: 
+-csharp
+products:
+-windows
 description: Create a simple solution to configure your Headless IoT Device (an IoT device without a display) to connect WiFi network through Bluetooth RFCOMM at startup.
 ---
 

@@ -1,3 +1,13 @@
+---
+topic: sample
+urlFragment: gpio-onewire
+languages:
+-cpp
+products:
+-windows
+description: This sample shows how to read from the DHT11 from a Universal Windows Application.
+---
+
 # GPIO OneWire DHT11/22 reader
 
 These are the available versions of this Windows 10 IoT Core sample:

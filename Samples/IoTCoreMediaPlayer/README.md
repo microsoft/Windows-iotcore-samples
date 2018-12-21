@@ -1,6 +1,10 @@
 ---
-title: IoT Core Media Player sample
-ms.author: namkedia
+topic: sample
+urlFragment: iotcore-mediaplayer
+languages: 
+-csharp
+products:
+-windows
 description: A demonstration of how to play music from an IoT device.
 ---
 

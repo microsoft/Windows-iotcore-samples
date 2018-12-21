@@ -1,6 +1,10 @@
 ---
-title: Potentiometer Sensor sample
-ms.author: lamadio
+topic: sample
+urlFragment: potentiometer-sensor
+languages:
+-csharp
+products:
+-windows
 description: Connect a rotary potentiometer and LED to your IoT Core device.
 ---
 
