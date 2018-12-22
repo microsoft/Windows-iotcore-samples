@@ -20,7 +20,7 @@ In the meantime, this is the only available API surface for accessing serial por
 
 ## Install Azure IoT Edge
 
-These instructions work with the 1.0.5 release of Azure IoT Edge for Windows.
+These instructions work with the 1.0.5 release of [Azure IoT Edge for Windows](https://docs.microsoft.com/en-us/azure/iot-edge/).
 
 ## Peripheral Hardware
 
