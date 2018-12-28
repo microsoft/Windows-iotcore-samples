@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/windows/nanoserver/insider:10.0.17763.55
+FROM mcr.microsoft.com/windows/nanoserver:1809
 
-ARG EXE_DIR=bin/Debug/netcoreapp2.1/win-x64/publish
+ARG EXE_DIR=.
 
 WORKDIR /app
 

@@ -63,12 +63,12 @@ The x64 containers can be build directly on the PC, even if you plan to run them
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> $Container = "{ACR_NAME}.azurecr.io/serialwin32:1.0.0-x64"
 
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker build . -f .\Dockerfile.windows-x64 -t $Container
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker build bin\Debug\netcoreapp2.1\win-x64\publish\ -t $Container
 
 Sending build context to Docker daemon  81.89MB
-Step 1/5 : FROM mcr.microsoft.com/windows/nanoserver/insider:10.0.17763.55
+Step 1/5 : mcr.microsoft.com/windows/nanoserver:1809
  ---> 91da8a971b53
-Step 2/5 : ARG EXE_DIR=bin/Debug/netcoreapp2.1/win-x64/publish
+Step 2/5 : ARG EXE_DIR=.
  ---> Running in b537bd4962d6
 Removing intermediate container b537bd4962d6
  ---> 6d6281589c30
