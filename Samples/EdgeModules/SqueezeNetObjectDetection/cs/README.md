@@ -27,10 +27,10 @@ It is derived from the
 
 ### Insider Knowledge
 
-Unfortunately, this sample cannot be reproduced by the public, until the following PR's are upstreamed and released:
+Unfortunately, this sample cannot be reproduced using publicly released tools, until the following PR's are upstreamed and released:
 
 * [IoT Edge PR 670](https://github.com/Azure/iotedge/pull/670). Without this change, IoT Edge fills up the very small MainOS partition on IoT Core devices. To work around, I have installed docker manually, and reconfigured Edge to use this manually-installed docker.
-* [Moby Cli PR 1290](https://github.com/docker/cli/pull/1290). Without this change, docker.exe will not take the --device parameter. Thus, every case below where the cli is called with --device, will fail. To work around, we all use an internally-built moby cli.
+* [Moby Cli PR 1290](https://github.com/docker/cli/pull/1290). Without this change, docker.exe will not take the --device parameter. Thus, every case below where the cli is called with --device, will fail. To work around, we use an internally-built moby cli.
 
 ## Build the sample
 
@@ -49,9 +49,9 @@ PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> 
 Microsoft (R) Build Engine version 15.8.169+g1ccb72aefa for .NET Core
 Copyright (C) Microsoft Corporation. All rights reserved.
 
-  Restore completed in 34.7 ms for C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs\SqueezeNetObjectDetectionNC.csproj.
-  SqueezeNetObjectDetectionNC -> C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs\bin\Debug\netcoreapp2.1\win-x64\SqueezeNetObjectDetectionNC.dll
-  SqueezeNetObjectDetectionNC -> C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs\bin\Debug\netcoreapp2.1\win-x64\publish\
+  Restore completed in 34.7 ms for C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\SqueezeNetObjectDetection.csproj.
+  SqueezeNetObjectDetectionNC -> C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\SqueezeNetObjectDetectionNC.dll
+  SqueezeNetObjectDetectionNC -> C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\publish\
 ```
 
 ## Run the sample on your development machine
@@ -61,7 +61,7 @@ As a first initial step, you can run the sample natively on your development mac
 First, run the app with the "--list" parameter to show the cameras on your PC:
 
 ```
-PS C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs> dotnet run -- --list
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> dotnet run -- --list
 
 Found 5 Cameras
 Microsoft Camera Rear
@@ -74,7 +74,7 @@ IntelIRCameraSensorGroup
 From this list, we will choose the camera to use as input, as pass that into the next call with the --device parameter, along with the model using the --model parameter.
 
 ```
-PS C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs> dotnet run -- --model=SqueezeNet.onnx --device=LifeCam
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> dotnet run -- --model=SqueezeNet.onnx --device=LifeCam
 
 Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
 ...OK 2484 ticks
@@ -94,14 +94,14 @@ Currently, the container image must be built on an IoT Core device. To enable th
 In this case, I have mapped the Q: drive on my development PC to the C: drive on my IoT Core device.
 
 ```
-PS C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs> robocopy bin\Debug\netcoreapp2.1\win-x64\publish\ q:\data\modules\squeezenet
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> robocopy bin\Debug\netcoreapp2.1\win-x64\publish\ q:\data\modules\squeezenet
 
 -------------------------------------------------------------------------------
    ROBOCOPY     ::     Robust File Copy for Windows
 -------------------------------------------------------------------------------
 
   Started : Friday, December 21, 2018 4:20:48 PM
-   Source : C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs\bin\Debug\netcoreapp2.1\win-x64\publish\
+   Source : C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\publish\
      Dest : q:\data\modules\squeezenet\
 
     Files : *.*
@@ -334,8 +334,8 @@ Once you have an ONNX model, you'll need to make some changes to the sample.
 First, generate a Scoring file, using the [MLGen](https://docs.microsoft.com/en-us/windows/ai/mlgen) tool. This creates an interface with wrapper classes that call the Windows ML API for you, allowing you to easily load, bind, and evaluate a model in your project.
 
 ```
-PS C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs> $mlgen="C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x64\mlgen.exe"
-PS C:\Windows-Machine-Learning\Samples\SqueezeNetObjectDetection\NETCore\cs> 
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> $mlgen="C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x64\mlgen.exe"
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> 
 & $mlgen -i C:\\Windows-Machine-Learning\SharedContent\models\SqueezeNet.onnx -l cs -n SqueezeNetObjectDetectionNC -p Scoring -o Scoring.cs
 ```
 
