@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/nanoserver/insider:10.0.17763.55
+FROM mcr.microsoft.com/windows/nanoserver:1809
 
 ARG EXE_DIR=.
 
