@@ -62,7 +62,7 @@ Build the container on the device. For the remainder of this sample, we will use
 to refer to the address of our container.
 
 ```
-[192.168.1.120]: PS C:\Data\modules\squeezenet> $Container = "{ACR_NAME}.azurecr.io/squeezenet-iotcore:1.0.0-x64"
+[192.168.1.120]: PS C:\Data\modules\squeezenet> $Container = "{ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64-iotcore"
 
 [192.168.1.120]: PS C:\Data\modules\squeezenet> docker build . -f Dockerfile.iotcore -t $Container
 Sending build context to Docker daemon  81.63MB
@@ -82,7 +82,7 @@ Step 5/5 : CMD [ "SqueezeNetObjectDetection.exe", "-mSqueezeNet.onnx", "-dLifeCa
 Removing intermediate container c4f09d9edc5b
  ---> e7ab7ea5bd16
 Successfully built e7ab7ea5bd16
-Successfully tagged {ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64
+Successfully tagged {ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64-iotcore
 ```
 
 ## Continue as before

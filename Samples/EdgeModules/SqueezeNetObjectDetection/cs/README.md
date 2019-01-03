@@ -108,12 +108,12 @@ Build the container on the device. For the remainder of this sample, we will use
 to refer to the address of our container.
 
 ```
-[192.168.1.120]: PS C:\Data\modules\squeezenet> $Container = "{ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64"
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> $Container = "{ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64"
 
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker build bin\Debug\netcoreapp2.1\win-x64\publish\ -t $Container
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker build bin\Debug\netcoreapp2.1\win-x64\publish\ -t $Container
 Sending build context to Docker daemon  81.63MB
 
-Step 1/5 : FROM mcr.microsoft.com/windows/iotcore:1809
+Step 1/5 : FROM mcr.microsoft.com/windows:1809
  ---> 2d0e5d769eb2
 Step 2/5 : ARG EXE_DIR=.
  ---> Using cache
@@ -136,11 +136,11 @@ Successfully tagged {ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64
 One more test to ensure that the app is able to see the camera through the container.
 
 ```
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker run --isolation process --device "class/E5323777-F976-4f5b-9B55-B94699C46E44" $Container SqueezeNetObjectDetection.exe --list
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker run --isolation process --device "class/E5323777-F976-4f5b-9B55-B94699C46E44" $Container SqueezeNetObjectDetection.exe --list
 Found 1 Cameras
 Microsoft® LifeCam Studio(TM)
 
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker run --isolation process --device "class/5B45201D-F2F2-4F3B-85BB-30FF1F953599"  --device "class/E5323777-F976-4f5b-9B55-B94699C46E44" $Container SqueezeNetObjectDetection.exe --device=LifeCam --model=SqueezeNet.onnx
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker run --isolation process --device "class/5B45201D-F2F2-4F3B-85BB-30FF1F953599"  --device "class/E5323777-F976-4f5b-9B55-B94699C46E44" $Container SqueezeNetObjectDetection.exe --device=LifeCam --model=SqueezeNet.onnx
 Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
 ...OK 2484 ticks
 Retrieving image from camera...
@@ -155,7 +155,7 @@ Running the model...
 Now that we are sure the app is working correctly within the container, we will push it to our repository.
 
 ```
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker push $Container
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker push $Container
 The push refers to repository [{ACR_NAME}.azurecr.io/squeezenet]
 60afb1c1d301: Preparing
 02e3d8daa5bb: Preparing
@@ -235,7 +235,7 @@ From a command prompt on the device, you can also check the logs for the module 
 First, find the module container:
 
 ```
-[192.168.1.120]: PS C:\Data> docker ps
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker ps
 
 CONTAINER ID        IMAGE                                      COMMAND                  CREATED             STATUS              PORTS                                                                  NAMES
 a7e9af84e551        {ACR_NAME}.azurecr.io/squeezenet:1.0.3-x64 "SqueezeNetObjectDet…"   7 minutes ago       Up 6 minutes                                                                               squeezenet
@@ -246,7 +246,7 @@ cd5f1d7873d6        mcr.microsoft.com/azureiotedge-hub:1.0     "dotnet Microsoft
 Then, use the ID for the squeezenet container to check the logs
 
 ```
-[192.168.1.120]: PS C:\Data> docker logs b4107d30a29d
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker logs b4107d30a29d
 Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
 ...OK 2484 ticks
 Retrieving image from camera...
@@ -297,9 +297,7 @@ Once you have an ONNX model, you'll need to make some changes to the sample.
 First, generate a Scoring file, using the [MLGen](https://docs.microsoft.com/en-us/windows/ai/mlgen) tool. This creates an interface with wrapper classes that call the Windows ML API for you, allowing you to easily load, bind, and evaluate a model in your project.
 
 ```
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> $mlgen="C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x64\mlgen.exe"
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> 
-& $mlgen -i C:\\Windows-Machine-Learning\SharedContent\models\SqueezeNet.onnx -l cs -n SqueezeNetObjectDetection -p Scoring -o Scoring.cs
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> "C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x64\mlgen.exe" -i .\SqueezeNet.onnx -l cs -n SqueezeNetObjectDetection -p Scoring -o Scoring.cs
 ```
 
 Second, depending on the outputs of your model, make the necessary changes to the ResultsToMessage method in Program.cs. Here, you translate the output of your model into a JSON object suitable for transmission to Edge.
