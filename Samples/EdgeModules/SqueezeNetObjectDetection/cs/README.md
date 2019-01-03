@@ -281,7 +281,7 @@ As you experiment with different objects, you can visualize them over time by ad
 
 ## Optionally, build and push containers for an IoT Core device
 
-If you are targeting Windows 10 IoT Core, please refer to the separate instructions to [Build & Run on IoT Core](.\README.iotcore.md)
+If you are targeting Windows 10 IoT Core, please refer to the separate instructions to [Build & Run on IoT Core](./README.iotcore.md)
 
 ## Advanced topics: Bring your own model!
 
