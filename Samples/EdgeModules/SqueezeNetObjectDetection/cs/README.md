@@ -50,8 +50,8 @@ Microsoft (R) Build Engine version 15.8.169+g1ccb72aefa for .NET Core
 Copyright (C) Microsoft Corporation. All rights reserved.
 
   Restore completed in 34.7 ms for C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\SqueezeNetObjectDetection.csproj.
-  SqueezeNetObjectDetectionNC -> C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\SqueezeNetObjectDetectionNC.dll
-  SqueezeNetObjectDetectionNC -> C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\publish\
+  SqueezeNetObjectDetection -> C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\SqueezeNetObjectDetection.dll
+  SqueezeNetObjectDetection -> C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\publish\
 ```
 
 ## Run the sample on your development machine
@@ -116,11 +116,11 @@ PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> 
 Following the same approach as above, run the app on the target device to ensure you have the correct camera there, and it's working on that device.
 
 ```
-[192.168.1.120]: PS C:\data\modules\squeezenet> .\SqueezeNetObjectDetectionNC.exe --list
+[192.168.1.120]: PS C:\data\modules\squeezenet> .\SqueezeNetObjectDetection.exe --list
 Found 1 Cameras
 Microsoft® LifeCam Studio(TM)
 
-[192.168.1.120]: PS C:\data\modules\squeezenet> .\SqueezeNetObjectDetectionNC.exe --model=SqueezeNet.onnx --device=LifeCam
+[192.168.1.120]: PS C:\data\modules\squeezenet> .\SqueezeNetObjectDetection.exe --model=SqueezeNet.onnx --device=LifeCam
 Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
 ...OK 1079 ticks
 Retrieving image from camera...
@@ -164,7 +164,7 @@ Step 3/5 : WORKDIR /app
  ---> 5b66e01e041a
 Step 4/5 : COPY $EXE_DIR/ ./
  ---> 3798927f4eaa
-Step 5/5 : CMD [ "SqueezeNetObjectDetectionNC.exe", "-mSqueezeNet.onnx", "-dLifeCam", "-ef" ]
+Step 5/5 : CMD [ "SqueezeNetObjectDetection.exe", "-mSqueezeNet.onnx", "-dLifeCam", "-ef" ]
  ---> Running in c4f09d9edc5b
 Removing intermediate container c4f09d9edc5b
  ---> e7ab7ea5bd16
@@ -177,11 +177,11 @@ Successfully tagged {ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64
 One more test to ensure that the app is able to see the camera through the container.
 
 ```
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker run --isolation process --device "class/E5323777-F976-4f5b-9B55-B94699C46E44" $Container SqueezeNetObjectDetectionNC.exe --list
+[192.168.1.120]: PS C:\Data\modules\squeezenet> docker run --isolation process --device "class/E5323777-F976-4f5b-9B55-B94699C46E44" $Container SqueezeNetObjectDetection.exe --list
 Found 1 Cameras
 Microsoft® LifeCam Studio(TM)
 
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker run --isolation process --device "class/5B45201D-F2F2-4F3B-85BB-30FF1F953599"  --device "class/E5323777-F976-4f5b-9B55-B94699C46E44" $Container SqueezeNetObjectDetectionNC.exe --device=LifeCam --model=SqueezeNet.onnx
+[192.168.1.120]: PS C:\Data\modules\squeezenet> docker run --isolation process --device "class/5B45201D-F2F2-4F3B-85BB-30FF1F953599"  --device "class/E5323777-F976-4f5b-9B55-B94699C46E44" $Container SqueezeNetObjectDetection.exe --device=LifeCam --model=SqueezeNet.onnx
 Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
 ...OK 2484 ticks
 Retrieving image from camera...
@@ -336,7 +336,7 @@ First, generate a Scoring file, using the [MLGen](https://docs.microsoft.com/en-
 ```
 PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> $mlgen="C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x64\mlgen.exe"
 PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> 
-& $mlgen -i C:\\Windows-Machine-Learning\SharedContent\models\SqueezeNet.onnx -l cs -n SqueezeNetObjectDetectionNC -p Scoring -o Scoring.cs
+& $mlgen -i C:\\Windows-Machine-Learning\SharedContent\models\SqueezeNet.onnx -l cs -n SqueezeNetObjectDetection -p Scoring -o Scoring.cs
 ```
 
 Second, depending on the outputs of your model, make the necessary changes to the ResultsToMessage method in Program.cs. Here, you translate the output of your model into a JSON object suitable for transmission to Edge.
