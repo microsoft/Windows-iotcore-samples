@@ -122,7 +122,7 @@ namespace SampleModule
                         //
 
                         ScoringOutput outcome = null;
-                        await BlockTimer("Running the model",
+                        var evalticks = await BlockTimer("Running the model",
                             async () =>
                             {
                                 var input = new ScoringInput() { data_0 = imageTensor };
@@ -134,6 +134,7 @@ namespace SampleModule
                         //
 
                         var message = ResultsToMessage(outcome);
+                        message.ticks = evalticks;
                         var json = JsonConvert.SerializeObject(message);
                         Console.WriteLine($"{DateTime.Now.ToLocalTime()} Recognized: {json}");
 

@@ -8,6 +8,7 @@ namespace SqueezeNetObjectDetectionNC
     public class MessageBody
     {
         public LabelResult[] results;
+        public int ticks { get; set; }        
     }
 
     public class LabelResult

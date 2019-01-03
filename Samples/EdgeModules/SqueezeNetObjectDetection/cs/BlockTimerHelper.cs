@@ -5,7 +5,7 @@ namespace Helpers
 {
     static class BlockTimerHelper
     {
-        public static async Task BlockTimer(string message,Func<Task> task)
+        public static async Task<int> BlockTimer(string message,Func<Task> task)
         {
             Console.WriteLine($"{message}...");
             int ticks = Environment.TickCount;
@@ -15,6 +15,7 @@ namespace Helpers
             ticks = Environment.TickCount - ticks;
             Console.WriteLine($"...OK {ticks} ticks");
 
+            return ticks;
         }
     }
 }
