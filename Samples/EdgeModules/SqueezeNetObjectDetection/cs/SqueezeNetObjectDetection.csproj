@@ -53,7 +53,8 @@
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
     <Copy SourceFiles="Labels.json" DestinationFolder="$(PublishDir)" />
     <Copy SourceFiles="SqueezeNet.onnx" DestinationFolder="$(PublishDir)" />
-    <Copy SourceFiles="Dockerfile.$(RuntimeIdentifier)" DestinationFiles="$(PublishDir)\Dockerfile" />
+    <Copy SourceFiles="Dockerfile.$(RuntimeIdentifier)" DestinationFiles="$(PublishDir)\Dockerfile" Condition="Exists('Dockerfile.$(RuntimeIdentifier)')" />
+    <Copy SourceFiles="Dockerfile.iotcore.$(RuntimeIdentifier)" DestinationFiles="$(PublishDir)\Dockerfile.iotcore" Condition="Exists('Dockerfile.iotcore.$(RuntimeIdentifier)')" />
   </Target>
 
 </Project>

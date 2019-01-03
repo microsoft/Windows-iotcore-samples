@@ -151,7 +151,7 @@ to refer to the address of our container.
 ```
 [192.168.1.120]: PS C:\Data\modules\squeezenet> $Container = "{ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64"
 
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker build . -t $Container
+[192.168.1.120]: PS C:\Data\modules\squeezenet> docker build . -f Dockerfile.iotcore -t $Container
 Sending build context to Docker daemon  81.63MB
 
 Step 1/5 : FROM mcr.microsoft.com/windows/iotcore:1809
