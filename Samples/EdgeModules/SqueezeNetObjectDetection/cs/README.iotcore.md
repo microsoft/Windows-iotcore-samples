@@ -10,6 +10,12 @@ Same as for the primary instructions, except:
 
 * Target Hardware: A [Minnowboard Turbot](https://minnowboard.org/minnowboard-turbot/) running [Windows 10 IoT Core - Build 17763](https://developer.microsoft.com/en-us/windows/iot). Currently, the sample runs only on x64 architecture. Future releases will include support for arm32 architecture.
 
+### Insider Knowledge
+
+Unfortunately, this sample cannot be reproduced on IoT Core using publicly released tools, until the following PR's are upstreamed and released:
+
+* [IoT Edge PR 670](https://github.com/Azure/iotedge/pull/670). Without this change, IoT Edge fills up the very small MainOS partition on IoT Core devices. To work around, I have installed docker manually, and reconfigured Edge to use this manually-installed docker.
+
 ## Complete the primary instructions first
 
 Please complete the primary instructions first, to gain familiarity with the whole process running from your PC first. Then, complete these separate steps for an IoT Core solution.  
