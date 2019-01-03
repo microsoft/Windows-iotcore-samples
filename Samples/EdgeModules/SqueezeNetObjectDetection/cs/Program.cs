@@ -103,6 +103,8 @@ namespace SampleModule
 
                     do
                     {
+                        int ticks = Environment.TickCount;
+                        
                         //
                         // Pull image from camera
                         //
@@ -134,7 +136,8 @@ namespace SampleModule
                         //
 
                         var message = ResultsToMessage(outcome);
-                        message.ticks = evalticks;
+                        message.metrics.evaltimeinms = evalticks;
+                        message.metrics.cycletimeinms = Environment.TickCount - ticks;
                         var json = JsonConvert.SerializeObject(message);
                         Console.WriteLine($"{DateTime.Now.ToLocalTime()} Recognized: {json}");
 
