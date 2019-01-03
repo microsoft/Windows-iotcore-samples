@@ -10,7 +10,8 @@ It is derived from the
 
 ### Target Hardware
 
-* A [Minnowboard Turbot](https://minnowboard.org/minnowboard-turbot/) running [Windows 10 IoT Core - Build 17763](https://developer.microsoft.com/en-us/windows/iot). Currently, the sample runs only on Windows IoT Core harware, and only on x64 architecture. Future releases will include support for IoT Enterprise OS, and arm32 architecture.
+* A PC running [Windows 10 - Build 17763](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso) to run the solution 
+* Or a [Minnowboard Turbot](https://minnowboard.org/minnowboard-turbot/) running [Windows 10 IoT Core - Build 17763](https://developer.microsoft.com/en-us/windows/iot). Currently, the sample runs only on x64 architecture. Future releases will include support for arm32 architecture.
 * A USB camera. I recommend a [LifeCam Cinema](https://www.microsoft.com/accessories/en-us/webcams).
 * [Azure IoT Edge for Windows - 1.0.5 or higher](https://docs.microsoft.com/en-us/azure/iot-edge/) 
 
@@ -22,7 +23,7 @@ It is derived from the
 ### Development Machine
 
 * [Visual Studio Code with Azure IoT Edge extension](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-vscode)
-* [Windows 10 - Build 17763 or higher](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso) to build the solution
+* [Windows 10 - Build 17763 or higher](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso) to build the solution. This can be the same machine you're running the solution on, or a different one.
 * [Windows SDK - Build 17763 or higher](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK)
 
 ### Insider Knowledge
@@ -54,7 +55,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
   SqueezeNetObjectDetection -> C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\publish\
 ```
 
-## Run the sample on your development machine
+## Test the sample
 
 As a first initial step, you can run the sample natively on your development machine to ensure it's working.
 
@@ -88,48 +89,6 @@ Running the model...
 Here we can see that the sample is successfully running on the development machine, found the camera, and recognized that the camera was probably
 looking at a coffee mug. (It was.)
 
-## Copy published files to target device
-
-Currently, the container image must be built on an IoT Core device. To enable this, we will copy the 'publish' folder over to our device. 
-In this case, I have mapped the Q: drive on my development PC to the C: drive on my IoT Core device.
-
-```
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> robocopy bin\Debug\netcoreapp2.1\win-x64\publish\ q:\data\modules\squeezenet
-
--------------------------------------------------------------------------------
-   ROBOCOPY     ::     Robust File Copy for Windows
--------------------------------------------------------------------------------
-
-  Started : Friday, December 21, 2018 4:20:48 PM
-   Source : C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs\bin\Debug\netcoreapp2.1\win-x64\publish\
-     Dest : q:\data\modules\squeezenet\
-
-    Files : *.*
-
-  Options : *.* /DCOPY:DA /COPY:DAT /R:1000000 /W:30
-
-------------------------------------------------------------------------------
-```
-
-## Run the sample on the target device
-
-Following the same approach as above, run the app on the target device to ensure you have the correct camera there, and it's working on that device.
-
-```
-[192.168.1.120]: PS C:\data\modules\squeezenet> .\SqueezeNetObjectDetection.exe --list
-Found 1 Cameras
-Microsoft® LifeCam Studio(TM)
-
-[192.168.1.120]: PS C:\data\modules\squeezenet> .\SqueezeNetObjectDetection.exe --model=SqueezeNet.onnx --device=LifeCam
-Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
-...OK 1079 ticks
-Retrieving image from camera...
-...OK 766 ticks
-Running the model...
-...OK 625 ticks
-12/28/2018 12:13:05 PM Sending: {"results":[{"label":"coffee mug","confidence":0.99733692407608032},{"label":"cup","confidence":0.0024446924217045307},{"label":"water jug","confidence":8.2805654528783634E-06}]}
-```
-
 ## Create a personal container repository
 
 In order to deploy modules to your device, you will need access to a container respository. 
@@ -151,7 +110,7 @@ to refer to the address of our container.
 ```
 [192.168.1.120]: PS C:\Data\modules\squeezenet> $Container = "{ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64"
 
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker build . -f Dockerfile.iotcore -t $Container
+[192.168.1.120]: PS C:\Data\modules\squeezenet> docker build bin\Debug\netcoreapp2.1\win-x64\publish\ -t $Container
 Sending build context to Docker daemon  81.63MB
 
 Step 1/5 : FROM mcr.microsoft.com/windows/iotcore:1809
@@ -319,6 +278,10 @@ Now that your object recognition data is flowing into the Azure cloud, you can u
 As you experiment with different objects, you can visualize them over time by adjusting the timeframe and interval size. Be sure to refresh the data after changing objects!
 
 ![Time Series Insights Explorer](assets/time-series-insights.jpg)
+
+## Optionally, build and push containers for an IoT Core device
+
+If you are targeting Windows 10 IoT Core, please refer to the separate instructions to [Build & Run on IoT Core](.\README.iotcore.md)
 
 ## Advanced topics: Bring your own model!
 
