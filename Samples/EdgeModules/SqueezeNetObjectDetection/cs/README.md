@@ -99,7 +99,7 @@ When following the sample, replace any "{ACR_*}" values with the correct values 
 Be sure to log into the container respository from the device where you will be building the containers.
 
 ```
-[192.168.1.120]: PS C:\Data\modules\squeezenet> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
 ```
 
 ## Containerize the sample app
