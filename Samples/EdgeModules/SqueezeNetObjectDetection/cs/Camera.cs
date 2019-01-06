@@ -18,6 +18,8 @@ namespace SampleModule
     {
         public static async Task<IReadOnlyList<MediaFrameSourceGroup>> EnumFrameSourcesAsync() => await AsAsync(MediaFrameSourceGroup.FindAllAsync());
 
+        public static bool Verbose { get;set; }
+
         public static void ListFrameSources(IReadOnlyList<MediaFrameSourceGroup> sources)
         {
             Log.WriteLine("Found {0} Cameras", sources.Count);
@@ -44,6 +46,9 @@ namespace SampleModule
 
         public static (MediaFrameSourceGroup, MediaFrameSourceInfo) Select(IReadOnlyList<MediaFrameSourceGroup> sources,string groupname,string devicekind)
         {
+            if (Verbose)
+                Console.WriteLine($"Looking for {groupname}/{devicekind}");
+
             var group = sources.Where(x => x.DisplayName.Contains(groupname)).FirstOrDefault();
 
             if (null == group)
@@ -54,6 +59,9 @@ namespace SampleModule
             if (null == device)
                 throw new ApplicationException("$Unable to match device {devicekind}");
 
+            if (Verbose)
+                Console.WriteLine($"Found camera {device.Id}");
+
             return (group, device);
         }
 
@@ -61,11 +69,11 @@ namespace SampleModule
         private MediaFrameReader reader; // IDisposable
         private EventWaitHandle evtframe;
 
-        public async Task Open(MediaFrameSourceGroup frame_group, MediaFrameSourceInfo frame_source_info, bool verbose = false)
+        public async Task Open(MediaFrameSourceGroup frame_group, MediaFrameSourceInfo frame_source_info)
         {
             capture = new MediaCapture(); // IDisposable
             MediaCaptureInitializationSettings init = new MediaCaptureInitializationSettings();
-            if (verbose)
+            if (Verbose)
             {
                 Log.WriteLine("Enumerating Frame Source Info");
                 Log.WriteLine("Selecting Source");
@@ -78,19 +86,19 @@ namespace SampleModule
             init.MemoryPreference = MediaCaptureMemoryPreference.Cpu;
             init.StreamingCaptureMode = StreamingCaptureMode.Video;
 
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine("Enumerating Frame Sources");
             await AsAsync(capture.InitializeAsync(init));
 
             // This await above has been giving me trouble.
             await Task.Delay(500);
 
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine("capture initialized");
 
             var sources = capture.FrameSources;
 
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine("have frame sources");
 
             MediaFrameSource source;
@@ -99,7 +107,7 @@ namespace SampleModule
             {
                 throw new ApplicationException(string.Format("can't find source {0}", source));
             }
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine("have frame source that matches chosen source info id");
             // TODO: investigate MediaCaptureVideoProfile, MediaCaptureVideoProfileDescription as a possibly simpler way to do this.
             // NO: MediaCaptureVideoProfile don't have frame reader variant only photo, preview, and redircord.
@@ -107,11 +115,11 @@ namespace SampleModule
             // this returns tons of apparent duplicates that can be distinguised using any properties available on the winrt interfaces.
             // i suspect this is because not all the properties on the actual underlying MFVIDEOFORMAT are exposed on the winrt VideoFrameFormat
             var formats = source.SupportedFormats;
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine("have formats");
             MediaFrameFormat format = null;
 
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine("hunting for format");
             foreach (var f in formats)
             {
@@ -143,14 +151,14 @@ namespace SampleModule
             {
                 throw new ApplicationException("Can't find a Video Format");
             }
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine(string.Format("selected videoformat -- major {0} sub {1} w {2} h {3}", format.MajorType, format.Subtype, format.VideoFormat.Width, format.VideoFormat.Height));
             await AsAsync(source.SetFormatAsync(format));
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine("set format complete");
 
             reader = await AsAsync(capture.CreateFrameReaderAsync(source));
-            if (verbose)
+            if (Verbose)
                 Log.WriteLine("frame reader retrieved\r\n");
             reader.AcquisitionMode = MediaFrameReaderAcquisitionMode.Realtime;
             evtframe = new EventWaitHandle(false, EventResetMode.ManualReset);

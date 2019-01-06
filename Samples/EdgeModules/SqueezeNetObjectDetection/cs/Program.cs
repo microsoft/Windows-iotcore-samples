@@ -81,7 +81,7 @@ namespace SampleModule
 
                 if (Options.UseEdge)
                 {
-                    await InitEdge();
+                    await BlockTimer("Initializing Azure IoT Edge", async () => await InitEdge());
                 }
 
                 cts = new CancellationTokenSource();
@@ -94,8 +94,14 @@ namespace SampleModule
 
                 using (var camera = new Camera())
                 {
-                    (var group, var device) = Camera.Select(devices, Options.DeviceId, "Color");
-                    await camera.Open(group, device, Options.Verbose);
+                    await BlockTimer("Initializing Camera",
+                        async () =>
+                        {
+                            Camera.Verbose = Options.Verbose;
+                            (var group, var device) = Camera.Select(devices, Options.DeviceId, "Color");
+                            await camera.Open(group, device);
+                        }
+                    );
 
                     //
                     // Main loop
@@ -209,9 +215,20 @@ namespace SampleModule
             AmqpTransportSettings amqpSetting = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
             ITransportSettings[] settings = { amqpSetting };
 
+            if (Options.Verbose)
+                Console.WriteLine("AmqpTransportSettings OK");
+
             // Open a connection to the Edge runtime
             ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
+
+            if (Options.Verbose)
+                Console.WriteLine("CreateFromEnvironmentAsync OK");
+
             await ioTHubModuleClient.OpenAsync();
+
+            if (Options.Verbose)
+                Console.WriteLine("OpenAsync OK");
+
             Console.WriteLine($"{DateTime.Now.ToLocalTime()} IoT Hub module client initialized.");
         }
 

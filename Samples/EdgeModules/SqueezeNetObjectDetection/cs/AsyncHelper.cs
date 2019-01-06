@@ -13,7 +13,7 @@ namespace Helpers
             T result = default;
             using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
             {
-                //if (op.Status != AsyncStatus.Completed)
+                if (op.Status != AsyncStatus.Completed)
                 {
                     op.Completed += (o, s) =>
                     {
@@ -31,7 +31,7 @@ namespace Helpers
         {
             using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
             {
-                //if (op.Status != AsyncStatus.Completed)
+                if (op.Status != AsyncStatus.Completed)
                 {
                     op.Completed += (o, s) =>
                     {
