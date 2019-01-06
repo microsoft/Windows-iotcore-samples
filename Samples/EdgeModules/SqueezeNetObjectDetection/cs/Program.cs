@@ -44,9 +44,15 @@ namespace SampleModule
 
                 Options.Parse(args);
 
-                var devices = await Camera.EnumFrameSourcesAsync();
                 if (Options.ShowList)
-                    Camera.ListFrameSources(devices);                    
+                {
+                    var devices = await FrameSource.GetSourceNamesAsync();
+
+                    Console.WriteLine("Available cameras:");
+                    
+                    foreach(var device in devices)
+                        Console.WriteLine(device);
+                }
 
                 if (Options.Exit)
                     return -1;
@@ -92,75 +98,59 @@ namespace SampleModule
                 // Open camera
                 //
 
-                using (var camera = new Camera())
+                using (var frameSource = new FrameSource())
                 {
-                    await BlockTimer("Initializing Camera",
-                        async () =>
-                        {
-                            Camera.Verbose = Options.Verbose;
-                            (var group, var device) = Camera.Select(devices, Options.DeviceId, "Color");
-                            await camera.Open(group, device);
-                        }
-                    );
+                    await frameSource.StartAsync(Options.DeviceId);
 
                     //
                     // Main loop
                     //
-
                     do
                     {
-                        int ticks = Environment.TickCount;
-                        
-                        //
-                        // Pull image from camera
-                        //
+                        Console.WriteLine("Getting frame...");
+                        using (var frame = await frameSource.GetFrameAsync())
+                        {
+                            var inputImage = frame.VideoMediaFrame.GetVideoFrame();
+                            ImageFeatureValue imageTensor = ImageFeatureValue.CreateFromVideoFrame(inputImage);
 
-                        VideoFrame inputImage = null;
-                        await BlockTimer($"Retrieving image from camera",
-                            async () =>
-                            {
-                                var frame = await camera.GetFrame();
-                                inputImage = frame.VideoMediaFrame.GetVideoFrame();
-                            });
+                            //
+                            // Evaluate model
+                            //
 
-                        ImageFeatureValue imageTensor = ImageFeatureValue.CreateFromVideoFrame(inputImage);
+                            ScoringOutput outcome = null;
+                            var evalticks = await BlockTimer("Running the model",
+                                async () =>
+                                {
+                                    var input = new ScoringInput() { data_0 = imageTensor };
+                                    outcome = await model.EvaluateAsync(input);
+                                });
 
-                        //
-                        // Evaluate model
-                        //
+                            //
+                            // Print results
+                            //
 
-                        ScoringOutput outcome = null;
-                        var evalticks = await BlockTimer("Running the model",
-                            async () =>
-                            {
-                                var input = new ScoringInput() { data_0 = imageTensor };
-                                outcome = await model.EvaluateAsync(input);
-                            });
+                            var message = ResultsToMessage(outcome);
+                            message.metrics.evaltimeinms = evalticks;
+                            var json = JsonConvert.SerializeObject(message);
+                            Console.WriteLine($"{DateTime.Now.ToLocalTime()} Recognized: {json}");
 
-                        //
-                        // Print results
-                        //
+                            //
+                            // Send results to Edge
+                            //
 
-                        var message = ResultsToMessage(outcome);
-                        message.metrics.evaltimeinms = evalticks;
-                        message.metrics.cycletimeinms = Environment.TickCount - ticks;
-                        var json = JsonConvert.SerializeObject(message);
-                        Console.WriteLine($"{DateTime.Now.ToLocalTime()} Recognized: {json}");
+                            if (Options.UseEdge)
+                            { 
+                                var eventMessage = new Message(Encoding.UTF8.GetBytes(json));
+                                await ioTHubModuleClient.SendEventAsync("resultsOutput", eventMessage); 
 
-                        //
-                        // Send results to Edge
-                        //
-
-                        if (Options.UseEdge)
-                        { 
-                            var eventMessage = new Message(Encoding.UTF8.GetBytes(json));
-                            await ioTHubModuleClient.SendEventAsync("resultsOutput", eventMessage); 
-
-                            // Let's not totally spam Edge :)
-                            await Task.Delay(500);
+                                // Let's not totally spam Edge :)
+                                await Task.Delay(500);
+                            }
                         }
                     }
                     while (Options.RunForever && ! cts.Token.IsCancellationRequested);
+
+                    await frameSource.StopAsync();
                 }
 
                 return 0;
@@ -212,14 +202,8 @@ namespace SampleModule
         /// </summary>
         private static async Task InitEdge()
         {
-            AmqpTransportSettings amqpSetting = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
-            ITransportSettings[] settings = { amqpSetting };
-
-            if (Options.Verbose)
-                Console.WriteLine("AmqpTransportSettings OK");
-
             // Open a connection to the Edge runtime
-            ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
+            ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(TransportType.Amqp);
 
             if (Options.Verbose)
                 Console.WriteLine("CreateFromEnvironmentAsync OK");
