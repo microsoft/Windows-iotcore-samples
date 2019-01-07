@@ -21,4 +21,9 @@
     <PackageReference Include="Mono.Options.Core" Version="1.0.0" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.4.0" />
   </ItemGroup>
+
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="Dockerfile.$(RuntimeIdentifier)" DestinationFiles="$(PublishDir)\Dockerfile" />
+  </Target>
+
 </Project>
