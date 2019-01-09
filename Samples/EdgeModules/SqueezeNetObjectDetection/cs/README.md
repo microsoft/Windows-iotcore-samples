@@ -30,7 +30,7 @@ It is derived from the
 
 Unfortunately, this sample cannot be reproduced using publicly released tools, until the following PR's are upstreamed and released:
 
-* [Moby Cli PR 1290](https://github.com/docker/cli/pull/1290). Without this change, docker.exe will not take the --device parameter. Thus, every case below where the cli is called with --device, will fail. To work around, we use an internally-built moby cli.
+* [Moby Cli PR 1606](https://github.com/docker/cli/pull/1606). Without this change, docker.exe will not take the --device parameter. Thus, every case below where the cli is called with --device, will fail. To work around, we use an internally-built moby cli.
 
 ## Build the sample
 
