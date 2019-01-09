@@ -51,7 +51,7 @@ namespace SampleModule
                     Log.WriteLine("Available cameras:");
                     
                     foreach(var device in devices)
-                        Console.WriteLine(device);
+                        Log.WriteLine(device);
                 }
 
                 if (Options.Exit)
