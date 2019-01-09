@@ -110,9 +110,9 @@ namespace SampleModule
                     do
                     {
                         Log.WriteLineVerbose("Getting frame...");
-                        using (var framesource = await frameSource.GetFrameAsync())
+                        using (var frame = await frameSource.GetFrameAsync())
                         {
-                            var inputImage = framesource.VideoMediaFrame.GetVideoFrame();
+                            var inputImage = frame.VideoMediaFrame.GetVideoFrame();
                             ImageFeatureValue imageTensor = ImageFeatureValue.CreateFromVideoFrame(inputImage);
 
                             //
