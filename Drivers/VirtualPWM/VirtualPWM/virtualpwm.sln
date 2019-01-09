@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "virtualpwm", "virtualpwm.vcxproj", "{E3544E5B-19D5-4C95-8253-A2D83EB84B3C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3544E5B-19D5-4C95-8253-A2D83EB84B3C}.Debug|ARM.ActiveCfg = Debug|ARM
+		{E3544E5B-19D5-4C95-8253-A2D83EB84B3C}.Debug|ARM.Build.0 = Debug|ARM
+		{E3544E5B-19D5-4C95-8253-A2D83EB84B3C}.Debug|ARM.Deploy.0 = Debug|ARM
+		{E3544E5B-19D5-4C95-8253-A2D83EB84B3C}.Release|ARM.ActiveCfg = Release|ARM
+		{E3544E5B-19D5-4C95-8253-A2D83EB84B3C}.Release|ARM.Build.0 = Release|ARM
+		{E3544E5B-19D5-4C95-8253-A2D83EB84B3C}.Release|ARM.Deploy.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

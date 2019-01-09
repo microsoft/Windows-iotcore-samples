@@ -1,0 +1,131 @@
+; Copyright (c) Microsoft Corporation
+;
+; virtualpwm.inf
+;
+
+;*****************************************
+; Class section
+;*****************************************
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = System
+ClassGUID   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = %ProviderString%
+CatalogFile = virtualpwm.cat ; VS requirement to have catalog file entry
+DriverVer=02/08/2017,15.9.1.490
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDisksNames]
+3426 = windows cd
+
+[SourceDisksFiles]
+virtualpwm.sys = 3426
+
+;*****************************************
+; Install section
+;*****************************************
+
+[Manufacturer]
+%Generic% = Generic,NTARM
+
+[Generic.NTARM]
+%PWM0.DeviceDesc% = PWM0_Device, ROOT\VPWM000A
+%PWM1.DeviceDesc% = PWM1_Device, ROOT\VPWM000B
+
+[ControlFlags]
+ExcludeFromSelect = *
+
+[PWM0_Device.NT]
+CopyFiles = PWM_Device.CopyFiles
+
+[PWM1_Device.NT]
+CopyFiles = PWM_Device.CopyFiles
+
+[PWM_Device.CopyFiles]
+virtualpwm.sys,,,0x100
+
+;*****************************************
+; Service installation
+;*****************************************
+
+[PWM0_Device.NT.Services]
+AddService = virtualpwm,2,PWM_Service_Inst
+
+[PWM1_Device.NT.Services]
+AddService = virtualpwm,2,PWM_Service_Inst
+
+[PWM_Service_Inst]
+DisplayName    = %PWM.ServiceDesc%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_DEMAND_START%
+ErrorControl   = %SERVICE_ERROR_NORMAL%
+ServiceBinary  = %12%\virtualpwm.sys
+
+;*****************************************
+; Device interface installation
+;*****************************************
+[PWM0_Device.NT.Interfaces]
+AddInterface=%GUID_DEVINTERFACE_PWM_CONTROLLER%,,PWM0_Interface
+
+[PWM1_Device.NT.Interfaces]
+AddInterface=%GUID_DEVINTERFACE_PWM_CONTROLLER%,,PWM1_Interface
+
+[PWM0_Interface]
+AddProperty=PWM0_Interface_AddProperty
+
+[PWM1_Interface]
+AddProperty=PWM1_Interface_AddProperty
+
+[PWM0_Interface_AddProperty]
+; Set DEVPKEY_DeviceInterface_Restricted property to false to allow UWP access
+; to the device interface without the need to be bound with device metadata.
+; If Restricted property is set to true, then only applications which are bound
+; with device metadata would be allowed access to the device interface.
+%DeviceInterface_PropertyGUID%,%DeviceInterface_Restricted_PropertyID%,%DEVPROP_TYPE_BOOLEAN%,,%DEVPROP_FALSE%
+
+; Set DEVPKEY_DeviceInterface_SchematicName to VPWM0
+; SchematicName should be unique among all PWM devices publishing the PWM device
+; interface. Installing more than one virtual PWM device will require defining
+; unique SchematicName to each device instance, which is not supported by this
+; INF file.
+%DeviceInterface_SchematicName_PropertyGUID%,%DeviceInterface_SchematicName_PropertyID%,%DEVPROP_TYPE_STRING%,,"VPWM0"
+
+[PWM1_Interface_AddProperty]
+; Set DEVPKEY_DeviceInterface_SchematicName to VPWM0
+; SchematicName should be unique among all PWM devices publishing the PWM device
+; interface. Installing more than one virtual PWM device will require defining
+; unique SchematicName to each device instance, which is not supported by this
+; INF file.
+%DeviceInterface_SchematicName_PropertyGUID%,%DeviceInterface_SchematicName_PropertyID%,%DEVPROP_TYPE_STRING%,,"VPWM1"
+
+;*****************************************
+; Strings Section
+;*****************************************
+[Strings]
+Generic                 = "PWM Controller Vendor"
+
+PWM0.DeviceDesc          = "Virtual PWM Controller"
+PWM1.DeviceDesc          = "Virtual PWM Controller (Restricted)"
+
+PWM.ServiceDesc         = "Virtual PWM Controller"
+
+ProviderString          = "TODO-Set-Provider"
+
+SERVICE_KERNEL_DRIVER   = 1
+SERVICE_DEMAND_START    = 3
+SERVICE_ERROR_NORMAL    = 1
+
+DEVPROP_FALSE           = 0
+DEVPROP_TYPE_BOOLEAN    = 0x11
+DEVPROP_TYPE_STRING     = 0x12
+
+GUID_DEVINTERFACE_PWM_CONTROLLER        = {60824B4C-EED1-4C9C-B49C-1B961461A819}
+
+DeviceInterface_PropertyGUID            = {026E516E-B814-414B-83CD-856D6FEF4822}
+DeviceInterface_Restricted_PropertyID   = 6
+
+DeviceInterface_SchematicName_PropertyGUID   = {026E516E-B814-414B-83CD-856D6FEF4822}
+DeviceInterface_SchematicName_PropertyID     = 9
