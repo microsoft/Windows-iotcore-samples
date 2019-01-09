@@ -1,18 +1,18 @@
 --- 
 topic: sample
-urlFragment: waveshare-filter-kmdf
+urlFragment: virtual-pwm
 languages:
 -cpp
 products:
 -windows
-description: This sample filter driver enables touch events on the Waveshare 7" HDMI LCD Touchscreen for use on Windows IoT Core. The driver is a HidUsb KMDF Lower Filter Driver.
+description: This is a Windows Universal Driver sample for PWM that implements the PWM DDI.
 ---
 
-# GPIO KMDF Demo
+# Virtual PWM Driver Sample
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[C#](WaveshareFilterKmdf)
+*	[C++](./CPP/README.md)
 
 ## Additional resources
 *	[Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
