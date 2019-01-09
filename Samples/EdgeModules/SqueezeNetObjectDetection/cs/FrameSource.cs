@@ -20,7 +20,6 @@ namespace SampleModule
     {
         private MediaCapture mediaCapture = null;
         private MediaFrameReader mediaFrameReader = null;
-        private SemaphoreSlim processingSemaphore = null;
         private EventWaitHandle evtFrame = null;
         public static async Task<IEnumerable<string>> GetSourceNamesAsync()
         {
@@ -78,8 +77,6 @@ namespace SampleModule
             if (null == mediaFrameReader)
                 throw new ApplicationException($"Unable to create new mediaframereader");
 
-            //processingSemaphore = new SemaphoreSlim(1);
-
             evtFrame = new EventWaitHandle(false, EventResetMode.ManualReset);
             mediaFrameReader.FrameArrived += (s,a) => evtFrame.Set();
             await AsAsync(mediaFrameReader.StartAsync());
@@ -108,25 +105,8 @@ namespace SampleModule
         public async Task StopAsync()
         {
             await AsAsync(mediaFrameReader.StopAsync());
-            mediaFrameReader.FrameArrived -= ColorFrameReader_FrameArrived;
 
             Console.WriteLine("FrameReader Stopped");
-        }
-
-        public event EventHandler<MediaFrameReference> FrameArrived;
-
-        private async void ColorFrameReader_FrameArrived(MediaFrameReader sender, MediaFrameArrivedEventArgs args)
-        {
-            // Frames come in faster than we want to process them. Only send them through if we're not already
-            // processing one.
-            if (processingSemaphore.CurrentCount > 0)
-            {
-                await processingSemaphore.WaitAsync();
-
-                FrameArrived.Invoke(this,sender.TryAcquireLatestFrame());
-
-                processingSemaphore.Release();
-            }
         }
 
         #region IDisposable Support
@@ -144,9 +124,6 @@ namespace SampleModule
 
                     mediaCapture?.Dispose();
                     mediaCapture = null;
-
-                    processingSemaphore?.Dispose();
-                    processingSemaphore = null;
 
                     evtFrame?.Dispose();
                     evtFrame = null;
