@@ -60,6 +60,21 @@ namespace SampleModule
                 if (string.IsNullOrEmpty(Options.DeviceId))
                     throw new ApplicationException("Please use --device to specify which camera to use");
 
+
+                //
+                // Init module client
+                //
+
+                if (Options.UseEdge)
+                {
+                    Console.WriteLine($"{DateTime.Now.ToLocalTime()} {AppOptions.AppName} module starting.");
+                    await BlockTimer("Initializing Azure IoT Edge", async () => await InitEdge());
+                }
+
+                cts = new CancellationTokenSource();
+                AssemblyLoadContext.Default.Unloading += (ctx) => cts.Cancel();
+                Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
+
                 //
                 // Load model
                 //
@@ -80,19 +95,6 @@ namespace SampleModule
                 var fileString = File.ReadAllText(_labelsFileName);
                 var fileDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(fileString);
                 labels = fileDict.Values.ToList();
-
-                //
-                // Init module client
-                //
-
-                if (Options.UseEdge)
-                {
-                    await BlockTimer("Initializing Azure IoT Edge", async () => await InitEdge());
-                }
-
-                cts = new CancellationTokenSource();
-                AssemblyLoadContext.Default.Unloading += (ctx) => cts.Cancel();
-                Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
 
                 //
                 // Open camera

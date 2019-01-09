@@ -43,7 +43,7 @@ namespace SampleModule
             return result;
         }
 
-        static private string AppName => typeof(AppOptions).Assembly.GetName().Name;
+        static public string AppName => typeof(AppOptions).Assembly.GetName().Name;
         static private string AppVersion => typeof(AppOptions).Assembly.GetName().Version.ToString();
     }
 }
