@@ -18,7 +18,6 @@ using Windows.Media;
 using Helpers;
 using static Helpers.BlockTimerHelper;
 using static Helpers.AsyncHelper;
-using SqueezeNetObjectDetectionNC;
 
 namespace SampleModule
 {
@@ -111,9 +110,9 @@ namespace SampleModule
                     do
                     {
                         Log.WriteLineVerbose("Getting frame...");
-                        using (var frame = await frameSource.GetFrameAsync())
+                        using (var framesource = await frameSource.GetFrameAsync())
                         {
-                            var inputImage = frame.VideoMediaFrame.GetVideoFrame();
+                            var inputImage = framesource.VideoMediaFrame.GetVideoFrame();
                             ImageFeatureValue imageTensor = ImageFeatureValue.CreateFromVideoFrame(inputImage);
 
                             //

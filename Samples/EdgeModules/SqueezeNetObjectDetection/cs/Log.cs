@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Helpers
 {
-    class Log
+    static class Log
     {
         private const string fmt_highlight = "\u001b[94;40m";  // bright blue on black
         private const string fmt_output_default = "\u001b[0m"; // revert to default
