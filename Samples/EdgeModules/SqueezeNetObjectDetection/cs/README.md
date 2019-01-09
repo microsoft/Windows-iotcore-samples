@@ -61,7 +61,7 @@ As a first initial step, you can run the sample natively on your development mac
 First, run the app with the "--list" parameter to show the cameras on your PC:
 
 ```
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> dotnet run -- --list
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> dotnet run --list
 
 Found 5 Cameras
 Microsoft Camera Rear
@@ -74,7 +74,7 @@ IntelIRCameraSensorGroup
 From this list, we will choose the camera to use as input, as pass that into the next call with the --device parameter, along with the model using the --model parameter.
 
 ```
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> dotnet run -- --model=SqueezeNet.onnx --device=LifeCam
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> dotnet run --model=SqueezeNet.onnx --device=LifeCam
 
 Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
 ...OK 2484 ticks
