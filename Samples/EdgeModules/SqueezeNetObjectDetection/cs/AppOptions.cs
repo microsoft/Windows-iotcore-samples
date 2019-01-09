@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 
+using Helpers;
+
 namespace SampleModule
 {
     public class AppOptions: OptionSet
     {
         public bool Help { get; private set; }
         public bool ShowList { get; private set; }
-        public bool Verbose { get; private set; }
         public bool RunForever { get; private set; }
         public string DeviceId { get; private set; }
         public bool UseEdge { get; private set; }
@@ -19,7 +20,7 @@ namespace SampleModule
         {
             Add( "h|help", "show this message and exit", v => Help = v != null );
             Add( "l|list", "list available cameras and exit", v => ShowList = v != null);
-            Add( "v|verbose", "print verbose logging information", v => Verbose = v != null);
+            Add( "v|verbose", "print verbose logging information", v => Log.Verbose = v != null);
             Add( "d|device=", "the {ID} of device to connect", v => DeviceId = v);
             Add( "e|edge", "transmit through azure edge", v => UseEdge = v != null);
             Add( "m|model=", "path to model {FILE}", v => ModelPath = v);

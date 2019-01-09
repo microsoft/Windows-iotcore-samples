@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
 using Windows.Media.MediaProperties;
+
+using Helpers;
 using static Helpers.AsyncHelper;
 
 //
@@ -81,7 +83,7 @@ namespace SampleModule
             mediaFrameReader.FrameArrived += (s,a) => evtFrame.Set();
             await AsAsync(mediaFrameReader.StartAsync());
 
-            Console.WriteLine("FrameReader Started");
+            Log.WriteLineVerbose("FrameReader Started");
         }
 
         public async Task<MediaFrameReference> GetFrameAsync()
@@ -106,7 +108,7 @@ namespace SampleModule
         {
             await AsAsync(mediaFrameReader.StopAsync());
 
-            Console.WriteLine("FrameReader Stopped");
+            Log.WriteLineVerbose("FrameReader Stopped");
         }
 
         #region IDisposable Support

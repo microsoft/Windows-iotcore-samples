@@ -15,6 +15,7 @@ using Windows.AI.MachineLearning;
 using Windows.Foundation;
 using Windows.Media;
 
+using Helpers;
 using static Helpers.BlockTimerHelper;
 using static Helpers.AsyncHelper;
 using SqueezeNetObjectDetectionNC;
@@ -48,7 +49,7 @@ namespace SampleModule
                 {
                     var devices = await FrameSource.GetSourceNamesAsync();
 
-                    Console.WriteLine("Available cameras:");
+                    Log.WriteLine("Available cameras:");
                     
                     foreach(var device in devices)
                         Console.WriteLine(device);
@@ -67,7 +68,7 @@ namespace SampleModule
 
                 if (Options.UseEdge)
                 {
-                    Console.WriteLine($"{DateTime.Now.ToLocalTime()} {AppOptions.AppName} module starting.");
+                    Log.WriteLine($"{AppOptions.AppName} module starting.");
                     await BlockTimer("Initializing Azure IoT Edge", async () => await InitEdge());
                 }
 
@@ -109,7 +110,7 @@ namespace SampleModule
                     //
                     do
                     {
-                        Console.WriteLine("Getting frame...");
+                        Log.WriteLineVerbose("Getting frame...");
                         using (var frame = await frameSource.GetFrameAsync())
                         {
                             var inputImage = frame.VideoMediaFrame.GetVideoFrame();
@@ -134,7 +135,7 @@ namespace SampleModule
                             var message = ResultsToMessage(outcome);
                             message.metrics.evaltimeinms = evalticks;
                             var json = JsonConvert.SerializeObject(message);
-                            Console.WriteLine($"{DateTime.Now.ToLocalTime()} Recognized: {json}");
+                            Log.WriteLineRaw($"Recognized {json}");
 
                             //
                             // Send results to Edge
@@ -159,7 +160,7 @@ namespace SampleModule
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{DateTime.Now.ToLocalTime()} ERROR: {ex.GetType().Name} {ex.Message}");
+                Log.WriteLineError($"{ex.GetType().Name} {ex.Message}");
                 return -1;
             }
         }
@@ -207,15 +208,13 @@ namespace SampleModule
             // Open a connection to the Edge runtime
             ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(TransportType.Amqp);
 
-            if (Options.Verbose)
-                Console.WriteLine("CreateFromEnvironmentAsync OK");
+            Log.WriteLineVerbose("CreateFromEnvironmentAsync OK");
 
             await ioTHubModuleClient.OpenAsync();
 
-            if (Options.Verbose)
-                Console.WriteLine("OpenAsync OK");
+            Log.WriteLineVerbose("OpenAsync OK");
 
-            Console.WriteLine($"{DateTime.Now.ToLocalTime()} IoT Hub module client initialized.");
+            Log.WriteLine($"IoT Hub module client initialized.");
         }
 
         /// <summary>

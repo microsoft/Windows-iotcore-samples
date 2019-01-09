@@ -7,13 +7,13 @@ namespace Helpers
     {
         public static async Task<int> BlockTimer(string message,Func<Task> task)
         {
-            Console.WriteLine($"{message}...");
+            Log.WriteLine($"{message}...");
             int ticks = Environment.TickCount;
 
             await task.Invoke();
 
             ticks = Environment.TickCount - ticks;
-            Console.WriteLine($"...OK {ticks} ticks");
+            Log.WriteLine($"...OK {ticks} ticks");
 
             return ticks;
         }
