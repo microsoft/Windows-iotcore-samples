@@ -12,7 +12,7 @@ description: This is a Windows Universal Driver sample for PWM that implements t
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[C++](./CPP/README.md)
+*	[C++](./VirtualPWM/README.md)
 
 ## Additional resources
 *	[Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
