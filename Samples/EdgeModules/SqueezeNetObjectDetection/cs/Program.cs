@@ -24,8 +24,6 @@ namespace SampleModule
     class ImageInference
     {
         // globals
-        private static readonly LearningModelDeviceKind _deviceKind = LearningModelDeviceKind.Default;
-        private static readonly string _deviceName = "default";
         private static readonly string _labelsFileName = "Labels.json";
         private static AppOptions Options;
         private static ModuleClient ioTHubModuleClient;
@@ -80,7 +78,7 @@ namespace SampleModule
                 //
 
                 ScoringModel model = null;
-                await BlockTimer($"Loading modelfile '{Options.ModelPath}' on the '{_deviceName}' device",
+                await BlockTimer($"Loading modelfile '{Options.ModelPath}' on the {(Options.UseGpu ? "GPU" : "CPU")}",
                     async () => {
                         var d = Directory.GetCurrentDirectory();
                         var path = d + "\\" + Options.ModelPath;
