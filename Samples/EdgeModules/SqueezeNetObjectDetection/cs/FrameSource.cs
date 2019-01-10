@@ -29,7 +29,7 @@ namespace SampleModule
             return frameSourceGroups.Select(x=>x.DisplayName);
         }
 
-        public async Task StartAsync(string Name)
+        public async Task StartAsync(string Name, bool UseGpu = false)
         {
             var frameSourceGroups = await AsAsync(MediaFrameSourceGroup.FindAllAsync());
             var selectedGroup = frameSourceGroups.Where(x=>x.DisplayName.Contains(Name)).FirstOrDefault();
@@ -53,7 +53,7 @@ namespace SampleModule
             {
                 SourceGroup = selectedGroup,
                 SharingMode = MediaCaptureSharingMode.ExclusiveControl,
-                MemoryPreference = MediaCaptureMemoryPreference.Cpu,
+                MemoryPreference =  UseGpu ? MediaCaptureMemoryPreference.Auto : MediaCaptureMemoryPreference.Cpu,
                 StreamingCaptureMode = StreamingCaptureMode.Video
             };
             try

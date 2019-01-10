@@ -102,7 +102,7 @@ namespace SampleModule
 
                 using (var frameSource = new FrameSource())
                 {
-                    await frameSource.StartAsync(Options.DeviceId);
+                    await frameSource.StartAsync(Options.DeviceId,Options.UseGpu);
 
                     //
                     // Main loop
