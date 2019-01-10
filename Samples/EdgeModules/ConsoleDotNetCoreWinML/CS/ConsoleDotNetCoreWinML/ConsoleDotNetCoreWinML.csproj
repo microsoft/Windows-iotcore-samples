@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\CS\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Windows.AI.MachineLearning.MachineLearningContract">
       <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.AI.MachineLearning.MachineLearningContract\1.0.0.0\Windows.AI.MachineLearning.MachineLearningContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>

@@ -1,10 +1,14 @@
-﻿using System;
+﻿//
+// Copyright (c) Microsoft. All rights reserved.
+//
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleDotNetCoreWinML
+namespace EdgeModuleSamples.Common
 {
-    class Log
+    public class Log
     {
         public const string fmt_highlight = "\u001b[94;40m";  // bright blue on black
         public const string fmt_output_default = "\u001b[0m"; // revert to default
