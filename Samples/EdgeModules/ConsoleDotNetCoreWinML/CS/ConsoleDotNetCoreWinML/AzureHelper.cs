@@ -1,4 +1,10 @@
-﻿using Microsoft.Azure.Devices.Client;
+﻿//
+// Copyright (c) Microsoft. All rights reserved.
+//
+
+using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Messages;
+using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
 using System;
@@ -9,10 +15,6 @@ using System.Threading.Tasks;
 
 namespace ConsoleDotNetCoreWinML
 {
-    class FruitMessage
-    {
-        public string FruitSeen { get; set; }
-    }
     class AzureConnection
     {
         private ConcurrentQueue<string> _updateq { get; set; }

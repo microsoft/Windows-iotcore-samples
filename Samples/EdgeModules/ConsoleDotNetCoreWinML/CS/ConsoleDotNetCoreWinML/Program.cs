@@ -1,4 +1,9 @@
-﻿using System;
+﻿//
+// Copyright (c) Microsoft. All rights reserved.
+//
+
+using EdgeModuleSamples.Common;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
