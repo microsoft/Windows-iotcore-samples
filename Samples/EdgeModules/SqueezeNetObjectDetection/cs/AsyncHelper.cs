@@ -13,14 +13,8 @@ namespace Helpers
             T result = default;
             using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
             {
-                if (op.Status != AsyncStatus.Completed)
-                {
-                    op.Completed += (o, s) =>
-                    {
-                        AsyncMeSemaphore.Release();
-                    };
-                    await AsyncMeSemaphore.WaitAsync();
-                }
+                op.Completed += (o, s) => AsyncMeSemaphore.Release();
+                await AsyncMeSemaphore.WaitAsync();
                 result = op.GetResults();
             }
 
@@ -31,14 +25,8 @@ namespace Helpers
         {
             using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
             {
-                if (op.Status != AsyncStatus.Completed)
-                {
-                    op.Completed += (o, s) =>
-                    {
-                        AsyncMeSemaphore.Release();
-                    };
-                    await AsyncMeSemaphore.WaitAsync();
-                }
+                op.Completed += (o, s) => AsyncMeSemaphore.Release();
+                await AsyncMeSemaphore.WaitAsync();
             }
         }
 
@@ -47,14 +35,8 @@ namespace Helpers
             TResult result = default;
             using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
             {
-                if (op.Status != AsyncStatus.Completed)
-                {
-                    op.Completed += (o, s) =>
-                    {
-                        AsyncMeSemaphore.Release();
-                    };
-                    await AsyncMeSemaphore.WaitAsync();
-                }
+                op.Completed += (o, s) => AsyncMeSemaphore.Release();
+                await AsyncMeSemaphore.WaitAsync();
                 result = op.GetResults();
             }
 
