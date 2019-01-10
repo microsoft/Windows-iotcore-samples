@@ -13,6 +13,7 @@ namespace SampleModule
         public bool RunForever { get; private set; }
         public string DeviceId { get; private set; }
         public bool UseEdge { get; private set; }
+        public bool UseGpu { get; private set; }
         public string ModelPath { get; private set; }
         public bool Exit { get; private set; } = false;
 
@@ -25,6 +26,7 @@ namespace SampleModule
             Add( "e|edge", "transmit through azure edge", v => UseEdge = v != null);
             Add( "m|model=", "path to model {FILE}", v => ModelPath = v);
             Add( "f|forever", "run forever", v => RunForever = v != null);
+            Add( "g|gpu", "use GPU inferencing", v => UseGpu = v != null);
         }
 
         public new List<string> Parse(IEnumerable<string> args)

@@ -25,11 +25,12 @@ namespace SampleModule
         private LearningModel model;
         private LearningModelSession session;
         private LearningModelBinding binding;
-        public static async Task<ScoringModel> CreateFromStreamAsync(IRandomAccessStreamReference stream)
+        public static async Task<ScoringModel> CreateFromStreamAsync(IRandomAccessStreamReference stream, bool UseGpu = false)
         {
             ScoringModel learningModel = new ScoringModel();
             learningModel.model = await AsAsync( LearningModel.LoadFromStreamAsync(stream));
-            learningModel.session = new LearningModelSession(learningModel.model);
+            var device = new LearningModelDevice(UseGpu ? LearningModelDeviceKind.DirectXHighPerformance : LearningModelDeviceKind.Cpu );
+            learningModel.session = new LearningModelSession(learningModel.model,device);
             learningModel.binding = new LearningModelBinding(learningModel.session);
             return learningModel;
         }

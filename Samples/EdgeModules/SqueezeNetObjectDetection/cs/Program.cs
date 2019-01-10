@@ -85,7 +85,7 @@ namespace SampleModule
                         var d = Directory.GetCurrentDirectory();
                         var path = d + "\\" + Options.ModelPath;
                         StorageFile modelFile = await AsAsync(StorageFile.GetFileFromPathAsync(path));
-                        model = await ScoringModel.CreateFromStreamAsync(modelFile);
+                        model = await ScoringModel.CreateFromStreamAsync(modelFile,Options.UseGpu);
                     });
 
                 //
