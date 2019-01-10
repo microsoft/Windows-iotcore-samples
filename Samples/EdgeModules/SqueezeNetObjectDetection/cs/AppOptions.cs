@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-using Helpers;
+using EdgeModuleSamples.Common;
 
 namespace SampleModule
 {
