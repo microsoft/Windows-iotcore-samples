@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using System.Threading;
 
-namespace Helpers
+namespace EdgeModuleSamples.Common
 {
     static class AsyncHelper
     {
