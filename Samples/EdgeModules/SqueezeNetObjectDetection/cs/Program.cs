@@ -15,7 +15,7 @@ using Windows.AI.MachineLearning;
 using Windows.Foundation;
 using Windows.Media;
 
-using Helpers;
+using EdgeModuleSamples.Common;
 using static Helpers.BlockTimerHelper;
 using static Helpers.AsyncHelper;
 
