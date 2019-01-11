@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace EdgeModuleSamples.Common
 {
-    static class AsyncHelper
+    public static class AsyncHelper
     {
         // Work around this problem:
         // https://github.com/Microsoft/dotnet/issues/590
