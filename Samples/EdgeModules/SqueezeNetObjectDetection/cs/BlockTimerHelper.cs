@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 
+using EdgeModuleSamples.Common;
+
 namespace Helpers
 {
     static class BlockTimerHelper
