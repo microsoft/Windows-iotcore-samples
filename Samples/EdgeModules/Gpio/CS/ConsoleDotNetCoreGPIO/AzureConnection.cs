@@ -180,6 +180,23 @@ namespace ConsoleDotNetCoreGPIO
             }
             Log.WriteLine("update complete -- current properties {0}", module._desiredProperties.ToString());
         }
+        public void NotifyModuleLoad()
+        {
+            var msg = new ModuleLoadMessage();
+            msg.ModuleName = _moduleTwin.ModuleId;
+            NotifyMessage(msg);
+
+        }
+        public void NotifyMessage<T>(T msg)
+        {
+            Task.Run(async () =>
+            {
+                byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
+                var m = new Message(msgbody);
+                await _moduleClient.SendEventAsync("Output1", m);
+            });
+        }
+
         public AzureModule()
         {
 
@@ -241,6 +258,8 @@ namespace ConsoleDotNetCoreGPIO
             Log.WriteLine("ModuleTwin Retrieved");
             await OnDesiredModulePropertyChanged(_moduleTwin.Properties.Desired, this);
             Log.WriteLine("ModuleTwin Initial Desired Properties Processed");
+            NotifyModuleLoad();
+            Log.WriteLine("Module Load D2C message fired");
         }
     }
 
