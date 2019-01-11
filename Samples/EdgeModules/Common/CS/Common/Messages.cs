@@ -8,4 +8,8 @@ namespace EdgeModuleSamples.Messages
     {
         public string FruitSeen { get; set; }
     }
+    public class ModuleLoadMessage
+    {
+        public string ModuleName { get; set; }
+    }
 }
