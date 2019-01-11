@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 
+using EdgeModuleSamples.Common;
+
 namespace SampleModule
 {
     public class AppOptions: OptionSet
@@ -24,6 +26,7 @@ namespace SampleModule
             Add( "t|transmit", "transmit packets (combine with -r for loopback)", v => Transmit = v != null);
             Add( "c|config", "display device configuration", v => ShowConfig = v != null);
             Add( "e|edge", "transmit through azure edge", v => UseEdge = v != null);
+            Add( "v|verbose", "print verbose logging information", v => Log.Verbose = v != null);
         }
 
         public new List<string> Parse(IEnumerable<string> args)

@@ -174,7 +174,7 @@ namespace SampleModule
                 // Async write, using overlapped structure
                 var message = tempData.SerialEncode;
                 device.Write(Encoding.ASCII.GetBytes(message), size, out numbytes, ref overlapped);
-                Log.WriteLine($"Write {i} Started");
+                Log.WriteLineVerbose($"Write {i} Started");
 
                 // Block until write completes
                 device.GetOverlappedResult(ref overlapped, out numbytes, true);
@@ -207,7 +207,7 @@ namespace SampleModule
 
                     // Start Async Read, using overlapped structure
                     device.Read(inbuf, size, out numbytes, ref overlapped);
-                    Log.WriteLine($"Async Read {i} Started");
+                    Log.WriteLineVerbose($"Async Read {i} Started");
 
                     // Block until Read finishes
                     device.GetOverlappedResult(ref overlapped, out numbytes, true);
