@@ -59,7 +59,7 @@ namespace Win32Serial
                  IntPtr.Zero);
 
             if (devicehandle.IsInvalid)
-                throw new Exception($"Unable to open UART {id}");
+                throw new ApplicationException($"Unable to open UART {id}");
         }
 
         #endregion
@@ -73,14 +73,14 @@ namespace Win32Serial
                 var result = new DCB();
                 var ok = GetCommState(devicehandle, ref result);
                 if (!ok)
-                    throw new KeyNotFoundException("Unable to query UART configuration");
+                    throw new ApplicationException("Unable to query UART configuration");
                 return result;
             }
             set
             {
                 var ok = SetCommState(devicehandle, ref value);
                 if (!ok)
-                    throw new KeyNotFoundException("Unable to set new UART configuration");
+                    throw new ApplicationException("Unable to set new UART configuration");
             }
         }
         public COMMTIMEOUTS Timeouts
@@ -90,14 +90,14 @@ namespace Win32Serial
                 var result = new COMMTIMEOUTS();
                 var ok = GetCommTimeouts(devicehandle, ref result);
                 if (!ok)
-                    throw new KeyNotFoundException("Unable to query UART timeout values");
+                    throw new ApplicationException("Unable to query UART timeout values");
                 return result;
             }
             set
             {
                 var ok = SetCommTimeouts(devicehandle, ref value);
                 if (!ok)
-                    throw new KeyNotFoundException("Unable to set UART timeout values");
+                    throw new ApplicationException("Unable to set UART timeout values");
             }
         }
 
@@ -132,7 +132,7 @@ namespace Win32Serial
             // Configure device queue size
             var ok = SetupComm(devicehandle, inqueuesize, outqueuesize);
             if (!ok)
-                throw new KeyNotFoundException("Unable to setup UART device queues");
+                throw new ApplicationException("Unable to setup UART device queues");
         }
 
         public bool Read(byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped)
