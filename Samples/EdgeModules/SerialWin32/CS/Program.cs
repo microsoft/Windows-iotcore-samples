@@ -39,11 +39,18 @@ namespace SampleModule
                 var devicepaths = Win32Serial.Device.EnumerateDevices();
                 if (Options.ShowList || string.IsNullOrEmpty(Options.DeviceId))
                 {
-                    Log.WriteLine("Available devices:");
-
-                    foreach (var devicepath in devicepaths)
+                    if (devicepaths.Length > 0)
                     {
-                        Log.WriteLine($"{devicepath}");
+                        Log.WriteLine("Available devices:");
+
+                        foreach (var devicepath in devicepaths)
+                        {
+                            Log.WriteLine($"{devicepath}");
+                        }
+                    }
+                    else
+                    {
+                        Log.WriteLine("No available devices");
                     }
                     return;
                 }
