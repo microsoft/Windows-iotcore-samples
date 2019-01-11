@@ -5,7 +5,8 @@ using Windows.Media;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.AI.MachineLearning;
-using static Helpers.AsyncHelper;
+
+using static EdgeModuleSamples.Common.AsyncHelper;
 
 namespace SampleModule
 {
