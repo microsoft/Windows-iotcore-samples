@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
+
+    <ItemGroup>
+    <Reference Include="Windows">
+      <HintPath>$(WINDOWS_WINMD)</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+    </Reference>
+  </ItemGroup>
 
 </Project>

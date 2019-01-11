@@ -16,8 +16,8 @@ using Windows.Foundation;
 using Windows.Media;
 
 using EdgeModuleSamples.Common;
+using static EdgeModuleSamples.Common.AsyncHelper;
 using static Helpers.BlockTimerHelper;
-using static Helpers.AsyncHelper;
 
 namespace SampleModule
 {
