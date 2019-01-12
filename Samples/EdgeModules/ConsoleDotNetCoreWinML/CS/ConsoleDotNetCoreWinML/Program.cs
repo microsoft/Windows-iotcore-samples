@@ -207,7 +207,7 @@ namespace ConsoleDotNetCoreWinML
             {
                 throw new ApplicationException(string.Format("Output Feature Inconsistency model output label 0 '{0}' and label 1 '{1}'", label, most.Key));
             }
-            Log.WriteLine("{1}{2} with probability {3}", Log.fmt_output_success, most.Key, Log.fmt_output_default, most.Value.ToString("0.0000"));
+            Log.WriteLineSuccess("{0} with probability {1}", most.Key, most.Value.ToString("0.0000"));
             // we would like to apply a confidence threshold but with these models garbage always ends up high confidence something 
             if (prevLabel == null || prevLabel != label)
             {

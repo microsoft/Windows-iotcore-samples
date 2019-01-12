@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using System.Threading;
 
-namespace Helpers
+namespace EdgeModuleSamples.Common
 {
-    static class AsyncHelper
+    public static class AsyncHelper
     {
         // Work around this problem:
         // https://github.com/Microsoft/dotnet/issues/590
