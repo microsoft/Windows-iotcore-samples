@@ -5,9 +5,9 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
-    <ItemGroup>
-    <Reference Include="Windows">
-      <HintPath>$(WINDOWS_WINMD)</HintPath>
+  <ItemGroup>
+    <Reference Include="Windows.Foundation.FoundationContract">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
   </ItemGroup>
