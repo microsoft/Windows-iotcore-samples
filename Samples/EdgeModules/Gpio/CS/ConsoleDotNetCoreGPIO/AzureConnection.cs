@@ -182,8 +182,19 @@ namespace ConsoleDotNetCoreGPIO
         }
         public void NotifyModuleLoad()
         {
-            var msg = new ModuleLoadMessage();
-            msg.ModuleName = _moduleTwin.ModuleId;
+            ModuleLoadMessage msg = new ModuleLoadMessage();
+            string id = null;
+            if (_moduleTwin == null)
+            {
+                Log.WriteLine("missing module twin -- unknown module id");
+                id = "unknown";
+            } else
+            {
+                id = _moduleTwin.ModuleId;
+            }
+
+            msg.ModuleName = id;
+
             NotifyMessage(msg);
 
         }
@@ -254,7 +265,7 @@ namespace ConsoleDotNetCoreGPIO
                 //}
             }
             Log.WriteLine("ModuleClient Opened");
-            var _moduleTwin = await _moduleClient.GetTwinAsync();
+            _moduleTwin = await _moduleClient.GetTwinAsync();
             Log.WriteLine("ModuleTwin Retrieved");
             await OnDesiredModulePropertyChanged(_moduleTwin.Properties.Desired, this);
             Log.WriteLine("ModuleTwin Initial Desired Properties Processed");

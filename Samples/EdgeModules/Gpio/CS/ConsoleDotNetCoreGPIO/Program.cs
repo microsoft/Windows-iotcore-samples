@@ -13,53 +13,6 @@ using Windows.Foundation;
 
 namespace ConsoleDotNetCoreGPIO
 {
-    class AsyncHelper
-    {
-        // Work around this problem:
-        // https://github.com/Microsoft/dotnet/issues/590
-        // https://github.com/dotnet/corefx/issues/22789
-        public static async Task<T> SyncFromAsync<T>(IAsyncOperation<T> op, string dbgtag)
-        {
-
-            T result = default(T);
-            using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
-            {
-                op.Completed += (o, s) =>
-                {
-                    AsyncMeSemaphore.Release();
-                };
-                // in case the op completes before the handler got connected we must check
-                // status and complete things before waiting
-                if (op.Status == AsyncStatus.Completed)
-                {
-                    AsyncMeSemaphore.Release();
-                }
-                await AsyncMeSemaphore.WaitAsync();
-                result = op.GetResults();
-            }
-
-            return result;
-        }
-        public static async Task SyncFromAsync(IAsyncAction op, string dbgtag)
-        {
-            using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
-            {
-                op.Completed += (o, s) =>
-                {
-                    AsyncMeSemaphore.Release();
-                };
-                // in case the op completes before the handler got connected we must check
-                // status and complete things before waiting
-                if (op.Status == AsyncStatus.Completed)
-                {
-                    AsyncMeSemaphore.Release();
-                }
-                await AsyncMeSemaphore.WaitAsync();
-            }
-
-            return;
-        }
-    }
     class Program
     {
         static async Task<int> MainAsync(string[] args)
