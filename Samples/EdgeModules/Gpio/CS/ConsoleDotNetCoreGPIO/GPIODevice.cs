@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 using ConsoleDotNetCoreGPIO;
 using Newtonsoft.Json;
 using System;
