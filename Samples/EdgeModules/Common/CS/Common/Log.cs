@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EdgeModuleSamples.Common
+namespace EdgeModuleSamples.Common.Logging
 {
     public static class Log
     {

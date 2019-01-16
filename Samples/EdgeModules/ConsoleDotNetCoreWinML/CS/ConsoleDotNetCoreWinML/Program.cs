@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;

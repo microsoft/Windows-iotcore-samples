@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 using EdgeModuleSamples.Common.Messages;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;

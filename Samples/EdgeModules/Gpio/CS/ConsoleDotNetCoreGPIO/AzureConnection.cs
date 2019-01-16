@@ -2,7 +2,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Azure;
+using EdgeModuleSamples.Common.Logging;
 using EdgeModuleSamples.Common.Messages;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Client.Exceptions;
@@ -20,74 +21,6 @@ using YamlDotNet.Serialization;
 
 namespace ConsoleDotNetCoreGPIO
 {
-    public class DeploymentConfig
-    {
-        private static async Task<YamlDocument> LoadConfigAsync(string configFile)
-        {
-            StreamReader sr = null;
-            await Task.WhenAll(Task.Run(() => {
-                sr = new StreamReader(configFile);
-            }));
-            var yamlString = await sr.ReadToEndAsync();
-            YamlDocument yamlDoc = null;
-            await Task.WhenAll(Task.Run(() => {
-                yamlDoc = new YamlDocument(yamlString);
-            }));
-            return yamlDoc;
-        }
-        private static string GetDeviceConnectionStringInternal(YamlDocument doc)
-        {
-            return (string)doc.GetKeyValue("device_connection_string");
-        }
-        public static async Task<string> GetDeviceConnectionStringAsync()
-        {
-            string configRoot = System.Environment.GetEnvironmentVariable("ProgramData");
-            configRoot += @"\iotedge";
-            string configFileName = @"\config.yaml";
-            string configPath = null;
-            if (File.Exists(configRoot + configFileName)) {
-                configPath = configRoot + configFileName;
-            } else {
-                configRoot = System.Environment.GetEnvironmentVariable("LocalAppData");
-                configRoot += @"\iotedge";
-                configPath = configRoot + configFileName;
-            }
-
-            Log.WriteLine("loading config file from {0}", configPath);
-            var doc = await LoadConfigAsync(configPath);
-            return GetDeviceConnectionStringInternal(doc);
-        }
-    }
-    public class YamlDocument
-    {
-        readonly Dictionary<object, object> root;
-
-        public YamlDocument(string input)
-        {
-            var reader = new StringReader(input);
-            var deserializer = new Deserializer();
-            this.root = (Dictionary<object, object>)deserializer.Deserialize(reader);
-        }
-
-        public object GetKeyValue(string key)
-        {
-            if (this.root.ContainsKey(key))
-            {
-                return this.root[key];
-            }
-
-            foreach (var item in this.root)
-            {
-                var subItem = item.Value as Dictionary<object, object>;
-                if (subItem != null && subItem.ContainsKey(key))
-                {
-                    return subItem[key];
-                }
-            }
-
-            return null;
-        }
-    }
 
     [JsonObject(MemberSerialization.Fields)]
     struct ConfigurationType
@@ -122,7 +55,7 @@ namespace ConsoleDotNetCoreGPIO
         }
     }
 
-    class AzureModule
+    class AzureModule : AzureModuleBase
     {
         private AzureConnection _connection { get; set; }
         private ModuleClient _moduleClient { get; set; }
@@ -141,10 +74,11 @@ namespace ConsoleDotNetCoreGPIO
             await Task.Run(() =>module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen));
             return MessageResponse.Completed;
         }
-        private static void OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
+        public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
         {
-
-            Log.WriteLine("connection changed.  status {0} reason {1}", status, reason);
+            await base.OnConnectionChanged(status, reason);
+            Log.WriteLine("derived connection changed.  status {0} reason {1}", status, reason);
+            return;
         }
         private static async Task OnDesiredModulePropertyChanged(TwinCollection newDesiredProperties, object ctx)
         {
@@ -232,64 +166,12 @@ namespace ConsoleDotNetCoreGPIO
         {
 
         }
-        public async Task AzureModuleInitAsync()
+        public override async Task AzureModuleInitAsync()
         {
-            AmqpTransportSettings[] settings = new AmqpTransportSettings[2];
-            settings[0] = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
-            settings[0].OpenTimeout = TimeSpan.FromSeconds(120);
-            settings[0].OperationTimeout = TimeSpan.FromSeconds(120);
-            settings[1] = new AmqpTransportSettings(TransportType.Amqp_WebSocket_Only);
-            settings[1].OpenTimeout = TimeSpan.FromSeconds(120);
-            settings[1].OperationTimeout = TimeSpan.FromSeconds(120);
-            _moduleClient = null;
-            //var start = DateTime.Now;
-            // if multiple modules are starting simultaneously or ML is heavily loading the system it can take a while to establish a connection especially on low-end arm32
-            //var default_timeout = TimeSpan.FromSeconds(120); 
-            //while (_moduleClient == null)
-            //{
-            //try
-            //{
-                    _moduleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
-                //}
-                //catch (IotHubException e)
-                //{
-                    //Log.WriteLine("suppressing IotHub Exception during module client creation {0}", e.ToString());
-                    //if (DateTime.Now - start >= default_timeout)
-                    //{
-                        //throw e;  // rethrow eventually
-                    //}
-                    // ignore any hub errors for a while
-                //}
-            //}
-            Log.WriteLine("ModuleClient Initialized");
-            // TODO: connection status chnages handler
-            bool openSucceeded = false;
-            while (!openSucceeded)
-            {
-                //try
-                //{
-                    _moduleClient.SetConnectionStatusChangesHandler(OnConnectionChanged);
-                    await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredModulePropertyChanged, this);
-                    await _moduleClient.SetInputMessageHandlerAsync("inputfruit", OnFruitMessageReceived, this);
-                    await _moduleClient.SetMethodHandlerAsync("SetFruit", SetFruit, this);
-                    await _moduleClient.OpenAsync();
-                    openSucceeded = true;
-                //}
-                //catch (IotHubException e)
-                //{
-                    //Log.WriteLine("suppressing IotHub Exception during module client open {0}", e.ToString());
-                    //if (DateTime.Now - start >= default_timeout)
-                    //{
-                        //throw e;  // rethrow eventually
-                    //}
-                    // ignore any hub errors for a while
-                //}
-            }
-            Log.WriteLine("ModuleClient Opened");
-            _moduleTwin = await _moduleClient.GetTwinAsync();
-            Log.WriteLine("ModuleTwin Retrieved");
-            await OnDesiredModulePropertyChanged(_moduleTwin.Properties.Desired, this);
-            Log.WriteLine("ModuleTwin Initial Desired Properties Processed");
+            await base.AzureModuleInitBeginAsync();
+            await _moduleClient.SetInputMessageHandlerAsync("inputfruit", OnFruitMessageReceived, this);
+            await _moduleClient.SetMethodHandlerAsync("SetFruit", SetFruit, this);
+            await base.AzureModuleInitEndAsync();
         }
     }
 
