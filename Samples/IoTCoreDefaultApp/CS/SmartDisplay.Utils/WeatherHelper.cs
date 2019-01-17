@@ -16,7 +16,7 @@ namespace SmartDisplay.Weather
         /// <summary>
         /// Returns degrees in celsius, given degrees in fahrenheit
         /// </summary>
-        public static int GetCelsius(int fahrenheit)
+        public static double GetCelsius(double fahrenheit)
         {
             return ((fahrenheit - 32) * 5) / 9;
         }
@@ -24,7 +24,7 @@ namespace SmartDisplay.Weather
         /// <summary>
         /// Returns degrees in fahrenheit, given degrees in celsius
         /// </summary>
-        public static int GetFahrenheit(int celsius)
+        public static double GetFahrenheit(double celsius)
         {
             return ((celsius * 9) / 5) + 32;
         }

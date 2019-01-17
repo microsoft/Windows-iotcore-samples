@@ -11,13 +11,13 @@
     <AssemblyName>IoTCoreDefaultAppUnderTest</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateThumbprint>FE8BD26C71E9340CA518C963E340B7380859EE70</PackageCertificateThumbprint>
-    <PackageCertificateKeyFile>SmartDisplay_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>IoTCoreDefaultApp_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
@@ -100,6 +100,10 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="Assets\BingMapsQRCode.png" />
+    <Content Include="Assets\Images\MSC17_avatars_people_023a.png" />
+    <Content Include="Assets\Images\music-icon.png" />
+    <Content Include="Assets\Images\robot-transparent.png" />
+    <Content Include="Assets\Images\weather-icon.png" />
     <Content Include="Assets\logo_white.png" />
     <Content Include="Assets\Fonts\IOTMDL2.1.35.ttf" />
     <Content Include="Assets\Messages\LogDescription.txt" />
@@ -126,6 +130,7 @@
     <Compile Include="UIControls\LoginPopupControl.xaml.cs">
       <DependentUpon>LoginPopupControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UIControls\MusicTransportControls.cs" />
     <Compile Include="UIControls\NavBarDataItem.cs" />
     <Compile Include="UIControls\NetworkListControl.xaml.cs">
       <DependentUpon>NetworkListControl.xaml</DependentUpon>
@@ -166,7 +171,6 @@
       <DependentUpon>LoadingPanelControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIControls\LoadingPanelVM.cs" />
-    <Compile Include="UIControls\NetworkListControlTemplateVM.cs" />
     <Compile Include="UIControls\NotificationControlVM.cs" />
     <Compile Include="UIControls\OOBEPageTemplateVM.cs" />
     <Compile Include="UIControls\ScreensaverVM.cs" />
@@ -201,7 +205,6 @@
     <Compile Include="Utils\DeviceTypeInformation.cs" />
     <Compile Include="Utils\UI\UiManager.cs" />
     <Compile Include="Utils\UpdateManager.cs" />
-    <Compile Include="Utils\Weather\USWeather.cs" />
     <Compile Include="Utils\Weather\WeatherProvider.cs" />
     <Compile Include="Views\DevicePortal\FlightingPageVM.cs" />
     <Compile Include="Views\DevicePortal\InfoPageVM.cs" />
@@ -209,6 +212,10 @@
     <Compile Include="Views\DevicePortal\WindowsUpdatePageVM.cs" />
     <Compile Include="Views\MainPages\AppLauncherPageVM.cs" />
     <Compile Include="Views\MainPages\IWebViewElementController.cs" />
+    <Compile Include="Views\MainPages\Media\WeatherPage.xaml.cs">
+      <DependentUpon>WeatherPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainPages\Media\WeatherPageVM.cs" />
     <Compile Include="Views\MainPages\WebBrowserPageVM.cs" />
     <Compile Include="Views\MainPages\TilePageVM.cs" />
     <Compile Include="Views\MainPages\System\AuthenticationPageVM.cs" />
@@ -220,7 +227,6 @@
     <Compile Include="Views\MainPages\Media\MusicPlayerPageVM.cs" />
     <Compile Include="Views\MainPages\AppInfo\NotificationsPageVM.cs" />
     <Compile Include="Views\MainPages\Media\PhotoPageVM.cs" />
-    <Compile Include="Views\MainPages\Media\WeatherPageVM.cs" />
     <Compile Include="Views\MainPages\System\SessionLogPageVM.cs" />
     <Compile Include="Views\MainPageVM.cs" />
     <Compile Include="Views\OOBE\IOOBEWindowService.cs" />
@@ -325,9 +331,6 @@
     </Compile>
     <Compile Include="Views\Settings\PowerSettings.xaml.cs">
       <DependentUpon>PowerSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainPages\Media\WeatherPage.xaml.cs">
-      <DependentUpon>WeatherPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -454,6 +457,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MainPages\Media\WeatherPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainPages\System\AuthenticationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -558,10 +565,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainPages\Media\WeatherPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -600,6 +603,10 @@
     <ProjectReference Include="..\SmartDisplay.Contracts\SmartDisplay.Contracts.csproj">
       <Project>{8da90bda-ce14-46a1-bc52-ad5a40ae0bca}</Project>
       <Name>SmartDisplay.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartDisplay.Features\SmartDisplay.Features.csproj">
+      <Project>{4fe09537-3cf8-4012-87db-d1f72cab62b0}</Project>
+      <Name>SmartDisplay.Features</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmartDisplay.Utils\SmartDisplay.Utils.csproj">
       <Project>{9a45f2f2-0f2b-452a-887d-c39a22a3c3c2}</Project>
@@ -645,7 +652,7 @@
     <Content Include="Assets\Fonts\OOBMDL2.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SmartDisplay_TemporaryKey.pfx" />
+    <Content Include="Assets\Fonts\MSNMDL2.ttf" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

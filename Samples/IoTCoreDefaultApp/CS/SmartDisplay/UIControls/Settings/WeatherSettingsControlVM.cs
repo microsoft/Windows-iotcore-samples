@@ -48,15 +48,9 @@ namespace SmartDisplay.Controls
             }
         }
 
-        public bool MapSizeExpanded
+        public bool IsFahrenheit
         {
-            get { return Settings.MapSizeExpanded; }
-            set { Settings.SaveSetting(value); }
-        }
-
-        public bool MapFlipEnabled
-        {
-            get { return Settings.MapFlipEnabled; }
+            get { return Settings.IsFahrenheit; }
             set { Settings.SaveSetting(value); }
         }
 
@@ -119,19 +113,6 @@ namespace SmartDisplay.Controls
             }
 
             return false;
-        }
-    }
-
-    public class SimpleLocation
-    {
-        public string Name;
-        public BasicGeoposition Position = new BasicGeoposition();
-
-        public SimpleLocation(string location, double latitude, double longitude)
-        {
-            Name = location;
-            Position.Latitude = latitude;
-            Position.Longitude = longitude;
         }
     }
 }

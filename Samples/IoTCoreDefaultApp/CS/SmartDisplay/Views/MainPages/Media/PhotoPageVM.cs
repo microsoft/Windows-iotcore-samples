@@ -20,10 +20,21 @@ namespace SmartDisplay.ViewModels
     public class PhotoPageVM : BaseViewModel
     {
         #region UI properties
-
-        public BitmapImage SlideshowImage
+        public BitmapImage SlideshowImage1
         {
             get { return GetStoredProperty<BitmapImage>(); }
+            set { SetStoredProperty(value); }
+        }
+
+        public BitmapImage SlideshowImage2
+        {
+            get { return GetStoredProperty<BitmapImage>(); }
+            set { SetStoredProperty(value); }
+        }
+
+        public bool SlideshowImage1Visible
+        {
+            get { return GetStoredProperty<bool>(); }
             set { SetStoredProperty(value); }
         }
 
@@ -44,11 +55,13 @@ namespace SmartDisplay.ViewModels
         private SettingsProvider Settings => AppService?.Settings as SettingsProvider;
         private ITelemetryService TelemetryService => AppService?.TelemetryService;
 
+        private bool _suspended;
         private int _currentFileIndex;
         private IReadOnlyList<StorageFile> _files;
         private TimeSpan _interval;
         private ThreadPoolTimer _slideshowTimer;
-        private SemaphoreSlim _semaphoreSlim;
+        // 1 if an image change is currently in progress, otherwise 0
+        private int _imageChanging;
 
         public PhotoPageVM() : base()
         {
@@ -61,14 +74,14 @@ namespace SmartDisplay.ViewModels
             PopulateCommandBar();
             try
             {
-                _currentFileIndex = 0;
+                _suspended = false;
+                _imageChanging = 0;
 
-                SlideshowImage = new BitmapImage();
-
+                SlideshowImage1 = new BitmapImage();
+                SlideshowImage2 = new BitmapImage();
+                SlideshowImage1Visible = true;
                 NoImagesGridIsVisible = false;
                 ShowLoadingPanel(Common.GetLocalizedText("PhotoPageLoading"));
-
-                _semaphoreSlim = new SemaphoreSlim(1, 1);
 
                 var query = CommonFileQuery.DefaultQuery;
                 var queryOptions = new QueryOptions(query, new[] { ".png", ".jpg" })
@@ -86,7 +99,7 @@ namespace SmartDisplay.ViewModels
                     DisplayNextPicture();
 
                     _interval = TimeSpan.FromSeconds(Settings.SlideshowIntervalSeconds);
-                    _slideshowTimer = ThreadPoolTimer.CreatePeriodicTimer(SlideshowTimer_Elapsed, _interval);
+                    _slideshowTimer = ThreadPoolTimer.CreateTimer(SlideshowTimer_Elapsed, _interval);
                 }
                 else
                 {
@@ -110,15 +123,14 @@ namespace SmartDisplay.ViewModels
 
         public void TearDownVM()
         {
+            _suspended = true;
+
             Settings.SettingsUpdated -= Settings_SettingsUpdated;
 
             LogService.Write("Stopping slideshow timer...");
 
             _slideshowTimer?.Cancel();
             _slideshowTimer = null;
-
-            _semaphoreSlim.Dispose();
-            _semaphoreSlim = null;
         }
 
         private void Settings_SettingsUpdated(object sender, SettingsUpdatedEventArgs args)
@@ -128,9 +140,8 @@ namespace SmartDisplay.ViewModels
                 switch (args.Key)
                 {
                     case "SlideshowIntervalSeconds":
-                        _slideshowTimer?.Cancel();
                         _interval = TimeSpan.FromSeconds(settings.SlideshowIntervalSeconds);
-                        _slideshowTimer = ThreadPoolTimer.CreatePeriodicTimer(SlideshowTimer_Elapsed, _interval);                        
+                        StartSlideshowTimer();
                         break;
                 }
             }
@@ -149,81 +160,130 @@ namespace SmartDisplay.ViewModels
                 Common.GetLocalizedText("SlideshowSettingHeader/Text")));
         }
 
+        private void StartSlideshowTimer()
+        {
+            if (!_suspended)
+            {
+                _slideshowTimer?.Cancel();
+                _slideshowTimer = ThreadPoolTimer.CreateTimer(SlideshowTimer_Elapsed, _interval);
+            }
+        }
+
+        private bool BeginImageChange()
+        {
+            // Don't allow a new image change to start if any of the following conditions are true:
+            // - The page is being shut down
+            // - There aren't any pictures to display
+            // - Another thread is in the middle of changing the image
+            return !_suspended &&
+                    _files.Count > 0 &&
+                    Interlocked.CompareExchange(ref _imageChanging, 1, 0) == 0;
+        }
+
+        private void EndImageChange()
+        {
+            _imageChanging = 0;
+        }
+
+        private void NormalizeFileIndex()
+        {
+            _currentFileIndex %= _files.Count;
+            if (_currentFileIndex < 0)
+            {
+                _currentFileIndex += _files.Count;
+            }
+        }
+
         private void DisplayNextPicture()
         {
-            try
+            _currentFileIndex++;
+
+            // Don't try to change the picture if another change is in progress.
+
+            if (BeginImageChange())
             {
-                if (_files.Count > 0)
+                try
                 {
-                    _currentFileIndex++;
-
-                    if (_currentFileIndex >= _files.Count)
-                    {
-                        _currentFileIndex = 0;
-                    }
-
+                    NormalizeFileIndex();
                     var result = SetImage(_files[_currentFileIndex]);
                 }
-            }
-            catch (Exception ex)
-            {
-                LogService.Write(ex.Message, LoggingLevel.Error);
+                catch (Exception ex)
+                {
+                    LogService.Write(ex.Message, LoggingLevel.Error);
+                }
+                finally
+                {
+                    EndImageChange();
+                }
             }
         }
 
         private void DisplayPreviousPicture()
         {
-            try
+            _currentFileIndex--;
+
+            // Don't try to change the picture if another change is in progress.
+            if (BeginImageChange())
             {
-                if (_files.Count > 0)
+                try
                 {
-                    _currentFileIndex--;
-
-                    if (_currentFileIndex < 0)
-                    {
-                        _currentFileIndex = _files.Count + _currentFileIndex;
-                    }
-
+                    NormalizeFileIndex();
                     var result = SetImage(_files[_currentFileIndex]);
                 }
-            }
-            catch (Exception ex)
-            {
-                LogService.Write(ex.Message, LoggingLevel.Error);
+                catch (Exception ex)
+                {
+                    LogService.Write(ex.Message, LoggingLevel.Error);
+                }
+                finally
+                {
+                    EndImageChange();
+                }
             }
         }
 
         private async Task SetImage(StorageFile file)
         {
-            await _semaphoreSlim.WaitAsync();
             try
             {
                 using (var stream = await ImageUtil.GetBitmapStreamAsync(file))
                 {
-                    SlideshowImage = new BitmapImage();
-                    await SlideshowImage.SetSourceAsync(stream);
+                    // Set the source of the non-visible Image element.
+                    // This allows the Image element to resize itself before we make it visible.
+                    var newImage = SlideshowImage1Visible ? SlideshowImage2 : SlideshowImage1;
+                    await newImage.SetSourceAsync(stream);
+
+                    // Swap the images
+                    SlideshowImage1Visible = !SlideshowImage1Visible;
+
+                    // Clear the old Image element to free its image
+                    if (SlideshowImage1Visible)
+                    {
+                        SlideshowImage2 = new BitmapImage();
+                    }
+                    else
+                    {
+                        SlideshowImage1 = new BitmapImage();
+                    }
                 }
             }
             catch (Exception ex)
             {
                 LogService.Write(ex.Message, LoggingLevel.Error);
             }
-            finally
-            {
-                _semaphoreSlim.Release();
-            }
         }
 
         private void SlideshowTimer_Elapsed(ThreadPoolTimer timer)
         {
-            _slideshowTimer?.Cancel();
-
-            InvokeOnUIThread(() =>
+            // Only attempt to update the picture if there is not another update taking place
+            if (_imageChanging == 0)
             {
-                DisplayNextPicture();
-            });
+                InvokeOnUIThread(() =>
+                {
+                    DisplayNextPicture();
+                });
+            }
 
-            _slideshowTimer = ThreadPoolTimer.CreatePeriodicTimer(SlideshowTimer_Elapsed, _interval);
+            StartSlideshowTimer();
         }
 
         public void UpdateSlideshowImage(bool displayPrevious)
@@ -237,9 +297,7 @@ namespace SmartDisplay.ViewModels
                 DisplayNextPicture();
             }
 
-            // Reset slideshow timer
-            _slideshowTimer?.Cancel();
-            _slideshowTimer = ThreadPoolTimer.CreatePeriodicTimer(SlideshowTimer_Elapsed, _interval);
+            StartSlideshowTimer();
         }
     }
 }
