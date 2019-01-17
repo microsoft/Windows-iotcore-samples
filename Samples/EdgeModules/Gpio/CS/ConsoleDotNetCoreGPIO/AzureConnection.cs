@@ -3,7 +3,7 @@
 //
 
 using EdgeModuleSamples.Common;
-using EdgeModuleSamples.Messages;
+using EdgeModuleSamples.Common.Messages;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Client.Exceptions;
 using Microsoft.Azure.Devices.Shared;
@@ -183,16 +183,23 @@ namespace ConsoleDotNetCoreGPIO
         public void NotifyModuleLoad()
         {
             ModuleLoadMessage msg = new ModuleLoadMessage();
-            string id = null;
+            string id = "GPIO";
             if (_moduleTwin == null)
             {
-                Log.WriteLine("missing module twin -- unknown module id");
+                Log.WriteLine("missing module twin -- assuming moduleId {0}", id);
                 id = "unknown";
             } else
             {
-                id = _moduleTwin.ModuleId;
+                string tid = _moduleTwin.ModuleId;
+                if (tid == null || tid.Length == 0)
+                {
+                    Log.WriteLine("missing module id -- assuming moduleId {0}", id);
+                } else
+                {
+                    id = tid;
+                }
             }
-
+            Log.WriteLine("NotifyModuleLoad {0}", id);
             msg.ModuleName = id;
 
             NotifyMessage(msg);
@@ -206,6 +213,19 @@ namespace ConsoleDotNetCoreGPIO
                 var m = new Message(msgbody);
                 await _moduleClient.SendEventAsync("Output1", m);
             });
+        }
+
+        private Task<MethodResponse> SetFruit(MethodRequest req, Object context)
+        {
+            string data = Encoding.UTF8.GetString(req.Data);
+            Log.WriteLine("Direct Method SetFruit {0}", data);
+            var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(data);
+            AzureModule module = (AzureModule)context;
+            module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen);
+
+            // Acknowlege the direct method call with a 200 success message
+            string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
+            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
         }
 
         public AzureModule()
@@ -251,6 +271,7 @@ namespace ConsoleDotNetCoreGPIO
                     _moduleClient.SetConnectionStatusChangesHandler(OnConnectionChanged);
                     await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredModulePropertyChanged, this);
                     await _moduleClient.SetInputMessageHandlerAsync("inputfruit", OnFruitMessageReceived, this);
+                    await _moduleClient.SetMethodHandlerAsync("SetFruit", SetFruit, this);
                     await _moduleClient.OpenAsync();
                     openSucceeded = true;
                 //}
@@ -269,8 +290,6 @@ namespace ConsoleDotNetCoreGPIO
             Log.WriteLine("ModuleTwin Retrieved");
             await OnDesiredModulePropertyChanged(_moduleTwin.Properties.Desired, this);
             Log.WriteLine("ModuleTwin Initial Desired Properties Processed");
-            NotifyModuleLoad();
-            Log.WriteLine("Module Load D2C message fired");
         }
     }
 
@@ -279,6 +298,7 @@ namespace ConsoleDotNetCoreGPIO
     {
         private AzureConnection _connection { get; set; }
         private DeviceClient _deviceClient { get; set; }
+
         private Twin _deviceTwin { get; set; }
         private TwinCollection _reportedDeviceProperties { get; set; }
         private static async Task OnDesiredDevicePropertyChanged(TwinCollection desiredProperties, object ctx)
@@ -292,14 +312,18 @@ namespace ConsoleDotNetCoreGPIO
             // TODO: compute delta and only send changes
             await device._deviceClient.UpdateReportedPropertiesAsync(device._reportedDeviceProperties).ConfigureAwait(false);
         }
-        public AzureDevice() {
-            }
+    public AzureDevice() {
+        }
         public async Task AzureDeviceInitAsync() {
             TransportType transport = TransportType.Amqp;
             _deviceClient = DeviceClient.CreateFromConnectionString(await DeploymentConfig.GetDeviceConnectionStringAsync(), transport);
             // TODO: connection status chnages handler
             //newConnection._inputMessageHandler += OnInputMessageReceived;
             //await newConnection._moduleClient.SetInputMessageHandlerAsync("????", _inputMessageHandler, newConnection)
+            // Connect to the IoT hub using the MQTT protocol
+
+            // Create a handler for the direct method call
+            _deviceClient.SetMethodHandlerAsync("SetFruit", SetFruit, this).Wait();
             await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredDevicePropertyChanged, this);
             await _deviceClient.OpenAsync();
             Log.WriteLine("DeviceClient Initialized");
@@ -308,11 +332,12 @@ namespace ConsoleDotNetCoreGPIO
         }
     }
 #endif
+
     class AzureConnection
     {
         private ConcurrentQueue<string> _updateq { get; set; }
 
-        private MessageHandler _inputMessageHandler { get; set; }
+        //private MessageHandler _inputMessageHandler { get; set; }
         public AzureModule Module { get; private set; }
 #if USE_DEVICE_TWIN
         private AzureDevice _device { get; set; }
@@ -351,6 +376,11 @@ namespace ConsoleDotNetCoreGPIO
 
             Log.WriteLine("Azure connection Creation Complete");
             return newConnection;
+        }
+        public void NotifyModuleLoad()
+        {
+            Module.NotifyModuleLoad();
+            Log.WriteLine("Module Load D2C message fired");
         }
 
 #if DISABLED

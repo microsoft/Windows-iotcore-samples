@@ -23,6 +23,13 @@ namespace ConsoleDotNetCoreGPIO
             Options.Parse(args);
             Log.Enabled = Options.Logging;
             Log.WriteLine("arg parse complete...");
+            Dictionary<string, string> FruitColors = new Dictionary<string, string>()
+            {
+                {"apple", "red" },
+                {"pear", "yellow" },
+                {"pen", "green" },
+                {"grapes", "blue"}
+            };
             AzureConnection connection = null;
             GPIODevice gpio = null;
             await Task.WhenAll(
@@ -51,13 +58,6 @@ namespace ConsoleDotNetCoreGPIO
                 Log.WriteLine("updating gpio pin config with {0}", newConfiguration.ToString());
                 await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
             };
-            Dictionary<string, string> FruitColors = new Dictionary<string, string>()
-            {
-                {"apple", "red" },
-                {"pear", "yellow" },
-                {"pen", "green" },
-                {"grapes", "blue"}
-            };
             connection.Module.FruitChanged += async (object sender, string fruit) =>
             {
                 Log.WriteLine("fruit changed to {0}", fruit.ToLower());
@@ -69,7 +69,7 @@ namespace ConsoleDotNetCoreGPIO
                 Log.WriteLine("initializing gpio pin config with {0}", connection.Module.Configuration.GpioPins);
                 await gpio.UpdatePinConfigurationAsync(connection.Module.Configuration.GpioPins);
             });
-
+            connection.NotifyModuleLoad();
 
             Log.WriteLine("Initialization Complete. have connection and device pins.  Active Pin is {0}", gpio.ActivePin == null ? "(null)" : gpio.ActivePin);
 

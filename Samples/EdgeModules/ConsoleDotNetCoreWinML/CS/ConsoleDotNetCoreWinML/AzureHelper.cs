@@ -3,7 +3,7 @@
 //
 
 using EdgeModuleSamples.Common;
-using EdgeModuleSamples.Messages;
+using EdgeModuleSamples.Common.Messages;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
