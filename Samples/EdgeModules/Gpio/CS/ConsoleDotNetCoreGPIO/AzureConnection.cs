@@ -60,9 +60,6 @@ namespace ConsoleDotNetCoreGPIO
 
     class AzureModule : AzureModuleBase
     {
-        private AzureConnection _connection { get; set; }
-        private ModuleClient _moduleClient { get; set; }
-        private Twin _moduleTwin { get; set; }
         private DesiredPropertiesType _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
@@ -83,73 +80,33 @@ namespace ConsoleDotNetCoreGPIO
             Log.WriteLine("derived connection changed.  status {0} reason {1}", status, reason);
             return;
         }
-        private static async Task OnDesiredModulePropertyChanged(TwinCollection newDesiredProperties, object ctx)
+        protected override async Task OnDesiredModulePropertyChanged(TwinCollection newDesiredProperties)
         {
-            var module = (AzureModule)ctx;
             // TODO: process new properties
-            Log.WriteLine("desired properties contains {0} properties", newDesiredProperties.Count);
-            foreach (var p in newDesiredProperties)
-            {
-                Log.WriteLine("property {0}", p.GetType());
-                var pv = (KeyValuePair<string, object>)p;
-                Log.WriteLine("key = {0}, vt = {1}:{2}", pv.Key, pv.Value.GetType(), pv.Value);
-            }
+            Log.WriteLine("derived desired properties contains {0} properties", newDesiredProperties.Count);
+            await base.OnDesiredModulePropertyChanged(newDesiredProperties);
             DesiredPropertiesType dp;
-            dp.Configuration = ((JObject)newDesiredProperties["Configuration"]).ToObject<ConfigurationType>();
-            Log.WriteLine("checking for update current desiredProperties {0} new dp {1}", module._desiredProperties.ToString(), dp.ToString());
-            var changed = module._desiredProperties.Update(dp);
+            dp.Configuration = ((JObject)newDesiredProperties[Keys.Configuration]).ToObject<ConfigurationType>();
+            Log.WriteLine("checking for update current desiredProperties {0} new dp {1}", _desiredProperties.ToString(), dp.ToString());
+            var changed = _desiredProperties.Update(dp);
             if (changed) {
-                Log.WriteLine("desired properties {0} different then current properties, notifying...", module._desiredProperties.ToString());
-                module.ConfigurationChanged?.Invoke(module, dp.Configuration);
-                var rp = new TwinCollection();
-                rp["Configuration"] = module._desiredProperties.Configuration;
-                await module._moduleClient.UpdateReportedPropertiesAsync(rp).ConfigureAwait(false);
+                Log.WriteLine("desired properties {0} different then current properties, notifying...", _desiredProperties.ToString());
+                ConfigurationChanged?.Invoke(this, dp.Configuration);
+                Log.WriteLine("local notification complete. updating reported properties to cloud twin");
+                await UpdateReportedPropertiesAsync(new KeyValuePair<string, string>(Keys.Configuration, JsonConvert.SerializeObject(_desiredProperties.Configuration))).ConfigureAwait(false);
+
             }
-            if (newDesiredProperties.Contains("FruitTest"))
+            if (newDesiredProperties.Contains(Keys.FruitTest))
             {
-                var fruit = (string)((JValue)newDesiredProperties["FruitTest"]).Value;
+                var fruit = (string)((JValue)newDesiredProperties[Keys.FruitTest]).Value;
                 Log.WriteLine("fruittest {0}", fruit != null ? fruit : "(null)");
                 if (fruit != null)
                 {
                     Log.WriteLine("setting fruit {0}", fruit);
-                    module.FruitChanged?.Invoke(module, fruit);
+                    FruitChanged?.Invoke(this, fruit);
                 }
             }
-            Log.WriteLine("update complete -- current properties {0}", module._desiredProperties.ToString());
-        }
-        public void NotifyModuleLoad()
-        {
-            ModuleLoadMessage msg = new ModuleLoadMessage();
-            string id = "GPIO";
-            if (_moduleTwin == null)
-            {
-                Log.WriteLine("missing module twin -- assuming moduleId {0}", id);
-                id = "unknown";
-            } else
-            {
-                string tid = _moduleTwin.ModuleId;
-                if (tid == null || tid.Length == 0)
-                {
-                    Log.WriteLine("missing module id -- assuming moduleId {0}", id);
-                } else
-                {
-                    id = tid;
-                }
-            }
-            Log.WriteLine("NotifyModuleLoad {0}", id);
-            msg.ModuleName = id;
-
-            NotifyMessage(msg);
-
-        }
-        public void NotifyMessage<T>(T msg)
-        {
-            Task.Run(async () =>
-            {
-                byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
-                var m = new Message(msgbody);
-                await _moduleClient.SendEventAsync("Output1", m);
-            });
+            Log.WriteLine("update complete -- current properties {0}", _desiredProperties.ToString());
         }
 
         private Task<MethodResponse> SetFruit(MethodRequest req, Object context)
@@ -169,11 +126,12 @@ namespace ConsoleDotNetCoreGPIO
         {
 
         }
-        public override async Task AzureModuleInitAsync()
+        public override async Task AzureModuleInitAsync<C>(C c) 
         {
-            await base.AzureModuleInitBeginAsync();
-            await _moduleClient.SetInputMessageHandlerAsync("inputfruit", OnFruitMessageReceived, this);
-            await _moduleClient.SetMethodHandlerAsync("SetFruit", SetFruit, this);
+            AzureConnection c1 = c as AzureConnection;
+            await base.AzureModuleInitAsync(c1);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputFruit, OnFruitMessageReceived, this);
+            await _moduleClient.SetMethodHandlerAsync(Keys.SetFruit, SetFruit, this);
             await base.AzureModuleInitEndAsync();
         }
     }
@@ -236,10 +194,10 @@ namespace ConsoleDotNetCoreGPIO
             return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
         }
 
-        public void NotifyModuleLoad()
+        public async Task NotifyModuleLoad()
         {
-            Module.NotifyModuleLoad("GPIO", "output1");
-            Log.WriteLine("Module Load D2C message fired");
+            await NotifyModuleLoad("GPIO", "output1");
+            Log.WriteLine("derived Module Load D2C message fired");
         }
 
 #if DISABLED

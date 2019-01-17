@@ -91,9 +91,9 @@ namespace EdgeModuleSamples.Common.Azure
 
     abstract public class AzureModuleBase
     {
-        private AzureConnectionBase _connection { get; set; }
-        private ModuleClient _moduleClient { get; set; }
-        private Twin _moduleTwin { get; set; }
+        protected AzureConnectionBase _connection { get; set; }
+        protected ModuleClient _moduleClient { get; set; }
+        protected Twin _moduleTwin { get; set; }
         private TwinCollection _reportedDeviceProperties { get; set; }
         public ConnectionStatus Status { get; set; }
         public ConnectionStatusChangeReason LastConnectionChangeReason { get; set; }
@@ -104,7 +104,7 @@ namespace EdgeModuleSamples.Common.Azure
             LastConnectionChangeReason = reason;
             await Task.CompletedTask;
         }
-        public virtual async Task OnDesiredModulePropertyChanged(TwinCollection newDesiredProperties)
+        protected virtual async Task OnDesiredModulePropertyChanged(TwinCollection newDesiredProperties)
         {
             // TODO: process new properties
             Log.WriteLine("base desired properties contains {0} properties", newDesiredProperties.Count);
@@ -124,7 +124,7 @@ namespace EdgeModuleSamples.Common.Azure
             await _moduleClient.UpdateReportedPropertiesAsync(delta).ConfigureAwait(false);
 
         }
-        public void NotifyModuleLoad(string defaultId, string route)
+        public async Task NotifyModuleLoad(string defaultId, string route)
         {
             ModuleLoadMessage msg = new ModuleLoadMessage();
             string id = defaultId;
@@ -142,29 +142,34 @@ namespace EdgeModuleSamples.Common.Azure
                     id = tid;
                 }
             }
-            Log.WriteLine("NotifyModuleLoad {0}", id);
+            Log.WriteLine("base NotifyModuleLoad {0} to {1}", id, route);
             msg.ModuleName = id;
 
-            Task.Run( async() => await SendMessageAsync(route, msg));
+            await SendMessageDataAsync(route, msg);
         }
-        public async Task SendMessageAsync<T>(string route, T msg)
+        public async Task SendMessageDataAsync<T>(string route, T msg) where T : AzureMessageBase
         {
             byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
             var m = new Message(msgbody);
-            await _moduleClient.SendEventAsync(route, m);
+            await SendMessageAsync(route, m);
+        }
+
+        public async Task SendMessageAsync(string route, Message msg)
+        {
+            await _moduleClient.SendEventAsync(route, msg);
         }
 
         public AzureModuleBase()
         {
-
         }
-        public virtual async Task AzureModuleInitAsync()
+        public virtual async Task AzureModuleInitAsync<C>(C c) where C : AzureConnectionBase
         {
-            await Task.CompletedTask;
+            _connection = c;
+            await AzureModuleInitBeginAsync();
         }
         //NOTE: actual work for module init split in 2 parts to allow derived classes to attach additional
         // message handlers prior to the module client open
-        public async Task AzureModuleInitBeginAsync()
+        private async Task AzureModuleInitBeginAsync()
         {
             AmqpTransportSettings[] settings = new AmqpTransportSettings[2];
             settings[0] = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
@@ -173,6 +178,7 @@ namespace EdgeModuleSamples.Common.Azure
             settings[1] = new AmqpTransportSettings(TransportType.Amqp_WebSocket_Only);
             settings[1].OpenTimeout = TimeSpan.FromSeconds(120);
             settings[1].OperationTimeout = TimeSpan.FromSeconds(120);
+            _reportedDeviceProperties = new TwinCollection();
             _moduleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
             Log.WriteLine("ModuleClient Initialized");
 
@@ -184,7 +190,7 @@ namespace EdgeModuleSamples.Common.Azure
                 await module.OnDesiredModulePropertyChanged(newDesiredProperties);
             }, this);
         }
-        public async Task AzureModuleInitEndAsync()
+        protected async Task AzureModuleInitEndAsync()
         {
             await _moduleClient.OpenAsync();
 
@@ -196,6 +202,7 @@ namespace EdgeModuleSamples.Common.Azure
         }
     }
 
+#if USE_DEVICE_TWIN
     abstract public class AzureDeviceBase
     {
         private AzureConnectionBase _connection { get; set; }
@@ -219,10 +226,12 @@ namespace EdgeModuleSamples.Common.Azure
             await device.OnDesiredDevicePropertyChanged(desiredProperties);
             return;
         }
+
         public AzureDeviceBase()
         {
         }
-        public async Task AzureDeviceInitAsync() {
+        public async Task AzureDeviceInitAsync<C>(C c) where C : AzureConnectionBase {
+            _connection = c;
             TransportType transport = TransportType.Amqp;
             _deviceClient = DeviceClient.CreateFromConnectionString(await DeploymentConfig.GetDeviceConnectionStringAsync(), transport);
             // TODO: connection status chnages handler
@@ -238,6 +247,21 @@ namespace EdgeModuleSamples.Common.Azure
             Log.WriteLine("DeviceTwin Retrieved");
         }
     }
+#else
+    abstract public class AzureDeviceBase
+    {
+        private AzureConnectionBase _connection { get; set; }
+
+        public AzureDeviceBase()
+        {
+        }
+        public async Task AzureDeviceInitAsync<C>(C c) where C : AzureConnectionBase
+        {
+            _connection = c;
+            await Task.CompletedTask;
+        }
+    }
+#endif
 
     abstract public class AzureConnectionBase
     {
@@ -253,20 +277,20 @@ namespace EdgeModuleSamples.Common.Azure
         // {
         // 
         // }
-        private async Task AzureConnectionInitAsync<D, M>() where D : AzureDeviceBase, new() where M : AzureModuleBase, new()
+        protected virtual async Task AzureConnectionInitAsync<D, M>() where D : AzureDeviceBase, new() where M : AzureModuleBase, new()
         {
             await Task.WhenAll(
 
                 // ignore twin until 
                 Task.Run(async () => {
                     Device = new D();
-                    await Device.AzureDeviceInitAsync();
+                    await Device.AzureDeviceInitAsync(this);
                 }),
 
                 Task.Run(async () =>
                 {
                     Module = new M();
-                    await Module.AzureModuleInitAsync();
+                    await Module.AzureModuleInitAsync(this);
                 })
             );
             Log.WriteLine("Azure connection Initialized");
@@ -279,10 +303,10 @@ namespace EdgeModuleSamples.Common.Azure
             Log.WriteLine("Azure connection Creation Complete");
             return newConnection;
         }
-        public void NotifyModuleLoad(string defaultId, string route)
+        protected async Task NotifyModuleLoad(string defaultId, string route)
         {
-            Module.NotifyModuleLoad(defaultId, route);
-            Log.WriteLine("Module Load D2C message fired");
+            await Module.NotifyModuleLoad(defaultId, route);
+            Log.WriteLine("Module Load D2C message fired module {0} route {1}", defaultId, route);
         }
 
 
