@@ -21,7 +21,10 @@ using YamlDotNet.Serialization;
 
 namespace ConsoleDotNetCoreGPIO
 {
-
+    public class AzureDevice : AzureDeviceBase
+    {
+        public AzureDevice() { }
+    }
     [JsonObject(MemberSerialization.Fields)]
     struct ConfigurationType
     {
@@ -215,53 +218,27 @@ namespace ConsoleDotNetCoreGPIO
     }
 #endif
 
-    class AzureConnection
+    class AzureConnection : AzureConnectionBase
     {
-        private ConcurrentQueue<string> _updateq { get; set; }
-
         //private MessageHandler _inputMessageHandler { get; set; }
-        public AzureModule Module { get; private set; }
 #if USE_DEVICE_TWIN
         private AzureDevice _device { get; set; }
 #endif
-        private AzureConnection()
+        public AzureConnection()
         {
-            _updateq = new ConcurrentQueue<string>();
+            
         }
         // private async Task<MessageResponse> OnInputMessageReceived(Message msg, object ctx)
         // {
         // 
         // }
-        private async Task AzureConnectionInitAsync()
-        {
-            await Task.WhenAll(
-#if USE_DEVICE_TWIN
-
-                // ignore twin until 
-                Task.Run(async () => {
-                    _device = new AzureDevice();
-                    await _device.AzureDeviceInitAsync();
-                }),
-#endif
-                Task.Run(async () =>
-                {
-                    Module = new AzureModule();
-                    await Module.AzureModuleInitAsync();
-                })
-            );
-            Log.WriteLine("Azure connection Initialized");
+        public static async Task<AzureConnection> CreateAzureConnectionAsync() {
+            return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
         }
-        public static async Task<AzureConnection> CreateAzureConnectionAsync()
-        {
-            var newConnection = new AzureConnection();
-            await newConnection.AzureConnectionInitAsync();
 
-            Log.WriteLine("Azure connection Creation Complete");
-            return newConnection;
-        }
         public void NotifyModuleLoad()
         {
-            Module.NotifyModuleLoad();
+            Module.NotifyModuleLoad("GPIO", "output1");
             Log.WriteLine("Module Load D2C message fired");
         }
 

@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
+using EdgeModuleSamples.Common.Azure;
 using EdgeModuleSamples.Common.Logging;
 using System;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ using Windows.Media;
 using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
 using Windows.Storage;
+using System.Collections.Generic;
 
 namespace ConsoleDotNetCoreWinML
 {
@@ -212,7 +214,7 @@ namespace ConsoleDotNetCoreWinML
             if (prevLabel == null || prevLabel != label)
             {
                 prevLabel = label;
-                azure.UpdateObject(label);
+                azure.UpdateObject(new KeyValuePair<string, string>("FruitSeen", label));
 
             }
 

@@ -52,13 +52,14 @@ namespace ConsoleDotNetCoreGPIO
                     }
                 )
             );
-            connection.Module.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
+            AzureModule m = (AzureModule)connection.Module;
+            m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
             {
                 var module = (AzureModule)sender;
                 Log.WriteLine("updating gpio pin config with {0}", newConfiguration.ToString());
                 await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
             };
-            connection.Module.FruitChanged += async (object sender, string fruit) =>
+            m.FruitChanged += async (object sender, string fruit) =>
             {
                 Log.WriteLine("fruit changed to {0}", fruit.ToLower());
                 var module = (AzureModule)sender;
@@ -66,8 +67,8 @@ namespace ConsoleDotNetCoreGPIO
             };
             await Task.Run(async () =>
             {
-                Log.WriteLine("initializing gpio pin config with {0}", connection.Module.Configuration.GpioPins);
-                await gpio.UpdatePinConfigurationAsync(connection.Module.Configuration.GpioPins);
+                Log.WriteLine("initializing gpio pin config with {0}", m.Configuration.GpioPins);
+                await gpio.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
             });
             connection.NotifyModuleLoad();
 

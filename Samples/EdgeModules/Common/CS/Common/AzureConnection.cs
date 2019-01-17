@@ -94,6 +94,7 @@ namespace EdgeModuleSamples.Common.Azure
         private AzureConnectionBase _connection { get; set; }
         private ModuleClient _moduleClient { get; set; }
         private Twin _moduleTwin { get; set; }
+        private TwinCollection _reportedDeviceProperties { get; set; }
         public ConnectionStatus Status { get; set; }
         public ConnectionStatusChangeReason LastConnectionChangeReason { get; set; }
         public virtual async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
@@ -114,6 +115,14 @@ namespace EdgeModuleSamples.Common.Azure
                 Log.WriteLine("key = {0}, vt = {1}:{2}", pv.Key, pv.Value.GetType(), pv.Value);
             }
             await Task.CompletedTask;
+        }
+        public virtual async Task UpdateReportedPropertiesAsync(KeyValuePair<string, string> u)
+        {
+            _reportedDeviceProperties[u.Key] = u.Value;
+            TwinCollection delta = new TwinCollection();
+            delta[u.Key] = u.Value;
+            await _moduleClient.UpdateReportedPropertiesAsync(delta).ConfigureAwait(false);
+
         }
         public void NotifyModuleLoad(string defaultId, string route)
         {
@@ -136,16 +145,13 @@ namespace EdgeModuleSamples.Common.Azure
             Log.WriteLine("NotifyModuleLoad {0}", id);
             msg.ModuleName = id;
 
-            NotifyMessage(route, msg);
+            Task.Run( async() => await SendMessageAsync(route, msg));
         }
-        public void NotifyMessage<T>(string route, T msg)
+        public async Task SendMessageAsync<T>(string route, T msg)
         {
-            Task.Run(async () =>
-            {
-                byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
-                var m = new Message(msgbody);
-                await _moduleClient.SendEventAsync(route, m);
-            });
+            byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
+            var m = new Message(msgbody);
+            await _moduleClient.SendEventAsync(route, m);
         }
 
         public AzureModuleBase()
@@ -235,13 +241,13 @@ namespace EdgeModuleSamples.Common.Azure
 
     abstract public class AzureConnectionBase
     {
-        private ConcurrentQueue<string> _updateq { get; set; }
+        private ConcurrentQueue<KeyValuePair<string, string>> _updateq { get; set; }
 
         public virtual AzureModuleBase Module { get; protected set; }
         public virtual AzureDeviceBase Device { get; protected set; }
-        private AzureConnectionBase()
+        protected AzureConnectionBase()
         {
-            _updateq = new ConcurrentQueue<string>();
+            _updateq = new ConcurrentQueue<KeyValuePair<string, string>>();
         }
         // private async Task<MessageResponse> OnInputMessageReceived(Message msg, object ctx)
         // {
@@ -279,25 +285,27 @@ namespace EdgeModuleSamples.Common.Azure
             Log.WriteLine("Module Load D2C message fired");
         }
 
-#if DISABLED
-        public void UpdateObject(string fruit)
+
+        public void UpdateObject(KeyValuePair<string, string> kvp)
         {
-            _updateq.Enqueue(fruit);
+            _updateq.Enqueue(kvp);
             Task.Run(async () =>
             {
                 try
                 {
-                    string f = null;
+                    KeyValuePair<string, string> u;
                     bool success = false;
-                    while (!success && !_updateq.IsEmpty)
+                    while (!_updateq.IsEmpty)
                     {
-                        success = _updateq.TryDequeue(out f);
-                        await UpdateObjectAsync(f);
-                        var reporting = new TwinCollection
+                        do
                         {
-                            ["FruitSeen"] = fruit
-                        };
-                        await _client.UpdateReportedPropertiesAsync(reporting);
+                            success = _updateq.TryDequeue(out u);
+                            if (success)
+                            {
+                                await UpdateObjectAsync(u);
+                                await Module.UpdateReportedPropertiesAsync(u);
+                            }
+                        } while (!success);
                     }
                 }
                 catch (Exception e)
@@ -306,16 +314,9 @@ namespace EdgeModuleSamples.Common.Azure
                 }
             });
         }
-        private async Task UpdateObjectAsync(string fruit)
+        public virtual async Task UpdateObjectAsync(KeyValuePair<string, string> kvp)
         {
-            // output the event stream
-            var msgvalue = new FruitMessage();
-            msgvalue.FruitSeen = fruit;
-            byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
-            var m = new Message(msgbody);
-            await _client.SendEventAsync("OutputFruit", m);
-            // Update the module twin
+            await Task.CompletedTask;
         }
-#endif
     }
 }
