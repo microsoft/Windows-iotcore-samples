@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\CS\Common\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDotNetCoreGPIO", "Gpio\CS\ConsoleDotNetCoreGPIO\ConsoleDotNetCoreGPIO.csproj", "{8C8730DB-C952-4EB0-8744-D569631EA3DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HubEventHandler", "GPIOFruitEvent\CS\HubEventHandler\HubEventHandler.csproj", "{E1CEAA68-B40A-4D81-A542-030D15197201}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{8C8730DB-C952-4EB0-8744-D569631EA3DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C8730DB-C952-4EB0-8744-D569631EA3DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C8730DB-C952-4EB0-8744-D569631EA3DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E1CEAA68-B40A-4D81-A542-030D15197201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1CEAA68-B40A-4D81-A542-030D15197201}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E1CEAA68-B40A-4D81-A542-030D15197201}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E1CEAA68-B40A-4D81-A542-030D15197201}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
