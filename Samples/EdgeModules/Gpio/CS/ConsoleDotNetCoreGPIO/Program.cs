@@ -70,7 +70,7 @@ namespace ConsoleDotNetCoreGPIO
                 Log.WriteLine("initializing gpio pin config with {0}", m.Configuration.GpioPins);
                 await gpio.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
             });
-            connection.NotifyModuleLoad();
+            await connection.NotifyModuleLoad();
 
             Log.WriteLine("Initialization Complete. have connection and device pins.  Active Pin is {0}", gpio.ActivePin == null ? "(null)" : gpio.ActivePin);
 

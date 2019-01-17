@@ -31,15 +31,18 @@ namespace ConsoleDotNetCoreWinML
             return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
         }
 
-        private async Task UpdateObjectAsync(string fruit)
+        public override async Task UpdateObjectAsync(KeyValuePair<string, string> kvp)
         {
-            // output the event stream
-            var msgvalue = new FruitMessage();
-            msgvalue.FruitSeen = fruit;
-            byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
-            var m = new Message(msgbody);
-            await Module.SendMessageAsync("OutputFruit", m);
-            // Update the module twin
+            if (kvp.Key == Keys.FruitSeen)
+            {
+                // output the event stream
+                var msgvalue = new FruitMessage();
+                msgvalue.FruitSeen = kvp.Value;
+                byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
+                var m = new Message(msgbody);
+                await Module.SendMessageAsync(Keys.OutputFruit, m);
+                // Update the module twin
+            }
         }
     }
 }

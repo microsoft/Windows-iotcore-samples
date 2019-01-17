@@ -1,9 +1,11 @@
 ﻿//
+//
 // Copyright (c) Microsoft. All rights reserved.
 //
 
-using EdgeModuleSamples.Common.Azure;
+using EdgeModuleSamples.Common;
 using EdgeModuleSamples.Common.Logging;
+using EdgeModuleSamples.Common.Messages;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -20,53 +22,6 @@ using System.Collections.Generic;
 
 namespace ConsoleDotNetCoreWinML
 {
-    class AsyncHelper {
-        // Work around this problem:
-        // https://github.com/Microsoft/dotnet/issues/590
-        // https://github.com/dotnet/corefx/issues/22789
-        public static async Task<T> SyncFromAsync<T>(IAsyncOperation<T> op, string dbgtag)
-        {
-
-            T result = default(T);
-            using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
-            {
-                op.Completed += (o, s) =>
-                {
-                    AsyncMeSemaphore.Release();
-                };
-                // in case the op completes before the handler got connected we must check
-                // status and complete things before waiting
-                if (op.Status == AsyncStatus.Completed)
-                {
-                    AsyncMeSemaphore.Release();
-                }
-                await AsyncMeSemaphore.WaitAsync();
-                result = op.GetResults();
-            }
-
-            return result;
-        }
-        public static async Task SyncFromAsync(IAsyncAction op, string dbgtag)
-        {
-            using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
-            {
-                op.Completed += (o, s) =>
-                {
-                    AsyncMeSemaphore.Release();
-                };
-                // in case the op completes before the handler got connected we must check
-                // status and complete things before waiting
-                if (op.Status == AsyncStatus.Completed)
-                {
-                    AsyncMeSemaphore.Release();
-                }
-                await AsyncMeSemaphore.WaitAsync();
-            }
-
-            return;
-        }
-    }
-
     class Program
     {
 
@@ -74,7 +29,7 @@ namespace ConsoleDotNetCoreWinML
         {
             MediaFrameSourceInfo result_info = null;
             MediaFrameSourceGroup result_group = null;
-            var sourcegroups = await AsyncHelper.SyncFromAsync(MediaFrameSourceGroup.FindAllAsync(), "sourcegroups");
+            var sourcegroups = await AsyncHelper.AsAsync(MediaFrameSourceGroup.FindAllAsync());
             Log.WriteLine("found {0} Source Groups", sourcegroups.Count);
             foreach (var g in sourcegroups)
             {
@@ -118,8 +73,8 @@ namespace ConsoleDotNetCoreWinML
             init.MemoryPreference = MediaCaptureMemoryPreference.Cpu;
             init.StreamingCaptureMode = StreamingCaptureMode.Video;
             Log.WriteLine("Enumerating Frame Sources");
-            await AsyncHelper.SyncFromAsync(capture.InitializeAsync(init), "capture init");
-            Log.WriteLine("capture initialized");
+            await AsyncHelper.AsAsync(capture.InitializeAsync(init));
+            Log.WriteLine("capture initialized.  capture is {0}", capture == null ? "null" : "not null");
             var sources = capture.FrameSources;
             Log.WriteLine("have frame sources");
             MediaFrameSource source;
@@ -166,9 +121,9 @@ namespace ConsoleDotNetCoreWinML
                 throw new ApplicationException("Can't find a Video Format");
             }
             Log.WriteLine(string.Format("selected videoformat -- major {0} sub {1} w {2} h {3}", format.MajorType, format.Subtype, format.VideoFormat.Width, format.VideoFormat.Height));
-            await AsyncHelper.SyncFromAsync(source.SetFormatAsync(format), "set format");
+            await AsyncHelper.AsAsync(source.SetFormatAsync(format));
             Log.WriteLine("set format complete");
-            var reader = await AsyncHelper.SyncFromAsync(capture.CreateFrameReaderAsync(source), "reader");
+            var reader = await AsyncHelper.AsAsync(capture.CreateFrameReaderAsync(source));
             Log.WriteLine("frame reader retrieved\r\n");
             reader.AcquisitionMode = MediaFrameReaderAcquisitionMode.Realtime;
             var evtframe = new EventWaitHandle(false, EventResetMode.ManualReset);
@@ -214,7 +169,7 @@ namespace ConsoleDotNetCoreWinML
             if (prevLabel == null || prevLabel != label)
             {
                 prevLabel = label;
-                azure.UpdateObject(new KeyValuePair<string, string>("FruitSeen", label));
+                azure.UpdateObject(new KeyValuePair<string, string>(Keys.FruitSeen, label));
 
             }
 
@@ -267,7 +222,7 @@ namespace ConsoleDotNetCoreWinML
                     connection = await AzureConnection.CreateAzureConnectionAsync()),
                 Task.Run(async () => {
                     (reader, evtFrame) = await GetFrameReaderAsync();
-                    await AsyncHelper.SyncFromAsync(reader.StartAsync(), "reader start");
+                    await AsyncHelper.AsAsync(reader.StartAsync());
                     })
                 );
 
