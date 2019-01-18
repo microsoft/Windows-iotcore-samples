@@ -1,10 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-
+  <Import Project="..\..\..\Common.CS.Props"/>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.19.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
@@ -13,7 +9,7 @@
 
   <ItemGroup>
     <Reference Include="Windows.Foundation.FoundationContract">
-      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
+      <HintPath>$(WindowsSdkPath)\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
   </ItemGroup>

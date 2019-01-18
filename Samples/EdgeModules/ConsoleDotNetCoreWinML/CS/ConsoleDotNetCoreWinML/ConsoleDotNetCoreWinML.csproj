@@ -2,9 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RuntimeFrameworkVersion>2.2.0</RuntimeFrameworkVersion> <!-- modify build in this line -->
   </PropertyGroup>
+  <Import Project="..\..\..\Common.CS.Props"/>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.19.0" />
@@ -17,15 +16,15 @@
 
   <ItemGroup>
     <Reference Include="Windows.AI.MachineLearning.MachineLearningContract">
-      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.AI.MachineLearning.MachineLearningContract\1.0.0.0\Windows.AI.MachineLearning.MachineLearningContract.winmd</HintPath>
+      <HintPath>$(WindowsSdkPath)\Windows.AI.MachineLearning.MachineLearningContract\1.0.0.0\Windows.AI.MachineLearning.MachineLearningContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
     <Reference Include="Windows.Foundation.FoundationContract">
-      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
+      <HintPath>$(WindowsSdkPath)\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
     <Reference Include="Windows.Foundation.UniversalApiContract">
-      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.Foundation.UniversalApiContract\7.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
+      <HintPath>$(WindowsSdkPath)\Windows.Foundation.UniversalApiContract\7.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
   </ItemGroup>

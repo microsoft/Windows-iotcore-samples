@@ -15,7 +15,7 @@ using Windows.AI.MachineLearning;
 using Windows.Foundation;
 using Windows.Media;
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 using static EdgeModuleSamples.Common.AsyncHelper;
 using static Helpers.BlockTimerHelper;
 
@@ -132,7 +132,7 @@ namespace SampleModule
                             var message = ResultsToMessage(outcome);
                             message.metrics.evaltimeinms = evalticks;
                             var json = JsonConvert.SerializeObject(message);
-                            Log.WriteLineRaw($"Recognized {json}");
+                            Log.WriteLine($"Recognized {json}");
 
                             //
                             // Send results to Edge

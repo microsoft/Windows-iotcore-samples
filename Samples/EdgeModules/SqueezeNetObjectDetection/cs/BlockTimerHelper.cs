@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 
 namespace Helpers
 {
