@@ -219,3 +219,6 @@ IoTConnector/IoTConnector/IoTConnector/Package.StoreAssociation.xml
 
 # ExternalProcessLauncher generated test files
 ProcessLauncherSample/
+
+nuget.exe
+Scripts/logs

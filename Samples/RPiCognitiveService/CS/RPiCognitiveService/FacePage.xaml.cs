@@ -36,7 +36,7 @@ namespace RPiCognitiveService
     {
         //Face API Key
         string key_face = "Your Face API Key";
-        string face_apiroot = "Your API Endpoint" // For instance: https://westeurope.api.cognitive.microsoft.com/face/v1.0
+        string face_apiroot = "Your API Endpoint"; // For instance: https://westeurope.api.cognitive.microsoft.com/face/v1.0
 
         Size size_image;
         Face[] faces;
