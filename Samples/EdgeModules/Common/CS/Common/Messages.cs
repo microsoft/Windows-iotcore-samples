@@ -16,6 +16,7 @@ namespace EdgeModuleSamples.Common.Messages
         public readonly static string HubConnectionString = "HubConnectionString";
         public readonly static string InputFruit = "inputfruit";
         public readonly static string OutputFruit = "outputfruit";
+        public readonly static string OutputUpstream = "outputupstream";
         public readonly static string SetFruit = "SetFruit";
         public readonly static string Reported = "Reported";
     };

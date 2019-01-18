@@ -41,6 +41,7 @@ namespace ConsoleDotNetCoreWinML
                 byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
                 var m = new Message(msgbody);
                 await Module.SendMessageAsync(Keys.OutputFruit, m);
+                await Module.SendMessageAsync(Keys.OutputUpstream, m);
                 // Update the module twin
             }
         }

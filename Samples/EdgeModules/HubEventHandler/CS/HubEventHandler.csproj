@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AzureFunctionsVersion>v2</AzureFunctionsVersion>
   </PropertyGroup>
+  <Import Project="..\..\Common.CS.Props"/>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices" Version="1.17.2" />
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.19.0" />
@@ -11,7 +12,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\CS\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Common\CS\Common\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
