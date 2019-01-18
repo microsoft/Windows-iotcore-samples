@@ -50,7 +50,7 @@ namespace ConsoleDotNetCoreWinML
                         result_info = s; // for now just pick the first thing we find
                     }
                 }
-                Log.WriteLine("\r\n");
+                Log.EndLine();
                 if (result_group == null)
                 {
                     result_group = g; // for now just pick the first thing we find
@@ -114,7 +114,7 @@ namespace ConsoleDotNetCoreWinML
                         }
                     }
                 }
-                Log.WriteLine("");
+                Log.Write("\n");
             }
             if (format == null)
             {

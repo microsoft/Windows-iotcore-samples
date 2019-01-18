@@ -12,7 +12,7 @@ namespace SampleModule
     using Microsoft.Azure.Devices.Client;
     using Newtonsoft.Json;
 
-    using EdgeModuleSamples.Common;
+    using EdgeModuleSamples.Common.Logging;
 
     class Program
     {

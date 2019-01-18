@@ -7,7 +7,7 @@ using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
 using Windows.Media.MediaProperties;
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 using static EdgeModuleSamples.Common.AsyncHelper;
 
 //

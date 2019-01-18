@@ -19,6 +19,10 @@ namespace EdgeModuleSamples.Common.Logging
         private const string fmt_output_clear_eol = "\u001b[K"; // clear current line from cursor to end of line
         private const string fmt_output_home = "\u001b[1G"; // move cursor to beginning of line
 
+        private static string TimeStamp()
+        {
+            return DateTime.Now.ToLocalTime().ToString("yyyy/MM/dd:HH:mm:ss:FFFFFFF") + ": ";
+        }
         public static bool Enabled { get; set; } = true;
 
         public static bool Verbose { get; set; } = false;
@@ -32,25 +36,31 @@ namespace EdgeModuleSamples.Common.Logging
         }
         public static void WriteLine(string fmt, params object[] args)
         {
-            WriteLineInternal(DateTime.Now.ToLocalTime() + ": " + fmt, args);
+            TimeStampedWriteLine(fmt, args);
         }
+#if DISABLED
         public static void WriteLineRaw(string message)
         {
             if (Enabled)
             {
-                Console.WriteLine(DateTime.Now.ToLocalTime() + ": " + message);
+                Console.WriteLine(TimeStamp() + ": " + message);
             }
+        }
+#endif
+        public static void EndLine()
+        {
+            WriteInternal("");
         }
         public static void WriteLineVerbose(string fmt, params object[] args)
         {
             if (Verbose)
             {
-                WriteLineInternal(DateTime.Now.ToLocalTime() + ": " + fmt, args);
+                TimeStampedWriteLine(fmt, args);
             }
         }
         public static void WriteLineError(string fmt, params object[] args)
         {
-            WriteLineInternal(DateTime.Now.ToLocalTime() + ": [ERROR] " + fmt_output_error + fmt + fmt_output_default, args);
+            TimeStampedWriteLine("[ERROR] " + fmt_output_error + fmt + fmt_output_default, args);
         }
         public static void WriteLineException(Exception ex, bool writestack = true)
         {
@@ -61,26 +71,40 @@ namespace EdgeModuleSamples.Common.Logging
         }
         public static void WriteLineSuccess(string fmt, params object[] args)
         {
-            WriteLineInternal(DateTime.Now.ToLocalTime() + ": [OK] " + fmt_output_success + fmt + fmt_output_default, args);
+            TimeStampedWriteLine("[OK] " + fmt_output_success + fmt + fmt_output_default, args);
         }
         public static void WriteLineHome(string fmt, params object[] args)
         {
-            WriteLineInternal(fmt_output_home + fmt_output_clear_eol + fmt, args);
+            WriteInternal(fmt_output_home + fmt_output_clear_eol);
+            TimeStampedWriteLine(fmt, args);
         }
         public static void WriteLineUpHome(string fmt, params object[] args)
         {
-            WriteLineInternal(fmt_output_up1 + fmt_output_home + fmt_output_clear_eol + fmt, args);
+            WriteInternal(fmt_output_up1 + fmt_output_home + fmt_output_clear_eol);
+            TimeStampedWriteLine(fmt, args);
         }
         public static void WriteLineUp3Home(string fmt, params object[] args)
         {
-            WriteLineInternal(fmt_output_up3 + fmt_output_home + fmt_output_clear_eol + fmt, args);
+            WriteInternal(fmt_output_up3 + fmt_output_home + fmt_output_clear_eol);
+            TimeStampedWriteLine(fmt, args);
         }
 
+        private static void TimeStampedWriteLine(string fmt, params object[] args)
+        {
+            WriteLineInternal(TimeStamp() + ": " + fmt, args);
+        }
         private static void WriteLineInternal(string fmt, params object[] args)
         {
             if (Enabled)
             {
                 Console.WriteLine(fmt, args);
+            }
+        }
+        private static void WriteInternal(string fmt, params object[] args)
+        {
+            if (Enabled)
+            {
+                Console.Write(fmt, args);
             }
         }
     }
