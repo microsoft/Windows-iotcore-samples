@@ -58,22 +58,14 @@ namespace HubEventHandler
             {
                 return; // nothing seen yet
             }
-            //var tm = await rm.GetTwinAsync(deviceId, moduleId);
-            //ModuleClient mc = ModuleClient.CreateFromConnectionString()
             ServiceClient client = ServiceClient.CreateFromConnectionString(connectionString);
             log.LogInformation("have service client");
             FruitMessage fruitMsg = new FruitMessage();
             fruitMsg.FruitSeen = fruit;
             var mi = new CloudToDeviceMethod("SetFruit");
             mi.SetPayloadJson(JsonConvert.SerializeObject(fruitMsg));
-            //mi.SetPayloadJson(JsonConvert.SerializeObject(fruit));
-            //C2DMessage msg = new C2DMessage();
-            //client.SendAsync(deviceId, moduleId, msg);
-
-            //MethodRequest mr = new MethodRequest("SetFruit", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(body)), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
 
             // Invoke the direct method asynchronously and get the response from the simulated device.
-            //var response = await mc.InvokeMethodAsync(deviceId, mr);
             var r = await client.InvokeDeviceMethodAsync(deviceId, moduleId, mi);
             log.LogInformation("device method invoked for {0} {1} with {2}", deviceId, moduleId, mi.ToString());
 
@@ -105,35 +97,6 @@ namespace HubEventHandler
                 log.LogInformation("Not a GPIO Load Module -- ignoring");
             }
             log.LogInformation("HubRun complete");
-            return;
-        }
-        [FunctionName("ModuleLoadEdge")]
-        public static async Task EdgeRun([EdgeHubTrigger("input")]D2CMessage message,
-            [EdgeHub(OutputName = "localoutput")] IAsyncCollector<D2CMessage> localoutput,
-            [EdgeHub(OutputName = "upstream")] IAsyncCollector<D2CMessage> upstream,
-            WebJobsExecutionContext context,
-            ILogger log)
-        {
-            string msg = Encoding.UTF8.GetString(message.GetBytes());
-            log.LogInformation($"C# IoT Edge Hub trigger function processed a message: {msg}");
-            ModuleLoadMessage loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msg);
-            await upstream.AddAsync(message);  // send everything upstream
-            if (loadMsg.ModuleName == Keys.GPIOModuleId)
-            {
-                //string conn = ConfigurationManager.AppSettings[Keys.HubConnectionString];
-                log.LogInformation("Load Module GPIO");
-                var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory).AddJsonFile("local.settings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build();
-                string conn = config[Keys.HubConnectionString];
-                log.LogInformation("Have connection string {0}", conn);
-                var rm = RegistryManager.CreateFromConnectionString(conn);
-                string deviceName = (string)message.ConnectionDeviceId;
-                string fruit = await GetCurrentFruit(deviceName, rm, log);
-
-                await C2DMessage(conn, deviceName, loadMsg.ModuleName, fruit, log);
-            } else
-            {
-                await localoutput.AddAsync(message); // if it's not a gpio module load reflect it locally
-            }
             return;
         }
     }
