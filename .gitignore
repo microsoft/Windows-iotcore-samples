@@ -19,6 +19,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 .vs/
+.vscode/
 [Pp]roject[Tt]emplates/
 [Bb]undle[Aa]rtifacts/
 published/

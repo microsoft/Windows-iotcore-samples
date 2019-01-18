@@ -11,6 +11,7 @@
       <RuntimeIdentifier>win-arm</RuntimeIdentifier> 
       <RuntimeIdentifier>win-x64</RuntimeIdentifier> 
   -->    
+    <AzureFunctionsVersion>v2</AzureFunctionsVersion>
   </PropertyGroup>
 
 <!-- if your windows sdk is not in the default location add a common.props.user file with a PropertyGroup tag

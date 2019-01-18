@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HubEventHandler", "HubEventHandler.csproj", "{BDA61716-C531-464F-A5FF-EFBCBAD1C302}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\..\..\Common\CS\Common\Common.csproj", "{2A43A66B-AF69-44CA-B642-822E85A0D2C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\..\Common\CS\Common\Common.csproj", "{2A43A66B-AF69-44CA-B642-822E85A0D2C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
