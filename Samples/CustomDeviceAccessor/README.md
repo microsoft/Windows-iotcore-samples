@@ -2,10 +2,10 @@
 topic: sample
 urlFragment: custom-device-accessor
 languages:
--cpp
+  - cpp
 products:
--windows
-description: This sample shows how to access devices from UWP applications using familiar win32 APIs like CreateFile(), ReadFile(), WriteFile(), and DeviceIoControl().
+  - windows
+description: "This sample shows how to access devices from UWP applications using familiar win32 APIs like CreateFile(), ReadFile(), WriteFile(), and DeviceIoControl()."
 ---
 
 # Custom Device Accessor
