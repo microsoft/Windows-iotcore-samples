@@ -17,7 +17,29 @@ using System.Threading.Tasks;
 namespace ConsoleDotNetCoreWinML
 {
     public class AzureModule : AzureModuleBase {
-        public AzureModule() { }
+        public event EventHandler<string> ModuleLoaded;
+
+        static async Task<MessageResponse> ModuleLoadMessageHandler(Message msg, Object ctx)
+        {
+            AzureModule module = (AzureModule)ctx;
+            var msgBytes = msg.GetBytes();
+            var msgString = Encoding.UTF8.GetString(msgBytes);
+            Log.WriteLine("loadModule msg received: '{0}'", msgString);
+            var loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msgString);
+            await Task.Run(() => module.ModuleLoaded?.Invoke(module, loadMsg.ModuleName));
+            return MessageResponse.Completed;
+
+        }
+        public AzureModule() {
+        }
+        public override async Task AzureModuleInitAsync<C>(C c)
+        {
+            AzureConnection c1 = c as AzureConnection;
+            await base.AzureModuleInitAsync(c1);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.ModuleLoadInputRoute, ModuleLoadMessageHandler, this);
+            await base.AzureModuleInitEndAsync();
+        }
+
     };
     public class AzureDevice : AzureDeviceBase
     {
@@ -25,6 +47,7 @@ namespace ConsoleDotNetCoreWinML
     };
     public class AzureConnection : AzureConnectionBase
     {
+        private Message _lastFruitMsg;
         public AzureConnection() { }
         public static async Task<AzureConnection> CreateAzureConnectionAsync()
         {
@@ -40,10 +63,21 @@ namespace ConsoleDotNetCoreWinML
                 msgvalue.FruitSeen = kvp.Value;
                 byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
                 var m = new Message(msgbody);
+                lock (_lastFruitMsg)
+                {
+                    _lastFruitMsg = m;
+                }
                 await Module.SendMessageAsync(Keys.OutputFruit, m);
-                await Module.SendMessageAsync(Keys.OutputUpstream, m);
-                // Update the module twin
             }
+        }
+        public async Task NotifyNewModuleAsync()
+        {
+            Message m = null;
+            lock (_lastFruitMsg)
+            {
+                m = _lastFruitMsg;
+            }
+            await Module.SendMessageAsync(Keys.OutputFruit, m);
         }
     }
 }

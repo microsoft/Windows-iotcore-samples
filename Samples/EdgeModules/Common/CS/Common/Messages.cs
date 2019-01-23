@@ -15,6 +15,8 @@ namespace EdgeModuleSamples.Common.Messages
         public readonly static string GPIOModuleId = "GPIO";
         public readonly static string HubConnectionString = "HubConnectionString";
         public readonly static string InputFruit = "inputfruit";
+        public readonly static string ModuleLoadInputRoute = "inputModule";
+        public readonly static string ModuleLoadOutputRoute = "outputModule";
         public readonly static string OutputFruit = "outputfruit";
         public readonly static string OutputUpstream = "outputupstream";
         public readonly static string SetFruit = "SetFruit";

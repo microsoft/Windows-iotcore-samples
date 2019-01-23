@@ -196,7 +196,7 @@ namespace ConsoleDotNetCoreGPIO
 
         public async Task NotifyModuleLoad()
         {
-            await NotifyModuleLoad("GPIO", "output1");
+            await NotifyModuleLoad(Keys.GPIOModuleId, Keys.ModuleLoadOutputRoute);
             Log.WriteLine("derived Module Load D2C message fired");
         }
 

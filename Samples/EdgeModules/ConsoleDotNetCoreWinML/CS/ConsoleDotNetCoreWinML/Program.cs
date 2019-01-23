@@ -225,6 +225,13 @@ namespace ConsoleDotNetCoreWinML
                     await AsyncHelper.AsAsync(reader.StartAsync());
                     })
                 );
+            AzureModule m = (AzureModule)connection.Module;
+            m.ModuleLoaded += async (Object sender, string moduleName) =>
+            {
+
+                Log.WriteLine("module loaded.   resending state");
+                await connection.NotifyNewModuleAsync();
+            };
 
             Log.WriteLine("Model loaded, Azure Connection created, and FrameReader Started\n\n\n\n");
 
