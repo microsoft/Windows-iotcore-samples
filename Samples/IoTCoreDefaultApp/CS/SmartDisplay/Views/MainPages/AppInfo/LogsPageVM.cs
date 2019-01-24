@@ -44,7 +44,7 @@ namespace SmartDisplay.ViewModels
             try
             {
                 CustomContentService = AppService.GetRegisteredService<ICustomContentService>();
-                _helpText = await FileUtil.GetFileFromInstalledLocationAsync(@"Assets\Messages\LogDescription.txt");
+                _helpText = await FileUtil.ReadStringFromInstalledLocationAsync(@"Assets\Messages\LogDescription.txt");
                 _logQuery = await LogUtil.GetLogFilesQueryResultAsync();
                 _logQuery.ContentsChanged += Query_ContentsChanged;
 

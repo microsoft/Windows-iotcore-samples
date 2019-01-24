@@ -42,10 +42,10 @@ namespace SmartDisplay.Controls
         public static readonly DependencyProperty PanelContentProperty =
             DependencyProperty.Register("PanelContent",
                 typeof(object),
-                typeof(NetworkListControlTemplate),
+                typeof(OOBEPageTemplate),
                 new PropertyMetadata(0, (sender, args) =>
                 {
-                    if (sender is NetworkListControlTemplate template)
+                    if (sender is OOBEPageTemplate template)
                     {
                         template.PanelContent = args.NewValue;
                     }

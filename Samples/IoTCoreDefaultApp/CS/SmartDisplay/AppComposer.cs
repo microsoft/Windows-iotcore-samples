@@ -36,6 +36,7 @@ namespace SmartDisplay
         {
             // The current .exe will always be searched in addition to these assemblies
             "SmartDisplay.SelfHost",
+            "SmartDisplay.Features",
         };
 
         private static AppComposer _instance;

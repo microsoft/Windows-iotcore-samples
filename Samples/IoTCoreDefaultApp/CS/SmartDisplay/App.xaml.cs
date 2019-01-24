@@ -176,18 +176,18 @@ namespace SmartDisplay
                 // Enable kiosk mode if file is detected
                 Settings.KioskMode = await FileUtil.ReadFileAsync("kiosk_mode") != null;
 
-                try
+                // Use MEF to import features and components from other assemblies in the appx package.
+                foreach (var feature in AppComposer.Imports.Features)
                 {
-                    // Use MEF to import features and components from other assemblies in the appx package.
-                    foreach (var feature in AppComposer.Imports.Features)
+                    try
                     {
                         LogService.Write($"Loading Feature: {feature.FeatureName}");
                         feature.OnLoaded(this);
                     }
-                }
-                catch (Exception ex)
-                {
-                    LogService.Write(ex.ToString());
+                    catch (Exception ex)
+                    {
+                        LogService.Write(ex.ToString());
+                    }
                 }
 
                 // Enable multi-view 

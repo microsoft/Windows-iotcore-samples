@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 
 namespace SmartDisplay.Contracts
@@ -9,6 +10,8 @@ namespace SmartDisplay.Contracts
         string Name { get; }
 
         Task<GenericWeather> GetGenericWeatherAsync(double latitude, double longitude);
+
+        GenericWeather AsGenericWeather();
     }
 
     /// <summary>
@@ -24,8 +27,7 @@ namespace SmartDisplay.Contracts
     public class GenericCurrentObservation
     {
         public string Icon { get; set; }
-        public float TemperatureFahrenheit { get; set; }
-        public float TemperatureCelsius { get; set; }
+        public double Temperature { get; set; }
         public string AdditionalInfo { get; set; }
         public string WeatherDescription { get; set; }
     }
@@ -37,9 +39,9 @@ namespace SmartDisplay.Contracts
 
     public class GenericForecastDay
     {
-        public string DayOfWeek { get; set; }
-        public string TemperatureFahrenheit { get; set; }
-        public string TemperatureCelsius { get; set; }
+        public DateTime Date { get; set; }
+        public double TemperatureHigh { get; set; } = -1;
+        public double TemperatureLow { get; set; } = -1;
         public string WeatherIcon { get; set; }
         public string WeatherDescription { get; set; }
     }

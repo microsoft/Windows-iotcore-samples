@@ -462,6 +462,11 @@ namespace SmartDisplay.Controls
 
         private ListViewItem SwitchToItemState(object dataContext, DataTemplate template, bool forceUpdate)
         {
+            if (WiFiConnectedState.Equals(template))
+            {
+                ServiceUtil.TelemetryService.WriteEvent("WiFiConnectSuccess");
+            }
+
             if (forceUpdate)
             {
                 WiFiListView.UpdateLayout();

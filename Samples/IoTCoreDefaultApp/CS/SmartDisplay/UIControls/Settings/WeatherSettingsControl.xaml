@@ -28,13 +28,11 @@
             TextWrapping="Wrap" />
 
         <ToggleSwitch
-            x:Uid="ExpandMapToggle"
-            IsOn="{x:Bind ViewModel.MapSizeExpanded, Mode=TwoWay}"
+            x:Uid="IsFahrenheitToggle"
+            IsOn="{x:Bind ViewModel.IsFahrenheit, Mode=TwoWay}"
+            OffContent="°C"
+            OnContent="°F"
             Style="{StaticResource SettingControlStyle}" />
 
-        <ToggleSwitch
-            x:Uid="MapFlipToggle"
-            IsOn="{x:Bind ViewModel.MapFlipEnabled, Mode=TwoWay}"
-            Style="{StaticResource SettingControlStyle}" />
     </StackPanel>
 </ctrl:SettingsUserControlBase>
