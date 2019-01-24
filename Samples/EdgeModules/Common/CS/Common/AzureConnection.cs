@@ -121,10 +121,11 @@ namespace EdgeModuleSamples.Common.Azure
             _reportedDeviceProperties[u.Key] = u.Value;
             TwinCollection delta = new TwinCollection();
             delta[u.Key] = u.Value;
+            Log.WriteLine("updating twin reported properties with key = {0}, vt = {1}:{2}", u.Key, u.Value.GetType(), u.Value);
             await _moduleClient.UpdateReportedPropertiesAsync(delta).ConfigureAwait(false);
 
         }
-        public async Task NotifyModuleLoad(string defaultId, string route)
+        public async Task NotifyModuleLoad(string route, string defaultId)
         {
             ModuleLoadMessage msg = new ModuleLoadMessage();
             string id = defaultId;
@@ -156,6 +157,7 @@ namespace EdgeModuleSamples.Common.Azure
 
         public async Task SendMessageAsync(string route, Message msg)
         {
+
             await _moduleClient.SendEventAsync(route, msg);
         }
 
@@ -283,14 +285,28 @@ namespace EdgeModuleSamples.Common.Azure
 
                 // ignore twin until 
                 Task.Run(async () => {
-                    Device = new D();
-                    await Device.AzureDeviceInitAsync(this);
+                    try
+                    {
+                        Device = new D();
+                        await Device.AzureDeviceInitAsync(this);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("AzureConnectionInitAsync DeviceInit lambda exception {0}", e.ToString());
+                    }
                 }),
 
                 Task.Run(async () =>
                 {
-                    Module = new M();
-                    await Module.AzureModuleInitAsync(this);
+                    try
+                    {
+                        Module = new M();
+                        await Module.AzureModuleInitAsync(this);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("AzureConnectionInitAsync ModuleInit lambda exception {0}", e.ToString());
+                    }
                 })
             );
             Log.WriteLine("Azure connection Initialized");
@@ -303,17 +319,18 @@ namespace EdgeModuleSamples.Common.Azure
             Log.WriteLine("Azure connection Creation Complete");
             return newConnection;
         }
-        protected async Task NotifyModuleLoad(string defaultId, string route)
+        protected async Task NotifyModuleLoad(string route, string defaultId)
         {
-            await Module.NotifyModuleLoad(defaultId, route);
+            await Module.NotifyModuleLoad(route, defaultId);
             Log.WriteLine("Module Load D2C message fired module {0} route {1}", defaultId, route);
         }
 
 
         public void UpdateObject(KeyValuePair<string, string> kvp)
         {
+            Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject sync start");
             _updateq.Enqueue(kvp);
-            Task.Run(async () =>
+            Task.Run(async() =>
             {
                 try
                 {
@@ -326,17 +343,20 @@ namespace EdgeModuleSamples.Common.Azure
                             success = _updateq.TryDequeue(out u);
                             if (success)
                             {
+                                Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject lambda kvp = {0}", u.ToString());
                                 await UpdateObjectAsync(u);
+                                Log.WriteLine("\t\t\t\t\tConnectionBase calling module updatereportedproperties kvp = {0}", u.ToString());
                                 await Module.UpdateReportedPropertiesAsync(u);
                             }
                         } while (!success);
+                        Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject lambda complete");
                     }
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
-                    Log.WriteLineError("Update failed {0}", e.ToString());
+                    Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject lambda exception {0}", e.ToString());
                 }
             });
+            Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject sync complete");
         }
         public virtual async Task UpdateObjectAsync(KeyValuePair<string, string> kvp)
         {
