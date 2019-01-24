@@ -34,20 +34,33 @@ namespace ConsoleDotNetCoreGPIO
             GPIODevice gpio = null;
             await Task.WhenAll(
                 Task.Run(async () => {
-                    if (!Options.Test.HasValue)
+                    try { 
+                        if (!Options.Test.HasValue)
+                        {
+                            Log.WriteLine("starting connection creation");
+                            connection = await AzureConnection.CreateAzureConnectionAsync();
+                        }
+                    }
+                    catch (Exception e)
                     {
-                        Log.WriteLine("starting connection creation");
-                        connection = await AzureConnection.CreateAzureConnectionAsync();
+                        Log.WriteLine("GPIO Main CreateAzureConnectionAsync exception {0}", e.ToString());
                     }
                 }),
                 Task.Run(() =>
                     {
-                        gpio = new GPIODevice();
-                        gpio.InitOutputPins(Options);
-                        if (Options.Test.HasValue)
+                        try
                         {
-                            Log.WriteLine("initiating pin test");
-                            gpio.Test(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(2));
+                            gpio = new GPIODevice();
+                            gpio.InitOutputPins(Options);
+                            if (Options.Test.HasValue)
+                            {
+                                Log.WriteLine("initiating pin test");
+                                gpio.Test(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(2));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLine("GPIO InitOutputPins exception {0}", e.ToString());
                         }
                     }
                 )
@@ -67,8 +80,14 @@ namespace ConsoleDotNetCoreGPIO
             };
             await Task.Run(async () =>
             {
-                Log.WriteLine("initializing gpio pin config with {0}", m.Configuration.GpioPins);
-                await gpio.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
+                try { 
+                    Log.WriteLine("initializing gpio pin config with {0}", m.Configuration.GpioPins);
+                    await gpio.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLine("GPIO UpdatePinConfig Lambda exception {0}", e.ToString());
+                }
             });
             await connection.NotifyModuleLoad();
 
@@ -76,12 +95,19 @@ namespace ConsoleDotNetCoreGPIO
 
             Task.WaitAll(Task.Run(() =>
             {
-                for (; ; )
-                {
-                    Log.WriteLine("{0} wait spin", Environment.TickCount);
-                    gpio.LogInputPins();
-                    Thread.Sleep(TimeSpan.FromSeconds(30));
+                try { 
+                    for (; ; )
+                    {
+                        Log.WriteLine("{0} wait spin", Environment.TickCount);
+                        gpio.LogInputPins();
+                        Thread.Sleep(TimeSpan.FromSeconds(30));
+                    }
                 }
+                catch (Exception e)
+                {
+                    Log.WriteLine("GPIO wait spin exception {0}", e.ToString());
+                }
+
             }));
 #if DISABLE            
             var w = new EventWaitHandle(false, EventResetMode.ManualReset);

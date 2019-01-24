@@ -11,12 +11,14 @@ namespace EdgeModuleSamples.Common.Messages
         public readonly static string FruitMaster = "FruitMaster";
         public readonly static string FruitModuleId = "WinML";
         public readonly static string FruitSeen = "FruitSeen";
+        public readonly static string FruitSlaves = "FruitSlaves";
         public readonly static string FruitTest = "FruitTest";
         public readonly static string GPIOModuleId = "GPIO";
         public readonly static string HubConnectionString = "HubConnectionString";
         public readonly static string InputFruit = "inputfruit";
         public readonly static string ModuleLoadInputRoute = "inputModule";
-        public readonly static string ModuleLoadOutputRoute = "outputModule";
+        public readonly static string ModuleLoadOutputRouteLocal = "outputModuleLocal";
+        public readonly static string ModuleLoadOutputRouteUpstream = "outputModuleUpstream";
         public readonly static string OutputFruit = "outputfruit";
         public readonly static string OutputUpstream = "outputupstream";
         public readonly static string SetFruit = "SetFruit";
