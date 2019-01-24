@@ -255,8 +255,8 @@
             HorizontalAlignment="Left"
             Style="{StaticResource SettingHeaderStyle}" />
         <Button
-            x:Uid="WifiRefresh"
             x:Name="RefreshButton"
+            x:Uid="WifiRefresh"
             Grid.Row="0"
             HorizontalAlignment="Right"
             Click="RefreshButton_Click" />
@@ -278,8 +278,8 @@
             SelectionMode="Single"
             Style="{StaticResource NetworkListControlListStyle}" />
         <TextBlock
-            x:Uid="NoNetworks"
             x:Name="NoWiFiFoundText"
+            x:Uid="NoNetworks"
             Grid.Row="2"
             MaxWidth="446"
             Margin="12,0,0,0"

@@ -105,14 +105,14 @@
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
   <resheader name="version">
     <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -782,9 +782,6 @@ App Version: {2}</value>
   <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
     <value>Executing commands as DefaultAccount</value>
   </data>
-  <data name="ExpandMapToggle.Header" xml:space="preserve">
-    <value>Expand Map</value>
-  </data>
   <data name="ExploreCategoryText" xml:space="preserve">
     <value>Explore</value>
   </data>
@@ -966,9 +963,6 @@ App Version: {2}</value>
     <value>This is a Windows 10 IoT Core test image designed for prototyping only. If you are looking to commercialize, you must use a custom FFU for optimal security.</value>
     <comment>Maker Imager Security Notice</comment>
   </data>
-  <data name="MapFlipToggle.Header" xml:space="preserve">
-    <value>Allow Map Flipping To Prevent Screen Burn-in</value>
-  </data>
   <data name="MapServiceToken.Content" xml:space="preserve">
     <value>Bing Map Service Token</value>
   </data>
@@ -1031,12 +1025,8 @@ You can add music in Windows Device Portal using Apps &gt; File explorer.</value
     <comment>Music player page status text (paused)</comment>
   </data>
   <data name="MusicPlayerPlayingText" xml:space="preserve">
-    <value>Playing</value>
+    <value>Now Playing</value>
     <comment>Music player page status text (playing)</comment>
-  </data>
-  <data name="MusicPlayerStatusFormat" xml:space="preserve">
-    <value>{0}: {1}</value>
-    <comment>{0} is a status string, {1} is the music file display name</comment>
   </data>
   <data name="NavbarAuthNoAccount" xml:space="preserve">
     <value>Sign In</value>
@@ -1611,5 +1601,32 @@ If you don't have Weather API keys, navigate to weatherunlocked.com. Save the ke
   </data>
   <data name="YesText" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="IsFahrenheitToggle.Header" xml:space="preserve">
+    <value>Temperature Unit</value>
+  </data>
+  <data name="LocationErrorTitle" xml:space="preserve">
+    <value>Where are you?</value>
+  </data>
+  <data name="LocationErrorSubtitle" xml:space="preserve">
+    <value>Your location couldn't be found.
+Make sure you've enabled Location permissions on the Settings page.</value>
+  </data>
+  <data name="GenericErrorTitle" xml:space="preserve">
+    <value>We hit a snag.</value>
+  </data>
+  <data name="WeatherErrorSubtitle" xml:space="preserve">
+    <value>There was a problem getting the weather, 
+please try again later.</value>
+  </data>
+  <data name="MusicErrorMessage.Subtitle" xml:space="preserve">
+    <value>You don't have any music.
+Add music to your device using the Windows Device Portal.</value>
+  </data>
+  <data name="MusicErrorMessage.Title" xml:space="preserve">
+    <value>Let's play some music</value>
+  </data>
+  <data name="ReloadButton.Content" xml:space="preserve">
+    <value>Reload</value>
   </data>
 </root>

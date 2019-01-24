@@ -16,10 +16,15 @@
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     <converters:WiFiGlyphConverter x:Key="GlyphConverter" />
     <converters:WeatherIconConverter x:Key="TextToImageConverter" />
+    <converters:EmojiToWeatherIconConverter x:Key="EmojiToWeatherIconConverter" />
+    <converters:DateToDayOfWeekConverter x:Key="DateToDayOfWeekConverter" />
+    <converters:NumberToTemperatureStringConverter x:Key="NumberToTemperatureStringConverter" />
+    <converters:WeatherIconColorConverter x:Key="WeatherIconColorConverter" />
 
     <!--  Icons  -->
     <FontFamily x:Key="OOBEIconFontFamily">ms-appx:///Assets/Fonts/OOBMDL2.ttf#OOBE MDL2 Assets</FontFamily>
     <FontFamily x:Key="IconFontFamily">Segoe MDL2 Assets</FontFamily>
+    <FontFamily x:Key="MsnIconFontFamily">ms-appx:///Assets/Fonts/MSNMDL2.ttf#MSN MDL2 Assets</FontFamily>
     <FontFamily x:Key="IoTIconFontFamily">ms-appx:///Assets/Fonts/IOTMDL2.1.35.ttf#IOT MDL2 Assets</FontFamily>
     <x:String x:Key="IconBluetooth">&#xE702;</x:String>
     <x:String x:Key="IconDeviceDiscovery">&#xEBDE;</x:String>
@@ -76,6 +81,7 @@
     <ctrl:BackdropBlurBrush x:Key="DefaultBlurBrush" BlurAmount="8" />
     <SolidColorBrush x:Key="SettingsChoicePaneBrush" Color="{StaticResource SettingsChoicePaneColor}" />
     <SolidColorBrush x:Key="CommandLineForegroundBrush" Color="#FFF3FF00" />
+    <SolidColorBrush x:Key="DefaultPageBackground" Color="#313131" />
 
     <!--  Fonts  -->
     <Style x:Key="SegoeUILightTextStyle" TargetType="TextBlock">
@@ -1507,16 +1513,15 @@
         <Setter Property="FontSize" Value="{StaticResource CommandLineFontSize}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="IsSpellCheckEnabled" Value="False" />
-        <Setter Property="Height" Value="24" />
         <Setter Property="Padding" Value="6,6" />
     </Style>
     <Style x:Key="CommandLineButtonStyle" TargetType="Button">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
     <Style
@@ -1626,7 +1631,6 @@
         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
-        <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
         <Setter Property="FocusVisualMargin" Value="-3" />
         <Setter Property="Template">
             <Setter.Value>

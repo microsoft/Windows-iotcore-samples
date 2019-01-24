@@ -47,8 +47,7 @@ namespace SmartDisplay.Weather
                 CurrentObservation = new GenericCurrentObservation()
                 {
                     Icon = GetIconFromInternationalWeather(CurrentWeather.Wx_code),
-                    TemperatureCelsius = CurrentWeather.Temp_c,
-                    TemperatureFahrenheit = CurrentWeather.Temp_f,
+                    Temperature = CurrentWeather.Temp_f,
                     WeatherDescription = CurrentWeather.Wx_desc,
                     AdditionalInfo = string.Format(Common.GetLocalizedText("HumidityText"), CurrentWeather.Humid_pct.ToString())
                 },
@@ -76,9 +75,9 @@ namespace SmartDisplay.Weather
             DateTime date = Convert.ToDateTime(jsonDay.Date.Substring(0, 10), CultureInfo.CurrentUICulture);
             GenericForecastDay day = new GenericForecastDay
             {
-                DayOfWeek = date.ToString("dddd"),
-                TemperatureFahrenheit = ((int)((jsonDay.Temp_max_f + jsonDay.Temp_min_f) / 2)) + "°F",
-                TemperatureCelsius = ((int)((jsonDay.Temp_max_c + jsonDay.Temp_min_c) / 2)) + "°C",
+                Date = date.Date,
+                TemperatureHigh = jsonDay.Temp_max_f,
+                TemperatureLow = jsonDay.Temp_min_f,
                 WeatherIcon = GetIconFromInternationalWeather(timeframe.Wx_code),
                 WeatherDescription = timeframe.Wx_desc
             };

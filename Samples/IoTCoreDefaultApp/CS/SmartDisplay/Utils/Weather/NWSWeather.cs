@@ -89,13 +89,11 @@ namespace SmartDisplay.Weather
             currentObservation.Icon = (UseWebIcon) ? currentPeriod.Icon : ConvertIconToEmoji(currentPeriod.Icon);
             if (currentPeriod.TemperatureUnit == "F")
             {
-                currentObservation.TemperatureFahrenheit = currentPeriod.Temperature;
-                currentObservation.TemperatureCelsius = WeatherHelper.GetCelsius(currentPeriod.Temperature);
+                currentObservation.Temperature = currentPeriod.Temperature;
             }
             else
             {
-                currentObservation.TemperatureCelsius = currentPeriod.Temperature;
-                currentObservation.TemperatureFahrenheit = WeatherHelper.GetFahrenheit(currentPeriod.Temperature);
+                currentObservation.Temperature = WeatherHelper.GetFahrenheit(currentPeriod.Temperature);
             }
             currentObservation.WeatherDescription = currentPeriod.ShortForecast;
             currentObservation.AdditionalInfo = string.Format(Common.GetLocalizedText("WeatherWindSpeedFormat"), currentPeriod.WindDirection, currentPeriod.WindSpeed);
@@ -118,29 +116,40 @@ namespace SmartDisplay.Weather
             var dateList = new List<DateTime>();
             foreach (var period in Properties.Periods)
             {
-                if (dateList.Count == 5)
-                {
-                    break;
-                }
-
                 if (!dateList.Contains(period.StartTime.Date))
                 {
                     forecastDays.Add(new GenericForecastDay
                     {
-                        DayOfWeek = period.StartTime.ToString("dddd"),
-                        TemperatureFahrenheit = ((period.TemperatureUnit == "F") ? period.Temperature : WeatherHelper.GetFahrenheit(period.Temperature)).ToString() + "°F",
-                        TemperatureCelsius = ((period.TemperatureUnit == "C") ? period.Temperature : WeatherHelper.GetCelsius(period.Temperature)).ToString() + "°C",
+                        Date = period.StartTime.Date,
+                        TemperatureHigh = ((period.TemperatureUnit == "F") ? period.Temperature : WeatherHelper.GetFahrenheit(period.Temperature)),
+                        TemperatureLow = ((period.TemperatureUnit == "F") ? period.Temperature : WeatherHelper.GetFahrenheit(period.Temperature)),
                         WeatherIcon = (UseWebIcon) ? period.Icon : ConvertIconToEmoji(period.Icon),
                         WeatherDescription = period.ShortForecast
                     });
 
                     dateList.Add(period.StartTime.Date);
                 }
+                else
+                {
+                    var existing = forecastDays.FirstOrDefault(x => x.Date == period.StartTime.Date);
+                    if (existing != null)
+                    {
+                        existing.TemperatureLow = ((period.TemperatureUnit == "F") ? period.Temperature : WeatherHelper.GetFahrenheit(period.Temperature));
+                    }
+
+                    // Swap if needed
+                    if (existing.TemperatureLow > existing.TemperatureHigh)
+                    {
+                        var temp = existing.TemperatureLow;
+                        existing.TemperatureLow = existing.TemperatureHigh;
+                        existing.TemperatureHigh = temp;
+                    }
+                }
             }
 
             return new GenericForecast
             {
-                Days = forecastDays.ToArray()
+                Days = forecastDays.Take(5).ToArray()
             };
         }
 

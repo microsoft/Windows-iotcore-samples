@@ -5,6 +5,7 @@ using SmartDisplay.ViewModels;
 using System.ComponentModel;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -35,7 +36,7 @@ namespace SmartDisplay.Views
                 // Setup playlist and media player
                 MusicPlaylist = new MediaPlaybackList
                 {
-                    AutoRepeatEnabled = true,
+                    AutoRepeatEnabled = ViewModel.RepeatOn,
                     ShuffleEnabled = ViewModel.ShuffleOn,
                     MaxPlayedItemsToKeepOpen = 3
                 };
@@ -43,12 +44,12 @@ namespace SmartDisplay.Views
                 MusicPlayer = new MediaPlayer
                 {
                     Volume = ViewModel.MusicPlayerVolume,
-                    IsLoopingEnabled = ViewModel.RepeatOn,
-                    AutoPlay = ViewModel.AutoPlayOn,
+                    AutoPlay = true,
                     Source = MusicPlaylist,
                 };
 
                 musicPlayerElement.SetMediaPlayer(MusicPlayer);
+                compactPlayerElement.SetMediaPlayer(MusicPlayer);
             }
 
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
@@ -72,9 +73,13 @@ namespace SmartDisplay.Views
 
             // Set the bound media player to null and dispose the MusicPlayer
             musicPlayerElement.SetMediaPlayer(null);
+            compactPlayerElement.SetMediaPlayer(null);
+
             MusicPlaylist = null;
             MusicPlayer?.Dispose();
             MusicPlayer = null;
+
+            ViewModel.TearDownVM();
         }
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -86,10 +91,7 @@ namespace SmartDisplay.Views
                     MusicPlaylist.ShuffleEnabled = ViewModel.ShuffleOn;
                     break;
                 case "RepeatOn":
-                    MusicPlayer.IsLoopingEnabled = ViewModel.RepeatOn;
-                    break;
-                case "AutoPlayOn":
-                    MusicPlayer.AutoPlay = ViewModel.AutoPlayOn;
+                    MusicPlaylist.AutoRepeatEnabled = ViewModel.RepeatOn;
                     break;
                 default:
                     return;
@@ -111,7 +113,7 @@ namespace SmartDisplay.Views
             if (sender is ListView list)
             {
                 // If change prompted by user selection from list set overrideRepeat to true 
-                ViewModel.ChangeMusicSelection(list.SelectedIndex, true);
+                ViewModel.ChangeMusicSelection(list.SelectedIndex);
             }
         }
         #endregion
@@ -138,6 +140,8 @@ namespace SmartDisplay.Views
         #endregion
 
         #region Music player controls
+
+        public MediaPlaybackList PlaybackList => MusicPlaylist;
 
         public void Play()
         {
@@ -189,5 +193,11 @@ namespace SmartDisplay.Views
             }
         }
         #endregion
+
+        private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
+        {
+            // Show compact media controls when the main controls scroll off screen
+            compactPlayerElement.Visibility = (e.NextView.VerticalOffset > controlStackPanel.ActualHeight) ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }

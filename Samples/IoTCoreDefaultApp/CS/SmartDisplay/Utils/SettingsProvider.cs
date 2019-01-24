@@ -238,18 +238,9 @@ namespace SmartDisplay.Utils
         }
 
         /// <summary>
-        /// Expand map on weather page
+        /// Temperature unit, true is fahrenheit, false is celsius
         /// </summary>
-        public bool MapSizeExpanded
-        {
-            get { return GetSetting<bool>(false); }
-            set { SaveSetting(value); }
-        }
-
-        /// <summary>
-        /// Enable map flipping to prevent burn-in
-        /// </summary>
-        public bool MapFlipEnabled
+        public bool IsFahrenheit
         {
             get { return GetSetting<bool>(true); }
             set { SaveSetting(value); }
@@ -258,13 +249,7 @@ namespace SmartDisplay.Utils
         #endregion
 
         #region Music
-
-        public bool MusicAutoPlay
-        {
-            get { return GetSetting(false); }
-            set { SaveSetting(value); }
-        }
-
+        
         public bool MusicShuffle
         {
             get { return GetSetting(false); }
