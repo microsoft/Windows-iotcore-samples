@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <FilesToPackage Include="$(TargetPath)" />
-    <FilesToPackage Include="@(Inf-&gt;'%(CopyOutput)')" Condition="'@(Inf)'!=''" />
+    <FilesToPackage Include="@(Inf->'%(CopyOutput)')" Condition="'@(Inf)'!=''" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gpiokmdfdemo.h" />

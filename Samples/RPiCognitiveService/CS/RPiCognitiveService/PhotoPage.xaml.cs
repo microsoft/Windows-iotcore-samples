@@ -36,7 +36,7 @@ namespace RPiCognitiveService
     {
         //Computer Vision Key
         string key = "your Computer Vision Key";  //API key
-        string apiroot = "Your Computer Vision API endpoint"; // For instance: https://westeurope.api.cognitive.microsoft.com/vision/v1.0
+        string apiroot = "Your Computer Vision API endpoint" // For instance: https://westeurope.api.cognitive.microsoft.com/vision/v1.0
         Size size_image;  //The size of the current image
         AnalysisResult thisresult;  //The result of analysis
 

@@ -91,6 +91,103 @@
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Assets\BadgeLogo.scale-100.png" />
+    <Content Include="Assets\BadgeLogo.scale-125.png" />
+    <Content Include="Assets\BadgeLogo.scale-150.png" />
+    <Content Include="Assets\BadgeLogo.scale-200.png" />
+    <Content Include="Assets\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.scale-100.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.scale-125.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.scale-150.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.scale-200.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.scale-400.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.targetsize-16.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.targetsize-16_altform-unplated.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.targetsize-24.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.targetsize-256.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.targetsize-256_altform-unplated.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.targetsize-48.png" />
+    <Content Include="Assets\CETIoTConnectorAppList.targetsize-48_altform-unplated.png" />
+    <Content Include="Assets\CETIoTConnectorBadgeLogo.scale-100.png" />
+    <Content Include="Assets\CETIoTConnectorBadgeLogo.scale-125.png" />
+    <Content Include="Assets\CETIoTConnectorBadgeLogo.scale-150.png" />
+    <Content Include="Assets\CETIoTConnectorBadgeLogo.scale-200.png" />
+    <Content Include="Assets\CETIoTConnectorBadgeLogo.scale-400.png" />
+    <Content Include="Assets\CETIoTConnectorLargeTile.scale-100.png" />
+    <Content Include="Assets\CETIoTConnectorLargeTile.scale-125.png" />
+    <Content Include="Assets\CETIoTConnectorLargeTile.scale-150.png" />
+    <Content Include="Assets\CETIoTConnectorLargeTile.scale-200.png" />
+    <Content Include="Assets\CETIoTConnectorLargeTile.scale-400.png" />
+    <Content Include="Assets\CETIoTConnectorMedTile.scale-100.png" />
+    <Content Include="Assets\CETIoTConnectorMedTile.scale-125.png" />
+    <Content Include="Assets\CETIoTConnectorMedTile.scale-150.png" />
+    <Content Include="Assets\CETIoTConnectorMedTile.scale-200.png" />
+    <Content Include="Assets\CETIoTConnectorMedTile.scale-400.png" />
+    <Content Include="Assets\CETIoTConnectorSmallTile.scale-100.png" />
+    <Content Include="Assets\CETIoTConnectorSmallTile.scale-125.png" />
+    <Content Include="Assets\CETIoTConnectorSmallTile.scale-150.png" />
+    <Content Include="Assets\CETIoTConnectorSmallTile.scale-200.png" />
+    <Content Include="Assets\CETIoTConnectorSmallTile.scale-400.png" />
+    <Content Include="Assets\CETIoTConnectorSplashScreen.scale-100.png" />
+    <Content Include="Assets\CETIoTConnectorSplashScreen.scale-125.png" />
+    <Content Include="Assets\CETIoTConnectorSplashScreen.scale-150.png" />
+    <Content Include="Assets\CETIoTConnectorSplashScreen.scale-200.png" />
+    <Content Include="Assets\CETIoTConnectorSplashScreen.scale-400.png" />
+    <Content Include="Assets\CETIoTConnectorStoreLogo.scale-100.png" />
+    <Content Include="Assets\CETIoTConnectorStoreLogo.scale-125.png" />
+    <Content Include="Assets\CETIoTConnectorStoreLogo.scale-150.png" />
+    <Content Include="Assets\CETIoTConnectorStoreLogo.scale-200.png" />
+    <Content Include="Assets\CETIoTConnectorStoreLogo.scale-400.png" />
+    <Content Include="Assets\CETIoTConnectorWideTile.scale-100.png" />
+    <Content Include="Assets\CETIoTConnectorWideTile.scale-125.png" />
+    <Content Include="Assets\CETIoTConnectorWideTile.scale-150.png" />
+    <Content Include="Assets\CETIoTConnectorWideTile.scale-200.png" />
+    <Content Include="Assets\CETIoTConnectorWideTile.scale-400.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-125.png" />
+    <Content Include="Assets\SplashScreen.scale-150.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square150x150Logo.scale-125.png" />
+    <Content Include="Assets\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Square310x310Logo.scale-100.png" />
+    <Content Include="Assets\Square310x310Logo.scale-125.png" />
+    <Content Include="Assets\Square310x310Logo.scale-150.png" />
+    <Content Include="Assets\Square310x310Logo.scale-200.png" />
+    <Content Include="Assets\Square310x310Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Square44x44Logo.scale-125.png" />
+    <Content Include="Assets\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-16_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-256_altform-unplated.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
+    <Content Include="Assets\Square71x71Logo.scale-100.png" />
+    <Content Include="Assets\Square71x71Logo.scale-125.png" />
+    <Content Include="Assets\Square71x71Logo.scale-150.png" />
+    <Content Include="Assets\Square71x71Logo.scale-200.png" />
+    <Content Include="Assets\Square71x71Logo.scale-400.png" />
+    <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Assets\StoreLogo.scale-125.png" />
+    <Content Include="Assets\StoreLogo.scale-150.png" />
+    <Content Include="Assets\StoreLogo.scale-200.png" />
+    <Content Include="Assets\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Web\fonts\IOTMDL2.1.8.ttf" />
+    <None Include="Assets\Web\fonts\IOTMDL2.1.8.woff" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -138,8 +235,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Devices.Client">
+      <Version>1.0.16</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Devices.Tpm">
+      <Version>1.0.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>5.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>9.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
