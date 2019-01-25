@@ -157,7 +157,7 @@ namespace EdgeModuleSamples.Common.Azure
 
         public async Task SendMessageAsync(string route, Message msg)
         {
-
+            msg.Properties[Keys.MessageCreationUTC] = DateTime.UtcNow.ToString("o");
             await _moduleClient.SendEventAsync(route, msg);
         }
 
