@@ -28,6 +28,47 @@ namespace HubEventHandler
 {
     public static class GPIOFruitEvent
     {
+        public static string Dump(EventData d)
+        {
+            string r = Dump(d.SystemProperties);
+            r += " ";
+            r += Dump(d.Properties);
+            r += " ";
+            r += Encoding.UTF8.GetString(d.Body);
+            return r;
+        }
+        public static string Dump(EventData.SystemPropertiesCollection d)
+        {
+            string r = "SystemProperties:";
+            if (d == null)
+            {
+                r += "(null)";
+            }
+            else
+            {
+                foreach (var p in d)
+                {
+                    r += " k: " + p.Key.ToString() + " vt: " + p.Value.GetType().ToString() + " v: " + p.Value.ToString();
+                }
+            }
+            return r;
+        }
+        public static string Dump(IDictionary<string, object> d)
+        {
+            string r = "MessageProperties:";
+            if (d == null)
+            {
+                r += "(null)";
+            }
+            else
+            {
+                foreach (var p in d)
+                {
+                    r += " k: " + p.Key.ToString() + " vt: " + p.Value.GetType().ToString() + " v: " + p.Value.ToString();
+                }
+            }
+            return r;
+        }
         private static HttpClient client = new HttpClient();
 
         public static async Task<string> GetCurrentFruit(string deviceId, RegistryManager rm, ILogger log)
@@ -62,7 +103,7 @@ namespace HubEventHandler
             Twin selfTwin = await rm.GetTwinAsync(deviceId);
             var selfProps = selfTwin.Properties.Desired;
             string slaveProps = selfProps[Keys.FruitSlaves].ToString();
-            log.LogInformation($"slave props {slaveProps}");
+            //log.LogInformation($"slave props {slaveProps}");
 
             Dictionary<string, string> d = JsonConvert.DeserializeObject<Dictionary<string, string>>(slaveProps);
             foreach (var kvp in d)
@@ -71,7 +112,7 @@ namespace HubEventHandler
             }
             return slaves.ToArray();
         }
-        public static async Task C2DMessage(string connectionString, string deviceId, string moduleId, string fruit, ILogger log)
+        public static async Task C2DMessage(string connectionString, string deviceId, string moduleId, string fruit, string EventMsgTime, ILogger log)
         {
             if (fruit == null)
             {
@@ -81,6 +122,7 @@ namespace HubEventHandler
             log.LogInformation("have service client");
             FruitMessage fruitMsg = new FruitMessage();
             fruitMsg.FruitSeen = fruit;
+            fruitMsg.OriginalEventUTCTime = EventMsgTime;
             var mi = new CloudToDeviceMethod("SetFruit");
             mi.ConnectionTimeout = TimeSpan.FromSeconds(10);
             mi.ResponseTimeout = TimeSpan.FromSeconds(120);
@@ -98,44 +140,72 @@ namespace HubEventHandler
         public static async Task HubRun([IoTHubTrigger("messages/events", Connection = "EndpointConnectionString")]EventData message, 
                                         ILogger log, WebJobsExecutionContext context)
         {
-            string msg = Encoding.UTF8.GetString(message.Body);
-            log.LogInformation($"C# IoT Hub trigger function processed a message: {msg}");
-            string deviceName = (string)message.SystemProperties["iothub-connection-device-id"];
-            log.LogInformation($"Have device id {deviceName}");
-            var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory).AddJsonFile("local.settings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build();
-            string conn = config[Keys.HubConnectionString];
-            log.LogInformation("Have connection string {0}", conn);
-            var rm = RegistryManager.CreateFromConnectionString(conn);
-            log.LogInformation("Have registry manager");
-            ModuleLoadMessage loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msg);
-            if (loadMsg.ModuleName == Keys.GPIOModuleId)
+            try
             {
-                log.LogInformation("Load Module GPIO");
-                string fruit = await GetCurrentFruit(deviceName, rm, log);
-                log.LogInformation($"Have fruit {fruit}");
-
-                await C2DMessage(conn, deviceName, loadMsg.ModuleName, fruit, log);
-            } else
-            {
-                log.LogInformation("Not a GPIO Load Module -- checking for fruit");
-                FruitMessage fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msg);
-                if (fruitMsg.FruitSeen != null)
+                string msg = Encoding.UTF8.GetString(message.Body);
+                log.LogInformation("{0} C# IoT Hub trigger function received a message: {1} ::: {2}", Thread.CurrentThread.ManagedThreadId, Dump(message), message.ToString());
+                log.LogInformation($"payload: {msg}");
+                if (message.SystemProperties == null)
                 {
-                    string[] slaves = await GetFruitSlaves(deviceName, rm, log);
-                    foreach (var s in slaves)
+                    log.LogInformation("no system metadata. unable to determine source device -- ignoring");
+                    return;
+                }
+                if (message.Properties != null && 
+                    message.Properties.ContainsKey(Keys.iothubMessageSchema) && 
+                    (string)message.Properties[Keys.iothubMessageSchema] == Keys.twinChangeNotification)
+                {
+                    log.LogInformation("twin notification -- ignoring");
+                    return;
+                }
+                string deviceName = (string)message.SystemProperties[Keys.DeviceIdMetadata];
+                log.LogInformation($"Have device id {deviceName}");
+                var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory).AddJsonFile("local.settings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build();
+                string conn = config[Keys.HubConnectionString];
+                log.LogInformation("Have connection string {0}", conn);
+                var rm = RegistryManager.CreateFromConnectionString(conn);
+                log.LogInformation("Have registry manager");
+                ModuleLoadMessage loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msg);
+                if (loadMsg.ModuleName == Keys.GPIOModuleId)
+                {
+                    log.LogInformation("Load Module GPIO");
+                    string fruit = await GetCurrentFruit(deviceName, rm, log);
+                    log.LogInformation($"Have fruit {fruit}");
+
+                    await C2DMessage(conn, deviceName, loadMsg.ModuleName, fruit, null, log);
+                }
+                else
+                {
+                    log.LogInformation("Not a GPIO Load Module -- checking for fruit");
+                    FruitMessage fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msg);
+                    if (fruitMsg.FruitSeen != null)
                     {
-                        log.LogInformation("sending fruit slave {0} GPIO fruit {1}", s, fruitMsg.FruitSeen);
-                        try
+                        log.LogInformation("fruit msg original time {0} fruit {1}", fruitMsg.OriginalEventUTCTime, fruitMsg.FruitSeen);
+                        string[] slaves = await GetFruitSlaves(deviceName, rm, log);
+                        //log.LogInformation("found {0} slave devices", slaves.Length);
+                        string originaleventtime = null;
+                        if (message.Properties.ContainsKey(Keys.MessageCreationUTC))
                         {
-                            await C2DMessage(conn, s, Keys.GPIOModuleId, fruitMsg.FruitSeen, log);
-                        } catch (Exception e)
+                            originaleventtime = (string)message.Properties[Keys.MessageCreationUTC];
+                        }
+                        foreach (var s in slaves)
                         {
-                            log.LogInformation("exception sendung fruit slave {0} GPIO fruit {1}. ex = {2}", s, fruitMsg.FruitSeen, e.ToString());
+                            log.LogInformation("sending fruit slave {0}  originalUTC {1} GPIO fruit {2}", s, originaleventtime == null ? "(null)" : originaleventtime, fruitMsg.FruitSeen);
+                            try
+                            {
+                                await C2DMessage(conn, s, Keys.GPIOModuleId, fruitMsg.FruitSeen, originaleventtime, log);
+                            }
+                            catch (Exception e)
+                            {
+                                log.LogInformation("{0} exception sending fruit slave {1} GPIO fruit {2}. ex = {3}", Thread.CurrentThread.ManagedThreadId, s, fruitMsg.FruitSeen, e.ToString());
+                            }
                         }
                     }
                 }
+            } catch (Exception e)
+            {
+                log.LogInformation("{0} HubRun failed with exception {1}", Thread.CurrentThread.ManagedThreadId, e.ToString());
             }
-            log.LogInformation("HubRun complete");
+            log.LogInformation("{0}HubRun complete", Thread.CurrentThread.ManagedThreadId);
             return;
         }
     }

@@ -474,6 +474,11 @@ namespace ConsoleDotNetCoreGPIO
                 Log.WriteLine("setting activepin from {0} to {1}", _activePin != null ? _activePin : "(null)", value != null ? value : "(null)");
                 lock (_outputPins)
                 {
+                    if (_activePin == value)
+                    {
+                        Log.WriteLine("set active pin ignoring request to set existing value {0}", (_activePin == null || !_outputPins.ContainsKey(_activePin)) ? "(null)" : _activePin);
+                        return;
+                    }
                     if (_activePin != null && _outputPins.ContainsKey(_activePin))
                     {
                         var p = _outputPins[_activePin];

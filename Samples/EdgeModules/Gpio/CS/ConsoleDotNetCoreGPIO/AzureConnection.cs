@@ -60,6 +60,7 @@ namespace ConsoleDotNetCoreGPIO
 
     class AzureModule : AzureModuleBase
     {
+        private DateTime _lastFruitUTC;
         private DesiredPropertiesType _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
@@ -71,7 +72,20 @@ namespace ConsoleDotNetCoreGPIO
             var msgString = Encoding.UTF8.GetString(msgBytes);
             Log.WriteLine("fruit msg received: '{0}'", msgString);
             var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msgString);
-            await Task.Run(() =>module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen));
+            DateTime originalEventUTC = DateTime.UtcNow;
+            if (fruitMsg.OriginalEventUTCTime != null)
+            {
+                originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            }
+            if (originalEventUTC >= module._lastFruitUTC)
+            {
+                Log.WriteLine("FruitMsgHandler invoking event. original event UTC {0}", originalEventUTC.ToString("o"));
+                await Task.Run(() => module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen));
+            }
+            else
+            {
+                Log.WriteLine("FruitMsgHandler ignoring stale message. original event UTC {1}", originalEventUTC.ToString("o"));
+            }
             return MessageResponse.Completed;
         }
         public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
@@ -114,9 +128,20 @@ namespace ConsoleDotNetCoreGPIO
             string data = Encoding.UTF8.GetString(req.Data);
             Log.WriteLine("Direct Method SetFruit {0}", data);
             var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(data);
-            AzureModule module = (AzureModule)context;
-            module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen);
-
+            DateTime originalEventUTC = DateTime.UtcNow;
+            if (fruitMsg.OriginalEventUTCTime != null)
+            {
+                originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            }
+            if (originalEventUTC >= _lastFruitUTC)
+            {
+                Log.WriteLine("SetFruit invoking event. original event UTC {0}", originalEventUTC.ToString("o"));
+                AzureModule module = (AzureModule)context;
+                module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen);
+            }  else
+            {
+                Log.WriteLine("SetFruit ignoring stale message. original event UTC {1}", originalEventUTC.ToString("o"));
+            }
             // Acknowlege the direct method call with a 200 success message
             string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
             return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
@@ -124,7 +149,7 @@ namespace ConsoleDotNetCoreGPIO
 
         public AzureModule()
         {
-
+            _lastFruitUTC = DateTime.MinValue;
         }
         public override async Task AzureModuleInitAsync<C>(C c) 
         {
