@@ -74,7 +74,7 @@ namespace PlantSensor
             {
                 BrightnessFile = await storageFolder.GetFileAsync(FileNames.BrightnessfileName);
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
                 BrightnessFile = await storageFolder.CreateFileAsync(FileNames.BrightnessfileName);
             }
@@ -83,7 +83,7 @@ namespace PlantSensor
             {
                 TemperatureFile = await storageFolder.GetFileAsync(FileNames.TemperaturefileName);
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
                 TemperatureFile = await storageFolder.CreateFileAsync(FileNames.TemperaturefileName);
             }
@@ -93,7 +93,7 @@ namespace PlantSensor
                 SoilMoistureFile = await storageFolder.GetFileAsync(FileNames.SoilMoisturefileName);
                 Debug.WriteLine("Old Files are used");
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
                 SoilMoistureFile = await storageFolder.CreateFileAsync(FileNames.SoilMoisturefileName);
                 Debug.WriteLine("New Files were created");
@@ -104,7 +104,7 @@ namespace PlantSensor
                 TwitterFile = await storageFolder.GetFileAsync(FileNames.SettingsfileName);
                 Debug.WriteLine("Old settings Files are used");
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
                 TwitterFile = await storageFolder.CreateFileAsync(FileNames.SettingsfileName);
                 Debug.WriteLine("new settingsFiles are used");
