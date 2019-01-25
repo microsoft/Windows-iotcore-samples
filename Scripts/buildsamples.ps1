@@ -51,7 +51,6 @@ $blocked_always = @(
     "EdgeModulesCS.sln",
     "gpiokmdfdemo.sln",
     "InternetRadioDevice.sln",
-    "IoTConnector.sln",
     "IoTConnectorClient.sln",
     "IoTOnboarding.sln",
     "NodeBlinkyServer.sln",
