@@ -79,12 +79,13 @@ namespace ConsoleDotNetCoreGPIO
             }
             if (originalEventUTC >= module._lastFruitUTC)
             {
-                Log.WriteLine("FruitMsgHandler invoking event. original event UTC {0}", originalEventUTC.ToString("o"));
+                Log.WriteLine("FruitMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastFruitUTC.ToString("o"));
                 await Task.Run(() => module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen));
+                module._lastFruitUTC = originalEventUTC;
             }
             else
             {
-                Log.WriteLine("FruitMsgHandler ignoring stale message. original event UTC {1}", originalEventUTC.ToString("o"));
+                Log.WriteLine("FruitMsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastFruitUTC.ToString("o"));
             }
             return MessageResponse.Completed;
         }
@@ -135,12 +136,14 @@ namespace ConsoleDotNetCoreGPIO
             }
             if (originalEventUTC >= _lastFruitUTC)
             {
-                Log.WriteLine("SetFruit invoking event. original event UTC {0}", originalEventUTC.ToString("o"));
+                Log.WriteLine("SetFruit invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
                 AzureModule module = (AzureModule)context;
                 module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen);
-            }  else
+                _lastFruitUTC = originalEventUTC;
+            }
+            else
             {
-                Log.WriteLine("SetFruit ignoring stale message. original event UTC {1}", originalEventUTC.ToString("o"));
+                Log.WriteLine("SetFruit ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
             }
             // Acknowlege the direct method call with a 200 success message
             string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
