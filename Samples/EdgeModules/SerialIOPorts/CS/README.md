@@ -8,18 +8,14 @@ This sample uses standard .NET Core System.IO.Ports APIs to access the serial de
 These APIs only work with serial devices which come named "COM{x}".
 Consequently, this approach is relevant on Windows 10 IoT Enterprise, but not Windows 10 IoT Core.
 
-WARNING: The current release (17763.55) of Windows 10 IoT Enterprise  does not contain the components needed to run the System.IO.Ports namespace from a container.
-We are currently working to update Windows 10 IoT Enterprise  to fix this problem. 
-After that update, for devices which follow the COMx naming pattern, you can use System.IO.Ports in your own solutions.
-In the meantime, the SerialWin32 sample shows the only available API surface for accessing serial ports from within Windows containers.
-
 ## Install Azure IoT Edge
 
 These instructions work with the 1.0.5 release of [Azure IoT Edge for Windows](https://docs.microsoft.com/en-us/azure/iot-edge/).
 
-## Host Hardware
+## Host Hardware & OS
 
-These instructions will work on any PC running Windows 10, including Windows 10 IoT Enterprise.
+These instructions will work on any PC running Windows 10, including Windows 10 IoT Enterprise. 
+The PC must be running build 17763 of Windows 10, and must be 17763.253 or higher.
 
 ## Peripheral Hardware
 
