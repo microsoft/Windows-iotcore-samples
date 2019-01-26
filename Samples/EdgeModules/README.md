@@ -15,6 +15,7 @@ This directory contains sample modules demonstrating various features of Azure I
 <table>
  <tr>
   <td><a href="./ConsoleDotNetCoreWinML">ConsoleDotNetCoreWinML</a></td>
+  <td><a href="./SerialIOPorts">SerialIOPorts</a></td>
   <td><a href="./SerialWin32">SerialWin32</a></td>
   <td><a href="./SqueezeNetObjectDetection">SqueezeNetObjectDetection</a></td>
  </tr>

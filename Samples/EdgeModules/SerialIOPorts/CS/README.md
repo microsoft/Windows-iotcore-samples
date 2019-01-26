@@ -2,10 +2,6 @@
 
 This document will walk you through creating a module for Azure IoT Edge on Windows 10 IoT Enterprise which accesses a USB Serial device.
 
-## STATUS: Substantially Completed
-
-This sample is pretty much ready to go. Just need to update to 1.0.5, test again, double check the formatting, and it can be published.
-
 ## API Surface
 
 This sample uses standard .NET Core System.IO.Ports APIs to access the serial devices. 
@@ -19,7 +15,7 @@ In the meantime, the SerialWin32 sample shows the only available API surface for
 
 ## Install Azure IoT Edge
 
-These instructions work with the Private Preview build of Azure IoT Edge for Windows. If you do not have access, please contact Alex Newman <alnewman@microsoft.com>. Note that the private preview requires version 17763 of Windows.
+These instructions work with the 1.0.5 release of [Azure IoT Edge for Windows](https://docs.microsoft.com/en-us/azure/iot-edge/).
 
 ## Host Hardware
 
@@ -31,35 +27,29 @@ Obtain an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70). Conn
 
 ## Build and Publish the Sample App
 
-Currently the sample app is set up in a private repo. We will move the sample to a public location when win-arm docker and nanoserver containers are also public. For now, contact mailto:jcoliz@xbox.com for access to the private repo.
-
-* _Internal Users_: Clone https://mscodehub.visualstudio.com/jcoliz/_git/EdgeModules 
-* _EEAP Partners_: Obtain the containers helper package from EEAP Collaborate. Copy the contents of EdgeModules folder onto your development PC.
-
-Then we can publish it from a PowerShell command line, from the SerialIOPorts/CS directory:
+Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory.
 
 ```
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> dotnet publish -r win-x64
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> dotnet publish -r win-x64
 Microsoft (R) Build Engine version 15.8.166+gd4e8d81a88 for .NET Core
 Copyright (C) Microsoft Corporation. All rights reserved.
 
-  Restore completed in 53.44 ms for D:\source\Repos\EdgeModules\SerialIOPorts\CS\SerialWin32.csproj.
-  SerialWin32 -> D:\source\Repos\EdgeModules\SerialIOPorts\CS\bin\Debug\netcoreapp2.1\win-x64\SerialWin32.dll
-  SerialWin32 -> D:\source\Repos\EdgeModules\SerialIOPorts\CS\bin\Debug\netcoreapp2.1\win-x64\publish\
+  Restore completed in 53.44 ms for D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\SerialWin32.csproj.
+  SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\bin\Debug\netcoreapp2.1\win-x64\SerialWin32.dll
+  SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\bin\Debug\netcoreapp2.1\win-x64\publish\
 ```
 
 ## Create a personal container repository
 
-In order to deploy modules to your device, you will need access to a container respository.  
-Refer to the "Create a container registry" section in [Tutorial: Develop a C# IoT Edge module and deploy to your simulated device](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-csharp-module)
+In order to deploy modules to your device, you will need access to a container respository. 
+Refer to [Quickstart: Create a private container registry using the Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
 
-For this sample, I am using jcoliz.azurecr.io. 
-When following the sample, change this to your own repository of course.
+When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
 
 Be sure to log into the container respository from your device.
 
 ```
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> docker login jcoliz.azurecr.io jcoliz password
+PS C:\data\modules\SerialWin32> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
 ```
 
 ## Containerize the sample app
@@ -68,9 +58,9 @@ The x64 containers can be build directly on a PC.
 For the remainder of this sample, we will use the environment variable $Container to refer to the address of our container.
 
 ```
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> $Container = "jcoliz.azurecr.io/serialioports:1.0.0-x64"
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> $Container = "{ACR_NAME}.azurecr.io/serialioports:1.0.0-x64"
 
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> docker build . -f .\Dockerfile.windows-x64 -t $Container
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker build . -f .\Dockerfile.windows-x64 -t $Container
 
 Sending build context to Docker daemon  81.89MB
 Step 1/5 : FROM mcr.microsoft.com/windows/nanoserver/insider:10.0.17763.55
@@ -90,7 +80,7 @@ Step 5/5 : CMD [ "SerialIOPorts.exe", "-rte", "-dCOM3" ]
 Removing intermediate container 1aedd449ffa4
  ---> d6cbd51600e3
 Successfully built d6cbd51600e3
-Successfully tagged jcoliz.azurecr.io/serialioports:1.0.0-x64
+Successfully tagged {ACR_NAME}.azurecr.io/serialioports:1.0.0-x64
 ```
 
 ## Test the sample app on the device
@@ -98,7 +88,7 @@ Successfully tagged jcoliz.azurecr.io/serialioports:1.0.0-x64
 At this point, we'll want to run the container locally to ensure that it is able to find and talk to our peripheral.
 
 ```
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialIOPorts.exe
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialIOPorts.exe
 
 SerialWin32 1.0.0.0
   -h, --help                 show this message and exit
@@ -116,13 +106,10 @@ COM3
 This will show that the application is able to run through the container, and list the available devices. 
 Notice that we are overriding the entry point from the command line.
 
-WARNING: The current release (17763.55) of IoT Enterprise host OS does not contain the components needed to run the System.IO.Ports namespace in a container. The following step fails on the currently-released IoT
-Enterprise. We are working on releasing an update which enables this.
-
 Now let's pick a device and ensure we can open it:
 
 ```
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialWin32.exe -c -dCOM3
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialWin32.exe -c -dCOM3
 
 11/20/2018 8:11:29 AM Connecting to device COM3}...
 =====================================
@@ -137,18 +124,18 @@ StopBits: 0x0
 Now, we push the container into the repository which we built earlier. At this point, the container image is waiting for us to deploy.
 
 ```
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> docker push $Container
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker push $Container
 
-The push refers to repository [jcoliz.azurecr.io/serialioports]
+The push refers to repository [{ACR_NAME}.azurecr.io/serialioports]
 bf4863b963b0: Preparing
 3ed1316f55e1: Preparing
 b4d9f6916bae: Preparing
 6d34deee1fa7: Preparing
 79c160bd8d82: Preparing
 79c160bd8d82: Skipped foreign layer
-b4d9f6916bae: Mounted from serial-module
+b4d9f6916bae: Mounted from serialioports
 bf4863b963b0: Pushed
-6d34deee1fa7: Mounted from serial-module
+6d34deee1fa7: Mounted from serialioports
 3ed1316f55e1: Pushed
 1.0.0-arm32: digest: sha256:9593c87a18198915118ecbdc7f5a308dbe34a15ef898bac3fb5d06730ae6d30a size: 1464
 ```
@@ -165,15 +152,10 @@ The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/seriali
         "runtime": {
           "settings": {
             "registryCredentials": {
-              "jiriatest": {
-                "username": "d3e6e3bc-2e38-4887-9073-2cf796462b15",
-                "password": "71181f94-a9b9-4b98-96a8-01c4ae8dff94",
-                "address": "edgeshared.azurecr.io"
-              },
-              "ACR_NAME": {
-                "username": "ACR_USER",
-                "password": "ACR_PASSWORD",
-                "address": "ACR_ADDRESS"
+              "{ACR_NAME}": {
+                "username": "{ACR_USER}",
+                "password": "{ACR_PASSWORD}",
+                "address": "{ACR_ADDRESS}"
               }
             }
           }
@@ -182,7 +164,7 @@ The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/seriali
         "modules": {
           "serial": {
             "settings": {
-              "image": "ACR_IMAGE",
+              "image": "{ACR_IMAGE}",
               "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/86E0D1E0-8089-11D0-9CE4-08003E301F73\"}],\"Isolation\":\"Process\"}}"
             }
           }
@@ -199,7 +181,7 @@ For reference, please see [Deploy Azure IoT Edge modules from Visual Studio Code
 Using the Azure IoT Edge extension for Visual Studio Code, you can select your device and choose "Start Monitoring D2C Message". You should see this:
 
 ```
-[IoTHubMonitor] [4:04:43 PM] Message received from [jcoliz-preview/serialioports]:
+[IoTHubMonitor] [4:04:43 PM] Message received from [{ACR_NAME}/serialioports]:
 {
   "machine": {
     "temperature": 56.32,
@@ -211,7 +193,7 @@ Using the Azure IoT Edge extension for Visual Studio Code, you can select your d
   },
   "timeCreated": "2018-11-19T16:04:43.0331117-08:00"
 }
-[IoTHubMonitor] [4:04:44 PM] Message received from [jcoliz-preview/serialioports]:
+[IoTHubMonitor] [4:04:44 PM] Message received from [{ACR_NAME}/serialioports]:
 {
   "machine": {
     "temperature": 14.47,
@@ -230,10 +212,10 @@ From a command prompt on the device, you can also check the logs for the module 
 First, find the module container:
 
 ```
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> docker ps
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker ps
 
 CONTAINER ID        IMAGE                                                                           COMMAND                  CREATED              STATUS              PORTS                                                                  NAMES
-b4107d30a29d        jcoliz.azurecr.io/serialioports:1.0.2-x64                                       "SerialIOPorts.exe -rt…"   About a minute ago   Up About a minute                                                                          serialioports
+b4107d30a29d        {ACR_NAME}.azurecr.io/serialioports:1.0.2-x64                                   "SerialIOPorts.exe -rt…"   About a minute ago   Up About a minute                                                                     serialioports
 56170371f8f5        edgeshared.azurecr.io/microsoft/azureiotedge-hub:1809_insider-windows-arm32     "dotnet Microsoft.Az…"   3 days ago           Up 6 minutes        0.0.0.0:443->443/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:8883->8883/tcp   edgeHub
 27c147e5c760        edgeshared.azurecr.io/microsoft/azureiotedge-agent:1809_insider-windows-arm32   "dotnet Microsoft.Az…"   3 days ago           Up 7 minutes                                                                               edgeAgent
 ```
@@ -241,7 +223,7 @@ b4107d30a29d        jcoliz.azurecr.io/serialioports:1.0.2-x64                   
 Then, use the ID for the serialioports container to check the logs
 
 ```
-PS D:\source\Repos\EdgeModules\SerialIOPorts\CS> docker logs b4107d30a29d
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker logs b4107d30a29d
 11/21/2018 4:48:33 PM Connecting to device COM3...
 11/21/2018 4:48:34 PM Write 1 Completed. Wrote 30 bytes: "00001/049.18,053.69/077.32,024"
 11/21/2018 4:48:34 PM Read 1 Completed. Received 30 bytes: "00001/049.18,053.69/077.32,024"
