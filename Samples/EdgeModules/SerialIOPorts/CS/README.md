@@ -23,16 +23,16 @@ Obtain an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70). Conn
 
 ## Build and Publish the Sample App
 
-Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory.
+Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialIOPorts/CS directory.
 
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> dotnet publish -r win-x64
 Microsoft (R) Build Engine version 15.8.166+gd4e8d81a88 for .NET Core
 Copyright (C) Microsoft Corporation. All rights reserved.
 
-  Restore completed in 53.44 ms for D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\SerialWin32.csproj.
-  SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\bin\Debug\netcoreapp2.1\win-x64\SerialWin32.dll
-  SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\bin\Debug\netcoreapp2.1\win-x64\publish\
+  Restore completed in 53.44 ms for D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\SerialIOPorts.csproj.
+  SerialIOPorts -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\bin\Debug\netcoreapp2.1\win-x64\SerialIOPorts.dll
+  SerialIOPorts -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS\bin\Debug\netcoreapp2.1\win-x64\publish\
 ```
 
 ## Create a personal container repository
@@ -45,7 +45,7 @@ When following the sample, replace any "{ACR_*}" values with the correct values 
 Be sure to log into the container respository from your device.
 
 ```
-PS C:\data\modules\SerialWin32> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
+PS  D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
 ```
 
 ## Containerize the sample app
@@ -86,7 +86,7 @@ At this point, we'll want to run the container locally to ensure that it is able
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialIOPorts.exe
 
-SerialWin32 1.0.0.0
+SerialIOPorts 1.0.0.0
   -h, --help                 show this message and exit
   -l, --list                 list available devices and exit
   -d, --device=ID            the ID of device to connect
@@ -105,7 +105,7 @@ Notice that we are overriding the entry point from the command line.
 Now let's pick a device and ensure we can open it:
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialWin32.exe -c -dCOM3
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialIOPorts.exe -c -dCOM3
 
 11/20/2018 8:11:29 AM Connecting to device COM3}...
 =====================================
