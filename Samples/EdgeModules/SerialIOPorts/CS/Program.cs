@@ -13,6 +13,8 @@ namespace SampleModule
     using Microsoft.Azure.Devices.Client;
     using Newtonsoft.Json;
 
+    using EdgeModuleSamples.Common;
+
     class Program
     {
         static AppOptions Options;
@@ -38,11 +40,18 @@ namespace SampleModule
                 var devicepaths = SerialPort.GetPortNames();
                 if (Options.ShowList || string.IsNullOrEmpty(Options.DeviceId))
                 {
-                    Console.WriteLine("Available devices:");
-
-                    foreach (var devicepath in devicepaths)
+                    if (devicepaths.Length > 0)
                     {
-                        Console.WriteLine($"{devicepath}");
+                        Log.WriteLine("Available devices:");
+
+                        foreach (var devicepath in devicepaths)
+                        {
+                            Console.WriteLine($"{devicepath}");
+                        }
+                    }
+                    else
+                    {
+                        Log.WriteLine("No available devices");
                     }
                     return;
                 }
@@ -53,9 +62,9 @@ namespace SampleModule
 
                 var deviceid = devicepaths.Where(x => x.Contains(Options.DeviceId)).SingleOrDefault();
                 if (null == deviceid)
-                    throw new Exception($"Unable to find device containing {Options.DeviceId}");
+                    throw new ApplicationException($"Unable to find device containing {Options.DeviceId}");
 
-                Console.WriteLine($"{DateTime.Now.ToLocalTime()} Connecting to device {deviceid}...");
+                Log.WriteLine($"Connecting to device {deviceid}...");
 
                 using (var device = new SerialPort())
                 {
@@ -124,7 +133,7 @@ namespace SampleModule
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{DateTime.Now.ToLocalTime()} ERROR: {ex.GetType().Name} {ex.Message}");
+                Log.WriteLineError($"{ex.GetType().Name} {ex.Message}");
             }        
         }
 
@@ -155,7 +164,7 @@ namespace SampleModule
                 // Async write, using overlapped structure
                 var message = tempData.SerialEncode;
                 device.WriteLine(message);
-                Console.WriteLine($"{DateTime.Now.ToLocalTime()} Write {i} Completed. Wrote {message.Length} bytes: \"{message}\"");
+                Log.WriteLine($"Write {i} Completed. Wrote {message.Length} bytes: \"{message}\"");
                 i++;
             }            
         }
@@ -175,7 +184,7 @@ namespace SampleModule
                     try
                     {
                         string message = device.ReadLine();
-                        Console.WriteLine($"{DateTime.Now.ToLocalTime()} Read {i} Completed. Received {message.Length} bytes: \"{message}\"");
+                        Log.WriteLine($"Read {i} Completed. Received {message.Length} bytes: \"{message}\"");
 
                         // Translate it into a messagebody
                         if (Options.UseEdge)
@@ -187,14 +196,14 @@ namespace SampleModule
                             {
                                 string dataBuffer = JsonConvert.SerializeObject(tempData); 
                                 var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
-                                Console.WriteLine($"{DateTime.Now.ToLocalTime()} SendEvent: [{dataBuffer}]");
+                                Log.WriteLine($"SendEvent: [{dataBuffer}]");
                                 await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
                             }
                         }
                     }
                     catch (TimeoutException ex) 
                     { 
-                       Console.WriteLine($"{DateTime.Now.ToLocalTime()} ERROR: {ex.GetType().Name} {ex.Message}");                        
+                        Log.WriteLineError($"{ex.GetType().Name} {ex.Message}");
                     }
 
                     i++;
@@ -202,7 +211,7 @@ namespace SampleModule
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{DateTime.Now.ToLocalTime()} ERROR: {ex.GetType().Name} {ex.Message}");
+                Log.WriteLineError($"{ex.GetType().Name} {ex.Message}");
             }
         }
 
@@ -228,7 +237,7 @@ namespace SampleModule
             // Open a connection to the Edge runtime
             ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
             await ioTHubModuleClient.OpenAsync();
-            Console.WriteLine($"{DateTime.Now.ToLocalTime()} IoT Hub module client initialized.");
+            Log.WriteLine($"IoT Hub module client initialized.");
         }
     }
 }
