@@ -686,7 +686,7 @@ namespace SmartDisplay.Views
                 return "C:\\";
             }
 
-            workingDirectory.TrimEnd('>', '\\');
+            workingDirectory = workingDirectory.TrimEnd('>', '\\');
 
             if (IsDrive(workingDirectory))
             {

@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDisplay.Contracts", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDisplay.Utils", "SmartDisplay.Utils\SmartDisplay.Utils.csproj", "{9A45F2F2-0F2B-452A-887D-C39A22A3C3C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartDisplay.Features", "SmartDisplay.Features\SmartDisplay.Features.csproj", "{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -64,6 +66,18 @@ Global
 		{9A45F2F2-0F2B-452A-887D-C39A22A3C3C2}.Release|x64.Build.0 = Release|x64
 		{9A45F2F2-0F2B-452A-887D-C39A22A3C3C2}.Release|x86.ActiveCfg = Release|x86
 		{9A45F2F2-0F2B-452A-887D-C39A22A3C3C2}.Release|x86.Build.0 = Release|x86
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Debug|ARM.Build.0 = Debug|ARM
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Debug|x64.ActiveCfg = Debug|x64
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Debug|x64.Build.0 = Debug|x64
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Debug|x86.ActiveCfg = Debug|x86
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Debug|x86.Build.0 = Debug|x86
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Release|ARM.ActiveCfg = Release|ARM
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Release|ARM.Build.0 = Release|ARM
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Release|x64.ActiveCfg = Release|x64
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Release|x64.Build.0 = Release|x64
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Release|x86.ActiveCfg = Release|x86
+		{4FE09537-3CF8-4012-87DB-D1F72CAB62B0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

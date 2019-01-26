@@ -24,28 +24,28 @@
         </Grid.RowDefinitions>
 
         <TextBlock
+            x:Name="SignalBarsTextBlock"
             Grid.Row="0"
             Grid.Column="0"
             Margin="10,0,10,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             FontFamily="{StaticResource IconFontFamily}"
-            FontSize="28"
-            Text="{x:Bind ViewModel.SignalBars, Mode=OneWay}" />
+            FontSize="28" />
 
         <TextBlock
+            x:Name="SsidTextBlock"
             Grid.Row="0"
             Grid.Column="1"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Style="{StaticResource BodyTextBlockStyle}"
-            Text="{x:Bind ViewModel.SsidText, Mode=OneWay}" />
+            Style="{StaticResource BodyTextBlockStyle}" />
 
         <ContentControl
+            x:Name="PanelContentControl"
             Grid.Row="1"
             Grid.Column="1"
             HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Stretch"
-            Content="{x:Bind ViewModel.PanelContent, Mode=OneWay}" />
+            HorizontalContentAlignment="Stretch" />
     </Grid>
 </UserControl>

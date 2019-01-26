@@ -224,7 +224,7 @@ namespace PlantSensor
 
 /**
     * sets up the list by hour
-    * returns hourDictionary: the hour dictionary will be used in the day sorting method 
+    * returns hourDictionary: the hour dictionary will be used in the day sorting method
     * */
 public Dictionary<DateTime, List<float>> setUpGeneralMasterListPerHour(IList<string> fileList, List<ChartDataPoint> masterList)
 {
@@ -326,7 +326,7 @@ public Dictionary<DateTime, List<float>> setUpGeneralMasterListPerHour(IList<str
                 int daysInWeek = 7;
                 int numberOfWeeks = dataPointsForEightWeeks / daysInWeek;
                 //the number of weeks is set, but the number of data points per week
-                //is not, so an array of lists is used. 
+                //is not, so an array of lists is used.
                 List<float>[] weekList = new List<float>[numberOfWeeks];
 
                 TimeSpan oneWeek = new TimeSpan(7, 0, 0, 0);

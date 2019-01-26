@@ -99,13 +99,27 @@ namespace SmartDisplay.Utils
             return list.ToArray();
         }
 
-        public static async Task<string> GetFileFromInstalledLocationAsync(string path)
+        public static async Task<StorageFile> GetFileFromInstalledLocationAsync(string path)
         {
             ServiceUtil.LogService?.Write($"Getting file from: {path}");
             try
             {
                 var folder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-                var file = await folder.GetFileAsync(path);
+                return await folder.GetFileAsync(path);
+            }
+            catch (Exception ex)
+            {
+                ServiceUtil.LogService?.Write(ex.ToString(), LoggingLevel.Error);
+            }
+
+            return null;
+        }
+
+        public static async Task<string> ReadStringFromInstalledLocationAsync(string path)
+        {
+            try
+            {
+                var file = await GetFileFromInstalledLocationAsync(path);
                 return await FileIO.ReadTextAsync(file);
             }
             catch (Exception ex)

@@ -14,7 +14,7 @@ namespace SmartDisplay.Utils
     {
         public static string GetLocalizedText(string key)
         {
-            return ResourceLoader.GetForCurrentView().GetString(key);
+            return ResourceLoader.GetForViewIndependentUse().GetString(key);
         }
 
         public static string GetAppVersion()

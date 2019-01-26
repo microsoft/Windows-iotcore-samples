@@ -7,8 +7,6 @@ namespace SmartDisplay.Controls
 {
     public sealed partial class NetworkListControlTemplate : UserControl
     {
-        private NetworkListControlTemplateVM ViewModel { get; } = new NetworkListControlTemplateVM();
-
         #region Dependency Properties
 
         public static readonly DependencyProperty SignalBarsProperty =
@@ -19,10 +17,16 @@ namespace SmartDisplay.Controls
                 {
                     if (sender is NetworkListControlTemplate template)
                     {
-                        template.SignalBars = args.NewValue.ToString();
+                        template.SignalBarsTextBlock.Text = args.NewValue.ToString();
                     }
                 })
             );
+
+        public string SignalBars
+        {
+            get { return (string)GetValue(SignalBarsProperty); }
+            set { SetValue(SignalBarsProperty, value); }
+        }
 
         public static readonly DependencyProperty SsidTextProperty =
             DependencyProperty.Register("SsidText",
@@ -32,10 +36,16 @@ namespace SmartDisplay.Controls
                 {
                     if (sender is NetworkListControlTemplate template)
                     {
-                        template.SsidText = args.NewValue.ToString();
+                        template.SsidTextBlock.Text = args.NewValue.ToString();
                     }
                 })
             );
+
+        public string SsidText
+        {
+            get { return (string)GetValue(SsidTextProperty); }
+            set { SetValue(SsidTextProperty, value); }
+        }
 
         public static readonly DependencyProperty PanelContentProperty =
             DependencyProperty.Register("PanelContent",
@@ -45,30 +55,18 @@ namespace SmartDisplay.Controls
                 {
                     if (sender is NetworkListControlTemplate template)
                     {
-                        template.PanelContent = args.NewValue;
+                        template.PanelContentControl.Content = args.NewValue;
                     }
                 })
             );
 
-        #endregion
-
-        public string SignalBars
-        {
-            get { return ViewModel.SignalBars; }
-            set { ViewModel.SignalBars = value; }
-        }
-
-        public string SsidText
-        {
-            get { return ViewModel.SsidText; }
-            set { ViewModel.SsidText = value; }
-        }
-
         public object PanelContent
         {
-            get { return ViewModel.PanelContent; }
-            set { ViewModel.PanelContent = value; }
+            get { return GetValue(PanelContentProperty); }
+            set { SetValue(PanelContentProperty, value); }
         }
+
+        #endregion
 
         public NetworkListControlTemplate()
         {

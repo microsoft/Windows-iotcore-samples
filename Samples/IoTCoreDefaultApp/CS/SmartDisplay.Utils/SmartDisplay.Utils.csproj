@@ -11,11 +11,12 @@
     <AssemblyName>SmartDisplay.Utils</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -88,6 +89,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnimationUtil.cs" />
+    <Compile Include="Converters\WeatherConverters.cs" />
     <Compile Include="Keys.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Authentication\MsalProvider.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="ImageUtil.cs" />
     <Compile Include="IoTHubUtil.cs" />
     <Compile Include="LiveApiUtil.cs" />
+    <Compile Include="LocationUtil.cs" />
     <Compile Include="ProcessLauncherUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceUtil.cs" />
@@ -129,11 +132,6 @@
       <Project>{8da90bda-ce14-46a1-bc52-ad5a40ae0bca}</Project>
       <Name>SmartDisplay.Contracts</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="WindowsIoT, Version=10.0.17134.0">
-      <Name>Windows IoT Extensions for the UWP</Name>
-    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

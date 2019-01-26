@@ -15,8 +15,14 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" PointerPressed="ImageGrid_PointerPressed">
         <Image
             Margin="0"
-            Source="{x:Bind ViewModel.SlideshowImage, Mode=OneWay}"
-            Stretch="Uniform" />
+            Source="{x:Bind ViewModel.SlideshowImage1, Mode=OneWay}"
+            Stretch="Uniform"
+            Visibility="{x:Bind Path=ViewModel.SlideshowImage1Visible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <Image
+            Margin="0"
+            Source="{x:Bind ViewModel.SlideshowImage2, Mode=OneWay}"
+            Stretch="Uniform"
+            Visibility="{x:Bind Path=ViewModel.SlideshowImage1Visible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='Invert'}" />
         <Grid Background="Black" Visibility="{x:Bind Path=ViewModel.NoImagesGridIsVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBlock Style="{StaticResource FullPageErrorMessageTextStyle}" Text="{x:Bind ViewModel.NoImagesText}" />
         </Grid>

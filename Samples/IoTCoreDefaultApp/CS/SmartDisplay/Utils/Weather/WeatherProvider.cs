@@ -16,7 +16,6 @@ namespace SmartDisplay.Utils
         public List<IWeather> Sources { get; } = new List<IWeather>
         {
             new NWSWeather(),
-            new USWeather(),
             new InternationalWeather(),
         };
 
