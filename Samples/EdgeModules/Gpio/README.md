@@ -1,4 +1,4 @@
-# SerialWin32 Azure IoT Edge module
+# WinRT GPIO Azure IoT Edge module
 
 These are the available versions of this Azure IoT Edge module sample:
 
