@@ -133,6 +133,7 @@ namespace ConsoleDotNetCoreGPIO
             if (fruitMsg.OriginalEventUTCTime != null)
             {
                 originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+                Log.WriteLine("SetFruit invoking event. parsed msg time {0} from {1}", originalEventUTC.ToString("o"), fruitMsg.OriginalEventUTCTime);
             }
             if (originalEventUTC >= _lastFruitUTC)
             {
@@ -152,7 +153,7 @@ namespace ConsoleDotNetCoreGPIO
 
         public AzureModule()
         {
-            _lastFruitUTC = DateTime.MinValue;
+            _lastFruitUTC = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
         }
         public override async Task AzureModuleInitAsync<C>(C c) 
         {
