@@ -1,4 +1,4 @@
-# SerialWin32 Azure IoT Edge module
+# HubEventHandler Azure Function for IoT Hub Events
 
 These are the available versions of this Azure IoT Edge module sample:
 
