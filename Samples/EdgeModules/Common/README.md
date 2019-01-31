@@ -1,6 +1,6 @@
 # Common components across many modules
 
-This directory contains a classes library for classes shared by multiple samples.
+This directory contains a classes library for classes shared by multiple IoT Edge samples.
 
 * [C#](./cs/README.md)
 

@@ -25,3 +25,4 @@ Additionally, several of them are designed to work together to demonstrate coord
 |[Azure Function that responds to Azure IoT Hub events and reflects GPIO state across devices](./HubEventHandler/README.Md)| [HubEventHandler](./HubEventHandler/cs/HubEventHandler.csproj)|
 |[I2C TempHumidity Sensor](./I2CTempHumidity/README.md)|[I2CTempHumidity](./I2CTempHumidity/CS/I2CTempHumidity)|
 |[Serial IO using legacy comX ports with classic .net APIs](./SerialIoPorts/README.md)[SerialIoPorts](./SerialIoPorts/CS/SerialIoPorts.csproj)|
+|[Common library for shared utilities and abstract base classes](./Common/README.Md)| [Common](./common/cs/common.csproj)|

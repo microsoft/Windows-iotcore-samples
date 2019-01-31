@@ -13,7 +13,7 @@ The GPIO module listens for copies of those messages and maps the object name to
 | Pear | Yellow |
 | Pen | Green |
 
-The pin number to color mappings are configurable from the GPIO [Module Twin Desired Properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-module-twins).  Thus, the same module application can be used for different boards.
+The pin number to color mappings are configurable from the GPIO [Module Twin Desired Properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-module-twins).  Thus, the same module application can be used for different boards with different pin header layouts.
 
 ## Installation
 
