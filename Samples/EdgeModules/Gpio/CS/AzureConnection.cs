@@ -165,52 +165,10 @@ namespace ConsoleDotNetCoreGPIO
         }
     }
 
-#if USE_DEVICE_TWIN
-    class AzureDevice
-    {
-        private AzureConnection _connection { get; set; }
-        private DeviceClient _deviceClient { get; set; }
-
-        private Twin _deviceTwin { get; set; }
-        private TwinCollection _reportedDeviceProperties { get; set; }
-        private static async Task OnDesiredDevicePropertyChanged(TwinCollection desiredProperties, object ctx)
-        {
-            var device = (AzureDevice)ctx;
-            Log.WriteLine("desired properties contains {0} properties", desiredProperties.Count);
-            foreach (var p in desiredProperties)
-            {
-                Log.WriteLine("property {0}:{1}", p != null ? p.GetType().ToString() : "(null)", p != null ? p.ToString() : "(null)");
-            }
-            // TODO: compute delta and only send changes
-            await device._deviceClient.UpdateReportedPropertiesAsync(device._reportedDeviceProperties).ConfigureAwait(false);
-        }
-    public AzureDevice() {
-        }
-        public async Task AzureDeviceInitAsync() {
-            TransportType transport = TransportType.Amqp;
-            _deviceClient = DeviceClient.CreateFromConnectionString(await DeploymentConfig.GetDeviceConnectionStringAsync(), transport);
-            // TODO: connection status chnages handler
-            //newConnection._inputMessageHandler += OnInputMessageReceived;
-            //await newConnection._moduleClient.SetInputMessageHandlerAsync("????", _inputMessageHandler, newConnection)
-            // Connect to the IoT hub using the MQTT protocol
-
-            // Create a handler for the direct method call
-            _deviceClient.SetMethodHandlerAsync("SetFruit", SetFruit, this).Wait();
-            await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredDevicePropertyChanged, this);
-            await _deviceClient.OpenAsync();
-            Log.WriteLine("DeviceClient Initialized");
-            var _deviceTwin = await _deviceClient.GetTwinAsync();
-            Log.WriteLine("DeviceTwin Retrieved");
-        }
-    }
-#endif
 
     class AzureConnection : AzureConnectionBase
     {
         //private MessageHandler _inputMessageHandler { get; set; }
-#if USE_DEVICE_TWIN
-        private AzureDevice _device { get; set; }
-#endif
         public AzureConnection()
         {
             
@@ -230,43 +188,5 @@ namespace ConsoleDotNetCoreGPIO
             Log.WriteLine("derived Module Load D2C message fired");
         }
 
-#if DISABLED
-        public void UpdateObject(string fruit)
-        {
-            _updateq.Enqueue(fruit);
-            Task.Run(async () =>
-            {
-                try
-                {
-                    string f = null;
-                    bool success = false;
-                    while (!success && !_updateq.IsEmpty)
-                    {
-                        success = _updateq.TryDequeue(out f);
-                        await UpdateObjectAsync(f);
-                        var reporting = new TwinCollection
-                        {
-                            ["FruitSeen"] = fruit
-                        };
-                        await _client.UpdateReportedPropertiesAsync(reporting);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLineError("Update failed {0}", e.ToString());
-                }
-            });
-        }
-        private async Task UpdateObjectAsync(string fruit)
-        {
-            // output the event stream
-            var msgvalue = new FruitMessage();
-            msgvalue.FruitSeen = fruit;
-            byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
-            var m = new Message(msgbody);
-            await _client.SendEventAsync("OutputFruit", m);
-            // Update the module twin
-        }
-#endif
     }
 }

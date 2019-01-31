@@ -109,14 +109,6 @@ namespace ConsoleDotNetCoreGPIO
                 }
 
             }));
-#if DISABLE            
-            var w = new EventWaitHandle(false, EventResetMode.ManualReset);
-            for (; ; )
-            {
-                Log.WriteLine("{0} waiting spin", Environment.TickCount);
-                w.WaitOne(TimeSpan.FromSeconds(30));
-            }
-#endif
             return 0;
         }
 
