@@ -141,7 +141,7 @@ namespace ConsoleDotNetCoreWinML
         private LearningModelDevice _device { get; set; }
 
         static private Dictionary<string, ModelResult> _results = new Dictionary<string, ModelResult>();
-        public static async Task<Model> CreateModelAsync(string filename)
+        public static async Task<Model> CreateModelAsync(string filename, bool gpu)
         {
             Log.WriteLine("creating model");
             var file = await AsyncHelper.AsAsync(StorageFile.GetFileFromPathAsync(filename));
@@ -150,11 +150,18 @@ namespace ConsoleDotNetCoreWinML
             Log.WriteLine("loaded model");
             Model model = new Model();
             model._model = learningModel;
-            //LearningModelDeviceKind kind = LearningModelDeviceKind.DirectXHighPerformance;
             LearningModelDeviceKind kind = LearningModelDeviceKind.Cpu;
+            if (gpu)
+            {
+                Log.WriteLine("using GPU");
+                kind = LearningModelDeviceKind.DirectXHighPerformance;
+            } else
+            {
+                Log.WriteLine("using CPU");
+            }
             model._device = new LearningModelDevice(kind);
             model._session = new LearningModelSession(model._model, model._device);
-            Log.WriteLine("returning model");
+            Log.WriteLine("returning model now");
             return model;
         }
         public void Clear(string correlationId)

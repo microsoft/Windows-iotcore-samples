@@ -7,31 +7,21 @@ using Mono.Options;
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleDotNetCoreGPIO
+namespace ConsoleDotNetCoreWinML
 {
     public class AppOptions: OptionSet
     {
         public bool Help { get; private set; }
-        public int? Red { get; set; }
-        public int? Green { get; set; }
-        public int? Yellow { get; set; }
-        public int? Blue { get; set; }
-        public int? Input { get; set; }
-        public TimeSpan? Test { get; private set; }
+        public bool Gpu { get; private set; }
         public bool Quiet { get; private set; }
         public bool Verbose { get; private set; }
 
         public AppOptions()
         {
             Add( "h|help", "show this message and exit", v => Help = v != null );
+            Add("gpu", "use gpu acceleration for model evaluation", v => Gpu = v != null);
             Add("q|quiet", "suppress progress and errors to console", v => Quiet = v != null);
             Add("v|verbose", "maximum detail in console logging", v => Verbose = v != null);
-            Add<int>("r=|red=", "default pin number for red(overridable from module twin)", v => Red = v );
-            Add<int>("y=|yellow=", "default pin number for yellow(overridable from module twin)", v => Yellow = v);
-            Add<int>("g=|green=", "default pin number for green(overridable from module twin)", v => Green = v);
-            Add<int>("b=|blue=", "default pin number for blue(overridable from module twin)", v => Blue = v);
-            Add<int>("i=|input=", "default pin number for input(overridable from module twin)", v => Input = v);
-            Add<int>("t=|test=", "seconds to test the LED hardware independently of Azure", v => Test = TimeSpan.FromSeconds(v));
         }
 
         public new List<string> Parse(IEnumerable<string> args)

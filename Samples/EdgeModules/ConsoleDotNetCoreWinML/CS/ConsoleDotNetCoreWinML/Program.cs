@@ -95,7 +95,7 @@ namespace ConsoleDotNetCoreWinML
             foreach (var f in formats)
             {
                 Log.Write(string.Format("major {0} sub {1} ", f.MajorType, f.Subtype));
-                if (f.MajorType == "Video")
+                if (f.MajorType == "Video" && f.Subtype == "MJPG")
                 {
                     Log.Write(string.Format("w {0} h {1} ", f.VideoFormat.Width, f.VideoFormat.Height));
                     if (format == null)
@@ -204,7 +204,7 @@ namespace ConsoleDotNetCoreWinML
             }
         }
 
-        static async Task<int> MainAsync(string[] args)
+        static async Task<int> MainAsync(AppOptions options)
         {
             //Log.WriteLine("pause...");
             //var x = Console.ReadLine();
@@ -217,7 +217,7 @@ namespace ConsoleDotNetCoreWinML
             await Task.WhenAll(
                 Task.Run(async () =>
                     model = await Model.CreateModelAsync(
-                        Directory.GetCurrentDirectory() + "\\resources\\office_fruit_coreml.onnx")),
+                        Directory.GetCurrentDirectory() + "\\resources\\office_fruit_coreml.onnx", options.Gpu)),
                 Task.Run(async () =>
                     connection = await AzureConnection.CreateAzureConnectionAsync()),
                 Task.Run(async () => {
@@ -239,32 +239,21 @@ namespace ConsoleDotNetCoreWinML
 
             return 0;
         }
-        static void Usage()
-        {
-            Log.Enabled = true;
-            Log.WriteLineError("{0} {-l}", "ConsoleDotNetCoreWinML");
-            Log.WriteLineError("\t-l print log info to console");
-            Environment.Exit(1);
-        }
-        static void ProcessArguments(string[] args)
-        {
-            for (int i = 0; i < args.Length; ++i)
-            {
-                if (args[i].ToLowerInvariant() == "-l")
-                {
-                    Log.Enabled = true;
-                }
-            }
-        }
         static int Main(string[] args)
         {
             Log.WriteLine("Starting...");
             int rc = 0;
             try
             {
-                ProcessArguments(args);
+                var options = new AppOptions();
+
+                options.Parse(args);
+                Log.Enabled = !options.Quiet;
+                Log.Verbose = options.Verbose;
+                Log.WriteLine("arg parse complete...");
+
                 Task.WaitAll(Task.Run(async () =>
-                    rc = await MainAsync(args)));
+                    rc = await MainAsync(options)));
             } catch(Exception e)
             {                
                 Log.WriteLineError("app failed {0}", e.ToString());

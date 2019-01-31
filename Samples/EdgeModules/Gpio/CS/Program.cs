@@ -21,7 +21,8 @@ namespace ConsoleDotNetCoreGPIO
             var Options = new AppOptions();
 
             Options.Parse(args);
-            Log.Enabled = Options.Logging;
+            Log.Enabled = !Options.Quiet;
+            Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
             Dictionary<string, string> FruitColors = new Dictionary<string, string>()
             {
