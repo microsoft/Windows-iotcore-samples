@@ -1,3 +1,6 @@
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
 
 
 using EdgeModuleSamples.Common.Messages;
