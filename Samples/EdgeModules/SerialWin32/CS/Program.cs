@@ -31,6 +31,8 @@ namespace SampleModule
                 Options = new AppOptions();
 
                 Options.Parse(args);
+                Log.Enabled = !Options.Quiet;
+                Log.Verbose = Options.Verbose;
 
                 //
                 // Enumerate devices
