@@ -24,7 +24,7 @@
             <TextBlock Grid.Row="1" x:Name="detectionStatus" Width="600" HorizontalAlignment="Center" Margin="10"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="600" Margin="10">
                 <TextBox x:Name="ImageURL" Width="440" HorizontalAlignment="Left" Margin="0,0,10,0" Text="http://blogs.cdc.gov/genomics/files/2015/11/ThinkstockPhotos-177826416.jpg"/>
-                <Button Content="Detect Emotions" Width="140" HorizontalAlignment="Left" Click="button_Clicked"/>
+                <Button Content="Detect Emotions" Width="140" HorizontalAlignment="Left" Click="Button_Clicked"/>
             </StackPanel>
         </StackPanel>
 
