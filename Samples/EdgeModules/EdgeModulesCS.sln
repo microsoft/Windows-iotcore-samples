@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerialWin32", "SerialWin32\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HubEventHandler", "HubEventHandler\CS\HubEventHandler.csproj", "{4355EAD4-D960-44CC-9AED-024B744C2FF0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDotNetCoreI2C", "I2C\CS\ConsoleDotNetCoreI2C.csproj", "{7E9E879A-4BF3-40FC-9378-38C59E361C45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{4355EAD4-D960-44CC-9AED-024B744C2FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4355EAD4-D960-44CC-9AED-024B744C2FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4355EAD4-D960-44CC-9AED-024B744C2FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E9E879A-4BF3-40FC-9378-38C59E361C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E9E879A-4BF3-40FC-9378-38C59E361C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E9E879A-4BF3-40FC-9378-38C59E361C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E9E879A-4BF3-40FC-9378-38C59E361C45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

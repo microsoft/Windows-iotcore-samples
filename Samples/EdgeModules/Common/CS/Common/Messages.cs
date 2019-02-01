@@ -15,6 +15,7 @@ namespace EdgeModuleSamples.Common.Messages
         public readonly static string FruitSlaves = "FruitSlaves";
         public readonly static string FruitTest = "FruitTest";
         public readonly static string GPIOModuleId = "GPIO";
+        public readonly static string I2cModuleId = "I2c";
         public readonly static string HubConnectionString = "HubConnectionString";
         public readonly static string InputFruit = "inputfruit";
         public readonly static string iothubMessageSchema = "iothub-message-schema";

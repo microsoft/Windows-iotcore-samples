@@ -7,15 +7,14 @@ using Mono.Options;
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleDotNetCoreWinML
+namespace ConsoleDotNetCoreI2c
 {
     public class AppOptions: EdgeModuleSamples.Common.Options.AppOptions
     {
-        public bool Gpu { get; private set; }
 
-        public AppOptions()
+        public AppOptions() 
         {
-            Add("gpu", "use gpu acceleration for model evaluation", v => Gpu = v != null);
         }
+
     }
 }
