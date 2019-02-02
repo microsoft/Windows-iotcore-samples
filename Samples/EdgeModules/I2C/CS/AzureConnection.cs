@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
+using EdgeModuleSamples.Common;
 using EdgeModuleSamples.Common.Azure;
 using EdgeModuleSamples.Common.Logging;
 using EdgeModuleSamples.Common.Messages;
@@ -21,6 +22,15 @@ using YamlDotNet.Serialization;
 
 namespace ConsoleDotNetCoreI2c
 {
+    [JsonObject(MemberSerialization.Fields)]
+    class ConfigurationType : BaseConfigurationType
+    {
+        public override bool Update(BaseConfigurationType newValue)
+        {
+            Log.WriteLine("updating from {0} to {1}", this.ToString(), newValue.ToString());
+            return true;
+        }
+    }
     public class AzureDevice : AzureDeviceBase
     {
         public AzureDevice() { }
@@ -28,6 +38,11 @@ namespace ConsoleDotNetCoreI2c
 
     class AzureModule : AzureModuleBase
     {
+        // TODO: move common config to basemodule
+        private DesiredPropertiesType<ConfigurationType> _desiredProperties;
+        public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
+        public event EventHandler<ConfigurationType> ConfigurationChanged;
+
         public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
         {
             await base.OnConnectionChanged(status, reason);
@@ -36,11 +51,9 @@ namespace ConsoleDotNetCoreI2c
         }
         protected override async Task OnDesiredModulePropertyChanged(TwinCollection newDesiredProperties)
         {
-#if DISABLED
-            // TODO: process new properties
             Log.WriteLine("derived desired properties contains {0} properties", newDesiredProperties.Count);
             await base.OnDesiredModulePropertyChanged(newDesiredProperties);
-            DesiredPropertiesType dp;
+            DesiredPropertiesType<ConfigurationType> dp;
             dp.Configuration = ((JObject)newDesiredProperties[Keys.Configuration]).ToObject<ConfigurationType>();
             Log.WriteLine("checking for update current desiredProperties {0} new dp {1}", _desiredProperties.ToString(), dp.ToString());
             var changed = _desiredProperties.Update(dp);
@@ -52,11 +65,6 @@ namespace ConsoleDotNetCoreI2c
 
             }
             Log.WriteLine("update complete -- current properties {0}", _desiredProperties.ToString());
-#else
-            await Task.CompletedTask;
-            return;
-#endif
-
         }
 
         public AzureModule()
@@ -112,10 +120,12 @@ namespace ConsoleDotNetCoreI2c
 
     class AzureConnection : AzureConnectionBase
     {
+        private byte[] _lastOBody;
+
 #if USE_DEVICE_TWIN
         private AzureDevice _device { get; set; }
 #endif
-        public AzureConnection()
+            public AzureConnection()
         {
             
         }
@@ -123,12 +133,44 @@ namespace ConsoleDotNetCoreI2c
             return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
         }
 
-        public async Task NotifyModuleLoad()
+        public async Task NotifyNewModuleAsync()
         {
-            await NotifyModuleLoad(Keys.ModuleLoadOutputRouteLocal, Keys.I2cModuleId);
-            await NotifyModuleLoad(Keys.ModuleLoadOutputRouteUpstream, Keys.I2cModuleId);
-            Log.WriteLine("derived Module Load D2C message fired");
+                if (_lastOBody.Length > 1)
+                {
+                    Message m = null;
+                    lock (_lastOBody)
+                    {
+                        m = new Message(_lastOBody);
+                    }
+                    await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                }
         }
-
+        public override async Task UpdateObjectAsync(KeyValuePair<string, string> kvp)
+        {
+            Log.WriteLine("\t\t\t\t\t\tI2C UpdateObjectAsync override kvp = {0}", kvp.ToString());
+            if (kvp.Key == Keys.Orientation)
+            {
+                // output the event stream
+                var msgvalue = new OrientationMessage();
+                msgvalue.OrientationState = kvp.Value;
+                byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
+                lock (_lastOBody)
+                {
+                    _lastOBody = msgbody;
+                }
+                await Task.WhenAll(
+                    Task.Run(async () =>
+                    {
+                        var m = new Message(msgbody);
+                        await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                    }),
+                    Task.Run(async () =>
+                    {
+                        var m = new Message(msgbody);
+                        await Module.SendMessageAsync(Keys.OutputUpstream, m);
+                    })
+                );
+            }
+        }
     }
 }

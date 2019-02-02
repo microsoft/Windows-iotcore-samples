@@ -138,42 +138,48 @@ namespace ConsoleDotNetCoreWinML
             DateTime fpsT0 = oldFpsT0;
             string prevLabel = oldLabel;
             string correlationId = String.Format("{0}", totalFrame);
-            var r = await model.EvaluateAsync(frame, correlationId);
-            if (!r._result.Succeeded)
+            try
             {
-                Log.WriteLineUp3Home("eval failed {0}", r._result.ErrorStatus);
-            }
-            else
+                var r = await model.EvaluateAsync(frame, correlationId);
+                if (!r._result.Succeeded)
+                {
+                    Log.WriteLineUp3Home("eval failed {0}", r._result.ErrorStatus);
+                }
+                else
+                {
+                    Log.WriteLineUp3Home("eval succeeded");
+                }
+
+                var fps_interval = DateTime.Now - fpsT0;
+                if (fps_interval.Seconds > 10)
+                {
+                    fps = currentFrame * 1.0 / fps_interval.Seconds;
+                    currentFrame = 0;
+                    fpsT0 = DateTime.Now;
+                }
+                Log.WriteLineHome("fps {0}", fps.ToString("0.00"));
+
+
+                string label = r._output.classLabel;
+                var most = r.MostProbable;
+                if (label != most.Key)
+                {
+                    throw new ApplicationException(string.Format("Output Feature Inconsistency model output label 0 '{0}' and label 1 '{1}'", label, most.Key));
+                }
+                Log.WriteLineSuccess("{0} with probability {1}", most.Key, most.Value.ToString("0.0000"));
+                // we would like to apply a confidence threshold but with these models garbage always ends up high confidence something 
+                if (prevLabel == null || prevLabel != label)
+                {
+                    prevLabel = label;
+                    azure.UpdateObject(new KeyValuePair<string, string>(Keys.FruitSeen, label));
+
+                }
+
+                model.Clear(correlationId);
+            } catch (Exception e)
             {
-                Log.WriteLineUp3Home("eval succeeded");
+                throw new ApplicationException("Frame Processing Failed", e);
             }
-
-            var fps_interval = DateTime.Now - fpsT0;
-            if (fps_interval.Seconds > 10)
-            {
-                fps = currentFrame * 1.0 / fps_interval.Seconds;
-                currentFrame = 0;
-                fpsT0 = DateTime.Now;
-            }
-            Log.WriteLineHome("fps {0}", fps.ToString("0.00"));
-
-
-            string label = r._output.classLabel;
-            var most = r.MostProbable;
-            if (label != most.Key)
-            {
-                throw new ApplicationException(string.Format("Output Feature Inconsistency model output label 0 '{0}' and label 1 '{1}'", label, most.Key));
-            }
-            Log.WriteLineSuccess("{0} with probability {1}", most.Key, most.Value.ToString("0.0000"));
-            // we would like to apply a confidence threshold but with these models garbage always ends up high confidence something 
-            if (prevLabel == null || prevLabel != label)
-            {
-                prevLabel = label;
-                azure.UpdateObject(new KeyValuePair<string, string>(Keys.FruitSeen, label));
-
-            }
-
-            model.Clear(correlationId);
             return new Tuple<UInt64, double, DateTime, string>(currentFrame, fps, fpsT0, prevLabel);
         }
         static async Task CameraProcessingAsync(Model model, MediaFrameReader reader, EventWaitHandle evtframe, AzureConnection azure)
@@ -181,26 +187,32 @@ namespace ConsoleDotNetCoreWinML
             var fps_t0 = DateTime.Now;
             string prev_label = null;
 
-            double fps = 0.0;
-            for (UInt64 total_frame = 0, current_frame = 0; ; ++total_frame)
+            try
             {
-                if (Model.Full)
+                double fps = 0.0;
+                for (UInt64 total_frame = 0, current_frame = 0; ; ++total_frame)
                 {
-                    evtframe.WaitOne();
-                    evtframe.Reset();
+                    if (Model.Full)
+                    {
+                        evtframe.WaitOne();
+                        evtframe.Reset();
+                    }
+                    //auto input_feature{ImageFeatureValue::CreateFromVideoFrame(vf.get())};
+                    var frame = reader.TryAcquireLatestFrame();
+                    if (frame == null)
+                    {
+                        // assume 60 fps, wait about half a frame for more input.  
+                        // in the unlikely event that eval is faster than capture this should be done differently
+                        Thread.Sleep(10);
+                        continue;
+                    }
+                    ++current_frame;
+                    //int oldFrame, double oldFps, DateTime oldFpsT0, string oldLabel)
+                    (current_frame, fps, fps_t0, prev_label) = await FrameProcessingAsync(model, frame, total_frame, current_frame, fps, fps_t0, prev_label, azure);
                 }
-                //auto input_feature{ImageFeatureValue::CreateFromVideoFrame(vf.get())};
-                var frame = reader.TryAcquireLatestFrame();
-                if (frame == null)
-                {
-                    // assume 60 fps, wait about half a frame for more input.  
-                    // in the unlikely event that eval is faster than capture this should be done differently
-                    Thread.Sleep(10);
-                    continue;
-                }
-                ++current_frame;
-                //int oldFrame, double oldFps, DateTime oldFpsT0, string oldLabel)
-                (current_frame, fps, fps_t0, prev_label) = await FrameProcessingAsync(model, frame, total_frame, current_frame, fps, fps_t0, prev_label, azure);
+            } catch (Exception e)
+            {
+                throw new ApplicationException("Camera Processing Failed", e);
             }
         }
 

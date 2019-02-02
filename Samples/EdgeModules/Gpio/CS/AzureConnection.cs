@@ -26,13 +26,13 @@ namespace ConsoleDotNetCoreGPIO
         public AzureDevice() { }
     }
     [JsonObject(MemberSerialization.Fields)]
-    struct ConfigurationType
+    class ConfigurationType : BaseConfigurationType
     {
         public GpioPinIndexesType GpioPins;
-        public bool Update(ConfigurationType newValue)
-        {
+        public override bool Update(BaseConfigurationType newValue)
+        {            
             Log.WriteLine("updating from {0} to {1}", this.ToString(), newValue.ToString());
-            bool rc = GpioPins.Update(newValue.GpioPins);
+            bool rc = GpioPins.Update(((ConfigurationType)newValue).GpioPins);
             Log.WriteLine("{0} update to {1}", rc ? "did" : "did not", this.ToString());
             return rc;
         }
@@ -42,26 +42,11 @@ namespace ConsoleDotNetCoreGPIO
         }
 
     }
-    struct DesiredPropertiesType
-    {
-        public ConfigurationType Configuration;
-        public override string ToString()
-        {
-            return String.Format("{0} {1}", GetType().Name, Configuration.ToString());
-        }
-        public bool Update(DesiredPropertiesType newValue)
-        {
-            Log.WriteLine("updating from {0} to {1}", this.ToString(), newValue.ToString());
-            bool rc = Configuration.Update(newValue.Configuration);
-            Log.WriteLine("{0} update to {1}", rc ? "did" : "did not", this.ToString());
-            return rc;
-        }
-    }
 
     class AzureModule : AzureModuleBase
     {
         private DateTime _lastFruitUTC;
-        private DesiredPropertiesType _desiredProperties;
+        private DesiredPropertiesType<ConfigurationType> _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
         public event EventHandler<string> FruitChanged;
@@ -97,10 +82,9 @@ namespace ConsoleDotNetCoreGPIO
         }
         protected override async Task OnDesiredModulePropertyChanged(TwinCollection newDesiredProperties)
         {
-            // TODO: process new properties
             Log.WriteLine("derived desired properties contains {0} properties", newDesiredProperties.Count);
             await base.OnDesiredModulePropertyChanged(newDesiredProperties);
-            DesiredPropertiesType dp;
+            DesiredPropertiesType<ConfigurationType> dp;
             dp.Configuration = ((JObject)newDesiredProperties[Keys.Configuration]).ToObject<ConfigurationType>();
             Log.WriteLine("checking for update current desiredProperties {0} new dp {1}", _desiredProperties.ToString(), dp.ToString());
             var changed = _desiredProperties.Update(dp);
@@ -181,12 +165,13 @@ namespace ConsoleDotNetCoreGPIO
             return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
         }
 
-        public async Task NotifyModuleLoad()
+        public async Task NotifyModuleLoadAsync()
         {
-            await NotifyModuleLoad(Keys.ModuleLoadOutputRouteLocal, Keys.GPIOModuleId);
-            await NotifyModuleLoad(Keys.ModuleLoadOutputRouteUpstream, Keys.GPIOModuleId);
+            await Task.WhenAll(
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal, Keys.GPIOModuleId)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream, Keys.GPIOModuleId))
+            );
             Log.WriteLine("derived Module Load D2C message fired");
         }
-
     }
 }
