@@ -56,7 +56,7 @@ namespace ConsoleDotNetCoreGPIO
                             if (Options.Test.HasValue)
                             {
                                 Log.WriteLine("initiating pin test");
-                                gpio.Test(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(2));
+                                gpio.Test(Options.Test.Value, TimeSpan.FromSeconds(2));
                             }
                         }
                         catch (Exception e)
@@ -90,7 +90,7 @@ namespace ConsoleDotNetCoreGPIO
                     Log.WriteLine("GPIO UpdatePinConfig Lambda exception {0}", e.ToString());
                 }
             });
-            await connection.NotifyModuleLoad();
+            await connection.NotifyModuleLoadAsync();
 
             Log.WriteLine("Initialization Complete. have connection and device pins.  Active Pin is {0}", gpio.ActivePin == null ? "(null)" : gpio.ActivePin);
 

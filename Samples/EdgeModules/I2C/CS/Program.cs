@@ -3,6 +3,7 @@
 //
 
 using EdgeModuleSamples.Common.Logging;
+using EdgeModuleSamples.Common.Messages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,15 +25,8 @@ namespace ConsoleDotNetCoreI2c
             Log.Enabled = !Options.Quiet;
             Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
-            Dictionary<string, string> FruitColors = new Dictionary<string, string>()
-            {
-                {"apple", "red" },
-                {"pear", "yellow" },
-                {"pen", "green" },
-                {"grapes", "blue"}
-            };
             AzureConnection connection = null;
-            I2cDevice I2c = null;
+            MpuDevice mpu = null;
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
@@ -51,12 +45,15 @@ namespace ConsoleDotNetCoreI2c
                     {
                         try
                         {
-                            I2c = await I2cDevice.CreateI2cDevice();
+                            mpu = await MpuDevice.CreateMpuDevice();
+                            //var settings = new I2cDevice.
+                            mpu.InitAsync().Wait();
                             if (Options.Test.HasValue)
                             {
                                 Log.WriteLine("initiating test");
-                                I2c.Test(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(2));
-                            }
+                                mpu.Test(Options.Test.Value);
+                                Environment.Exit(2);
+                            }                            
                         }
                         catch (Exception e)
                         {
@@ -65,19 +62,17 @@ namespace ConsoleDotNetCoreI2c
                     }
                 )
             );
-            AzureModule m = (AzureModule)connection.Module;
-            await connection.NotifyModuleLoad();
 
+            mpu.OrientationChanged += (device, change) =>
+            {
+                connection.UpdateObject(new KeyValuePair<string, string>(Keys.Orientation, change.newOrientation.ToString()));
+            };
             Log.WriteLine("Initialization Complete. have connection and device.  ");
 
-            Task.WaitAll(Task.Run(() =>
+            Task.WaitAll(Task.Run(async () =>
             {
-                try { 
-                    for (; ; )
-                    {
-                        Log.WriteLine("{0} wait spin", Environment.TickCount);
-                        Thread.Sleep(TimeSpan.FromSeconds(30));
-                    }
+                try {
+                    await mpu.BeginOrientationMonitoringAsync();
                 }
                 catch (Exception e)
                 {

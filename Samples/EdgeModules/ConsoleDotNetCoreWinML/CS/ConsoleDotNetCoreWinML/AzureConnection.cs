@@ -73,15 +73,23 @@ namespace ConsoleDotNetCoreWinML
                 var msgvalue = new FruitMessage();
                 msgvalue.FruitSeen = kvp.Value;
                 byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
-                var m = new Message(msgbody);
                 lock (_lastFruitBody)
                 {
                     _lastFruitBody = msgbody;
                 }
-                await Module.SendMessageAsync(Keys.OutputFruit, m);
-                m = new Message(msgbody);
-                await Module.SendMessageAsync(Keys.OutputUpstream, m);
-            }
+                await Task.WhenAll(
+                    Task.Run(async () =>
+                        {
+                            var m = new Message(msgbody);
+                            await Module.SendMessageAsync(Keys.OutputFruit, m);
+                        }),
+                    Task.Run(async () =>
+                        {
+                            var m = new Message(msgbody);
+                            await Module.SendMessageAsync(Keys.OutputUpstream, m);
+                        })
+                );
+             }
         }
         public async Task NotifyNewModuleAsync()
         {

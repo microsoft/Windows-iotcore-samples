@@ -89,6 +89,26 @@ namespace EdgeModuleSamples.Common.Azure
         }
     }
 
+    abstract public class BaseConfigurationType
+    {
+        abstract public bool Update(BaseConfigurationType newValue);
+    }
+
+    public struct DesiredPropertiesType<CONFIGURATIONTYPE> where CONFIGURATIONTYPE : BaseConfigurationType
+{
+        public CONFIGURATIONTYPE Configuration;
+        public override string ToString()
+        {
+            return String.Format("{0} {1}", GetType().Name, Configuration.ToString());
+        }
+        public bool Update(DesiredPropertiesType<CONFIGURATIONTYPE> newValue)
+        {
+            Log.WriteLine("updating from {0} to {1}", this.ToString(), newValue.ToString());
+            bool rc = Configuration.Update(newValue.Configuration);
+            Log.WriteLine("{0} update to {1}", rc ? "did" : "did not", this.ToString());
+            return rc;
+        }
+    }
     abstract public class AzureModuleBase
     {
         protected AzureConnectionBase _connection { get; set; }
@@ -125,7 +145,7 @@ namespace EdgeModuleSamples.Common.Azure
             await _moduleClient.UpdateReportedPropertiesAsync(delta).ConfigureAwait(false);
 
         }
-        public async Task NotifyModuleLoad(string route, string defaultId)
+        public async Task NotifyModuleLoadAsync(string route, string defaultId)
         {
             ModuleLoadMessage msg = new ModuleLoadMessage();
             string id = defaultId;
@@ -143,7 +163,7 @@ namespace EdgeModuleSamples.Common.Azure
                     id = tid;
                 }
             }
-            Log.WriteLine("base NotifyModuleLoad {0} to {1}", id, route);
+            Log.WriteLine("base NotifyModuleLoadAsync {0} to {1}", id, route);
             msg.ModuleName = id;
 
             await SendMessageDataAsync(route, msg);
@@ -319,9 +339,9 @@ namespace EdgeModuleSamples.Common.Azure
             Log.WriteLine("Azure connection Creation Complete");
             return newConnection;
         }
-        protected async Task NotifyModuleLoad(string route, string defaultId)
+        protected async Task NotifyModuleLoadAsync(string route, string defaultId)
         {
-            await Module.NotifyModuleLoad(route, defaultId);
+            await Module.NotifyModuleLoadAsync(route, defaultId);
             Log.WriteLine("Module Load D2C message fired module {0} route {1}", defaultId, route);
         }
 
