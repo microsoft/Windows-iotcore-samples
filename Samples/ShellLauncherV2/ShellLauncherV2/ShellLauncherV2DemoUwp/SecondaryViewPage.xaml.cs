@@ -40,6 +40,12 @@ namespace ShellLauncherV2DemoUwp
         public SecondaryViewPage()
         {
             this.InitializeComponent();
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().Title = "Secondary view from ShellLauncherV2UWPDemo";
+        }
+
+        private void ExitSecondaryViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            Window.Current.Close();
         }
     }
 }

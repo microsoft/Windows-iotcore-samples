@@ -8,6 +8,9 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="50, 50, 50, 50">
-        <TextBlock Text="Secondary view page created by ShellLauncherV2DemoUwp main page" FontSize="30" TextWrapping="WrapWholeWords"/>
+        <StackPanel>
+            <TextBlock Text="Secondary view page created by ShellLauncherV2DemoUwp main view" FontSize="30" TextWrapping="WrapWholeWords" Margin="20, 20, 20, 20"/>
+            <HyperlinkButton x:Name="exitSecondaryViewButton" Click="ExitSecondaryViewButton_Click" Content="Click to exit this view and get back to main view" FontSize="26" Margin="20, 0, 0, 20"/>
+        </StackPanel>
     </Grid>
 </Page>

@@ -12,7 +12,7 @@
             <StackPanel ScrollViewer.IsVerticalRailEnabled="True">
                 <TextBlock Text="Another UWP App" FontSize="68" />
                 <TextBlock Text="This is a demo UWP app, can be launched by protocol anotheruwpapp:, can also be launched by AUMID ShellLauncherV2DemoAnotherUwp_5d7tap497jwe8!App" FontSize="28" TextWrapping="WrapWholeWords"/>
-                <HyperlinkButton Click="HyperlinkButton_Click" Content="Click to back to primary app (Exit)" FontSize="28"/>
+                <HyperlinkButton x:Name="exitButton" Click="ExitButton_Click"  Content="Click to back to primary app (Exit)" FontSize="28"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

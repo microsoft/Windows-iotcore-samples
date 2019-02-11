@@ -16,17 +16,17 @@
                 
                 <TextBlock Text="Scenario 1: Activate UWP app using AppUserModelId (AUMID)" FontSize="28" TextWrapping="Wrap"/>
                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20" Margin="20, 0, 0,0" Text="This is done by IApplicationActivationManager::ActivateApplication" />
-                <Button Content="Click to launch another uwp app" Click="Button_Click" Margin="20, 0, 0, 30" HorizontalAlignment="Left" FontSize="20"/>
+                <Button x:Name="launchAumidButton" Content="Click to launch another uwp app" Click="LaunchAumidButton_Click" Margin="20, 0, 0, 30" HorizontalAlignment="Left" FontSize="20"/>
 
 
                 <TextBlock Text="Scenario 2: Activate UWP app using Protocol" FontSize="28" TextWrapping="Wrap"/>
                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20" Margin="20, 0, 0,0" Text="This is done by Process.Start. Note the app activated runs in full screen automatically, this is because in the config xml, AllAppsFullScreen attribute from V2 namespace is set to true"/>
-                <Button Content="Click to launch Settings using protocol ms-settings:" Click="Button_Click_1" Margin="20, 0, 0, 30" HorizontalAlignment="Left" FontSize="20"/>
+                <Button x:Name="launchProtocolButton" Content="Click to launch Settings using protocol ms-settings:" Click="LaunchProtocolButton_Click" Margin="20, 0, 0, 30" HorizontalAlignment="Left" FontSize="20"/>
 
 
                 <TextBlock Text="Scenario 3: Auto restart primary app" FontSize="28" TextWrapping="Wrap"/>
                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20" Margin="20, 0, 0,0" Text="Shell Launcher V2 monitors the lifecycle of the primary app, Win32 or UWP. If it's configured to RestartShell, and app exits is detected, the primary app will be restarted" />
-                <Button Content="Click to exit this app and expect auto relaunch" Click="Button_Click_2" Margin="20, 0, 0, 30" HorizontalAlignment="Left" FontSize="20"/>
+                <Button x:Name="exitAppButton" Content="Click to exit this app and expect auto relaunch" Click="ExitAppButton_Click" Margin="20, 0, 0, 30" HorizontalAlignment="Left" FontSize="20"/>
 
 
                 <TextBlock Text="Scenario 4: Customize your Win32 app to be border-less and titlebar-less" FontSize="28" TextWrapping="Wrap"/>

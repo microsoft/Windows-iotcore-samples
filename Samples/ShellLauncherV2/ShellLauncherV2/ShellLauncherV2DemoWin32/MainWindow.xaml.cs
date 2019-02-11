@@ -42,7 +42,7 @@ namespace SehllLauncherV2DemoWin32
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LaunchAumidButton_Click(object sender, RoutedEventArgs e)
         {
             var aam = new ApplicationActivationManager() as IApplicationActivationManager;
             try
@@ -55,12 +55,12 @@ namespace SehllLauncherV2DemoWin32
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void LaunchProtocolButton_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("ms-settings:");
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void ExitAppButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
         }

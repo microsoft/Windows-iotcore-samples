@@ -45,34 +45,35 @@ namespace ShellLauncherV2DemoUwp
             this.InitializeComponent();
         }
 
-        private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
-        {
-            var newView = CoreApplication.CreateNewView();
-            await newView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-             {
-                 var frame = new Frame();
-                 frame.Navigate(typeof(SecondaryViewPage));
-                 Window.Current.Content = frame;
-                 // This is a change from 8.1: In order for the view to be displayed later it needs to be activated.
-                 Window.Current.Activate();
-                 await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationView.GetApplicationViewIdForWindow(Windows.UI.Core.CoreWindow.GetForCurrentThread()));
-             });
-        }
-
-        private async void HyperlinkButton_Click_1(object sender, RoutedEventArgs e)
-        {
-            await Launcher.LaunchUriAsync(new Uri("anotheruwpapp:"));
-        }
-
-        private async void HyperlinkButton_Click_2(object sender, RoutedEventArgs e)
+        private async void Launchmynotepad_Click(object sender, RoutedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new Uri("mynotepad:"));
         }
 
-        private void HyperlinkButton_Click_3(object sender, RoutedEventArgs e)
+        private void ExitAppButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Exit();
         }
+
+        private async void LaunchAnotherUwpButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri("anotheruwpapp:"));
+        }
+
+        private async void LaunchSecondaryViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            var newView = CoreApplication.CreateNewView();
+            await newView.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+            {
+                var frame = new Frame();
+                frame.Navigate(typeof(SecondaryViewPage));
+                Window.Current.Content = frame;
+                // This is a change from 8.1: In order for the view to be displayed later it needs to be activated.
+                Window.Current.Activate();
+                await ApplicationViewSwitcher.TryShowAsStandaloneAsync(ApplicationView.GetApplicationViewIdForWindow(Windows.UI.Core.CoreWindow.GetForCurrentThread()));
+            });
+        }
+
         public string mynotepadreg
         {
             get
