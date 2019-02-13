@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\CS\Common\Common.csproj" />
+    <Compile Include="..\..\Common\CS\Common\Log.cs" Link="Log.cs" />
   </ItemGroup>
 
   <ItemGroup>
