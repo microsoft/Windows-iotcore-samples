@@ -20,12 +20,44 @@ In the meantime, this is the only available API surface for accessing serial por
 
 ## Install Azure IoT Edge
 
-These instructions work with the 1.0.5 release of [Azure IoT Edge for Windows](https://docs.microsoft.com/en-us/azure/iot-edge/).
+These instructions work with the 1.0.6 release of [Azure IoT Edge for Windows](https://docs.microsoft.com/en-us/azure/iot-edge/).
 
 ## Peripheral Hardware
 
 For this sample, obtain an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70). Connect the RX and TX lines with a single wire. Plug this into your device.
 
+## Working with docker
+
+Azure IoT Edge installs a custom build of the moby (aka docker) container engine. In order to use the docker command line as described in this sample, you'll have some additional setup to do.
+
+* Download a recent docker command line tool from dockerproject.org. Put this somewhere on your path. It's available at [https://master.dockerproject.org/windows/x86_64/docker.exe](https://master.dockerproject.org/windows/x86_64/docker.exe). This is required because the command line tool distributed with Azure IoT Edge does not yet include the '--device' option, as of the time of this writing. 
+* Set the DOCKER_HOST environment variable to "npipe:////./pipe/iotedge_moby_engine". This will ensure the docker command line tool is communicating with the correct docker engine.
+
+In order to verify your configuration, run the 'docker version' command. Then compare with the below:
+
+```
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker version
+Client:
+ Version:           master-dockerproject-2019-02-12
+ API version:       1.40
+ Go version:        go1.11.5
+ Git commit:        7f612bfc
+ Built:             Tue Feb 12 23:42:34 2019
+ OS/Arch:           windows/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          3.0.3
+  API version:      1.40 (minimum version 1.24)
+  Go version:       go1.11.4
+  Git commit:       5ec3138
+  Built:            Thu Jan 24 17:16:18 2019
+  OS/Arch:          windows/amd64
+  Experimental:     false
+```
+
+The server should be version 3.0.3 or higher, built Jan 24 2019 or later. The client should be built Feb 12 2019 or later.
 ## Build and Publish the Sample App
 
 Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory.

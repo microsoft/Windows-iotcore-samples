@@ -13,7 +13,7 @@ It is derived from the
 * A PC running [Windows 10 - Build 17763](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso) to run the solution 
 * Or a [Minnowboard Turbot](https://minnowboard.org/minnowboard-turbot/) running [Windows 10 IoT Core - Build 17763](https://developer.microsoft.com/en-us/windows/iot). Currently, the sample runs only on x64 architecture. Future releases will include support for arm32 architecture.
 * A USB camera. I recommend a [LifeCam Cinema](https://www.microsoft.com/accessories/en-us/webcams).
-* [Azure IoT Edge for Windows - 1.0.5 or higher](https://docs.microsoft.com/en-us/azure/iot-edge/) 
+* [Azure IoT Edge for Windows - 1.0.6 or higher](https://docs.microsoft.com/en-us/azure/iot-edge/) 
 
 ### Azure Subscription
 
