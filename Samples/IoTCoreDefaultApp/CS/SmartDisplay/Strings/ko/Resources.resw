@@ -731,9 +731,6 @@ OS 버전: {1}
   <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
     <value>DefaultAccount로 명령 실행 중</value>
   </data>
-  <data name="ExpandMapToggle.Header" xml:space="preserve">
-    <value>지도 확장</value>
-  </data>
   <data name="ExploreCategoryText" xml:space="preserve">
     <value>탐색</value>
   </data>
@@ -877,9 +874,6 @@ OS 버전: {1}
   <data name="MakerImageNotice.Text" xml:space="preserve">
     <value>프로토타입만을 위해로 설계된 Windows 10 IoT Core 테스트 이미지입니다. 장치를 상업용으로 사용하려면 장치의 보안을 최적화하기 위해 맞춤형 FFU를 사용해야 합니다.</value>
     <comment>Maker Imager Security Notice</comment>
-  </data>
-  <data name="MapFlipToggle.Header" xml:space="preserve">
-    <value>화면 번인(burn-in)을 방지하기 위해 지도 플리핑 허용</value>
   </data>
   <data name="MapServiceToken.Content" xml:space="preserve">
     <value>Bing 지도 서비스 토큰</value>
