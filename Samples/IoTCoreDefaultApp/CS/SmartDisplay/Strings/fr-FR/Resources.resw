@@ -731,9 +731,6 @@ Version de l'application : {2}</value>
   <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
     <value>Exécution des commandes en tant que DefaultAccount</value>
   </data>
-  <data name="ExpandMapToggle.Header" xml:space="preserve">
-    <value>Développer la carte</value>
-  </data>
   <data name="ExploreCategoryText" xml:space="preserve">
     <value>Explorer</value>
   </data>
@@ -877,9 +874,6 @@ Version de l'application : {2}</value>
   <data name="MakerImageNotice.Text" xml:space="preserve">
     <value>Il s’agit d’une image de test de Windows 10 IoT Standard conçue pour le prototypage uniquement. Si vous envisager la commercialisation, vous devez utiliser un FFU personnalisé pour une sécurité optimale.</value>
     <comment>Maker Imager Security Notice</comment>
-  </data>
-  <data name="MapFlipToggle.Header" xml:space="preserve">
-    <value>Autoriser la rotation de carte pour éviter la brûlure d’écran</value>
   </data>
   <data name="MapServiceToken.Content" xml:space="preserve">
     <value>Jeton de service de Carte Bing</value>

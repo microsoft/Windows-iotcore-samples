@@ -731,9 +731,6 @@
   <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
     <value>正在以 DefaultAccount 的身分執行命令</value>
   </data>
-  <data name="ExpandMapToggle.Header" xml:space="preserve">
-    <value>展開地圖</value>
-  </data>
   <data name="ExploreCategoryText" xml:space="preserve">
     <value>探索</value>
   </data>
@@ -877,9 +874,6 @@
   <data name="MakerImageNotice.Text" xml:space="preserve">
     <value>這是專為建立原型而設計的 Windows 10 IoT 核心版測試映像。如果您打算商業化，則必須使用自訂 FFU，以獲得最佳安全性。</value>
     <comment>Maker Imager Security Notice</comment>
-  </data>
-  <data name="MapFlipToggle.Header" xml:space="preserve">
-    <value>允許翻轉地圖以防止螢幕烙印</value>
   </data>
   <data name="MapServiceToken.Content" xml:space="preserve">
     <value>Bing 地圖服務權杖</value>

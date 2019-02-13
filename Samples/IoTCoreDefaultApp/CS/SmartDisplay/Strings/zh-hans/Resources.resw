@@ -731,9 +731,6 @@
   <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
     <value>正在以 DefaultAccount 身份执行命令</value>
   </data>
-  <data name="ExpandMapToggle.Header" xml:space="preserve">
-    <value>展开地图</value>
-  </data>
   <data name="ExploreCategoryText" xml:space="preserve">
     <value>浏览</value>
   </data>
@@ -877,9 +874,6 @@
   <data name="MakerImageNotice.Text" xml:space="preserve">
     <value>Windows 10 IoT 核心版测试映像仅用于原型测试。如果你希望进行商业化，则必须使用定制的 FFU，以获得最佳安全性。</value>
     <comment>Maker Imager Security Notice</comment>
-  </data>
-  <data name="MapFlipToggle.Header" xml:space="preserve">
-    <value>允许地图翻转以防止烧屏</value>
   </data>
   <data name="MapServiceToken.Content" xml:space="preserve">
     <value>必应地图服务令牌</value>

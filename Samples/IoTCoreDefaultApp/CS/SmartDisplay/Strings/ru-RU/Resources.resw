@@ -731,9 +731,6 @@
   <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
     <value>Выполнение команд в роли DefaultAccount</value>
   </data>
-  <data name="ExpandMapToggle.Header" xml:space="preserve">
-    <value>Развернуть карту</value>
-  </data>
   <data name="ExploreCategoryText" xml:space="preserve">
     <value>Обзор</value>
   </data>
@@ -877,9 +874,6 @@
   <data name="MakerImageNotice.Text" xml:space="preserve">
     <value>Это тестовый образ Windows 10 IoT Core, созданный только для моделирования. Если вы хотите получать прибыль с его помощью, воспользуйтесь настраиваемым средством для пакетного применения образов, чтобы оптимизировать защиту на этом устройстве.</value>
     <comment>Maker Imager Security Notice</comment>
-  </data>
-  <data name="MapFlipToggle.Header" xml:space="preserve">
-    <value>Разрешить переворот карты для предотвращения выгорания экрана</value>
   </data>
   <data name="MapServiceToken.Content" xml:space="preserve">
     <value>Маркер службы карт Bing</value>
