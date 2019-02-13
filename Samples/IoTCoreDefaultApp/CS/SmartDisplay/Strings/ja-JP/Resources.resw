@@ -731,9 +731,6 @@ OS のバージョン: {1}
   <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
     <value>DefaultAccount としてコマンドを実行中</value>
   </data>
-  <data name="ExpandMapToggle.Header" xml:space="preserve">
-    <value>地図の展開</value>
-  </data>
   <data name="ExploreCategoryText" xml:space="preserve">
     <value>探す</value>
   </data>
@@ -877,9 +874,6 @@ OS のバージョン: {1}
   <data name="MakerImageNotice.Text" xml:space="preserve">
     <value>これは、プロトタイプ作成のみを目的として設計された Windows 10 IoT Core のテスト イメージです。商品化を予定している場合は、最適なセキュリティを実現するために、カスタム FFU を使用する必要があります。</value>
     <comment>Maker Imager Security Notice</comment>
-  </data>
-  <data name="MapFlipToggle.Header" xml:space="preserve">
-    <value>地図の反転して、画面が焼き付かないようにする</value>
   </data>
   <data name="MapServiceToken.Content" xml:space="preserve">
     <value>Bing マップ サービス トークン</value>
