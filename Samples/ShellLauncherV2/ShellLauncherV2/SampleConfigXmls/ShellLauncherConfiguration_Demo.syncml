@@ -1,0 +1,49 @@
+<SyncML xmlns='SYNCML:SYNCML1.2'>
+  <SyncBody>
+    <Replace>
+      <CmdID>2</CmdID>
+      <Item>
+        <Target>
+          <LocURI>./Device/Vendor/MSFT/AssignedAccess/ShellLauncher</LocURI>
+        </Target>
+        <Meta>
+          <Format xmlns="syncml:metinf">chr</Format>
+        </Meta>
+        <Data>
+        <![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<ShellLauncherConfiguration xmlns="http://schemas.microsoft.com/ShellLauncher/2018/Configuration"
+xmlns:v2="http://schemas.microsoft.com/ShellLauncher/2019/Configuration">
+  <Profiles>
+    <DefaultProfile>
+      <Shell Shell="%systemroot%\explorer.exe">
+        <DefaultAction Action="RestartShell"/>
+      </Shell>
+    </DefaultProfile>
+    <Profile Id="{814B6409-8C51-4EE2-95F8-DB39B70F5F68}">
+      <Shell Shell="ShellLauncherV2DemoUwp_5d7tap497jwe8!App" v2:AppType="UWP">
+        <DefaultAction Action="RestartShell"/>
+      </Shell>
+    </Profile>
+    <Profile Id="{814B6409-8C51-4EE2-95F8-DB39B70F5F90}">
+      <Shell Shell="%ProgramFiles(x86)%\ShellLauncherV2DemoWin32\SehllLauncherV2DemoWin32.exe" v2:AllAppsFullScreen="true">
+        <DefaultAction Action="RestartShell"/>
+      </Shell>
+    </Profile>
+  </Profiles>
+  <Configs>
+    <Config>
+      <Account Name="AzureAD\iwuser0@chandler19h13.onmicrosoft.com"/>
+      <Profile Id="{814B6409-8C51-4EE2-95F8-DB39B70F5F68}"/>
+    </Config>
+    <Config>
+      <Account Name="AzureAD\iwuser1@chandler19h13.onmicrosoft.com"/>
+      <Profile Id="{814B6409-8C51-4EE2-95F8-DB39B70F5F90}"/>
+    </Config>
+  </Configs>
+</ShellLauncherConfiguration>]]>
+        </Data>
+      </Item>
+    </Replace>
+    <Final />
+  </SyncBody>
+</SyncML>

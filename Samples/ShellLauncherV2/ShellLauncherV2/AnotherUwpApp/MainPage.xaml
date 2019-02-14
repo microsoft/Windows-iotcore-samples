@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="AnotherUwpApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AnotherUwpApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="50, 50, 50, 50">
+        <ScrollViewer VerticalScrollBarVisibility="Visible" VerticalScrollMode="Enabled">
+            <StackPanel ScrollViewer.IsVerticalRailEnabled="True">
+                <TextBlock Text="Another UWP App" FontSize="68" />
+                <TextBlock Text="This is a demo UWP app, can be launched by protocol anotheruwpapp:, can also be launched by AUMID ShellLauncherV2DemoAnotherUwp_5d7tap497jwe8!App" FontSize="28" TextWrapping="WrapWholeWords"/>
+                <HyperlinkButton x:Name="exitButton" Click="ExitButton_Click"  Content="Click to back to primary app (Exit)" FontSize="28"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
