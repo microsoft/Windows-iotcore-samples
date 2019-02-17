@@ -13,7 +13,8 @@ sections.
 
 these new files that have been edited to contain real credentials match a .gitignore pattern in this repo and can't inadvertently be checked in.
 
+It's also recommended to generate the final processed output into an obj or bin directory since the generated files will contain real creds and bin/* and obj/* are also in .gitignore for this repo.
+
 ## Usage
 
 publish-deployment.ps1 <deployment template file>.json -hardwaremacrofile <board type>.macros.json
-
