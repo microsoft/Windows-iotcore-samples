@@ -1,0 +1,10 @@
+{
+    "Macros": [
+        {
+            "PreviewAddress": "edgeshared.azurecr.io"
+        },
+        {
+            "PrivateAddress": "<url for your private docker registry>"
+        }
+    ]
+}
