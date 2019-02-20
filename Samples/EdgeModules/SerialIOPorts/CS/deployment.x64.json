@@ -53,7 +53,7 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
-          "sensorToSampleModule": "FROM /messages/modules/serialwin32/outputs/temperatureOutput INTO $upstream"
+          "sensorToSampleModule": "FROM /messages/modules/serialioports/outputs/temperatureOutput INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

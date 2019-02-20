@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\CS\Common\Common.csproj" />
-  </ItemGroup>
+    <Compile Include="..\..\Common\CS\Common\Log.cs" Link="Log.cs" />
+</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.18.0" />
@@ -26,4 +26,9 @@
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.4.0" />
     <PackageReference Include="System.IO.Ports" Version="4.5.0" />    
   </ItemGroup>
+
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="Dockerfile" DestinationFiles="$(PublishDir)\Dockerfile" />
+  </Target>
+
 </Project>

@@ -10,7 +10,7 @@ Consequently, this approach is relevant on Windows 10 IoT Enterprise, but not Wi
 
 ## Install Azure IoT Edge
 
-These instructions work with the 1.0.5 release of [Azure IoT Edge for Windows](https://docs.microsoft.com/en-us/azure/iot-edge/).
+These instructions work with the 1.0.5 release of [Azure IoT Edge for Windows](https://docs.microsoft.com/en-us/azure/iot-edge/), or higher.
 
 ## Host Hardware & OS
 
@@ -45,7 +45,7 @@ When following the sample, replace any "{ACR_*}" values with the correct values 
 Be sure to log into the container respository from your device.
 
 ```
-PS  D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
+PS  D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
 ```
 
 ## Containerize the sample app
@@ -56,12 +56,12 @@ For the remainder of this sample, we will use the environment variable $Containe
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> $Container = "{ACR_NAME}.azurecr.io/serialioports:1.0.0-x64"
 
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker build . -f .\Dockerfile.windows-x64 -t $Container
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker build bin\Debug\netcoreapp2.2\win-x64\publish\ -t $Container
 
 Sending build context to Docker daemon  81.89MB
-Step 1/5 : FROM mcr.microsoft.com/windows/nanoserver/insider:10.0.17763.55
+Step 1/5 : FROM mcr.microsoft.com/windows/nanoserver:1809
  ---> 91da8a971b53
-Step 2/5 : ARG EXE_DIR=bin/Debug/netcoreapp2.1/win-x64/publish
+Step 2/5 : ARG EXE_DIR=.
  ---> Running in b537bd4962d6
 Removing intermediate container b537bd4962d6
  ---> 6d6281589c30
