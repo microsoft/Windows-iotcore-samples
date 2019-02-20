@@ -388,7 +388,7 @@ namespace ConsoleDotNetCoreGPIO
             }
         }
         int _blinkRate = 0;
-        void Blink()
+        public void Blink()
         {
             lock (_inputPins)
             {

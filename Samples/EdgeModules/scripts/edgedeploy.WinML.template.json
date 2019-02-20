@@ -67,7 +67,8 @@
             "properties.desired": {
                 "schemaVersion": "1.0",
                 "routes": {
-                    "I2CLocal": "FROM /messages/modules/I2C/outputs/outputorientation INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputorientation\")",
+                    "I2CLocal": "FROM /messages/modules/I2C/outputs/outputorientation INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputorientation0\")",
+                    "SPILocal": "FROM /messages/modules/SPI/outputs/outputorientation INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputorientation1\")",
                     "WinMLLocal": "FROM /messages/modules/WinML/outputs/outputfruit INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputfruit\")",
                     "ModuleLocal0": "FROM /messages/modules/GPIO/outputs/outputModuleLocal0 INTO BrokeredEndpoint(\"/modules/I2C/inputs/inputModule\")",
                     "ModuleLocal1": "FROM /messages/modules/GPIO/outputs/outputModuleLocal1 INTO BrokeredEndpoint(\"/modules/WinML/inputs/inputModule\")",
