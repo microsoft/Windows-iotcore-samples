@@ -25,7 +25,7 @@ namespace ConsoleDotNetCoreI2c
         static readonly byte DefaultMpuAddress = 0x68;
         // registers for InvenSense Mpu-6050  
         static readonly byte PowerManagement = 0x6b;
-        static readonly byte RateConfiguration = 0x1a;
+        //static readonly byte RateConfiguration = 0x1a;
         static readonly byte AccelerometerZmsb = 0x3f;
         static readonly byte AccelerometerZlsb = 0x40;
 
@@ -85,11 +85,6 @@ namespace ConsoleDotNetCoreI2c
                 Thread.Sleep(250);
                 byte[] awake = { PowerManagement, 0 };
                 Device.Write(awake);
-                byte configval = (2 << 3) & 1; // gyro x dlfp == 1 /TODO: s/b |
-                byte[] rateconfig = { RateConfiguration, configval };
-                Device.Write(rateconfig);
-                rateconfig[1] = (7 << 3) & 1; // accel z dlfp == 1 /TODO: s/b |
-                Device.Write(rateconfig);
                 Thread.Sleep(250);
             });
             return;

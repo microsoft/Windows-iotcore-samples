@@ -99,12 +99,20 @@ namespace EdgeModuleSamples.Common.Azure
         public CONFIGURATIONTYPE Configuration;
         public override string ToString()
         {
-            return String.Format("{0} {1}", GetType().Name, Configuration.ToString());
+            return String.Format("{0} {1}", GetType().Name, (Configuration != null) ? Configuration.ToString() : "(null)");
         }
         public bool Update(DesiredPropertiesType<CONFIGURATIONTYPE> newValue)
         {
             Log.WriteLine("updating from {0} to {1}", this.ToString(), newValue.ToString());
-            bool rc = Configuration.Update(newValue.Configuration);
+            bool rc = true;
+            if (Configuration == null)
+            {
+                Configuration = newValue.Configuration;
+            }
+            else
+            {
+                rc = Configuration.Update(newValue.Configuration);
+            }
             Log.WriteLine("{0} update to {1}", rc ? "did" : "did not", this.ToString());
             return rc;
         }
@@ -132,16 +140,16 @@ namespace EdgeModuleSamples.Common.Azure
             {
                 Log.WriteLine("property {0}", p.GetType());
                 var pv = (KeyValuePair<string, object>)p;
-                Log.WriteLine("key = {0}, vt = {1}:{2}", pv.Key, pv.Value.GetType(), pv.Value);
+                Log.WriteLine("key = {0}, vt = {1}:{2}", pv.Key, pv.Value.GetType(), pv.Value.ToString());
             }
             await Task.CompletedTask;
         }
-        public virtual async Task UpdateReportedPropertiesAsync(KeyValuePair<string, string> u)
+        public virtual async Task UpdateReportedPropertiesAsync(KeyValuePair<string, object> u)
         {
-            _reportedDeviceProperties[u.Key] = u.Value;
+            _reportedDeviceProperties[u.Key] = u.Value.ToString();
             TwinCollection delta = new TwinCollection();
             delta[u.Key] = u.Value;
-            Log.WriteLine("updating twin reported properties with key = {0}, vt = {1}:{2}", u.Key, u.Value.GetType(), u.Value);
+            Log.WriteLine("updating twin reported properties with key = {0}, vt = {1}:{2}", u.Key, u.Value.GetType(), u.Value.ToString());
             await _moduleClient.UpdateReportedPropertiesAsync(delta).ConfigureAwait(false);
 
         }
@@ -287,13 +295,13 @@ namespace EdgeModuleSamples.Common.Azure
 
     abstract public class AzureConnectionBase
     {
-        private ConcurrentQueue<KeyValuePair<string, string>> _updateq { get; set; }
+        private ConcurrentQueue<KeyValuePair<string, object>> _updateq { get; set; }
 
         public virtual AzureModuleBase Module { get; protected set; }
         public virtual AzureDeviceBase Device { get; protected set; }
         protected AzureConnectionBase()
         {
-            _updateq = new ConcurrentQueue<KeyValuePair<string, string>>();
+            _updateq = new ConcurrentQueue<KeyValuePair<string, object>>();
         }
         // private async Task<MessageResponse> OnInputMessageReceived(Message msg, object ctx)
         // {
@@ -346,7 +354,7 @@ namespace EdgeModuleSamples.Common.Azure
         }
 
 
-        public void UpdateObject(KeyValuePair<string, string> kvp)
+        public void UpdateObject(KeyValuePair<string, object> kvp)
         {
             Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject sync start");
             _updateq.Enqueue(kvp);
@@ -354,7 +362,7 @@ namespace EdgeModuleSamples.Common.Azure
             {
                 try
                 {
-                    KeyValuePair<string, string> u;
+                    KeyValuePair<string, object> u;
                     bool success = false;
                     while (!_updateq.IsEmpty)
                     {
@@ -378,7 +386,7 @@ namespace EdgeModuleSamples.Common.Azure
             });
             Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject sync complete");
         }
-        public virtual async Task UpdateObjectAsync(KeyValuePair<string, string> kvp)
+        public virtual async Task UpdateObjectAsync(KeyValuePair<string, object> kvp)
         {
             await Task.CompletedTask;
         }

@@ -30,9 +30,10 @@ namespace ConsoleDotNetCoreGPIO
     {
         public GpioPinIndexesType GpioPins;
         public override bool Update(BaseConfigurationType newValue)
-        {            
-            Log.WriteLine("updating from {0} to {1}", this.ToString(), newValue.ToString());
-            bool rc = GpioPins.Update(((ConfigurationType)newValue).GpioPins);
+        {
+            var v = (ConfigurationType)newValue;
+            Log.WriteLine("updating from {0} to {1}", this.ToString(), v.ToString());
+            bool rc = GpioPins.Update(v.GpioPins);
             Log.WriteLine("{0} update to {1}", rc ? "did" : "did not", this.ToString());
             return rc;
         }
@@ -46,10 +47,12 @@ namespace ConsoleDotNetCoreGPIO
     class AzureModule : AzureModuleBase
     {
         private DateTime _lastFruitUTC;
+        private DateTime _lastOrientationUTC;
         private DesiredPropertiesType<ConfigurationType> _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
         public event EventHandler<string> FruitChanged;
+        public event EventHandler<EdgeModuleSamples.Common.Orientation> OrientationChanged;
         private static async Task<MessageResponse> OnFruitMessageReceived(Message msg, object ctx)
         {
             AzureModule module = (AzureModule)ctx;
@@ -74,6 +77,30 @@ namespace ConsoleDotNetCoreGPIO
             }
             return MessageResponse.Completed;
         }
+        private static async Task<MessageResponse> OnOrientationMessageReceived(Message msg, object ctx)
+        {
+            AzureModule module = (AzureModule)ctx;
+            var msgBytes = msg.GetBytes();
+            var msgString = Encoding.UTF8.GetString(msgBytes);
+            Log.WriteLine("orientation msg received: '{0}'", msgString);
+            var orientationMsg = JsonConvert.DeserializeObject<OrientationMessage>(msgString);
+            DateTime originalEventUTC = DateTime.UtcNow;
+            if (orientationMsg.OriginalEventUTCTime != null)
+            {
+                originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            }
+            if (originalEventUTC >= module._lastOrientationUTC)
+            {
+                Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientationUTC.ToString("o"));
+                await Task.Run(() => module.OrientationChanged?.Invoke(module, orientationMsg.OrientationState));
+                module._lastOrientationUTC = originalEventUTC;
+            }
+            else
+            {
+                Log.WriteLine("OrientationMsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientationUTC.ToString("o"));
+            }
+            return MessageResponse.Completed;
+        }
         public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
         {
             await base.OnConnectionChanged(status, reason);
@@ -85,6 +112,12 @@ namespace ConsoleDotNetCoreGPIO
             Log.WriteLine("derived desired properties contains {0} properties", newDesiredProperties.Count);
             await base.OnDesiredModulePropertyChanged(newDesiredProperties);
             DesiredPropertiesType<ConfigurationType> dp;
+            if (!newDesiredProperties.Contains(Keys.Configuration))
+            {
+                Log.WriteLine("derived desired properties contains no configuration.  skipping...");
+                return;
+            }
+
             dp.Configuration = ((JObject)newDesiredProperties[Keys.Configuration]).ToObject<ConfigurationType>();
             Log.WriteLine("checking for update current desiredProperties {0} new dp {1}", _desiredProperties.ToString(), dp.ToString());
             var changed = _desiredProperties.Update(dp);
@@ -92,7 +125,7 @@ namespace ConsoleDotNetCoreGPIO
                 Log.WriteLine("desired properties {0} different then current properties, notifying...", _desiredProperties.ToString());
                 ConfigurationChanged?.Invoke(this, dp.Configuration);
                 Log.WriteLine("local notification complete. updating reported properties to cloud twin");
-                await UpdateReportedPropertiesAsync(new KeyValuePair<string, string>(Keys.Configuration, JsonConvert.SerializeObject(_desiredProperties.Configuration))).ConfigureAwait(false);
+                await UpdateReportedPropertiesAsync(new KeyValuePair<string, Object>(Keys.Configuration, JsonConvert.SerializeObject(_desiredProperties.Configuration))).ConfigureAwait(false);
 
             }
             if (newDesiredProperties.Contains(Keys.FruitTest))
@@ -144,6 +177,7 @@ namespace ConsoleDotNetCoreGPIO
             AzureConnection c1 = c as AzureConnection;
             await base.AzureModuleInitAsync(c1);
             await _moduleClient.SetInputMessageHandlerAsync(Keys.InputFruit, OnFruitMessageReceived, this);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputOrientation, OnOrientationMessageReceived, this);
             await _moduleClient.SetMethodHandlerAsync(Keys.SetFruit, SetFruit, this);
             await base.AzureModuleInitEndAsync();
         }
@@ -168,7 +202,8 @@ namespace ConsoleDotNetCoreGPIO
         public async Task NotifyModuleLoadAsync()
         {
             await Task.WhenAll(
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal, Keys.GPIOModuleId)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0, Keys.GPIOModuleId)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1, Keys.GPIOModuleId)),
                 Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream, Keys.GPIOModuleId))
             );
             Log.WriteLine("derived Module Load D2C message fired");

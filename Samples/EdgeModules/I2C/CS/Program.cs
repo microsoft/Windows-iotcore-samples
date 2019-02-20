@@ -65,7 +65,7 @@ namespace ConsoleDotNetCoreI2c
 
             mpu.OrientationChanged += (device, change) =>
             {
-                connection.UpdateObject(new KeyValuePair<string, string>(Keys.Orientation, change.newOrientation.ToString()));
+                connection.UpdateObject(new KeyValuePair<string, object>(Keys.Orientation, change.newOrientation));
             };
             Log.WriteLine("Initialization Complete. have connection and device.  ");
 

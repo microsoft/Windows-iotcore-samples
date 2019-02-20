@@ -54,6 +54,10 @@ namespace ConsoleDotNetCoreI2c
             Log.WriteLine("derived desired properties contains {0} properties", newDesiredProperties.Count);
             await base.OnDesiredModulePropertyChanged(newDesiredProperties);
             DesiredPropertiesType<ConfigurationType> dp;
+            if (!newDesiredProperties.Contains(Keys.Configuration)) {
+                Log.WriteLine("derived desired properties contains no configuration.  skipping...");
+                return;
+            }
             dp.Configuration = ((JObject)newDesiredProperties[Keys.Configuration]).ToObject<ConfigurationType>();
             Log.WriteLine("checking for update current desiredProperties {0} new dp {1}", _desiredProperties.ToString(), dp.ToString());
             var changed = _desiredProperties.Update(dp);
@@ -61,7 +65,7 @@ namespace ConsoleDotNetCoreI2c
                 Log.WriteLine("desired properties {0} different then current properties, notifying...", _desiredProperties.ToString());
                 ConfigurationChanged?.Invoke(this, dp.Configuration);
                 Log.WriteLine("local notification complete. updating reported properties to cloud twin");
-                await UpdateReportedPropertiesAsync(new KeyValuePair<string, string>(Keys.Configuration, JsonConvert.SerializeObject(_desiredProperties.Configuration))).ConfigureAwait(false);
+                await UpdateReportedPropertiesAsync(new KeyValuePair<string, object>(Keys.Configuration, JsonConvert.SerializeObject(_desiredProperties.Configuration))).ConfigureAwait(false);
 
             }
             Log.WriteLine("update complete -- current properties {0}", _desiredProperties.ToString());
@@ -127,7 +131,7 @@ namespace ConsoleDotNetCoreI2c
 #endif
             public AzureConnection()
         {
-            
+            _lastOBody = new byte[0];
         }
         public static async Task<AzureConnection> CreateAzureConnectionAsync() {
             return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
@@ -145,14 +149,14 @@ namespace ConsoleDotNetCoreI2c
                     await Module.SendMessageAsync(Keys.OutputOrientation, m);
                 }
         }
-        public override async Task UpdateObjectAsync(KeyValuePair<string, string> kvp)
+        public override async Task UpdateObjectAsync(KeyValuePair<string, object> kvp)
         {
             Log.WriteLine("\t\t\t\t\t\tI2C UpdateObjectAsync override kvp = {0}", kvp.ToString());
             if (kvp.Key == Keys.Orientation)
             {
                 // output the event stream
                 var msgvalue = new OrientationMessage();
-                msgvalue.OrientationState = kvp.Value;
+                msgvalue.OrientationState = (Orientation)kvp.Value;
                 byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
                 lock (_lastOBody)
                 {

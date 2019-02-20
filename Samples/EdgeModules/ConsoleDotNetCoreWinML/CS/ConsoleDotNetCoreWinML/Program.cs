@@ -171,7 +171,7 @@ namespace ConsoleDotNetCoreWinML
                 if (prevLabel == null || prevLabel != label)
                 {
                     prevLabel = label;
-                    azure.UpdateObject(new KeyValuePair<string, string>(Keys.FruitSeen, label));
+                    azure.UpdateObject(new KeyValuePair<string, object>(Keys.FruitSeen, label));
 
                 }
 

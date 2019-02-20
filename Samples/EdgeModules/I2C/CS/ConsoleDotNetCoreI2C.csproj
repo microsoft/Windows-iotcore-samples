@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <!-->
     <RuntimeIdentifier>win-arm</RuntimeIdentifier> 
+    -->
     <Platform>win-arm</Platform>
   </PropertyGroup>
   <Import Project="..\..\Common.CS.Props" />
