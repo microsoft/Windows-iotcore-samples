@@ -456,11 +456,11 @@ namespace ConsoleDotNetCoreGPIO
             get { return _activeValue; }
         }
 
-        public void InvertActiveValue()
+        public void InvertOutputPins()
         {
             lock (_outputPins)
             {
-                _activeValue = _activeValue.Invert();
+                _defaultOutputState = _defaultOutputState.Invert();
                 foreach (var p in _outputPins)
                 {
                     p.Value.Toggle();
@@ -478,12 +478,18 @@ namespace ConsoleDotNetCoreGPIO
                     {
                         Log.WriteLine("set active pin ignoring request to set existing value {0}", (_activePin == null || !_outputPins.ContainsKey(_activePin)) ? "(null)" : _activePin);
                         return;
+                    } else
+                    {
+                        Log.WriteLine("set active pin acting on new value");
                     }
                     if (_activePin != null && _outputPins.ContainsKey(_activePin))
                     {
                         var p = _outputPins[_activePin];
                         Log.WriteLine("toggling previous pin '{0}' {1}", _activePin, p.Value.Invert().ToStateString());
                         p.Toggle();
+                    } else
+                    {
+                        Log.WriteLine("no previous active pin to clear");
                     }
                     _activePin = value;
                     if (_outputPins.ContainsKey(_activePin))
@@ -491,6 +497,9 @@ namespace ConsoleDotNetCoreGPIO
                         var p = _outputPins[_activePin];
                         Log.WriteLine("turning new pin '{0}' {1}", _activePin, p.Value.Invert().ToStateString());
                         p.Toggle();
+                    } else
+                    {
+                        Log.WriteLine("active pin missing from _outputPins");
                     }
                 }
             }

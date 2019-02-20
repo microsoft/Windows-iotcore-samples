@@ -19,7 +19,7 @@ namespace EdgeModuleSamples.Common.Options
 
         public AppOptions()
         {
-            Add( "h|help", "show this message and exit", v => Help = v != null );
+            Add( "?|h|help", "show this message and exit", v => Help = v != null );
             Add("q|quiet", "suppress progress and errors to console", v => Quiet = v != null);
             Add<int>("t=|test=", "seconds to test the I2C hardware independently of Azure", v => Test = TimeSpan.FromSeconds(v));
             Add("v|verbose", "maximum detail in console logging", v => Verbose = v != null);

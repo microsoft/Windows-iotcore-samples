@@ -79,6 +79,12 @@ namespace ConsoleDotNetCoreGPIO
                 var module = (AzureModule)sender;
                 await Task.Run(() => gpio.ActivePin = FruitColors[fruit.ToLower()]);
             };
+            m.OrientationChanged += async (object sender, EdgeModuleSamples.Common.Orientation o) =>
+            {
+                Log.WriteLine("orientation changed to {0}", o.ToString());
+                var module = (AzureModule)sender;
+                await Task.Run(() => gpio.InvertOutputPins());
+            };
             await Task.Run(async () =>
             {
                 try { 

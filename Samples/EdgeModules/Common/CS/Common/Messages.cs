@@ -26,10 +26,12 @@ namespace EdgeModuleSamples.Common
             public readonly static string I2cModuleId = "I2c";
             public readonly static string HubConnectionString = "HubConnectionString";
             public readonly static string InputFruit = "inputfruit";
+            public readonly static string InputOrientation = "inputorientation";
             public readonly static string iothubMessageSchema = "iothub-message-schema";
             public readonly static string MessageCreationUTC = "iothub-creation-time-utc";
             public readonly static string ModuleLoadInputRoute = "inputModule";
-            public readonly static string ModuleLoadOutputRouteLocal = "outputModuleLocal";
+            public readonly static string ModuleLoadOutputRouteLocal0 = "outputModuleLocal0";
+            public readonly static string ModuleLoadOutputRouteLocal1 = "outputModuleLocal1";
             public readonly static string ModuleLoadOutputRouteUpstream = "outputModuleUpstream";
             public readonly static string Orientation = "Orientation";
             public readonly static string OutputFruit = "outputfruit";
@@ -54,7 +56,8 @@ namespace EdgeModuleSamples.Common
 
         public class OrientationMessage : AzureMessageBase
         {
-            public string OrientationState;
+            public string OriginalEventUTCTime { get; set; }
+            public Orientation OrientationState;
         };
     }
 }

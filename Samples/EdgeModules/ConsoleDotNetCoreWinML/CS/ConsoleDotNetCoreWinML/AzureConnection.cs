@@ -64,14 +64,14 @@ namespace ConsoleDotNetCoreWinML
             return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
         }
 
-        public override async Task UpdateObjectAsync(KeyValuePair<string, string> kvp)
+        public override async Task UpdateObjectAsync(KeyValuePair<string, object> kvp)
         {
             Log.WriteLine("\t\t\t\t\t\tWinML UpdateObjectAsync override kvp = {0}", kvp.ToString());
             if (kvp.Key == Keys.FruitSeen)
             {
                 // output the event stream
                 var msgvalue = new FruitMessage();
-                msgvalue.FruitSeen = kvp.Value;
+                msgvalue.FruitSeen = (string)kvp.Value;
                 byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
                 lock (_lastFruitBody)
                 {
