@@ -47,12 +47,14 @@ namespace ConsoleDotNetCoreGPIO
     class AzureModule : AzureModuleBase
     {
         private DateTime _lastFruitUTC;
-        private DateTime _lastOrientationUTC;
+        private DateTime _lastOrientation0UTC;
+        private DateTime _lastOrientation1UTC;
         private DesiredPropertiesType<ConfigurationType> _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
         public event EventHandler<string> FruitChanged;
-        public event EventHandler<EdgeModuleSamples.Common.Orientation> OrientationChanged;
+        public event EventHandler<EdgeModuleSamples.Common.Orientation> Orientation0Changed;
+        public event EventHandler<EdgeModuleSamples.Common.Orientation> Orientation1Changed;
         private static async Task<MessageResponse> OnFruitMessageReceived(Message msg, object ctx)
         {
             AzureModule module = (AzureModule)ctx;
@@ -77,7 +79,7 @@ namespace ConsoleDotNetCoreGPIO
             }
             return MessageResponse.Completed;
         }
-        private static async Task<MessageResponse> OnOrientationMessageReceived(Message msg, object ctx)
+        private static async Task<MessageResponse> OnOrientation0MessageReceived(Message msg, object ctx)
         {
             AzureModule module = (AzureModule)ctx;
             var msgBytes = msg.GetBytes();
@@ -89,15 +91,39 @@ namespace ConsoleDotNetCoreGPIO
             {
                 originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
             }
-            if (originalEventUTC >= module._lastOrientationUTC)
+            if (originalEventUTC >= module._lastOrientation0UTC)
             {
-                Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientationUTC.ToString("o"));
-                await Task.Run(() => module.OrientationChanged?.Invoke(module, orientationMsg.OrientationState));
-                module._lastOrientationUTC = originalEventUTC;
+                Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientation0UTC.ToString("o"));
+                await Task.Run(() => module.Orientation0Changed?.Invoke(module, orientationMsg.OrientationState));
+                module._lastOrientation0UTC = originalEventUTC;
             }
             else
             {
-                Log.WriteLine("OrientationMsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientationUTC.ToString("o"));
+                Log.WriteLine("Orientation0MsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientation0UTC.ToString("o"));
+            }
+            return MessageResponse.Completed;
+        }
+        private static async Task<MessageResponse> OnOrientation1MessageReceived(Message msg, object ctx)
+        {
+            AzureModule module = (AzureModule)ctx;
+            var msgBytes = msg.GetBytes();
+            var msgString = Encoding.UTF8.GetString(msgBytes);
+            Log.WriteLine("orientation msg received: '{0}'", msgString);
+            var orientationMsg = JsonConvert.DeserializeObject<OrientationMessage>(msgString);
+            DateTime originalEventUTC = DateTime.UtcNow;
+            if (orientationMsg.OriginalEventUTCTime != null)
+            {
+                originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            }
+            if (originalEventUTC >= module._lastOrientation1UTC)
+            {
+                Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientation1UTC.ToString("o"));
+                await Task.Run(() => module.Orientation1Changed?.Invoke(module, orientationMsg.OrientationState));
+                module._lastOrientation1UTC = originalEventUTC;
+            }
+            else
+            {
+                Log.WriteLine("Orientation1MsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientation1UTC.ToString("o"));
             }
             return MessageResponse.Completed;
         }
@@ -177,7 +203,8 @@ namespace ConsoleDotNetCoreGPIO
             AzureConnection c1 = c as AzureConnection;
             await base.AzureModuleInitAsync(c1);
             await _moduleClient.SetInputMessageHandlerAsync(Keys.InputFruit, OnFruitMessageReceived, this);
-            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputOrientation, OnOrientationMessageReceived, this);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputOrientation0, OnOrientation0MessageReceived, this);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputOrientation1, OnOrientation1MessageReceived, this);
             await _moduleClient.SetMethodHandlerAsync(Keys.SetFruit, SetFruit, this);
             await base.AzureModuleInitEndAsync();
         }

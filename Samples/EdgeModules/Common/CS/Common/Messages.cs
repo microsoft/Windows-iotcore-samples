@@ -26,7 +26,8 @@ namespace EdgeModuleSamples.Common
             public readonly static string I2cModuleId = "I2c";
             public readonly static string HubConnectionString = "HubConnectionString";
             public readonly static string InputFruit = "inputfruit";
-            public readonly static string InputOrientation = "inputorientation";
+            public readonly static string InputOrientation0 = "inputorientation0";
+            public readonly static string InputOrientation1 = "inputorientation1";
             public readonly static string iothubMessageSchema = "iothub-message-schema";
             public readonly static string MessageCreationUTC = "iothub-creation-time-utc";
             public readonly static string ModuleLoadInputRoute = "inputModule";
