@@ -156,6 +156,7 @@ namespace ConsoleDotNetCoreI2c
             {
                 // output the event stream
                 var msgvalue = new OrientationMessage();
+                msgvalue.OriginalEventUTCTime = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc).ToString("o");
                 msgvalue.OrientationState = (Orientation)kvp.Value;
                 byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
                 lock (_lastOBody)

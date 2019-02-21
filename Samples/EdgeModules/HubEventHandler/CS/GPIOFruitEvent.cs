@@ -185,8 +185,8 @@ namespace HubEventHandler
                         log.LogInformation("fruit msg original time {0} fruit {1}", fruitMsg.OriginalEventUTCTime, fruitMsg.FruitSeen);
                         string[] slaves = await GetFruitSlaves(deviceName, rm, log);
                         //log.LogInformation("found {0} slave devices", slaves.Length);
-                        string originaleventtime = null;
-                        if (message.Properties.ContainsKey(Keys.MessageCreationUTC))
+                        string originaleventtime = fruitMsg.OriginalEventUTCTime;
+                        if (originaleventtime == null && message.Properties.ContainsKey(Keys.MessageCreationUTC))
                         {
                             originaleventtime = (string)message.Properties[Keys.MessageCreationUTC];
                         }

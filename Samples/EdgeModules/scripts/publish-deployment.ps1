@@ -13,17 +13,30 @@ normal json file with the macros recursively substituted for their values
 [CmdletBinding()]
 param(
     [parameter(Mandatory, Position = 0, ValueFromPipeline)] [string] $templatefile,
-    [parameter(Mandatory)] [alias("hw")][string[]] $Hardwaremacrofile
+    [parameter(Mandatory)] [alias("hw")][ValidateSet("hb", "hummingboard", "mbm", "minnowboard", "minnowboardmax")][string] $HardwareType
 )
 
-$macros = @("$PSScriptRoot\urls.creds.macros.json", "$PSScriptRoot\creds.macros.json")
+if ($HardwareType -eq "hb") {
+    $HardwareType = "hummingboard"
+} else {
+    if ($HardwareType -eq "mbm" -or $HardwareType -eq "minnowboard") {
+        $HardwareType = "minnowboardmax"
+    }
+}
+
+$macros = @("$PSScriptRoot\urls.creds.macros.json")
+# support different arch images coming from different locations in case of preview
+$HardwareImageUrls = "$PSScriptRoot\urls.$HardwareType.creds.macros.json"
+if (test-path $HardwareImageUrls) {
+    $macros += @("$PSScriptRoot\urls.$HardwareType.creds.macros.json")
+}
+$macros += @("$PSScriptRoot\creds.macros.json")
 if ((-not (test-path $templatefile)) -and (test-path "$PSScriptRoot\$templatefile")) {
     $templatefile = "$PSScriptRoot\$templatefile"
 }
-if ((-not (test-path $Hardwaremacrofile)) -and (test-path "$PSScriptRoot\$Hardwaremacrofile")) {
-    $macros += @("$PSScriptRoot\$Hardwaremacrofile")
-} else {
-    $macros += @($Hardwaremacrofile)
-}
+
+$macros += @("$PSScriptRoot\$Hardwaretype.macros.json")
+
+#Write-Host $macros, $templatefile
 
 &"$PSScriptRoot\convertfrom-macrofiedjson.ps1" $templatefile -macrofiles $macros 
