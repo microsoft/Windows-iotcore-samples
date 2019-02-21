@@ -9,6 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Windows.Devices.DevicesLowLevelContract">
+      <HintPath>$(WindowsSdkPath)\Windows.Devices.DevicesLowLevelContract\3.0.0.0\Windows.Devices.DevicesLowLevelContract.winmd</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+    </Reference>
     <Reference Include="Windows.Foundation.FoundationContract">
       <HintPath>$(WindowsSdkPath)\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
