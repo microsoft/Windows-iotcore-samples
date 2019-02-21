@@ -76,7 +76,10 @@ function SubstituteString($macros, [string] $val)
     # in the first place
     if ($val -cmatch '^\${(?<macroname>[^}]+)}$') {
         #write-host "ismacro"
-        $macros[$Matches['macroname']]
+        $m = $macros[$Matches['macroname']]
+        #write-host "ismacro: $val"
+        #write-host "replacing: $m"
+        $m
     } else {
         #write-host "notmacro"
         $val

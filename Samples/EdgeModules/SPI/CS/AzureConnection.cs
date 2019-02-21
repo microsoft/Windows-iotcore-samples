@@ -156,6 +156,7 @@ namespace ConsoleDotNetCoreSPI
             {
                 // output the event stream
                 var msgvalue = new OrientationMessage();
+                msgvalue.OriginalEventUTCTime = DateTime.UtcNow.ToString("o");
                 msgvalue.OrientationState = (Orientation)kvp.Value;
                 byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
                 lock (_lastOBody)

@@ -62,11 +62,16 @@ namespace ConsoleDotNetCoreGPIO
             var msgString = Encoding.UTF8.GetString(msgBytes);
             Log.WriteLine("fruit msg received: '{0}'", msgString);
             var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msgString);
-            DateTime originalEventUTC = DateTime.UtcNow;
+            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
             if (fruitMsg.OriginalEventUTCTime != null)
             {
                 originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
             }
+            else
+            {
+                Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
+            }
+
             if (originalEventUTC >= module._lastFruitUTC)
             {
                 Log.WriteLine("FruitMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastFruitUTC.ToString("o"));
@@ -86,7 +91,7 @@ namespace ConsoleDotNetCoreGPIO
             var msgString = Encoding.UTF8.GetString(msgBytes);
             Log.WriteLine("orientation msg received: '{0}'", msgString);
             var orientationMsg = JsonConvert.DeserializeObject<OrientationMessage>(msgString);
-            DateTime originalEventUTC = DateTime.UtcNow;
+            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
             if (orientationMsg.OriginalEventUTCTime != null)
             {
                 originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
@@ -110,7 +115,7 @@ namespace ConsoleDotNetCoreGPIO
             var msgString = Encoding.UTF8.GetString(msgBytes);
             Log.WriteLine("orientation msg received: '{0}'", msgString);
             var orientationMsg = JsonConvert.DeserializeObject<OrientationMessage>(msgString);
-            DateTime originalEventUTC = DateTime.UtcNow;
+            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
             if (orientationMsg.OriginalEventUTCTime != null)
             {
                 originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
@@ -172,11 +177,15 @@ namespace ConsoleDotNetCoreGPIO
             string data = Encoding.UTF8.GetString(req.Data);
             Log.WriteLine("Direct Method SetFruit {0}", data);
             var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(data);
-            DateTime originalEventUTC = DateTime.UtcNow;
+            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
             if (fruitMsg.OriginalEventUTCTime != null)
             {
                 originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
                 Log.WriteLine("SetFruit invoking event. parsed msg time {0} from {1}", originalEventUTC.ToString("o"), fruitMsg.OriginalEventUTCTime);
+            }
+            else
+            {
+                Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
             }
             if (originalEventUTC >= _lastFruitUTC)
             {
@@ -197,6 +206,8 @@ namespace ConsoleDotNetCoreGPIO
         public AzureModule()
         {
             _lastFruitUTC = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+            _lastOrientation0UTC = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+            _lastOrientation1UTC = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
         }
         public override async Task AzureModuleInitAsync<C>(C c) 
         {
