@@ -26,7 +26,7 @@ namespace ConsoleDotNetCoreI2c
             Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
             AzureConnection connection = null;
-            MpuDevice mpu = null;
+            I2CMpuDevice mpu = null;
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
@@ -45,8 +45,7 @@ namespace ConsoleDotNetCoreI2c
                     {
                         try
                         {
-                            mpu = await MpuDevice.CreateMpuDevice();
-                            //var settings = new I2cDevice.
+                            mpu = await I2CMpuDevice.CreateMpuDevice();
                             mpu.InitAsync().Wait();
                             if (Options.Test.HasValue)
                             {
@@ -80,14 +79,6 @@ namespace ConsoleDotNetCoreI2c
                 }
 
             }));
-#if DISABLE            
-            var w = new EventWaitHandle(false, EventResetMode.ManualReset);
-            for (; ; )
-            {
-                Log.WriteLine("{0} waiting spin", Environment.TickCount);
-                w.WaitOne(TimeSpan.FromSeconds(30));
-            }
-#endif
             return 0;
         }
 

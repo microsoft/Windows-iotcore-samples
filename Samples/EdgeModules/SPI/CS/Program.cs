@@ -26,7 +26,7 @@ namespace ConsoleDotNetCoreSPI
             Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
             AzureConnection connection = null;
-            MpuDevice mpu = null;
+            SPIMpuDevice mpu = null;
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
@@ -45,7 +45,7 @@ namespace ConsoleDotNetCoreSPI
                     {
                         try
                         {
-                            mpu = await MpuDevice.CreateMpuDevice();
+                            mpu = await SPIMpuDevice.CreateMpuDevice();
                             //var settings = new SPIDevice.
                             mpu.InitAsync().Wait();
                             if (Options.Test.HasValue)
