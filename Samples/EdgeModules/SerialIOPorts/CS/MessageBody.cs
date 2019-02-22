@@ -4,6 +4,7 @@ namespace SampleModule
 {
     using System;
     using Newtonsoft.Json;
+    using EdgeModuleSamples.Common;
 
     /// <summary>
     ///Body:
@@ -62,7 +63,7 @@ namespace SampleModule
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.GetType().Name}: {ex.Message}");
+                    Log.WriteLineError($"In MessageBody SerialEncode set: {ex.GetType().Name} {ex.Message}");
                 }
             }
         }
@@ -96,7 +97,7 @@ namespace SampleModule
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.GetType().Name}: {ex.Message}");
+                    Log.WriteLineError($"In Machine SerialEncode set: {ex.GetType().Name} {ex.Message}");
                 }
             }
         }
@@ -127,7 +128,7 @@ namespace SampleModule
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.GetType().Name}: {ex.Message}");
+                    Log.WriteLineError($"In Ambient SerialEncode set: {ex.GetType().Name} {ex.Message}");
                 }
             }
         }
