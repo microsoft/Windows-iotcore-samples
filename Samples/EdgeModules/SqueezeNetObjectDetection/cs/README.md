@@ -13,7 +13,7 @@ It is derived from the
 * A PC running [Windows 10 - Build 17763](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso) to run the solution 
 * Or a [Minnowboard Turbot](https://minnowboard.org/minnowboard-turbot/) running [Windows 10 IoT Core - Build 17763](https://developer.microsoft.com/en-us/windows/iot). Currently, the sample runs only on x64 architecture. Future releases will include support for arm32 architecture.
 * A USB camera. I recommend a [LifeCam Cinema](https://www.microsoft.com/accessories/en-us/webcams).
-* [Azure IoT Edge for Windows - 1.0.5 or higher](https://docs.microsoft.com/en-us/azure/iot-edge/) 
+* [Azure IoT Edge for Windows - 1.0.6 or higher](https://docs.microsoft.com/en-us/azure/iot-edge/) 
 
 ### Azure Subscription
 
@@ -26,11 +26,38 @@ It is derived from the
 * [Windows 10 - Build 17763 or higher](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso) to build the solution. This can be the same machine you're running the solution on, or a different one.
 * [Windows SDK - Build 17763 or higher](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewSDK)
 
-### Insider Knowledge
+### Working with docker
 
-Unfortunately, this sample cannot be reproduced using publicly released tools, until the following PR's are upstreamed and released:
+Azure IoT Edge installs a custom build of the moby (aka docker) container engine. In order to use the docker command line as described in this sample, you'll have some additional setup to do.
 
-* [Moby Cli PR 1606](https://github.com/docker/cli/pull/1606). Without this change, docker.exe will not take the --device parameter. Thus, every case below where the cli is called with --device, will fail. To work around, we use an internally-built moby cli.
+* Download a recent docker command line tool from dockerproject.org. Put this somewhere on your path. It's available at [https://master.dockerproject.org/windows/x86_64/docker.exe](https://master.dockerproject.org/windows/x86_64/docker.exe). This is required because the command line tool distributed with Azure IoT Edge does not yet include the '--device' option, as of the time of this writing. 
+* Set the DOCKER_HOST environment variable to "npipe:////./pipe/iotedge_moby_engine". This will ensure the docker command line tool is communicating with the correct docker engine.
+
+In order to verify your configuration, run the 'docker version' command. Then compare with the below:
+
+```
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker version
+Client:
+ Version:           master-dockerproject-2019-02-12
+ API version:       1.40
+ Go version:        go1.11.5
+ Git commit:        7f612bfc
+ Built:             Tue Feb 12 23:42:34 2019
+ OS/Arch:           windows/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          3.0.3
+  API version:      1.40 (minimum version 1.24)
+  Go version:       go1.11.4
+  Git commit:       5ec3138
+  Built:            Thu Jan 24 17:16:18 2019
+  OS/Arch:          windows/amd64
+  Experimental:     false
+```
+
+The server should be version 3.0.3 or higher, built Jan 24 2019 or later. The client should be built Feb 12 2019 or later.
 
 ## Build the sample
 
