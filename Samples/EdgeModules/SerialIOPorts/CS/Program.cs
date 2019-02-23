@@ -133,7 +133,7 @@ namespace SampleModule
             }
             catch (Exception ex)
             {
-                Log.WriteLineError($"In Main: {ex.GetType().Name} {ex.Message}");
+                Log.WriteLineException(ex);
             }        
         }
 
@@ -202,8 +202,8 @@ namespace SampleModule
                         }
                     }
                     catch (Exception ex) 
-                    { 
-                        Log.WriteLineError($"In ReaderTask loop: {ex.GetType().Name} {ex.Message}");
+                    {
+                        Log.WriteLineException(ex);
                     }
 
                     i++;
@@ -211,7 +211,7 @@ namespace SampleModule
             }
             catch (Exception ex)
             {
-                Log.WriteLineError($"ReaderTask: {ex.GetType().Name} {ex.Message}");
+                Log.WriteLineException(ex);
             }
         }
 

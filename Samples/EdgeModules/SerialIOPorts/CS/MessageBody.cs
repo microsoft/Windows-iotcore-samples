@@ -63,7 +63,7 @@ namespace SampleModule
                 }
                 catch (Exception ex)
                 {
-                    Log.WriteLineError($"In MessageBody SerialEncode set: {ex.GetType().Name} {ex.Message}");
+                    Log.WriteLineException(ex);
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace SampleModule
                 }
                 catch (Exception ex)
                 {
-                    Log.WriteLineError($"In Machine SerialEncode set: {ex.GetType().Name} {ex.Message}");
+                    Log.WriteLineException(ex);
                 }
             }
         }
@@ -128,10 +128,10 @@ namespace SampleModule
                 }
                 catch (Exception ex)
                 {
-                    Log.WriteLineError($"In Ambient SerialEncode set: {ex.GetType().Name} {ex.Message}");
+                    Log.WriteLineException(ex);
                 }
             }
         }
-
     }
+
 }
