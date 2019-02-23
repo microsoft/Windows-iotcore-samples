@@ -208,32 +208,23 @@ From a command prompt on the device, you can also check the logs for the module 
 First, find the module container:
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker ps
-
-CONTAINER ID        IMAGE                                                                           COMMAND                  CREATED              STATUS              PORTS                                                                  NAMES
-b4107d30a29d        {ACR_NAME}.azurecr.io/serialioports:1.0.2-x64                                   "SerialIOPorts.exe -rt…"   About a minute ago   Up About a minute                                                                     serialioports
-56170371f8f5        edgeshared.azurecr.io/microsoft/azureiotedge-hub:1809_insider-windows-arm32     "dotnet Microsoft.Az…"   3 days ago           Up 6 minutes        0.0.0.0:443->443/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:8883->8883/tcp   edgeHub
-27c147e5c760        edgeshared.azurecr.io/microsoft/azureiotedge-agent:1809_insider-windows-arm32   "dotnet Microsoft.Az…"   3 days ago           Up 7 minutes                                                                               edgeAgent
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> iotedge list
+NAME             STATUS           DESCRIPTION      CONFIG
+serialioports    running          Up 5 minutes     {ACR_NAME}.azurecr.io/serialioports-com3:1.0.3-x64
+edgeHub          running          Up 33 minutes    mcr.microsoft.com/azureiotedge-hub:1.0.6
+edgeAgent        running          Up 33 minutes    mcr.microsoft.com/azureiotedge-agent:1.0.6
 ```
 
-Then, use the ID for the serialioports container to check the logs
+Then, check the logs
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker logs b4107d30a29d
-11/21/2018 4:48:33 PM Connecting to device COM3...
-11/21/2018 4:48:34 PM Write 1 Completed. Wrote 30 bytes: "00001/049.18,053.69/077.32,024"
-11/21/2018 4:48:34 PM Read 1 Completed. Received 30 bytes: "00001/049.18,053.69/077.32,024"
-11/21/2018 4:48:35 PM SendEvent: [{"machine":{"temperature":49.18,"pressure":53.69},"ambient":{"temperature":77.32,"humidity":24},"timeCreated":"2018-11-21T16:48:34.5113171-08:00"}]
-11/21/2018 4:48:35 PM Write 2 Completed. Wrote 30 bytes: "00002/061.68,097.79/053.30,026"
-11/21/2018 4:48:35 PM Read 2 Completed. Received 30 bytes: "00002/061.68,097.79/053.30,026"
-11/21/2018 4:48:35 PM SendEvent: [{"machine":{"temperature":61.68,"pressure":97.79},"ambient":{"temperature":53.3,"humidity":26},"timeCreated":"2018-11-21T16:48:35.5104208-08:00"}]
-11/21/2018 4:48:36 PM Write 3 Completed. Wrote 30 bytes: "00003/069.86,014.59/018.92,025"
-11/21/2018 4:48:36 PM Read 3 Completed. Received 30 bytes: "00003/069.86,014.59/018.92,025"
-11/21/2018 4:48:36 PM SendEvent: [{"machine":{"temperature":69.86,"pressure":14.59},"ambient":{"temperature":18.92,"humidity":25},"timeCreated":"2018-11-21T16:48:36.5173581-08:00"}]
-11/21/2018 4:48:37 PM Write 4 Completed. Wrote 30 bytes: "00004/030.22,061.69/088.52,024"
-11/21/2018 4:48:37 PM Read 4 Completed. Received 30 bytes: "00004/030.22,061.69/088.52,024"
-11/21/2018 4:48:37 PM SendEvent: [{"machine":{"temperature":30.22,"pressure":61.69},"ambient":{"temperature":88.52,"humidity":24},"timeCreated":"2018-11-21T16:48:37.5398929-08:00"}]
-11/21/2018 4:48:38 PM Write 5 Completed. Wrote 30 bytes: "00005/090.27,075.66/053.89,025"
-11/21/2018 4:48:38 PM Read 5 Completed. Received 30 bytes: "00005/090.27,075.66/053.89,025"
-11/21/2018 4:48:38 PM SendEvent: [{"machine":{"temperature":90.27,"pressure":75.66},"ambient":{"temperature":53.89,"humidity":25},"timeCreated":"2018-11-21T16:48:38.5312768-08:00"}]
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> iotedge logs serialioports
+2/22/2019 4:22:36 PM: Connecting to device COM3...
+2/22/2019 4:22:37 PM: IoT Hub module client initialized.
+2/22/2019 4:22:38 PM: Write 1 Completed. Wrote 30 bytes: "00001/006.28,078.44/065.91,025"
+2/22/2019 4:22:38 PM: Read 1 Completed. Received 30 bytes: "00001/006.28,078.44/065.91,025"
+2/22/2019 4:22:38 PM: SendEvent: [{"machine":{"temperature":6.28,"pressure":78.44},"ambient":{"temperature":65.91,"humidity":25},"timeCreated":"2019-02-22T16:22:38.7301052-08:00"}]
+2/22/2019 4:22:39 PM: Write 2 Completed. Wrote 30 bytes: "00002/004.93,004.32/008.44,026"
+2/22/2019 4:22:39 PM: Read 2 Completed. Received 30 bytes: "00002/004.93,004.32/008.44,026"
+2/22/2019 4:22:39 PM: SendEvent: [{"machine":{"temperature":4.93,"pressure":4.32},"ambient":{"temperature":8.44,"humidity":26},"timeCreated":"2019-02-22T16:22:39.7327389-08:00"}]
 ```

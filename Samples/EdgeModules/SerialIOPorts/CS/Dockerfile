@@ -6,4 +6,4 @@ WORKDIR /app
 
 COPY $EXE_DIR/ ./
 
-CMD [ "SerialIOPorts.exe", "-rte", "-dCOM4" ]
+CMD [ "SerialIOPorts.exe", "-rte", "-dCOM3" ]
