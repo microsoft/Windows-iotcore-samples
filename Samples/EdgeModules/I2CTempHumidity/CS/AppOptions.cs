@@ -10,9 +10,6 @@ namespace SampleModule
     {
         public bool Help { get; private set; }
         public bool ShowList { get; private set; }
-        public bool ShowConfig { get; private set; }
-        public string DeviceId { get; private set; }
-        public string DeviceAddress { get; private set; }
         public bool UseEdge { get; private set; }
         public bool Exit { get; private set; } = false;
 
@@ -20,9 +17,6 @@ namespace SampleModule
         {
             Add( "h|help", "show this message and exit", v => Help = v != null );
             Add( "l|list", "list available devices and exit", v => ShowList = v != null);
-            Add( "d|device=", "the {ID} of i2c controller to use", v => DeviceId = v.ToLowerInvariant());
-            Add( "a|address=", "the {ID} of the device address", v => DeviceAddress = v);
-            Add( "c|config", "display device configuration", v => ShowConfig = v != null);
             Add( "e|edge", "transmit through azure edge", v => UseEdge = v != null);
             Add( "v|verbose", "print verbose logging information", v => Log.Verbose = v != null);
         }
@@ -31,7 +25,7 @@ namespace SampleModule
         {
             var result = base.Parse(args);
 
-            if (Help || !(ShowList || ShowConfig))
+            if (Help || ShowList)
             {
                 Console.WriteLine($"{AppName} {AppVersion}");
                 WriteOptionDescriptions(Console.Out);
