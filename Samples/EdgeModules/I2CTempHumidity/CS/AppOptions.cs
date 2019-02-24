@@ -9,14 +9,12 @@ namespace SampleModule
     public class AppOptions: OptionSet
     {
         public bool Help { get; private set; }
-        public bool ShowList { get; private set; }
         public bool UseEdge { get; private set; }
         public bool Exit { get; private set; } = false;
 
         public AppOptions()
         {
             Add( "h|help", "show this message and exit", v => Help = v != null );
-            Add( "l|list", "list available devices and exit", v => ShowList = v != null);
             Add( "e|edge", "transmit through azure edge", v => UseEdge = v != null);
             Add( "v|verbose", "print verbose logging information", v => Log.Verbose = v != null);
         }
@@ -25,7 +23,7 @@ namespace SampleModule
         {
             var result = base.Parse(args);
 
-            if (Help || ShowList)
+            if (Help)
             {
                 Console.WriteLine($"{AppName} {AppVersion}");
                 WriteOptionDescriptions(Console.Out);

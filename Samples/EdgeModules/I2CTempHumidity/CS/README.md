@@ -134,7 +134,7 @@ When following the sample, replace any "{ACR_*}" values with the correct values 
 Be sure to log into the container respository from your target device.
 
 ```
-[192.168.1.120]: PS C:\data\modules\i2ctemp> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
+[192.168.1.120]: PS C:\data\modules\i2ctemp> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
 ```
 
 ## Containerize the sample app
@@ -166,12 +166,14 @@ Step 5/5 : CMD [ "I2CTempHumidity.exe", "-e" ]
 Removing intermediate container 987ca3fe7aaf
  ---> 02c4909eecd7
 Successfully built 02c4909eecd7
-    Successfully tagged {ACR_NAME}.azurecr.io/i2ctemp:1.0.0-x64
+Successfully tagged {ACR_NAME}.azurecr.io/i2ctemp:1.0.0-x64
 ```
 
 ## Test the sample app within the container
 
 At this point, we'll want to run the container locally to ensure that it is able to find and talk to our peripheral.
+Adding the --device parameter to the docker tool with the class GUID shown below is needed to expose the I2C bus 
+from the host through to the container.
 
 ```
 [192.168.1.120]: PS C:\data\modules\i2ctemp> docker run --device "class/A11EE3C6-8421-4202-A3E7-B91FF90188E4" --isolation process $Container I2CTempHumidity.exe
@@ -184,3 +186,128 @@ At this point, we'll want to run the container locally to ensure that it is able
 2/23/2019 10:32:29 PM: SendEvent: [{"ambient":{"temperature":13.521574707031249,"humidity":46.913665771484375},"timeCreated":"2019-02-23T22:32:29.399887-08:00"}]
 2/23/2019 10:32:30 PM: SendEvent: [{"ambient":{"temperature":13.521574707031249,"humidity":46.890777587890625},"timeCreated":"2019-02-23T22:32:30.4836842-08:00"}]
 ```
+
+## Push the container
+
+Now that we are sure the app is working correctly within the container, we will push it to our repository.
+
+```
+[192.168.1.120]: PS C:\data\modules\i2ctemp> docker push $Container
+The push refers to repository [{ACR_NAME}.azurecr.io/i2ctemp]
+4a3b345f5109: Preparing
+cdf9c040948d: Preparing
+b7f45a54f179: Preparing
+6bd44acbda1a: Preparing
+13e7d127b442: Preparing
+13e7d127b442: Skipped foreign layer
+4a3b345f5109: Pushed
+b7f45a54f179: Pushed
+6bd44acbda1a: Pushed
+cdf9c040948d: Pushed
+1.0.0-x64: digest: sha256:d82b0ad89d772404c8aa1177cf1197e149cf805facffec135b07bf05e68bb693 size: 1465
+```
+
+## Edit the deployment.json file
+
+In the repo, you will find a sample deployment.json file. 
+Fill in the details for your container image.
+Search for "{ACR_*}" and replace those values with the correct values for your container repository.
+The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/squeezenet:1.0.0-x64
+
+If you're writing your own deployment.json file, be sure to exactly follow the createOptions line from below.
+
+```
+    "$edgeAgent": {
+      "properties.desired": {
+        "runtime": {
+          "settings": {
+            "registryCredentials": {
+              "{ACR_NAME}": {
+                "username": "{ACR_USER}",
+                "password": "{ACR_PASSWORD}",
+                "address": "{ACR_NAME}.azurecr.io"
+              }
+            }
+          }
+        }
+...
+                "modules": {
+                    "i2ctemp": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "{ACR_NAME}.azurecr.io/i2ctemp:1.0.0-x64",
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/A11EE3C6-8421-4202-A3E7-B91FF90188E4\"}],\"Isolation\":\"Process\"}}"
+                        }
+                    }
+                }
+```
+
+## Deploy edge modules to device
+
+Back on your development machine, you can now deploy this deployment.json file to your device.
+For reference, please see [Deploy Azure IoT Edge modules from Visual Studio Code](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-vscode)
+
+## Verify device messages
+
+Using the Azure IoT Edge extension for Visual Studio Code, you can select your device and choose "Start Monitoring D2C Message". You should see lines like this:
+
+```
+[IoTHubMonitor] Start monitoring D2C message for [jcoliz-17763-M] ...
+[IoTHubMonitor] Created partition receiver [0] for consumerGroup [$Default]
+[IoTHubMonitor] Created partition receiver [1] for consumerGroup [$Default]
+[IoTHubMonitor] [2:49:43 PM] Message received from [jcoliz-17763-M/i2ctemp]:
+{
+  "ambient": {
+    "temperature": 20.70739013671875,
+    "humidity": 35.568756103515625
+  },
+  "timeCreated": "2019-02-24T14:49:42.9344522-08:00"
+}
+[IoTHubMonitor] [2:49:44 PM] Message received from [jcoliz-17763-M/i2ctemp]:
+{
+  "ambient": {
+    "temperature": 20.696665039062502,
+    "humidity": 35.545867919921875
+  },
+  "timeCreated": "2019-02-24T14:49:44.003313-08:00"
+}
+```
+
+From a command prompt on the device, you can also check the logs for the module itself.
+
+First, list the modules
+
+```
+[192.168.1.120]: PS C:\data\modules\i2ctemp> iotedge list
+NAME             STATUS           DESCRIPTION      CONFIG
+edgeAgent        running          Up 2 minutes     mcr.microsoft.com/azureiotedge-agent:1.0.6
+i2ctemp          running          Up 2 minutes     {ACR_NAME}.azurecr.io/i2ctemp:1.0.0-x64
+edgeHub          running          Up 17 hours      mcr.microsoft.com/azureiotedge-hub:1.0.6
+```
+
+Second, view the logs from the custom module
+
+```
+[192.168.1.120]: PS C:\data\modules\i2ctemp> iotedge logs --tail 5 i2ctemp
+2/24/2019 2:52:41 PM: SendEvent: [{"ambient":{"temperature":21.050593261718753,"humidity":36.171478271484375},"timeCreated":"2019-02-24T14:52:41.0148808-08:00"}]
+2/24/2019 2:52:42 PM: SendEvent: [{"ambient":{"temperature":21.039868164062504,"humidity":36.179107666015625},"timeCreated":"2019-02-24T14:52:42.1367603-08:00"}]
+2/24/2019 2:52:43 PM: SendEvent: [{"ambient":{"temperature":21.050593261718753,"humidity":36.186737060546875},"timeCreated":"2019-02-24T14:52:43.2330756-08:00"}]
+2/24/2019 2:52:44 PM: SendEvent: [{"ambient":{"temperature":21.050593261718753,"humidity":36.194366455078125},"timeCreated":"2019-02-24T14:52:44.3068765-08:00"}]
+2/24/2019 2:52:45 PM: SendEvent: [{"ambient":{"temperature":21.061318359375,"humidity":36.194366455078125},"timeCreated":"2019-02-24T14:52:45.3725409-08:00"}]
+```
+
+## Next step: Visualize your data
+
+Congratulations! You now have an I2C temperature and humidity sensor successfully passing data to the Azure cloud via Azure IoT Edge.
+Now you can use Time Series Insights to visualize it. 
+
+1. [Add an IoT hub event source to your Time Series Insights environment](https://docs.microsoft.com/en-us/azure/time-series-insights/time-series-insights-how-to-add-an-event-source-iothub).
+2. Access your environment in the [Azure Time Series Insights explorer](https://docs.microsoft.com/en-us/azure/time-series-insights/time-series-insights-explorer).
+3. Create a chart query, with two data series: ambient.humidity and ambient.temperature.
+
+As you experiment with different objects, you can visualize them over time by adjusting the timeframe and interval size. Be sure to refresh the data after changing objects!
+
+![Time Series Insights Explorer](assets/time-series-insights.jpg)

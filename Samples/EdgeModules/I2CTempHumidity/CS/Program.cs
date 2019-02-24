@@ -67,41 +67,42 @@ namespace SampleModule
                     }
 
                     //
-                    // Get some readings
+                    // Launch background thread to obtain readings
                     //
 
-                    int times = 5;
-                    while(times-- > 0)
+
+                    var background = Task.Run(async ()=>
                     {
-                        device.Update();
-
-                        var message = new MessageBody();
-                        message.Ambient.Temperature = device.Temperature;
-                        message.Ambient.Humidity = device.Humidity;
-                        message.TimeCreated = DateTime.Now;
-
-                        string dataBuffer = JsonConvert.SerializeObject(message); 
-                        var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
-                        Log.WriteLineRaw($"SendEvent: [{dataBuffer}]");
-
-                        if (Options.UseEdge)
+                        while(true)
                         {
-                            await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
+                            device.Update();
+
+                            var message = new MessageBody();
+                            message.Ambient.Temperature = device.Temperature;
+                            message.Ambient.Humidity = device.Humidity;
+                            message.TimeCreated = DateTime.Now;
+
+                            string dataBuffer = JsonConvert.SerializeObject(message); 
+                            var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
+                            Log.WriteLineRaw($"SendEvent: [{dataBuffer}]");
+
+                            if (Options.UseEdge)
+                            {
+                                await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
+                            }
+
+                            await Task.Delay(1000);
                         }
+                    });
 
-                        await Task.Delay(1000);
-                    }
-
-#if nope
+                    //
                     // Wait until the app unloads or is cancelled
-                    //if (Options.Receive || Options.Transmit)
-                    {
-                        var cts = new CancellationTokenSource();
-                        AssemblyLoadContext.Default.Unloading += (ctx) => cts.Cancel();
-                        Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
-                        WhenCancelled(cts.Token).Wait();
-                    }
-#endif
+                    //
+
+                    var cts = new CancellationTokenSource();
+                    AssemblyLoadContext.Default.Unloading += (ctx) => cts.Cancel();
+                    Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
+                    WhenCancelled(cts.Token).Wait();
                 }
             }
             catch (Exception ex)
