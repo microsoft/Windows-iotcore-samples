@@ -143,6 +143,34 @@ namespace SampleModule
                     // Get some readings
                     //
 
+                    int times = 5;
+                    while(times-- > 0)
+                    {
+                        var humidityreading = I2CReadWrite(device, new byte[] { 0xe5 }, 3 );
+
+                        UInt16 msb = (UInt16)(humidityreading[0]);
+                        UInt16 lsb = (UInt16)(humidityreading[1]);
+                        UInt16 humidity16 = (UInt16)((msb << 8) | lsb);
+
+                        double humidity = ((double)humidity16 * 125.0) / 65536.0 - 6.0;
+
+                        //             "        Model: 
+                        Log.WriteLine($"     Humidity: {humidity:0.0}%");
+
+                        var tempreading = I2CReadWrite(device, new byte[] { 0xe0 }, 2 );
+
+                        msb = (UInt16)(tempreading[0]);
+                        lsb = (UInt16)(tempreading[1]);
+                        UInt16 temp16 = (UInt16)((msb << 8) | lsb);
+
+                        double temp = ((double)temp16 * 175.72 / 65536.0) - 46.85;
+
+                        //             "        Model: 
+                        Log.WriteLine($"  Temperature: {temp:0.0}C");
+
+                        await Task.Delay(500);
+                    }
+
                     //
                     // Init module client
                     //
@@ -176,7 +204,7 @@ namespace SampleModule
             var result = device.WriteReadPartial(writeBuffer,readBuffer);
             Log.WriteLineVerbose(result.ToString());
 
-            var display = readBuffer.Aggregate(new StringBuilder(),(sb,b)=>sb.Append(string.Format("{0:X} ",b)));
+            var display = readBuffer.Aggregate(new StringBuilder(),(sb,b)=>sb.Append(string.Format("{0:X2} ",b)));
             Log.WriteLineVerbose(display.ToString());
 
             return readBuffer;
