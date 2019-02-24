@@ -45,7 +45,8 @@ namespace ConsoleDotNetCoreSPI
                     {
                         try
                         {
-                            mpu = await SPIMpuDevice.CreateMpuDevice();
+                            Log.WriteLine("creating mpu device {0}", Options.DeviceName != null ? Options.DeviceName : "(default)");
+                            mpu = await SPIMpuDevice.CreateMpuDevice(Options.DeviceName);
                             //var settings = new SPIDevice.
                             mpu.InitAsync().Wait();
                             if (Options.Test.HasValue)

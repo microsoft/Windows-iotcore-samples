@@ -9,10 +9,10 @@ using System.Collections.Generic;
 
 namespace ConsoleDotNetCoreI2c
 {
-    public class AppOptions: EdgeModuleSamples.Common.Options.AppOptions
+    public class AppOptions: EdgeModuleSamples.Common.Options.SpbAppOptions
     {
 
-        public AppOptions() 
+        public AppOptions()
         {
         }
 

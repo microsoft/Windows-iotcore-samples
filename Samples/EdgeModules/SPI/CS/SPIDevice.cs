@@ -27,19 +27,27 @@ namespace ConsoleDotNetCoreSPI
         private SPIMpuDevice() : base(true)
         {
         }
-        public static async Task<SPIMpuDevice> CreateMpuDevice()
+        public static async Task<SPIMpuDevice> CreateMpuDevice(string deviceName)
         {
-            var c = await AsAsync(SpiController.GetDefaultAsync());
-            Log.WriteLine("Spi controller {0} null", c == null ? "is" : "is not");
+            Log.WriteLine("finding device {0}", deviceName != null ? deviceName : "(default)");
+            Windows.Devices.Enumeration.DeviceInformation info;
+            if (deviceName != null)
+            {
+                info = await FindAsync(SpiDevice.GetDeviceSelector(deviceName));
+            } else
+            {
+                info = await FindAsync(SpiDevice.GetDeviceSelector());
+            }
+            Log.WriteLine("Spi device info {0} null", info == null ? "is" : "is not");
             var settings = new SpiConnectionSettings(DefaultMpuAddress);
             settings.Mode = SpiMode.Mode0;
             settings.ClockFrequency = Mhz20;
             settings.ChipSelectLine = 0;
             var d = new SPIMpuDevice();
-            d.Device = c.GetDevice(settings);
+            d.Device = await AsAsync(SpiDevice.FromIdAsync(info.Id, settings));
             return d;
         }
-        public virtual async Task InitAsync()
+        public override async Task InitAsync()
         {
             await base.InitAsync();
             await Task.Run(() =>

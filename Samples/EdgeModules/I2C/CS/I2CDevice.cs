@@ -28,14 +28,24 @@ namespace ConsoleDotNetCoreI2c
         private I2CMpuDevice() : base(false)
         {
         }
-        public static async Task<I2CMpuDevice> CreateMpuDevice()
+        public static async Task<I2CMpuDevice> CreateMpuDevice(string deviceName)
         {
-            var c = await AsAsync(I2cController.GetDefaultAsync());
-            Log.WriteLine("I2c controller {0} null", c == null ? "is" : "is not");
+            Log.WriteLine("finding device {0}", deviceName != null ? deviceName : "(default)");
+
+            Windows.Devices.Enumeration.DeviceInformation info = null;
+            if (deviceName != null)
+            {
+                info = await FindAsync(I2cDevice.GetDeviceSelector(deviceName));
+            } else
+            {
+                info = await FindAsync(I2cDevice.GetDeviceSelector());
+            }
+            Log.WriteLine("I2c device info {0} null", info == null ? "is" : "is not");
+
             var settings = new I2cConnectionSettings(DefaultMpuAddress);
             settings.BusSpeed = I2cBusSpeed.FastMode;
             var d = new I2CMpuDevice();
-            d.Device = c.GetDevice(settings);
+            d.Device = await AsAsync(I2cDevice.FromIdAsync(info.Id, settings));
             return d;
         }
         public override void Write(byte[] val)
