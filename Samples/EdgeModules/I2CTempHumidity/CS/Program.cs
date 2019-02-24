@@ -117,10 +117,27 @@ namespace SampleModule
 
                         // Device serial number
 
-                        var serial1 = I2CReadWrite(device, new byte[] { 0xfa, 0x0f }, 8 );
-                        var serial2 = I2CReadWrite(device, new byte[] { 0xfc, 0xc9 }, 6 );
+                        var serialA = I2CReadWrite(device, new byte[] { 0xfa, 0x0f }, 8 );
+                        var serialB = I2CReadWrite(device, new byte[] { 0xfc, 0xc9 }, 6 );
                         var firmwarerev = I2CReadWrite(device, new byte[] { 0x84, 0xb8 }, 1 );
+
+                        var serialnumberbytes = new byte[] { serialA[0], serialA[2], serialA[4], serialA[6], serialB[0], serialB[1], serialB[3], serialB[4] };
+                        var serialnumbersb = serialnumberbytes.Aggregate(new StringBuilder(),(sb,b)=>sb.Append(b.ToString("X")));
+                        var serialnumber = serialnumbersb.ToString();
+
+                        var model = $"Si70{serialB[0]}";
+                        var firmware = "Unknown";
+                        if (firmwarerev[0] == 0xff)
+                            firmware = "1.0";
+                        else if (firmwarerev[0] == 0x20)
+                            firmware = "2.0";
+
+                        Log.WriteLineRaw($"        Model: {model}");
+                        Log.WriteLineRaw($"Serial Number: {serialnumber}");
+                        Log.WriteLineRaw($" Firmware Rev: {firmware}");
                     }
+
+                    // For reference: https://github.com/robert-hh/SI7021/blob/master/SI7021.py 
 
                     //
                     // Get some readings
