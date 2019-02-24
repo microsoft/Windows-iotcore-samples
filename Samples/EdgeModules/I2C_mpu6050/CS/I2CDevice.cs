@@ -56,6 +56,18 @@ namespace ConsoleDotNetCoreI2c
         {
             Device.Read(val);
         }
+        public override Int16 GetMpuValue(byte msbReg, byte lsbReg)
+        {
+            byte[] msbCMD = { msbReg };
+            Write(msbCMD);
+            byte[] HighVal = { 0 };
+            Read(HighVal);
+            byte[] lsbCMD = { lsbReg };
+            Write(lsbCMD);
+            byte[] LowVal = { 0 };
+            Read(LowVal);
+            return (Int16)(((UInt16)(HighVal[0] << 8)) | LowVal[0]);
+        }
 
     }
 }

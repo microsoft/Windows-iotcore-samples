@@ -65,6 +65,12 @@ namespace ConsoleDotNetCoreSPI
         {
             Device.Read(val);
         }
+        public override Int16 GetMpuValue(byte msbReg, byte lsbReg)
+        {
+            byte[] CMD = { msbReg, lsbReg, 0 };
+            Device.TransferFullDuplex(CMD, CMD);
+            return (Int16)(((UInt16)(CMD[1] << 8)) | CMD[2]);
+        }
 
     }
 }
