@@ -2,6 +2,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
@@ -11,6 +12,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\Common\CS\Common\Log.cs" Link="Log.cs" />
+    <Compile Include="..\..\Common\CS\Common\AsyncHelper.cs" Link="AsyncHelper.cs" />
 </ItemGroup>
 
   <ItemGroup>
@@ -29,5 +31,12 @@
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
     <Copy SourceFiles="Dockerfile" DestinationFiles="$(PublishDir)\Dockerfile" />
   </Target>
+
+  <ItemGroup>
+    <Reference Include="Windows">
+      <HintPath>$(WINDOWS_WINMD)</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+    </Reference>
+  </ItemGroup>
 
 </Project>
