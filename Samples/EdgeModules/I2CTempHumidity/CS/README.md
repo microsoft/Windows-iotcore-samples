@@ -308,6 +308,4 @@ Now you can use Time Series Insights to visualize it.
 2. Access your environment in the [Azure Time Series Insights explorer](https://docs.microsoft.com/en-us/azure/time-series-insights/time-series-insights-explorer).
 3. Create a chart query, with two data series: ambient.humidity and ambient.temperature.
 
-As you experiment with different objects, you can visualize them over time by adjusting the timeframe and interval size. Be sure to refresh the data after changing objects!
-
 ![Time Series Insights Explorer](assets/time-series-insights.jpg)
