@@ -1,0 +1,10 @@
+        class Sachtony : Hardware
+        {
+            enum Desktop
+            {
+                Screen,
+                Cpu,
+                Mouse,
+                Keyboard,
+            }
+        }
