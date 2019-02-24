@@ -47,15 +47,24 @@ namespace SampleModule
                 using (var device = await Si7021.Open() )
                 {
                     if (null == device)
-                        throw new ApplicationException($"Unable to open Si7021. Please ensure that no other applications are using this device.");
+                        throw new ApplicationException($"Unable to open sensor. Please ensure that no other applications are using this device.");
 
                     //
                     // Dump device info
                     //
 
-                    Log.WriteLineRaw($"        Model: {device.Model}");
+                    Log.WriteLineRaw($"Model: {device.Model}");
                     Log.WriteLineRaw($"Serial Number: {device.SerialNumber}");
-                    Log.WriteLineRaw($" Firmware Rev: {device.FirmwareRevision}");
+                    Log.WriteLineRaw($"Firmware Rev: {device.FirmwareRevision}");
+
+                    //
+                    // Init module client
+                    //
+
+                    if (Options.UseEdge)
+                    {
+                        Init().Wait();
+                    }
 
                     //
                     // Get some readings
@@ -65,19 +74,22 @@ namespace SampleModule
                     while(times-- > 0)
                     {
                         device.Update();
-                        Log.WriteLine($"     Humidity: {device.Humidity:0.0}%");
-                        Log.WriteLine($"  Temperature: {device.Temperature:0.0}C");
+
+                        var message = new MessageBody();
+                        message.Ambient.Temperature = device.Temperature;
+                        message.Ambient.Humidity = device.Humidity;
+                        message.TimeCreated = DateTime.Now;
+
+                        string dataBuffer = JsonConvert.SerializeObject(message); 
+                        var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
+                        Log.WriteLineRaw($"SendEvent: [{dataBuffer}]");
+
+                        if (Options.UseEdge)
+                        {
+                            await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
+                        }
 
                         await Task.Delay(1000);
-                    }
-
-                    //
-                    // Init module client
-                    //
-
-                    if (Options.UseEdge)
-                    {
-                        Init().Wait();
                     }
 
 #if nope
@@ -96,18 +108,6 @@ namespace SampleModule
             {
                 Log.WriteLineException(ex);
             }        
-        }
-
-        private static byte[] I2CReadWrite(I2cDevice device, byte[] writeBuffer, int readsize)
-        {
-            byte[] readBuffer = new byte[readsize];
-            var result = device.WriteReadPartial(writeBuffer,readBuffer);
-            Log.WriteLineVerbose(result.ToString());
-
-            var display = readBuffer.Aggregate(new StringBuilder(),(sb,b)=>sb.Append(string.Format("{0:X2} ",b)));
-            Log.WriteLineVerbose(display.ToString());
-
-            return readBuffer;
         }
 
         /// <summary>

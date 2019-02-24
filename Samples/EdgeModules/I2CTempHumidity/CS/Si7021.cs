@@ -19,7 +19,7 @@ namespace EdgeModuleSamples.Devices
             var controller = await AsAsync(I2cController.GetDefaultAsync());
 
             if (null == controller)
-                throw new ApplicationException("No I2C controller found on this device.");
+                throw new ApplicationException("No I2C controller found on this machine.");
 
             result.Device = controller.GetDevice(i2cSettings);
             result.Initialize();
@@ -30,13 +30,13 @@ namespace EdgeModuleSamples.Devices
         // Call to update the temperature and humidity values
         public void Update()
         {
-            var humidityreading = I2CReadWrite(new byte[] { 0xe5 }, 3 );
+            var humidityreading = I2CReadWrite(new byte[] { CMD_MEASURE_RH_HOLD }, 3 );
             UInt16 msb = (UInt16)(humidityreading[0]);
             UInt16 lsb = (UInt16)(humidityreading[1]);
             UInt16 humidity16 = (UInt16)((msb << 8) | lsb);
             Humidity = ((double)humidity16 * 125.0) / 65536.0 - 6.0;
 
-            var tempreading = I2CReadWrite(new byte[] { 0xe0 }, 2 );
+            var tempreading = I2CReadWrite(new byte[] { CMD_READ_TEMP }, 2 );
             msb = (UInt16)(tempreading[0]);
             lsb = (UInt16)(tempreading[1]);
             UInt16 temp16 = (UInt16)((msb << 8) | lsb);

@@ -27,7 +27,7 @@ namespace SampleModule
     public class MessageBody
     {
         [JsonProperty(PropertyName = "ambient")]
-        public Ambient Ambient { get; set; }
+        public Ambient Ambient { get; } = new Ambient();
 
         [JsonProperty(PropertyName = "timeCreated")]
         public DateTime TimeCreated { get; set; }
@@ -41,7 +41,7 @@ namespace SampleModule
         public double Temperature { get; set; }
 
         [JsonProperty(PropertyName = "humidity")]
-        public int Humidity { get; set; }
+        public double Humidity { get; set; }
 
     }
 
