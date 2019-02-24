@@ -68,6 +68,7 @@ namespace EdgeModuleSamples.Common.MpuDevice
         private byte SpiRead = 0;
         private bool _useSpi = false;
 
+        public abstract Int16 GetMpuValue(byte msbReg, byte lsbReg);
         public abstract void Write(byte[] val);
         public abstract void Read(byte[] val);
 
@@ -128,24 +129,12 @@ namespace EdgeModuleSamples.Common.MpuDevice
         {
             return (byte)(reg | SpiRead);
         }
-        private Int16 GetMpuValue(byte msbReg, byte lsbReg)
-        {
-            byte[] msbCMD = { ReadReg(msbReg) };
-            Write(msbCMD);
-            byte[] HighVal = { 0 };
-            Read(HighVal);
-            byte[] lsbCMD = { ReadReg(lsbReg) };
-            Write(lsbCMD);
-            byte[] LowVal = { 0 };
-            Read(LowVal);
-            return (Int16)(((UInt16)(HighVal[0] << 8)) | LowVal[0]);
-        }
         public Int16 CurrentAccelerometerZ
         {
             get
             {
                 // by default, accel on this chip measure +-/2G and return +/-16384
-                return GetMpuValue(AccelerometerZmsb, AccelerometerZlsb);
+                return GetMpuValue(ReadReg(AccelerometerZmsb), ReadReg(AccelerometerZlsb));
             }
         }
         public CancellationTokenSource Monitoring { get; private set; }
