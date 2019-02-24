@@ -42,4 +42,17 @@ namespace EdgeModuleSamples.Common.Options
         static public string AppName => typeof(AppOptions).Assembly.GetName().Name;
         static public string AppVersion => typeof(AppOptions).Assembly.GetName().Version.ToString();
     }
+
+    public class SpbAppOptions : EdgeModuleSamples.Common.Options.AppOptions
+    {
+
+        public string DeviceName { get; private set; }
+
+        public SpbAppOptions()
+        {
+            Add<string>("d=|dev=|devicename=", "Friendly name of device", v => DeviceName = v);
+        }
+
+    }
+
 }

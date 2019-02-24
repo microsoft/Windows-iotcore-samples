@@ -45,7 +45,8 @@ namespace ConsoleDotNetCoreI2c
                     {
                         try
                         {
-                            mpu = await I2CMpuDevice.CreateMpuDevice();
+                            Log.WriteLine("creating mpu device {0}", Options.DeviceName != null ? Options.DeviceName : "(default)");
+                            mpu = await I2CMpuDevice.CreateMpuDevice(Options.DeviceName);
                             mpu.InitAsync().Wait();
                             if (Options.Test.HasValue)
                             {

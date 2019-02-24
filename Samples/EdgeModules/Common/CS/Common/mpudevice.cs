@@ -2,20 +2,56 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
-using EdgeModuleSamples.Common;
 using static EdgeModuleSamples.Common.AsyncHelper;
 using EdgeModuleSamples.Common.Logging;
 using System;
 using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Devices.I2c;
+// do not use anything out of Universal API contract except Windows.Devices.Enumeration
+using Windows.Devices.Enumeration;
+
+
 
 
 namespace EdgeModuleSamples.Common.MpuDevice
 {
 
+    public abstract class SPBDevice
+    {
+        public static readonly string friendlyNameProperty = "System.DeviceInterface.Spb.ControllerFriendlyName";
 
-    public abstract class MpuDevice 
+        protected static async Task<DeviceInformation> FindAsync(string selector) {
+            List<string> properties = new List<string>();
+            properties.Add(friendlyNameProperty);
+            var devices = await AsAsync(DeviceInformation.FindAllAsync(
+                    selector,
+                    properties));
+            if (devices.Count < 1)
+            {
+                throw new ApplicationException(string.Format("No device found by {0}", selector));
+            }
+
+            Console.WriteLine("Device Info from {0}", selector);
+            Console.WriteLine("FriendlyName DeviceId");
+            DeviceInformation r = null; // return the first one but log if there's duplicates
+            foreach (var i in devices)
+            {
+                if (r == null)
+                {
+                    r =i;
+                }
+                object o;
+                i.Properties.TryGetValue(friendlyNameProperty, out o);
+                string friendlyName = (string)o;
+                var Id = i.Id;
+                Console.WriteLine("  {0} {1}", friendlyName, Id);
+            }
+            return r;
+        }
+    }
+
+    public abstract class MpuDevice : SPBDevice
     {
         // NOTE: this sample is only using the Z-axis accelerometer for orientation detection
         // if you wanted to do something more complex see the 6050/9050 datasheet for additional register definitions

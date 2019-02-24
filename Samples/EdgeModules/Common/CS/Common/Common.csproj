@@ -7,14 +7,17 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="YamlDotNet" Version="5.3.0" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="Windows.Devices.DevicesLowLevelContract">
-      <HintPath>$(WindowsSdkPath)\Windows.Devices.DevicesLowLevelContract\3.0.0.0\Windows.Devices.DevicesLowLevelContract.winmd</HintPath>
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.Devices.DevicesLowLevelContract\3.0.0.0\Windows.Devices.DevicesLowLevelContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
     <Reference Include="Windows.Foundation.FoundationContract">
-      <HintPath>$(WindowsSdkPath)\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+    </Reference>
+    <Reference Include="Windows.Foundation.UniversalApiContract">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\References\10.0.17763.0\Windows.Foundation.UniversalApiContract\7.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
   </ItemGroup>
