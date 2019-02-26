@@ -58,6 +58,7 @@ Server:
 ```
 
 The server should be version 3.0.3 or higher, built Jan 24 2019 or later. The client should be built Feb 12 2019 or later.
+
 ## Build and Publish the Sample App
 
 Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory.

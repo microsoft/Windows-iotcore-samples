@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ShellLauncherConfiguration xmlns="http://schemas.microsoft.com/ShellLauncher/2018/Configuration"
+xmlns:v2="http://schemas.microsoft.com/ShellLauncher/2019/Configuration">
+  <Profiles>
+    <DefaultProfile>
+      <Shell Shell="ShellLauncherV2DemoUwp_5d7tap497jwe8!App" v2:AppType="UWP">
+        <DefaultAction Action="RestartShell"/>
+      </Shell>
+    </DefaultProfile>
+  </Profiles>
+  <Configs/>
+</ShellLauncherConfiguration>

@@ -1,30 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Threading.Tasks;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
+using Windows.Graphics.Imaging;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.Graphics.Imaging;
-
-using Microsoft.ProjectOxford.Emotion;
-using Microsoft.ProjectOxford.Emotion.Contract;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Shapes;
-using Windows.UI;
-using Windows.UI.Popups;
-using Windows.Storage.Streams;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace CognitiveServicesExample
 {
@@ -33,8 +19,10 @@ namespace CognitiveServicesExample
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private const string _subscriptionKey = "<your subscription key?";
+        private const string _serviceEndpoint = "<your endpoint, just protocol and base url>";
 
-        private string _subscriptionKey = "your key here!!";
+        private FaceClient faceServiceClient;
 
         BitmapImage bitMapImage;
         public MainPage()
@@ -43,27 +31,55 @@ namespace CognitiveServicesExample
         }
 
         /// <summary>
-        /// Uploads the image to Project Oxford and detect emotions.
+        /// Uploads the image to be processed
         /// </summary>
         /// <param name="imageFilePath">The image file path.</param>
         /// <returns></returns>
-        private async Task<Emotion[]> UploadAndDetectEmotions(string url)
+        private async Task<DetectedFace[]> UploadAndDetectFaces(string url)
         {
-            Debug.WriteLine("EmotionServiceClient is created");
+            Debug.WriteLine("FaceClient is created");
 
             //
-            // Create Project Oxford Emotion API Service client
+            // Create Face API Service client
             //
-            EmotionServiceClient emotionServiceClient = new EmotionServiceClient(_subscriptionKey);
+            faceServiceClient = new FaceClient(
+                new ApiKeyServiceClientCredentials(_subscriptionKey),
+                new System.Net.Http.DelegatingHandler[] { })
+            {
+                Endpoint = _serviceEndpoint
+            };  // need to provide and endpoint and a delegate.
 
-            Debug.WriteLine("Calling EmotionServiceClient.RecognizeAsync()...");
+
+            // See https://docs.microsoft.com/en-us/azure/cognitive-services/face/glossary#a
+            // for the current list of supported options.
+            var requiredFaceAttributes = new FaceAttributeType[]
+            {
+                FaceAttributeType.Age,
+                FaceAttributeType.Gender,
+                FaceAttributeType.HeadPose,
+                FaceAttributeType.Smile,
+                FaceAttributeType.FacialHair,
+                FaceAttributeType.Glasses,
+                FaceAttributeType.Emotion,
+                FaceAttributeType.Hair,
+                FaceAttributeType.Makeup,
+                FaceAttributeType.Occlusion,
+                FaceAttributeType.Accessories,
+                FaceAttributeType.Blur,
+                FaceAttributeType.Exposure,
+                FaceAttributeType.Noise
+            };
+
+            Debug.WriteLine("Calling Face.DetectWithUrlAsync()...");
             try
             {
                 //
-                // Detect the emotions in the URL
+                // Detect the faces in the URL
                 //
-                Emotion[] emotionResult = await emotionServiceClient.RecognizeAsync(url);
-                return emotionResult;
+
+                var detectedFaces = await faceServiceClient.Face.DetectWithUrlAsync(url, true, false, requiredFaceAttributes);
+
+                return detectedFaces.ToArray();
             }
             catch (Exception exception)
             {
@@ -73,7 +89,7 @@ namespace CognitiveServicesExample
             }
         }
 
-        private async void button_Clicked(object sender, RoutedEventArgs e)
+        private async void Button_Clicked(object sender, RoutedEventArgs e)
         {
             ImageCanvas.Children.Clear();
             ResultBox.Items.Clear();
@@ -96,11 +112,15 @@ namespace CognitiveServicesExample
             }
 
             //Load image from URL
-            bitMapImage = new BitmapImage();
-            bitMapImage.UriSource = uri;
+            bitMapImage = new BitmapImage
+            {
+                UriSource = uri
+            };
 
-            ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = bitMapImage;
+            ImageBrush imageBrush = new ImageBrush
+            {
+                ImageSource = bitMapImage
+            };
 
             //Load image to UI
             ImageCanvas.Background = imageBrush;
@@ -109,14 +129,14 @@ namespace CognitiveServicesExample
 
             //urlString = "http://blogs.cdc.gov/genomics/files/2015/11/ThinkstockPhotos-177826416.jpg"
 
-            Emotion[] emotionResult = await UploadAndDetectEmotions(urlString);
+            DetectedFace[] detectedFaces = await UploadAndDetectFaces(urlString);
 
 
-            if (emotionResult != null)
+            if (detectedFaces != null)
             {
-                displayParsedResults(emotionResult);
-                displayAllResults(emotionResult);
-                DrawFaceRectangle(emotionResult, bitMapImage, urlString);
+                DisplayParsedResults(detectedFaces);
+                DisplayAllResults(detectedFaces);
+                DrawFaceRectangle(detectedFaces, bitMapImage, urlString);
 
                 detectionStatus.Text = "Detection Done";
             }
@@ -126,86 +146,111 @@ namespace CognitiveServicesExample
             }
         }
 
-        private void displayAllResults(Emotion[] resultList)
+        private void DisplayAllResults(DetectedFace[] faceList)
         {
             int index = 0;
-            foreach (Emotion emotion in resultList)
+            foreach (DetectedFace face in faceList)
             {
+                var emotion = face.FaceAttributes.Emotion;
+
                 ResultBox.Items.Add("\nFace #" + index
-                    + "\nAnger: " + emotion.Scores.Anger
-                    + "\nContempt: " + emotion.Scores.Contempt
-                    + "\nDisgust: " + emotion.Scores.Disgust
-                    + "\nFear: " + emotion.Scores.Fear
-                    + "\nHappiness: " + emotion.Scores.Happiness
-                    + "\nSurprise: " + emotion.Scores.Surprise);
+                    + "\nAnger: " + emotion.Anger
+                    + "\nContempt: " + emotion.Contempt
+                    + "\nDisgust: " + emotion.Disgust
+                    + "\nFear: " + emotion.Fear
+                    + "\nHappiness: " + emotion.Happiness
+                    + "\nNeutral: " + emotion.Neutral
+                    + "\nSadness: " + emotion.Sadness
+                    + "\nSurprise: " + emotion.Surprise);
 
                 index++;
             }
         }
 
-        private async void displayParsedResults(Emotion[] resultList)
+        private void DisplayParsedResults(DetectedFace[] resultList)
         {
             int index = 0;
             string textToDisplay = "";
 
-            foreach (Emotion emotion in resultList)
+            foreach (DetectedFace face in resultList)
             {
-                string emotionString = parseResults(emotion);
+                string emotionString = ParseResults(face);
                 textToDisplay += "Person number " + index.ToString() + " " + emotionString + "\n";
                 index++;
             }
             ResultBox.Items.Add(textToDisplay);
         }
 
-        private string parseResults(Emotion emotion)
+        private string ParseResults(DetectedFace face)
         {
-            float topScore = 0.0f;
+            double topScore = 0.0d;
             string topEmotion = "";
             string retString = "";
-            //anger
-            topScore = emotion.Scores.Anger;
+            var emotion = face.FaceAttributes.Emotion;
+
+            // anger
+            topScore = face.FaceAttributes.Emotion.Anger;
             topEmotion = "Anger";
+
             // contempt
-            if (topScore < emotion.Scores.Contempt)
+            if (topScore < emotion.Contempt)
             {
-                topScore = emotion.Scores.Contempt;
+                topScore = emotion.Contempt;
                 topEmotion = "Contempt";
             }
+
             // disgust
-            if (topScore < emotion.Scores.Disgust)
+            if (topScore < emotion.Disgust)
             {
-                topScore = emotion.Scores.Disgust;
+                topScore = emotion.Disgust;
                 topEmotion = "Disgust";
             }
+
             // fear
-            if (topScore < emotion.Scores.Fear)
+            if (topScore < emotion.Fear)
             {
-                topScore = emotion.Scores.Fear;
+                topScore = emotion.Fear;
                 topEmotion = "Fear";
             }
+
             // happiness
-            if (topScore < emotion.Scores.Happiness)
+            if (topScore < emotion.Happiness)
             {
-                topScore = emotion.Scores.Happiness;
+                topScore = emotion.Happiness;
                 topEmotion = "Happiness";
             }
-            // surprise
-            if (topScore < emotion.Scores.Surprise)
+
+            // neural
+            if (topScore < emotion.Neutral)
             {
-                topScore = emotion.Scores.Surprise;
+                topScore = emotion.Neutral;
+                topEmotion = "Neutral";
+            }
+
+            // happiness
+            if (topScore < emotion.Sadness)
+            {
+                topScore = emotion.Sadness;
+                topEmotion = "Sadness";
+            }
+
+            // surprise
+            if (topScore < emotion.Surprise)
+            {
+                topScore = emotion.Surprise;
                 topEmotion = "Surprise";
             }
 
-            retString = "is expressing " + topEmotion + " with " + topScore.ToString() + " certainty.";
+            retString = $"is expressing {topEmotion} with a certainty of {topScore}.";
             return retString;
         }
 
 
-        public async void DrawFaceRectangle(Emotion[] emotionResult, BitmapImage bitMapImage, String urlString)
+        public async void DrawFaceRectangle(DetectedFace[] faceResult, BitmapImage bitMapImage, String urlString)
         {
 
 
-            if (emotionResult != null && emotionResult.Length > 0)
+            if (faceResult != null && faceResult.Length > 0)
             {
                 Windows.Storage.Streams.IRandomAccessStream stream = await Windows.Storage.Streams.RandomAccessStreamReference.CreateFromUri(new Uri(urlString)).OpenReadAsync();
 
@@ -217,10 +262,10 @@ namespace CognitiveServicesExample
                 double resizeFactorW = ImageCanvas.Width / decoder.PixelWidth;
 
 
-                foreach (var emotion in emotionResult)
+                foreach (var face in faceResult)
                 {
 
-                    Microsoft.ProjectOxford.Common.Rectangle faceRect = emotion.FaceRectangle;
+                    FaceRectangle faceRect = face.FaceRectangle;
 
                     Image Img = new Image();
                     BitmapImage BitImg = new BitmapImage();

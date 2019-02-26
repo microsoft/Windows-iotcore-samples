@@ -731,9 +731,6 @@ App-Version: {2}</value>
   <data name="ExecAsDefaultAccount.Text" xml:space="preserve">
     <value>Befehle werden unter DefaultAccount ausgeführt.</value>
   </data>
-  <data name="ExpandMapToggle.Header" xml:space="preserve">
-    <value>Karte erweitern</value>
-  </data>
   <data name="ExploreCategoryText" xml:space="preserve">
     <value>Erkunden</value>
   </data>
@@ -877,9 +874,6 @@ App-Version: {2}</value>
   <data name="MakerImageNotice.Text" xml:space="preserve">
     <value>Dies ist ein Windows 10 IoT Core-Testimage, das nur für Prototypen entworfen wurde. Wenn Sie Ihr Gerät gewerblich anbieten möchten, müssen Sie ein benutzerdefiniertes FFU für optimale Sicherheit verwenden.</value>
     <comment>Maker Imager Security Notice</comment>
-  </data>
-  <data name="MapFlipToggle.Header" xml:space="preserve">
-    <value>Spiegeln der Karte zulassen, um Bildschirmeinbrennungen zu verhindern</value>
   </data>
   <data name="MapServiceToken.Content" xml:space="preserve">
     <value>Token für Bing-Kartendienst</value>
