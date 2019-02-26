@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.I2c;
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 using static EdgeModuleSamples.Common.AsyncHelper;
 
 namespace EdgeModuleSamples.Devices
