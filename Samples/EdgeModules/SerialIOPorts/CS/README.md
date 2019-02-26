@@ -42,10 +42,45 @@ Refer to [Quickstart: Create a private container registry using the Azure portal
 
 When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
 
-Be sure to log into the container respository from your device.
+Be sure to log into the container respository from your device. If you are using the azure command line tools, you can use "az acr login" as described in the article above. Alternately, you can do it directly with the docker command line:
 
 ```
 PS  D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
+```
+
+## Discover your device
+
+At this point, you'll want to figure out which COM port your FTDI device is connected to on your PC. The best way to do this is to run the sample with "--list" switch once without the cable connected, and again with it connected:
+
+### Before 
+
+```
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> dotnet run
+
+SerialIOPorts 1.0.0.0
+Available devices:
+COM1
+```
+
+### After
+
+```
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> dotnet run
+
+SerialIOPorts 1.0.0.0
+Available devices:
+COM1
+COM3
+```
+
+So we can see that our device is connected to COM3.
+
+### Update the Dockerfile
+
+In this sample, the particular COM port in use is specified in the Dockerfile. You'll need to change that before the container is built. Look for this line in the Dockerfile, and change it to the correct COM port:
+
+```
+CMD [ "SerialIOPorts.exe", "-rte", "-dCOM3" ]
 ```
 
 ## Containerize the sample app
