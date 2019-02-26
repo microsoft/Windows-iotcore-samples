@@ -5,15 +5,6 @@
 
   <Import Project="..\..\Common.CS.Props" />
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <TreatSpecificWarningsAsErrors />
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\Common\CS\Common\Log.cs" Link="Log.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.19.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
