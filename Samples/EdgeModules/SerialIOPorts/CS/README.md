@@ -1,6 +1,8 @@
 # USB Serial Access in an Azure IoT Edge module on Windows
 
-This document will walk you through creating a module for Azure IoT Edge on Windows 10 IoT Enterprise which accesses a USB Serial device.
+This sample will walk you through creating a module for Azure IoT Edge on Windows 10 IoT Enterprise which accesses a USB Serial device.
+
+In this case, we will extend the idea from the [simulated temperature sample](https://docs.microsoft.com/en-us/azure/iot-edge/quickstart). The sample will create simulated temperature data, transmit it via serial, then receive it via serial loopback and send the results up to Azure IoT Hub. 
 
 ## API Surface
 
@@ -209,7 +211,7 @@ For reference, please see [Deploy Azure IoT Edge modules from Visual Studio Code
 
 ## Verify
 
-Using the Azure IoT Edge extension for Visual Studio Code, you can select your device and choose "Start Monitoring D2C Message". You should see this:
+Using the Azure IoT Edge extension for Visual Studio Code, you can select your device and choose "Start Monitoring D2C Message". You should see the following.
 
 ```
 [IoTHubMonitor] [4:04:43 PM] Message received from [{ACR_NAME}/serialioports]:
