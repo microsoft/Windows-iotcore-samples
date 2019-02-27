@@ -89,7 +89,7 @@ namespace EdgeModuleSamples.Common.Logging
         {
             if (Enabled)
             {
-                if (null == args)
+                if (args.Length == 0)
                 {
                     Console.WriteLine(fmt);
                 }
@@ -101,7 +101,7 @@ namespace EdgeModuleSamples.Common.Logging
         }
         private static void WriteInternal(string fmt, params object[] args)
         {
-            if (null == args)
+            if (args.Length == 0)
             {
                 Console.Write(fmt);
             }
