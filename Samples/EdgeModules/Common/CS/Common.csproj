@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\..\Common.CS.Props" />
+  <Import Project="..\..\Common.CS.Props" />
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.19.0" />
     <PackageReference Include="Mono.Options.Core" Version="1.0.0" />
