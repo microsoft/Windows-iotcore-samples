@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\Common\CS\Log.cs" Link="Log.cs" />
+    <Compile Include="..\..\Common\CS\AppOptions.cs" Link="CommonAppOptions.cs" />
   </ItemGroup>
 
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
