@@ -14,7 +14,7 @@
     <PackageReference Include="YamlDotNet" Version="5.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\CS\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Common\CS\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Windows.Devices.DevicesLowLevelContract">

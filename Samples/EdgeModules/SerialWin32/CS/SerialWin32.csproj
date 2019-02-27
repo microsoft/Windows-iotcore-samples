@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\CS\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Common\CS\Common.csproj" />
   </ItemGroup>
 
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">

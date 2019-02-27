@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDotNetCoreWinML", "ConsoleDotNetCoreWinML\CS\ConsoleDotNetCoreWinML\ConsoleDotNetCoreWinML.csproj", "{15B6F191-D9E6-43D5-A3C0-0943A3A6FE1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinMLCustomVisionFruit", "WinMLCustomVisionFruit\CS\WinMLCustomVisionFruit.csproj", "{15B6F191-D9E6-43D5-A3C0-0943A3A6FE1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\CS\Common\Common.csproj", "{9A886E9C-763A-435D-965A-3ACF235645C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\CS\Common.csproj", "{9A886E9C-763A-435D-965A-3ACF235645C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDotNetCoreGPIO", "Gpio\CS\ConsoleDotNetCoreGPIO.csproj", "{8C8730DB-C952-4EB0-8744-D569631EA3DD}"
 EndProject
