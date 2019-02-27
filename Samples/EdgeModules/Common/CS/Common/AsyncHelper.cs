@@ -1,3 +1,6 @@
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
 using System.Threading.Tasks;
 using Windows.Foundation;
 using System.Threading;
