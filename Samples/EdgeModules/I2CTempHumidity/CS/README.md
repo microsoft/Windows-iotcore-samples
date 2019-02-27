@@ -1,4 +1,4 @@
-# I2C Access to sensor device in Azure IoT Edge on Windows
+# Azure IoT Edge on Windows: I2C Sensor Device Access
 
 This sample will demonstrate how to create a module for Azure IoT Edge on Windows 10 IoT Core which accesses a temperature and humidity sensor connected via the I2C bus.
 
@@ -134,7 +134,7 @@ Log into your container registry from your target device. If you are using the a
 PS C:\data\modules\i2ctemp> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
 ```
 
-Build the container on the device. For the remainder of this document, we will use the environment variable $Container
+Build the container on the target device. For the remainder of this document, we will use the environment variable $Container
 to refer to the address of our container.
 
 ```
@@ -183,7 +183,7 @@ PS C:\data\modules\i2ctemp> docker run --device "class/A11EE3C6-8421-4202-A3E7-B
 
 ## Push the container
 
-Now that we are sure the app is working correctly within the container, we will push it to our repository.
+Now, we push the container into the registry. Afterward, the container image is waiting for us to deploy.
 
 ```
 PS C:\data\modules\i2ctemp> docker push $Container
@@ -205,7 +205,7 @@ cdf9c040948d: Pushed
 
 In the repo, you will find a sample deployment.json file. 
 Fill in the details for your container image.
-Search for "{ACR_*}" and replace those values with the correct values for your container repository.
+Search for "{ACR_*}" and replace those values with the correct values for your container registry.
 The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/squeezenet:1.0.0-x64
 
 If you're writing your own deployment.json file, be sure to exactly follow the createOptions line from below.

@@ -1,4 +1,4 @@
-# SqueezeNet Object Detection Module
+# Azure IoT Edge on Windows: ML Evaluation Using SqueezeNet
 
 This is a sample module showing how to run Windows ML inferencing in an Azure IoT Edge module running on Windows. 
 Images are supplied by a connected camera, inferenced against the SqueezeNet model, and sent to IoT Hub.
@@ -173,7 +173,7 @@ Running the model...
 
 ## Push the container
 
-Now that we are sure the app is working correctly within the container, we will push it to our repository.
+Now, we push the container into the registry. Afterward, the container image is waiting for us to deploy.
 
 ```
 PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker push $Container
@@ -195,7 +195,7 @@ The push refers to repository [{ACR_NAME}.azurecr.io/squeezenet]
 
 In the repo, you will find separate deployment.{arch}.json files for each architecture.
 Choose the deployment file corresponding to your deployment atchitecture, then fill in the details for your container image.
-Search for "{ACR_*}" and replace those values with the correct values for your container repository.
+Search for "{ACR_*}" and replace those values with the correct values for your container registry.
 The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/squeezenet:1.0.0-x64
 
 ```

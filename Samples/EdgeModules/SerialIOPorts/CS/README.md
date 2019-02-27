@@ -1,4 +1,4 @@
-# USB Serial Access in an Azure IoT Edge module on Windows
+# Azure IoT Edge on Windows: USB Serial Access (Win32 API)
 
 This sample will walk you through creating a module for Azure IoT Edge on Windows 10 IoT Enterprise which accesses a USB Serial device.
 
@@ -190,7 +190,7 @@ StopBits: 0x0
 
 ## Push the container
 
-Now, we push the container into the repository which we built earlier. At this point, the container image is waiting for us to deploy.
+Now, we push the container into the registry. Afterward, the container image is waiting for us to deploy.
 
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker push $Container
@@ -212,7 +212,7 @@ bf4863b963b0: Pushed
 ## Edit the deployment.json file
 
 In the repo, you will find a sample deployment.x64.json files.
-Search for "ACR_" and replace those values with the correct values for your container repository.
+Search for "ACR_" and replace those values with the correct values for your container registry.
 The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serialioports:1.0.0-x64
 
 ```

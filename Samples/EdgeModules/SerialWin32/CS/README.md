@@ -1,4 +1,4 @@
-# SerialWin32 Azure IoT Edge module
+# Azure IoT Edge on Windows: USB Serial Access (Serial.IO.Ports)
 
 This sample demonstrates how to author a module for Azure IoT Edge to communicate with serial devices on Windows IoT devices.
 
@@ -10,11 +10,6 @@ This sample uses Win32 platform APIs to access the serial devices.
 Unfortunately, the standard .NET APIs for serial devices (System.IO.Ports) only work with serial devices which come named "COM{x}".
 On Windows IoT Core, serial devices are not so-named.
 Using the win32 platform APIs ensures maximum compatibility with all Windows IoT host platforms, and maximum speed.
-
-Furthermore, the current release (17763.55) of Windows IoT SKUs do not contain the components needed to run the System.IO.Ports namespace in containers.
-We are currently working to update Windows to fix this problem. 
-Once this update is released, for devices which follow the COMx naming pattern, you can use System.IO.Ports in your own solutions.
-In the meantime, this is the only available API surface for accessing serial ports from within Windows containers.
 
 ## Prerequisites
 
@@ -180,7 +175,7 @@ WriteTotalTimeoutConstant: 0x0
 
 ## Push the container
 
-Now, we push the container into the repository which we built earlier. At this point, the container image is waiting for us to deploy.
+Now, we push the container into the registry. Afterward, the container image is waiting for us to deploy.
 
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker push $Container
@@ -203,7 +198,7 @@ bf4863b963b0: Pushed
 
 In the repo, you will find separate deployment.{arch}.json files for each architecture.
 Choose the deployment file corresponding to your deployment atchitecture, then fill in the details for your container image.
-Search for "{ACR_*}" and replace those values with the correct values for your container repository.
+Search for "{ACR_*}" and replace those values with the correct values for your container registry.
 The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serial-module:1.0.0-x64
 
 ```
