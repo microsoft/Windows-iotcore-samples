@@ -18,7 +18,7 @@ Additionally, several of them are designed to work together to demonstrate coord
 
 | Readme | C# Project |
 |--------| ---------- |
-|[Window Machine Learning (WinML) with Azure Custom Vision Service Fruit Object Classifier Model](./ConsoleDotNetCoreWinML/Readme.md)| [FruitWinML](./ConsoleDotnetCoreWinML/CS/ConsoleDotnetCoreWinml/ConsoleDotNetCoreWinML.csproj)|
+|[Window Machine Learning (WinML) with Azure Custom Vision Service Fruit Object Classifier Model](./WinMLCustomVisionFruit/Readme.md)| [FruitWinML](./WinMLCustomVisionFruit/CS/WinMLCustomVisionFruit.csproj)|
 |[Serial I/O using PInvoke to Config Manager and Classic Win32 Serial APIs)](./SerialWin32/Readme.md)| [SerialWin32](./SerialWin32/CS/SerialWin32.csproj)|
 |[Windows Machine Learning using SqueezeNet Object Detection Model](./ConsoleDotNetCoreWinML/Readme.md) from the [ONNX Model Zoo](https://github.com/onnx/models/tree/master/squeezenet)| [SqueezeNetObjectDetection](./squeezenetobjectdetection/cs/squeezenetobjectdetection.csproj)|
 |[GPIO using standard WinRT Simple Peripheral Bus APIs](./gpio/Readme.md)| [GPIO](./Gpio/CS/ConsoleDotNetCoreGPIO/ConsoleDotNetCoreGPIO.csproj)|
