@@ -1,3 +1,6 @@
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
 using System.Threading.Tasks;
 using Windows.Foundation;
 using System.Threading;
@@ -8,6 +11,8 @@ namespace EdgeModuleSamples.Common
     {
         // Work around this problem:
         // https://github.com/Microsoft/dotnet/issues/590
+        // https://github.com/dotnet/corefx/issues/22789
+
         public static async Task<T> AsAsync<T>(IAsyncOperation<T> op)
         {
             T result = default;

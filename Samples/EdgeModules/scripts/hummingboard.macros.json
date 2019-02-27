@@ -1,0 +1,13 @@
+{
+    "Macros": [
+        {
+            "GpioPins": {
+                "blue": 68,
+                "red": 69,
+                "green": 72,
+                "yellow": 73,
+                "input": 67
+            }
+        }
+    ]
+}

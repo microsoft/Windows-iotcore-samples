@@ -4,7 +4,7 @@ namespace SampleModule
 {
     using System;
     using Newtonsoft.Json;
-    using EdgeModuleSamples.Common;
+    using EdgeModuleSamples.Common.Logging;
 
     /// <summary>
     ///Body:

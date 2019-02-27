@@ -1,8 +1,11 @@
 ﻿//
+//
 // Copyright (c) Microsoft. All rights reserved.
 //
 
 using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
+using EdgeModuleSamples.Common.Messages;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -15,56 +18,10 @@ using Windows.Media;
 using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
 using Windows.Storage;
+using System.Collections.Generic;
 
 namespace ConsoleDotNetCoreWinML
 {
-    class AsyncHelper {
-        // Work around this problem:
-        // https://github.com/Microsoft/dotnet/issues/590
-        // https://github.com/dotnet/corefx/issues/22789
-        public static async Task<T> SyncFromAsync<T>(IAsyncOperation<T> op, string dbgtag)
-        {
-
-            T result = default(T);
-            using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
-            {
-                op.Completed += (o, s) =>
-                {
-                    AsyncMeSemaphore.Release();
-                };
-                // in case the op completes before the handler got connected we must check
-                // status and complete things before waiting
-                if (op.Status == AsyncStatus.Completed)
-                {
-                    AsyncMeSemaphore.Release();
-                }
-                await AsyncMeSemaphore.WaitAsync();
-                result = op.GetResults();
-            }
-
-            return result;
-        }
-        public static async Task SyncFromAsync(IAsyncAction op, string dbgtag)
-        {
-            using (var AsyncMeSemaphore = new SemaphoreSlim(0, 1))
-            {
-                op.Completed += (o, s) =>
-                {
-                    AsyncMeSemaphore.Release();
-                };
-                // in case the op completes before the handler got connected we must check
-                // status and complete things before waiting
-                if (op.Status == AsyncStatus.Completed)
-                {
-                    AsyncMeSemaphore.Release();
-                }
-                await AsyncMeSemaphore.WaitAsync();
-            }
-
-            return;
-        }
-    }
-
     class Program
     {
 
@@ -72,7 +29,7 @@ namespace ConsoleDotNetCoreWinML
         {
             MediaFrameSourceInfo result_info = null;
             MediaFrameSourceGroup result_group = null;
-            var sourcegroups = await AsyncHelper.SyncFromAsync(MediaFrameSourceGroup.FindAllAsync(), "sourcegroups");
+            var sourcegroups = await AsyncHelper.AsAsync(MediaFrameSourceGroup.FindAllAsync());
             Log.WriteLine("found {0} Source Groups", sourcegroups.Count);
             foreach (var g in sourcegroups)
             {
@@ -93,7 +50,7 @@ namespace ConsoleDotNetCoreWinML
                         result_info = s; // for now just pick the first thing we find
                     }
                 }
-                Log.WriteLine("\r\n");
+                Log.EndLine();
                 if (result_group == null)
                 {
                     result_group = g; // for now just pick the first thing we find
@@ -116,8 +73,8 @@ namespace ConsoleDotNetCoreWinML
             init.MemoryPreference = MediaCaptureMemoryPreference.Cpu;
             init.StreamingCaptureMode = StreamingCaptureMode.Video;
             Log.WriteLine("Enumerating Frame Sources");
-            await AsyncHelper.SyncFromAsync(capture.InitializeAsync(init), "capture init");
-            Log.WriteLine("capture initialized");
+            await AsyncHelper.AsAsync(capture.InitializeAsync(init));
+            Log.WriteLine("capture initialized.  capture is {0}", capture == null ? "null" : "not null");
             var sources = capture.FrameSources;
             Log.WriteLine("have frame sources");
             MediaFrameSource source;
@@ -138,7 +95,7 @@ namespace ConsoleDotNetCoreWinML
             foreach (var f in formats)
             {
                 Log.Write(string.Format("major {0} sub {1} ", f.MajorType, f.Subtype));
-                if (f.MajorType == "Video")
+                if (f.MajorType == "Video" && f.Subtype == "MJPG")
                 {
                     Log.Write(string.Format("w {0} h {1} ", f.VideoFormat.Width, f.VideoFormat.Height));
                     if (format == null)
@@ -157,16 +114,16 @@ namespace ConsoleDotNetCoreWinML
                         }
                     }
                 }
-                Log.WriteLine("");
+                Log.Write("\n");
             }
             if (format == null)
             {
                 throw new ApplicationException("Can't find a Video Format");
             }
             Log.WriteLine(string.Format("selected videoformat -- major {0} sub {1} w {2} h {3}", format.MajorType, format.Subtype, format.VideoFormat.Width, format.VideoFormat.Height));
-            await AsyncHelper.SyncFromAsync(source.SetFormatAsync(format), "set format");
+            await AsyncHelper.AsAsync(source.SetFormatAsync(format));
             Log.WriteLine("set format complete");
-            var reader = await AsyncHelper.SyncFromAsync(capture.CreateFrameReaderAsync(source), "reader");
+            var reader = await AsyncHelper.AsAsync(capture.CreateFrameReaderAsync(source));
             Log.WriteLine("frame reader retrieved\r\n");
             reader.AcquisitionMode = MediaFrameReaderAcquisitionMode.Realtime;
             var evtframe = new EventWaitHandle(false, EventResetMode.ManualReset);
@@ -181,42 +138,48 @@ namespace ConsoleDotNetCoreWinML
             DateTime fpsT0 = oldFpsT0;
             string prevLabel = oldLabel;
             string correlationId = String.Format("{0}", totalFrame);
-            var r = await model.EvaluateAsync(frame, correlationId);
-            if (!r._result.Succeeded)
+            try
             {
-                Log.WriteLineUp3Home("eval failed {0}", r._result.ErrorStatus);
-            }
-            else
+                var r = await model.EvaluateAsync(frame, correlationId);
+                if (!r._result.Succeeded)
+                {
+                    Log.WriteLineUp3Home("eval failed {0}", r._result.ErrorStatus);
+                }
+                else
+                {
+                    Log.WriteLineUp3Home("eval succeeded");
+                }
+
+                var fps_interval = DateTime.Now - fpsT0;
+                if (fps_interval.Seconds > 10)
+                {
+                    fps = currentFrame * 1.0 / fps_interval.Seconds;
+                    currentFrame = 0;
+                    fpsT0 = DateTime.Now;
+                }
+                Log.WriteLineHome("fps {0}", fps.ToString("0.00"));
+
+
+                string label = r._output.classLabel;
+                var most = r.MostProbable;
+                if (label != most.Key)
+                {
+                    throw new ApplicationException(string.Format("Output Feature Inconsistency model output label 0 '{0}' and label 1 '{1}'", label, most.Key));
+                }
+                Log.WriteLineSuccess("{0} with probability {1}", most.Key, most.Value.ToString("0.0000"));
+                // we would like to apply a confidence threshold but with these models garbage always ends up high confidence something 
+                if (prevLabel == null || prevLabel != label)
+                {
+                    prevLabel = label;
+                    azure.UpdateObject(new KeyValuePair<string, object>(Keys.FruitSeen, label));
+
+                }
+
+                model.Clear(correlationId);
+            } catch (Exception e)
             {
-                Log.WriteLineUp3Home("eval succeeded");
+                throw new ApplicationException("Frame Processing Failed", e);
             }
-
-            var fps_interval = DateTime.Now - fpsT0;
-            if (fps_interval.Seconds > 10)
-            {
-                fps = currentFrame * 1.0 / fps_interval.Seconds;
-                currentFrame = 0;
-                fpsT0 = DateTime.Now;
-            }
-            Log.WriteLineHome("fps {0}", fps.ToString("0.00"));
-
-
-            string label = r._output.classLabel;
-            var most = r.MostProbable;
-            if (label != most.Key)
-            {
-                throw new ApplicationException(string.Format("Output Feature Inconsistency model output label 0 '{0}' and label 1 '{1}'", label, most.Key));
-            }
-            Log.WriteLineSuccess("{0} with probability {1}", most.Key, most.Value.ToString("0.0000"));
-            // we would like to apply a confidence threshold but with these models garbage always ends up high confidence something 
-            if (prevLabel == null || prevLabel != label)
-            {
-                prevLabel = label;
-                azure.UpdateObject(label);
-
-            }
-
-            model.Clear(correlationId);
             return new Tuple<UInt64, double, DateTime, string>(currentFrame, fps, fpsT0, prevLabel);
         }
         static async Task CameraProcessingAsync(Model model, MediaFrameReader reader, EventWaitHandle evtframe, AzureConnection azure)
@@ -224,30 +187,36 @@ namespace ConsoleDotNetCoreWinML
             var fps_t0 = DateTime.Now;
             string prev_label = null;
 
-            double fps = 0.0;
-            for (UInt64 total_frame = 0, current_frame = 0; ; ++total_frame)
+            try
             {
-                if (Model.Full)
+                double fps = 0.0;
+                for (UInt64 total_frame = 0, current_frame = 0; ; ++total_frame)
                 {
-                    evtframe.WaitOne();
-                    evtframe.Reset();
+                    if (Model.Full)
+                    {
+                        evtframe.WaitOne();
+                        evtframe.Reset();
+                    }
+                    //auto input_feature{ImageFeatureValue::CreateFromVideoFrame(vf.get())};
+                    var frame = reader.TryAcquireLatestFrame();
+                    if (frame == null)
+                    {
+                        // assume 60 fps, wait about half a frame for more input.  
+                        // in the unlikely event that eval is faster than capture this should be done differently
+                        Thread.Sleep(10);
+                        continue;
+                    }
+                    ++current_frame;
+                    //int oldFrame, double oldFps, DateTime oldFpsT0, string oldLabel)
+                    (current_frame, fps, fps_t0, prev_label) = await FrameProcessingAsync(model, frame, total_frame, current_frame, fps, fps_t0, prev_label, azure);
                 }
-                //auto input_feature{ImageFeatureValue::CreateFromVideoFrame(vf.get())};
-                var frame = reader.TryAcquireLatestFrame();
-                if (frame == null)
-                {
-                    // assume 60 fps, wait about half a frame for more input.  
-                    // in the unlikely event that eval is faster than capture this should be done differently
-                    Thread.Sleep(10);
-                    continue;
-                }
-                ++current_frame;
-                //int oldFrame, double oldFps, DateTime oldFpsT0, string oldLabel)
-                (current_frame, fps, fps_t0, prev_label) = await FrameProcessingAsync(model, frame, total_frame, current_frame, fps, fps_t0, prev_label, azure);
+            } catch (Exception e)
+            {
+                throw new ApplicationException("Camera Processing Failed", e);
             }
         }
 
-        static async Task<int> MainAsync(string[] args)
+        static async Task<int> MainAsync(AppOptions options)
         {
             //Log.WriteLine("pause...");
             //var x = Console.ReadLine();
@@ -260,14 +229,21 @@ namespace ConsoleDotNetCoreWinML
             await Task.WhenAll(
                 Task.Run(async () =>
                     model = await Model.CreateModelAsync(
-                        Directory.GetCurrentDirectory() + "\\resources\\office_fruit_coreml.onnx")),
+                        Directory.GetCurrentDirectory() + "\\resources\\office_fruit_coreml.onnx", options.Gpu)),
                 Task.Run(async () =>
                     connection = await AzureConnection.CreateAzureConnectionAsync()),
                 Task.Run(async () => {
                     (reader, evtFrame) = await GetFrameReaderAsync();
-                    await AsyncHelper.SyncFromAsync(reader.StartAsync(), "reader start");
+                    await AsyncHelper.AsAsync(reader.StartAsync());
                     })
                 );
+            AzureModule m = (AzureModule)connection.Module;
+            m.ModuleLoaded += async (Object sender, string moduleName) =>
+            {
+
+                Log.WriteLine("module loaded.   resending state");
+                await connection.NotifyNewModuleAsync();
+            };
 
             Log.WriteLine("Model loaded, Azure Connection created, and FrameReader Started\n\n\n\n");
 
@@ -275,32 +251,21 @@ namespace ConsoleDotNetCoreWinML
 
             return 0;
         }
-        static void Usage()
-        {
-            Log.Enabled = true;
-            Log.WriteLineError("{0} {-l}", "ConsoleDotNetCoreWinML");
-            Log.WriteLineError("\t-l print log info to console");
-            Environment.Exit(1);
-        }
-        static void ProcessArguments(string[] args)
-        {
-            for (int i = 0; i < args.Length; ++i)
-            {
-                if (args[i].ToLowerInvariant() == "-l")
-                {
-                    Log.Enabled = true;
-                }
-            }
-        }
         static int Main(string[] args)
         {
             Log.WriteLine("Starting...");
             int rc = 0;
             try
             {
-                ProcessArguments(args);
+                var options = new AppOptions();
+
+                options.Parse(args);
+                Log.Enabled = !options.Quiet;
+                Log.Verbose = options.Verbose;
+                Log.WriteLine("arg parse complete...");
+
                 Task.WaitAll(Task.Run(async () =>
-                    rc = await MainAsync(args)));
+                    rc = await MainAsync(options)));
             } catch(Exception e)
             {                
                 Log.WriteLineError("app failed {0}", e.ToString());

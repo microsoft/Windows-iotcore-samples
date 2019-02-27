@@ -3,6 +3,7 @@
 //
 
 using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -140,20 +141,27 @@ namespace ConsoleDotNetCoreWinML
         private LearningModelDevice _device { get; set; }
 
         static private Dictionary<string, ModelResult> _results = new Dictionary<string, ModelResult>();
-        public static async Task<Model> CreateModelAsync(string filename)
+        public static async Task<Model> CreateModelAsync(string filename, bool gpu)
         {
             Log.WriteLine("creating model");
-            var file = await AsyncHelper.SyncFromAsync(StorageFile.GetFileFromPathAsync(filename), "file");
+            var file = await AsyncHelper.AsAsync(StorageFile.GetFileFromPathAsync(filename));
             Log.WriteLine("have file");
-            var learningModel = await AsyncHelper.SyncFromAsync(LearningModel.LoadFromStorageFileAsync(file), "learningModel");
+            var learningModel = await AsyncHelper.AsAsync(LearningModel.LoadFromStorageFileAsync(file));
             Log.WriteLine("loaded model");
             Model model = new Model();
             model._model = learningModel;
-            //LearningModelDeviceKind kind = LearningModelDeviceKind.DirectXHighPerformance;
             LearningModelDeviceKind kind = LearningModelDeviceKind.Cpu;
+            if (gpu)
+            {
+                Log.WriteLine("using GPU");
+                kind = LearningModelDeviceKind.DirectXHighPerformance;
+            } else
+            {
+                Log.WriteLine("using CPU");
+            }
             model._device = new LearningModelDevice(kind);
             model._session = new LearningModelSession(model._model, model._device);
-            Log.WriteLine("returning model");
+            Log.WriteLine("returning model now");
             return model;
         }
         public void Clear(string correlationId)
@@ -201,7 +209,7 @@ namespace ConsoleDotNetCoreWinML
             r._binding.Bind("classLabel", r._output.classLabelTensor);
             r._binding.Bind("loss", r._output.loss);
 
-            r._result = await AsyncHelper.SyncFromAsync(_session.EvaluateAsync(r._binding, correlationId), "r._result");
+            r._result = await AsyncHelper.AsAsync(_session.EvaluateAsync(r._binding, correlationId));
             return r;
         }
     }

@@ -1,3 +1,6 @@
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
 namespace SampleModule
 {
     using System;
@@ -13,7 +16,7 @@ namespace SampleModule
     using Microsoft.Azure.Devices.Client;
     using Newtonsoft.Json;
 
-    using EdgeModuleSamples.Common;
+    using EdgeModuleSamples.Common.Logging;
 
     class Program
     {
@@ -196,7 +199,7 @@ namespace SampleModule
                             {
                                 string dataBuffer = JsonConvert.SerializeObject(tempData); 
                                 var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
-                                Log.WriteLineRaw($"SendEvent: [{dataBuffer}]");
+                                Log.WriteLine($"SendEvent: [{dataBuffer}]");
                                 await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
                             }
                         }

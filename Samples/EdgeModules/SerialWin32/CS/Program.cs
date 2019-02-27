@@ -1,3 +1,6 @@
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
 namespace SampleModule
 {
     using System;
@@ -12,7 +15,7 @@ namespace SampleModule
     using Microsoft.Azure.Devices.Client;
     using Newtonsoft.Json;
 
-    using EdgeModuleSamples.Common;
+    using EdgeModuleSamples.Common.Logging;
 
     class Program
     {
@@ -31,6 +34,8 @@ namespace SampleModule
                 Options = new AppOptions();
 
                 Options.Parse(args);
+                Log.Enabled = !Options.Quiet;
+                Log.Verbose = Options.Verbose;
 
                 //
                 // Enumerate devices

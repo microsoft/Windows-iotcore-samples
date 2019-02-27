@@ -1,0 +1,18 @@
+{
+    "Macros": [
+        {
+            "Creds": {
+                "Preview": {
+                    "username": "<username for preview registry>",
+                    "password": "<password for preview registry>",
+                    "address": "${PreviewAddress}"
+                },
+                "Private": {
+                    "username": "<username for private registry>",
+                    "password": "<password for private registry>",
+                    "address": "${PrivateAddress}"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,90 @@
+{
+    "modulesContent": {
+        "$edgeAgent": {
+            "properties.desired": {
+                "schemaVersion": "1.0",
+                "runtime": {
+                    "type": "docker",
+                    "settings": {
+                        "minDockerVersion": "v1.25",
+                        "loggingOptions": "",
+                        "registryCredentials": "${Creds}"
+                    }
+                },
+                "systemModules": {
+                    "edgeAgent": {
+                        "type": "docker",
+                        "settings": {
+                            "image": "${AgentImage}",
+                            "createOptions": ""
+                        }
+                    },
+                    "edgeHub": {
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${HubImage}",
+                            "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5671/tcp\":[{\"HostPort\":\"5671\"}], \"8883/tcp\":[{\"HostPort\":\"8883\"}],\"443/tcp\":[{\"HostPort\":\"443\"}]}}}"
+                        }
+                    }
+                },
+                "modules": {
+                    "WinML": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${WinMLImage}",
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/E5323777-F976-4f5b-9B55-B94699C46E44\"},{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/5B45201D-F2F2-4F3B-85BB-30FF1F953599\"}]}}"
+                        }
+                    },
+                    "GPIO": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${GPIOImage}",
+                            "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/916EF1CB-8426-468D-A6F7-9AE8076881B3\"}]}}"
+                        }
+                    },
+                    "I2C": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${I2CImage}",
+                            "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/A11EE3C6-8421-4202-A3E7-B91FF90188E4\"}]}}"
+                        }
+                    }
+                }
+            }
+        },
+        "$edgeHub": {
+            "properties.desired": {
+                "schemaVersion": "1.0",
+                "routes": {
+                    "I2CLocal": "FROM /messages/modules/I2C/outputs/outputorientation INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputorientation0\")",
+                    "SPILocal": "FROM /messages/modules/SPI/outputs/outputorientation INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputorientation1\")",
+                    "WinMLLocal": "FROM /messages/modules/WinML/outputs/outputfruit INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputfruit\")",
+                    "ModuleLocal0": "FROM /messages/modules/GPIO/outputs/outputModuleLocal0 INTO BrokeredEndpoint(\"/modules/I2C/inputs/inputModule\")",
+                    "ModuleLocal1": "FROM /messages/modules/GPIO/outputs/outputModuleLocal1 INTO BrokeredEndpoint(\"/modules/WinML/inputs/inputModule\")",
+                    "default": "FROM /* INTO $upstream"
+                },
+                "storeAndForwardConfiguration": {
+                    "timeToLiveSecs": 7200
+                }
+            }
+        },
+        "GPIO": {
+            "properties.desired": {
+                "Configuration": {
+                    "GpioPins" : "${GpioPins}"
+                }
+            }
+        }
+    }
+}
