@@ -1,7 +1,6 @@
 # Azure IoT Edge on Windows: ML Evaluation Using SqueezeNet
 
-This is a sample module showing how to run Windows ML inferencing in an Azure IoT Edge module running on Windows. 
-Images are supplied by a connected camera, inferenced against the SqueezeNet model, and sent to IoT Hub.
+This sample demonstrates how to create a module for Azure IoT Edge on Windows 10 IoT devices using Windows ML to evaluate a machine learning model against umages supplied by a connected camera.
 
 It is derived from the 
 [NetCore SqueezeNetObjectDetection](https://github.com/Microsoft/Windows-Machine-Learning/tree/master/Samples/SqueezeNetObjectDetection/NETCore/cs) sample published in the [Windows ML Repo](https://github.com/Microsoft/Windows-Machine-Learning).

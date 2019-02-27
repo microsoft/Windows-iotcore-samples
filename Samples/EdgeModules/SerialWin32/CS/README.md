@@ -1,6 +1,6 @@
 # Azure IoT Edge on Windows: USB Serial Access (Serial.IO.Ports)
 
-This sample demonstrates how to author a module for Azure IoT Edge to communicate with serial devices on Windows IoT devices.
+This sample demonstrates how to create a module for Azure IoT Edge on Windows 10 IoT devices to communicate with peripherals connected via the serial bus.
 
 In this case, we will extend the idea from the [simulated temperature sample](https://docs.microsoft.com/en-us/azure/iot-edge/quickstart). The sample will create simulated temperature data, transmit it via serial, then receive it via serial loopback and send the results up to Azure IoT Hub. 
 

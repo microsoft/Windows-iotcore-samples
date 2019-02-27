@@ -1,6 +1,6 @@
 # Azure IoT Edge on Windows: I2C Sensor Device Access
 
-This sample will demonstrate how to create a module for Azure IoT Edge on Windows 10 IoT Core which accesses a temperature and humidity sensor connected via the I2C bus.
+This sample demonstrates how to create a module for Azure IoT Edge on Windows 10 IoT Core to communicate with a temperature and humidity sensor connected via the I2C bus.
 
 ## Note about container base image
 
