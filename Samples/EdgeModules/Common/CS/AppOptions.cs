@@ -21,7 +21,7 @@ namespace EdgeModuleSamples.Common.Options
         {
             Add( "?|h|help", "show this message and exit", v => Help = v != null );
             Add("q|quiet", "suppress progress and errors to console", v => Quiet = v != null);
-            Add<int>("t=|test=", "seconds to test the I2C hardware independently of Azure", v => Test = TimeSpan.FromSeconds(v));
+            Add<int>("t=|test=", "test for {SECONDS} without connecting to Azure", v => Test = TimeSpan.FromSeconds(v));
             Add("v|verbose", "maximum detail in console logging", v => Verbose = v != null);
         }
 
@@ -50,7 +50,7 @@ namespace EdgeModuleSamples.Common.Options
 
         public SpbAppOptions()
         {
-            Add<string>("d=|dev=|devicename=", "Friendly name of device", v => DeviceName = v);
+            Add<string>("d=|dev=|devicename=", "Friendly {NAME} of device", v => DeviceName = v);
         }
 
     }
