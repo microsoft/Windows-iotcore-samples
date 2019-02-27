@@ -1,4 +1,7 @@
-﻿using Mono.Options;
+﻿//
+// Copyright (c) Microsoft. All rights reserved.
+//
+using Mono.Options;
 using System;
 using System.Collections.Generic;
 
