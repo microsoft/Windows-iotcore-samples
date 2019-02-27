@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ShellLauncherConfiguration xmlns="http://schemas.microsoft.com/ShellLauncher/2018/Configuration"
+xmlns:v2="http://schemas.microsoft.com/ShellLauncher/2019/Configuration">
+    <Profiles>
+        <DefaultProfile>
+            <Shell Shell="%systemroot%\explorer.exe">
+                <DefaultAction Action="RestartShell"/>
+            </Shell>
+        </DefaultProfile>
+        <Profile Id="{814B6409-8C51-4EE2-95F8-DB39B70F5F68}">
+            <Shell Shell="C:\windows\system32\mspaint.exe" v2:AllAppsFullScreen="true">
+                <DefaultAction Action="RestartShell"/>
+            </Shell>
+        </Profile>
+    </Profiles>
+    <Configs>
+        <Config>
+            <!-- Sid can be user sid, local group sid, and AD group sid -->
+            <Account Sid="S-1-5-21-1280375592-1312616770-1055953906-1002"/>
+            <Profile Id="{814B6409-8C51-4EE2-95F8-DB39B70F5F68}"/>
+        </Config>
+    </Configs>
+</ShellLauncherConfiguration>
