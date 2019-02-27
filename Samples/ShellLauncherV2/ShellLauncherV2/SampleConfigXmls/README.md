@@ -17,6 +17,7 @@ See more information at [ShellLauncher node on Assigned Access CSP](https://docs
 * [ShellLauncherDefaultOnlyUwp.xml](./ShellLauncherDefaultOnlyUwp.xml), this sample shows how to configure only one default profile for everyone, with empty Configs. Everyone would log into the same UWP Shell app
 * [ShellLauncherSid.xml](./ShellLauncherSid.xml), this sample shows how to configure a SID for Shell Launcher. The SID can be either user sid, or local group sid, or AD group sid
 * [ShellLauncherConfiguration_Demo.syncml](./ShellLauncherConfiguration_Demo.syncml), this sample shows what the SyncML file would look like, when using ShellLauncherV2 and Assigned Access CSP. This is the payload when MDM server sends the configuration to client.
+* [ShellLauncherBridgeWmi.ps1](./ShellLauncherBridgeWmi.ps1), this sample powershell scripts demonstrate how to use Bridge Wmi to configure Shell Launcher.
 
 ## Xml Namespace
 
