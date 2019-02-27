@@ -72,7 +72,7 @@ The file path for the Windows.winmd file may be: ```C:\Program Files (x86)\Windo
 
 1. If you download the samples ZIP, be sure to unzip the entire archive, not just the folder with the sample you want to build.
 2. Open a PowerShell window.
-3. Change directory to the folder where you unzipped the samples, go to the **Samples** subfolder, then the subfolder for this sample (**I2CTempHumidity**).
+3. Change directory to the folder where you unzipped the samples, go to the **Samples/EdgeModules** subfolder, then the subfolder for this sample (**I2CTempHumidity/CS**).
 3. Build and publish the sample using dotnet command line:
 
 ```
@@ -113,7 +113,7 @@ PS C:\Windows-iotcore-samples\Samples\EdgeModules\I2CTempHumidity\cs> robocopy b
 Run the app on the target device to ensure the sensor is connected correctly.
 
 ```
-[192.168.1.120]: PS C:\data\modules\i2ctemp> .\I2CTempHumidity.exe
+PS C:\data\modules\i2ctemp> .\I2CTempHumidity.exe
 2/23/2019 10:16:05 PM: Model: Si7021
 2/23/2019 10:16:05 PM: Serial Number: 976CD8F615FFFFFF
 2/23/2019 10:16:05 PM: Firmware Rev: 2.0
@@ -124,29 +124,23 @@ Run the app on the target device to ensure the sensor is connected correctly.
 2/23/2019 10:16:11 PM: SendEvent: [{"ambient":{"temperature":14.240156249999998,"humidity":44.914764404296875},"timeCreated":"2019-02-23T22:16:11.5437647-08:00"}]
 ```
 
-## Create a personal container repository
-
-In order to deploy modules to your device, you will need access to a container respository. 
-Refer to [Quickstart: Create a private container registry using the Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
-
-When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
-
-Be sure to log into the container respository from your target device. If you are using the azure command line tools, you can use "az acr login" as described in the article above. Alternately, you can do it directly with the docker command line:
-
-```
-[192.168.1.120]: PS C:\data\modules\i2ctemp> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
-```
-
 ## Containerize the sample app
 
-Build the container on the device. For the remainder of this sample, we will use the environment variable $Container
-to refer to the address of our container.
+When following this document, replace any "{ACR_*}" values with the correct values for your [container registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
 
+Log into your container registry from your target device. If you are using the azure command line tools, you can use "az acr login" as described in the article linked above. Alternately, you can do it directly with the docker command line:
 
 ```
-[192.168.1.120]: PS C:\data\modules\i2ctemp> $Container = "{ACR_NAME}.azurecr.io/i2ctemp:1.0.0-x64"
+PS C:\data\modules\i2ctemp> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
+```
 
-[192.168.1.120]: PS C:\data\modules\i2ctemp> docker build . -t $Container
+Build the container on the device. For the remainder of this document, we will use the environment variable $Container
+to refer to the address of our container.
+
+```
+PS C:\data\modules\i2ctemp> $Container = "{ACR_NAME}.azurecr.io/i2ctemp:1.0.0-x64"
+
+PS C:\data\modules\i2ctemp> docker build . -t $Container
 Sending build context to Docker daemon   82.7MB
 
 Step 1/5 : FROM mcr.microsoft.com/windows/iotcore:1809
@@ -176,7 +170,7 @@ Adding the --device parameter to the docker tool with the class GUID shown below
 from the host through to the container.
 
 ```
-[192.168.1.120]: PS C:\data\modules\i2ctemp> docker run --device "class/A11EE3C6-8421-4202-A3E7-B91FF90188E4" --isolation process $Container I2CTempHumidity.exe
+PS C:\data\modules\i2ctemp> docker run --device "class/A11EE3C6-8421-4202-A3E7-B91FF90188E4" --isolation process $Container I2CTempHumidity.exe
 2/23/2019 10:32:17 PM: Model: Si7021
 2/23/2019 10:32:18 PM: Serial Number: 976CD8F615FFFFFF
 2/23/2019 10:32:18 PM: Firmware Rev: 2.0
@@ -192,7 +186,7 @@ from the host through to the container.
 Now that we are sure the app is working correctly within the container, we will push it to our repository.
 
 ```
-[192.168.1.120]: PS C:\data\modules\i2ctemp> docker push $Container
+PS C:\data\modules\i2ctemp> docker push $Container
 The push refers to repository [{ACR_NAME}.azurecr.io/i2ctemp]
 4a3b345f5109: Preparing
 cdf9c040948d: Preparing
@@ -255,10 +249,7 @@ For reference, please see [Deploy Azure IoT Edge modules from Visual Studio Code
 Using the Azure IoT Edge extension for Visual Studio Code, you can select your device and choose "Start Monitoring D2C Message". You should see lines like this:
 
 ```
-[IoTHubMonitor] Start monitoring D2C message for [jcoliz-17763-M] ...
-[IoTHubMonitor] Created partition receiver [0] for consumerGroup [$Default]
-[IoTHubMonitor] Created partition receiver [1] for consumerGroup [$Default]
-[IoTHubMonitor] [2:49:43 PM] Message received from [jcoliz-17763-M/i2ctemp]:
+[IoTHubMonitor] [2:49:43 PM] Message received from [device/i2ctemp]:
 {
   "ambient": {
     "temperature": 20.70739013671875,
@@ -281,7 +272,7 @@ From a command prompt on the device, you can also check the logs for the module 
 First, list the modules
 
 ```
-[192.168.1.120]: PS C:\data\modules\i2ctemp> iotedge list
+PS C:\data\modules\i2ctemp> iotedge list
 NAME             STATUS           DESCRIPTION      CONFIG
 edgeAgent        running          Up 2 minutes     mcr.microsoft.com/azureiotedge-agent:1.0.6
 i2ctemp          running          Up 2 minutes     {ACR_NAME}.azurecr.io/i2ctemp:1.0.0-x64
@@ -291,7 +282,7 @@ edgeHub          running          Up 17 hours      mcr.microsoft.com/azureiotedg
 Second, view the logs from the custom module
 
 ```
-[192.168.1.120]: PS C:\data\modules\i2ctemp> iotedge logs --tail 5 i2ctemp
+PS C:\data\modules\i2ctemp> iotedge logs --tail 5 i2ctemp
 2/24/2019 2:52:41 PM: SendEvent: [{"ambient":{"temperature":21.050593261718753,"humidity":36.171478271484375},"timeCreated":"2019-02-24T14:52:41.0148808-08:00"}]
 2/24/2019 2:52:42 PM: SendEvent: [{"ambient":{"temperature":21.039868164062504,"humidity":36.179107666015625},"timeCreated":"2019-02-24T14:52:42.1367603-08:00"}]
 2/24/2019 2:52:43 PM: SendEvent: [{"ambient":{"temperature":21.050593261718753,"humidity":36.186737060546875},"timeCreated":"2019-02-24T14:52:43.2330756-08:00"}]

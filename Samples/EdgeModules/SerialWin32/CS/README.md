@@ -2,9 +2,7 @@
 
 This sample demonstrates how to author a module for Azure IoT Edge to communicate with serial devices on Windows IoT devices.
 
-## Host OS
-
-These instructions will work on a PC running Windows 10 IoT Enterprise or Windows IoT Core build 17763. Only the x64 architecture is supported currently. Arm32 will come in the future.
+In this case, we will extend the idea from the [simulated temperature sample](https://docs.microsoft.com/en-us/azure/iot-edge/quickstart). The sample will create simulated temperature data, transmit it via serial, then receive it via serial loopback and send the results up to Azure IoT Hub. 
 
 ## API Surface
 
@@ -18,15 +16,26 @@ We are currently working to update Windows to fix this problem.
 Once this update is released, for devices which follow the COMx naming pattern, you can use System.IO.Ports in your own solutions.
 In the meantime, this is the only available API surface for accessing serial ports from within Windows containers.
 
-## Install Azure IoT Edge
+## Prerequisites
 
-These instructions work with the 1.0.6 release of [Azure IoT Edge for Windows](https://docs.microsoft.com/en-us/azure/iot-edge/).
+### Target Hardware
 
-## Peripheral Hardware
+* A PC running [Windows 10 - Build 17763](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso) to run the solution 
+* Or a [Minnowboard Turbot](https://minnowboard.org/minnowboard-turbot/) running [Windows 10 IoT Core - Build 17763](https://developer.microsoft.com/en-us/windows/iot). Currently, the sample runs only on x64 architecture. Future releases will include support for arm32 architecture.
+* A USB FTDI cable. I recommend the [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70). Connect the RX and TX lines with a single wire. Plug this into your device.
+* [Azure IoT Edge for Windows - 1.0.6 or higher](https://docs.microsoft.com/en-us/azure/iot-edge/) 
 
-For this sample, obtain an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70). Connect the RX and TX lines with a single wire. Plug this into your device.
+### Azure Subscription
 
-## Working with Docker
+* [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal). This is your Cloud gateway which is needed to manage your IoT Edge devices. All deployments to Edge devices are made through an IoT Hub. You can use the free sku for this sample.
+* [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). This is where you host your containers (e.g. IoT Edge modules). Deployment manifests refer to this container registry for the IoT Edge devices to download their images. You can use the free sku for this sample.
+
+### Development Machine
+
+* [Visual Studio Code with Azure IoT Edge extension](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-vscode). The IoT Edge development environment, including the extension that connects to your IoT Hub and lets you manage your IoT Devices and IoT Edge Devices right from VS Code.
+* [Windows 10 - Build 17763 or higher](https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso) to build the solution. This can be the same machine you're running the solution on, or a different one.
+
+### Working with Docker
 
 Azure IoT Edge installs a custom build of the moby (aka Docker) container engine. In order to use the docker command line as described in this sample, you'll have some additional setup to do.
 
@@ -59,9 +68,12 @@ Server:
 
 The server should be version 3.0.3 or higher, built Jan 24 2019 or later. The client should be built Feb 12 2019 or later.
 
-## Build and Publish the Sample App
+## Build the sample
 
-Clone or download the sample repo. The first step from there is to publish it from a PowerShell command line, from the SerialWin32/CS directory.
+1. If you download the samples ZIP, be sure to unzip the entire archive, not just the folder with the sample you want to build.
+2. Open a PowerShell window.
+3. Change directory to the folder where you unzipped the samples, go to the **Samples/EdgeModules** subfolder, then the subfolder for this sample (**SerialWin32/CS**).
+3. Build and publish the sample using dotnet command line:
 
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> dotnet publish -r win-x64
@@ -73,25 +85,18 @@ Copyright (C) Microsoft Corporation. All rights reserved.
   SerialWin32 -> D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS\bin\Debug\netcoreapp2.1\win-x64\publish\
 ```
 
-## Create a personal container repository
-
-In order to deploy modules to your device, you will need access to a container respository. 
-Refer to [Quickstart: Create a private container registry using the Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
-
-When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
-
-Be sure to log into the container respository from your device.
-
-```
-PS C:\data\modules\SerialWin32> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
-```
-
 ## Containerize the sample app
 
-Build the container on the device. For the remainder of this sample, we will use the environment variable $Container
-to refer to the address of our container.
+When following this document, replace any "{ACR_*}" values with the correct values for your [container registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
 
-The x64 containers can be build directly on the PC, even if you plan to run them on an x64 Windows 10 IoT Core device.
+Log into your container registry from the device where you will be building the containers. If you are using the azure command line tools, you can use "az acr login" as described in the article linked above. Alternately, you can do it directly with the docker command line:
+
+```
+PS C:\data\modules\i2ctemp> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
+```
+
+The x64 containers can be build directly on your development PC.
+For the remainder of this document, we will use the environment variable $Container to refer to the address of our container.
 
 ```
 PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> $Container = "{ACR_NAME}.azurecr.io/serialwin32:1.0.0-x64"
@@ -226,17 +231,17 @@ The ACR_IMAGE must exactly match what you pushed, e.g. jcoliz.azurecr.io/serial-
 
 ```
 
-## Deploy
+## Deploy edge modules to device
 
 Back on your PC, you can now deploy this deployment.json file to your device.
 For reference, please see [Deploy Azure IoT Edge modules from Visual Studio Code](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-vscode)
 
-## Verify
+## Verify device messages
 
 Using the Azure IoT Edge extension for Visual Studio Code, you can select your device and choose "Start Monitoring D2C Message". You should see this:
 
 ```
-[IoTHubMonitor] [4:04:43 PM] Message received from [jcoliz-preview/serialwin32]:
+[IoTHubMonitor] [4:04:43 PM] Message received from [device/serialwin32]:
 {
   "machine": {
     "temperature": 56.32,
@@ -248,7 +253,7 @@ Using the Azure IoT Edge extension for Visual Studio Code, you can select your d
   },
   "timeCreated": "2018-11-19T16:04:43.0331117-08:00"
 }
-[IoTHubMonitor] [4:04:44 PM] Message received from [jcoliz-preview/serialwin32]:
+[IoTHubMonitor] [4:04:44 PM] Message received from [device/serialwin32]:
 {
   "machine": {
     "temperature": 14.47,
@@ -264,21 +269,20 @@ Using the Azure IoT Edge extension for Visual Studio Code, you can select your d
 
 From a command prompt on the device, you can also check the logs for the module itself.
 
-First, find the module container:
+First, list the modules
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker ps
-
-CONTAINER ID        IMAGE                                                                           COMMAND                  CREATED              STATUS              PORTS                                                                  NAMES
-b4107d30a29d        {ACR_NAME}.azurecr.io/serialwin32:1.0.2-x64                                       "SerialWin32.exe -rt…"   About a minute ago   Up About a minute                                                                          serialwin32
-56170371f8f5        edgeshared.azurecr.io/microsoft/azureiotedge-hub:1809_insider-windows-x64     "dotnet Microsoft.Az…"   3 days ago           Up 6 minutes        0.0.0.0:443->443/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:8883->8883/tcp   edgeHub
-27c147e5c760        edgeshared.azurecr.io/microsoft/azureiotedge-agent:1809_insider-windows-x64   "dotnet Microsoft.Az…"   3 days ago           Up 7 minutes                                                                               edgeAgent
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> iotedge list
+NAME             STATUS           DESCRIPTION      CONFIG
+serialwin32      running          Up 5 minutes     {ACR_NAME}.azurecr.io/serialwin32:1.0.0-x64
+edgeHub          running          Up 33 minutes    mcr.microsoft.com/azureiotedge-hub:1.0.6
+edgeAgent        running          Up 33 minutes    mcr.microsoft.com/azureiotedge-agent:1.0.6
 ```
 
-Then, use the ID for the serialwin32 container to check the logs
+Then, check the logs
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> docker logs b4107d30a29d
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialWin32\CS> PS C:\data\modules\i2ctemp> iotedge logs --tail 5 serialwin32
 11/20/2018 8:22:41 AM Connecting to device \\?\FTDIBUS#VID_0403+PID_6001+A403A7H4A#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73}...
 11/20/2018 8:22:55 AM IoT Hub module client initialized.
 11/20/2018 8:22:55 AM Async Read 1 Started

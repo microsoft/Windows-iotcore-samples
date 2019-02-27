@@ -18,7 +18,7 @@ It is derived from the
 ### Azure Subscription
 
 * [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal). This is your Cloud gateway which is needed to manage your IoT Edge devices. All deployments to Edge devices are made through an IoT Hub. You can use the free sku for this sample.
-* [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). This is where you host your containers (e.g. IoT Edge modules). Deployment manifests refer to this container registry for the IoT Edge devices to download their images.You can use the free sku for this sample.
+* [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal). This is where you host your containers (e.g. IoT Edge modules). Deployment manifests refer to this container registry for the IoT Edge devices to download their images. You can use the free sku for this sample.
 
 ### Development Machine
 
@@ -67,7 +67,7 @@ The file path for the Windows.winmd file may be: ```C:\Program Files (x86)\Windo
 
 1. If you download the samples ZIP, be sure to unzip the entire archive, not just the folder with the sample you want to build.
 2. Open a PowerShell window.
-3. Change directory to the folder where you unzipped the samples, go to the **Samples** subfolder, then the subfolder for this sample (**SqueezeNetObjectDetection**).
+3. Change directory to the folder where you unzipped the samples, go to the **Samples/EdgeModules** subfolder, then the subfolder for this sample (**SqueezeNetObjectDetection/CS**).
 3. Build and publish the sample using dotnet command line:
 
 ```
@@ -115,22 +115,17 @@ Running the model...
 Here we can see that the sample is successfully running on the development machine, found the camera, and recognized that the camera was probably
 looking at a coffee mug. (It was.)
 
-## Create a personal container repository
-
-In order to deploy modules to your device, you will need access to a container respository. 
-Refer to [Quickstart: Create a private container registry using the Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
-
-When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
-
-Be sure to log into the container respository from the device where you will be building the containers.
-
-```
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker login {ACR_NAME}.azurecr.io {ACR_USER} {ACR_PASSWORD}
-```
-
 ## Containerize the sample app
 
-Build the container on the device. For the remainder of this sample, we will use the environment variable $Container
+When following this document, replace any "{ACR_*}" values with the correct values for your [container registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal).
+
+Log into your container registry from the device where you will be building the containers. If you are using the azure command line tools, you can use "az acr login" as described in the article linked above. Alternately, you can do it directly with the docker command line:
+
+```
+PS C:\data\modules\i2ctemp> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
+```
+
+Build the container on the device. For the remainder of this document, we will use the environment variable $Container
 to refer to the address of our container.
 
 ```
@@ -237,7 +232,7 @@ For reference, please see [Deploy Azure IoT Edge modules from Visual Studio Code
 Using the Azure IoT Edge extension for Visual Studio Code, you can select your device and choose "Start Monitoring D2C Message". You should see lines like this:
 
 ```
-[IoTHubMonitor] [4:23:39 PM] Message received from [jcoliz-17763-M/squeezenet]:
+[IoTHubMonitor] [4:23:39 PM] Message received from [device/squeezenet]:
 {
   "results": [
     {
@@ -258,21 +253,21 @@ Using the Azure IoT Edge extension for Visual Studio Code, you can select your d
 
 From a command prompt on the device, you can also check the logs for the module itself.
 
-First, find the module container:
+First, list the modules
 
 ```
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker ps
-
-CONTAINER ID        IMAGE                                      COMMAND                  CREATED             STATUS              PORTS                                                                  NAMES
-a7e9af84e551        {ACR_NAME}.azurecr.io/squeezenet:1.0.3-x64 "SqueezeNetObjectDet…"   7 minutes ago       Up 6 minutes                                                                               squeezenet
-cd5f1d7873d6        mcr.microsoft.com/azureiotedge-hub:1.0     "dotnet Microsoft.Az…"   31 minutes ago      Up 6 minutes        0.0.0.0:443->443/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:8883->8883/tcp   edgeHub
-73964eeb52cf        mcr.microsoft.com/azureiotedge-agent:1.0   "dotnet Microsoft.Az…"   35 minutes ago      Up 7 minutes                                                                               edgeAgent
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\CS> iotedge list
+NAME             STATUS           DESCRIPTION      CONFIG
+squeezenet       running          Up 5 minutes     {ACR_NAME}.azurecr.io/squeezenet:1.0.0-x64
+edgeHub          running          Up 33 minutes    mcr.microsoft.com/azureiotedge-hub:1.0.6
+edgeAgent        running          Up 33 minutes    mcr.microsoft.com/azureiotedge-agent:1.0.6
 ```
 
-Then, use the ID for the squeezenet container to check the logs
+Then, check the logs
+
 
 ```
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker logs b4107d30a29d
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> docker logs --tail 20 squeezenet
 Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
 ...OK 2484 ticks
 Retrieving image from camera...
