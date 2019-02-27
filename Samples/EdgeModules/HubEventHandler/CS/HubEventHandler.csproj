@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\CS\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Common\CS\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

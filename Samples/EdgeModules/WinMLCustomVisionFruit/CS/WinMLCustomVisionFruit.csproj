@@ -1,24 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <!-->
-    <RuntimeIdentifier>win-arm</RuntimeIdentifier> 
-    -->
-    <Platform>win-arm</Platform>
   </PropertyGroup>
   <Import Project="..\..\Common.CS.Props" />
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.19.0" />
     <PackageReference Include="Mono.Options.Core" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="YamlDotNet" Version="5.3.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\CS\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Common\CS\Common.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Reference Include="Windows.Devices.DevicesLowLevelContract">
-      <HintPath>$(WindowsSdkPath)\Windows.Devices.DevicesLowLevelContract\3.0.0.0\Windows.Devices.DevicesLowLevelContract.winmd</HintPath>
+    <Reference Include="Windows.AI.MachineLearning.MachineLearningContract">
+      <HintPath>$(WindowsSdkPath)\Windows.AI.MachineLearning.MachineLearningContract\1.0.0.0\Windows.AI.MachineLearning.MachineLearningContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
     <Reference Include="Windows.Foundation.FoundationContract">
@@ -30,4 +29,14 @@
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="resources\labels.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="resources\office_fruit_coreml.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

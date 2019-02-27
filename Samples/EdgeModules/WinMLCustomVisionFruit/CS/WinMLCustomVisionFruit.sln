@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDotNetCoreWinML", "ConsoleDotNetCoreWinML\ConsoleDotNetCoreWinML.csproj", "{57085D7A-D356-49D8-B7A0-32984229BA37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinMLCustomVisionFruit", "WinMLCustomVisionFruit\WinMLCustomVisionFruit.csproj", "{57085D7A-D356-49D8-B7A0-32984229BA37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
