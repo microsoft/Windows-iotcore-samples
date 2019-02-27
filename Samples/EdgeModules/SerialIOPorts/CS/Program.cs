@@ -143,10 +143,8 @@ namespace SampleModule
         private static void TransmitTask(SerialPort device)
         {
             int i = 1;
-            while (true)
+            while (!Options.Test.HasValue || i <= Options.Test.Value.Seconds)
             {
-                Thread.Sleep(1000);
-
                 // Come up with a new message
 
                 var tempData = new MessageBody
@@ -168,8 +166,11 @@ namespace SampleModule
                 var message = tempData.SerialEncode;
                 device.WriteLine(message);
                 Log.WriteLine($"Write {i} Completed. Wrote {message.Length} bytes: \"{message}\"");
+
+                Thread.Sleep(1000);
                 i++;
-            }            
+            }
+            Environment.Exit(0);
         }
 
         private static async void ReaderTask(SerialPort device)
