@@ -38,15 +38,7 @@ namespace EdgeModuleSamples.Common.Logging
         {
             TimeStampedWriteLine(fmt, args);
         }
-#if DISABLED
-        public static void WriteLineRaw(string message)
-        {
-            if (Enabled)
-            {
-                Console.WriteLine(TimeStamp() + ": " + message);
-            }
-        }
-#endif
+
         public static void EndLine()
         {
             WriteInternal("");
@@ -97,12 +89,23 @@ namespace EdgeModuleSamples.Common.Logging
         {
             if (Enabled)
             {
-                Console.WriteLine(fmt, args);
+                if (null == args)
+                {
+                    Console.WriteLine(fmt);
+                }
+                else
+                {
+                    Console.WriteLine(fmt, args);
+                }
             }
         }
         private static void WriteInternal(string fmt, params object[] args)
         {
-            if (Enabled)
+            if (null == args)
+            {
+                Console.Write(fmt);
+            }
+            else
             {
                 Console.Write(fmt, args);
             }
