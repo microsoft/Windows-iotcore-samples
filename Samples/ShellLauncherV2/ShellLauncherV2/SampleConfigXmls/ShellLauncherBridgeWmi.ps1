@@ -2,10 +2,10 @@
 # Download ps internal tools, run "psexec.exe -i -s powershell.exe" from elevated command prompt
 
 # In the powershell launched by psexec.exe, first load the ps1 file, be aware the . command when importing the ps1 file
-# PS C:\Users\dengy> . .\ShellLauncherBridgeWmi.ps1
+# PS C:\Users\test> . .\ShellLauncherBridgeWmi.ps1
 
 # After importing, run the command SetShellLauncherBridgeWMI with FilePath parameter to a shell launcher config xml
-# PS C:\Users\dengy> SetShellLauncherBridgeWMI -FilePath .\ShellLauncher.xml
+# PS C:\Users\test> SetShellLauncherBridgeWMI -FilePath .\ShellLauncher.xml
 
 function SetShellLauncherBridgeWMI
 {
