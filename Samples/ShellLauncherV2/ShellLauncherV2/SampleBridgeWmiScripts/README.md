@@ -10,7 +10,7 @@ description: sample powershell scripts to call bridge WMI Shell Launcher node
 
 # Shell Launcher V2 Bridge WMI Sample scripts
 
-* [ShellLauncherBridgeWmiHelpers.ps1](./ShellLauncherBridgeWmiHelpers.ps1) this script provides two functions
+[ShellLauncherBridgeWmiHelpers.ps1](./ShellLauncherBridgeWmiHelpers.ps1) this script provides two functions
 1. SetShellLauncherBridgeWmi, it takes a parameter FilePath to a raw config xml (not the escaped one) and configure Shell Launcher through bridge WMI 
 2. ClearShellLauncherBridgeWmi, it clears shell launcher configuration using bridge WMI
 
