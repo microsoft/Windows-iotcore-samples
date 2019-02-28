@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RuntimeFrameworkVersion>2.2.0</RuntimeFrameworkVersion> <!-- modify build in this line -->
-    <WindowsSdkVersion>10.0.17763.0</WindowsSdkVersion>
+    <WindowsSdkVersion Condition="$(WindowsSdkVersion) == ''">10.0.17763.0</WindowsSdkVersion>
     <LangVersion>latest</LangVersion>
   <!--
   if you want a self contained project to install in a container that doesn't already have dotnet runtime
