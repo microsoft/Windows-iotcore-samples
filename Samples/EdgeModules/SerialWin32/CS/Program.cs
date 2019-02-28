@@ -143,7 +143,7 @@ namespace SampleModule
             }
             catch (Exception ex)
             {
-                Log.WriteLineError($"{ex.GetType().Name} {ex.Message}");
+                Log.WriteLineException(ex);
             }        
         }
 
@@ -244,7 +244,7 @@ namespace SampleModule
             }
             catch (Exception ex)
             {
-                Log.WriteLineError($"ERROR: {ex.GetType().Name} {ex.Message}");
+                Log.WriteLineException(ex);
             }
         }
 
