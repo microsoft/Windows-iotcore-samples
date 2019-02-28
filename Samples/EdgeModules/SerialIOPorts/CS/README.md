@@ -85,9 +85,8 @@ At this point, you'll want to figure out which COM port your FTDI device is conn
 ### Before 
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> dotnet run
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> dotnet run --list
 
-SerialIOPorts 1.0.0.0
 Available devices:
 COM1
 ```
@@ -95,9 +94,8 @@ COM1
 ### After
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> dotnet run
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> dotnet run --list
 
-SerialIOPorts 1.0.0.0
 Available devices:
 COM1
 COM3
@@ -110,7 +108,7 @@ So we can see that our device is connected to COM3.
 In this sample, the particular COM port in use is specified in the Dockerfile. You'll need to change that before the container is built. Look for this line in the Dockerfile, and change it to the correct COM port:
 
 ```
-CMD [ "SerialIOPorts.exe", "-rte", "-dCOM3" ]
+CMD [ "SerialIOPorts.exe", "-rs", "-dCOM3" ]
 ```
 
 ## Containerize the sample app
@@ -144,7 +142,7 @@ Removing intermediate container b8f3943ab2e5
  ---> 37f5488097e5
 Step 4/5 : COPY $EXE_DIR/ ./
  ---> 49f265682955
-Step 5/5 : CMD [ "SerialIOPorts.exe", "-rte", "-dCOM3" ]
+Step 5/5 : CMD [ "SerialIOPorts.exe", "-rs", "-dCOM3" ]
  ---> Running in 1aedd449ffa4
 Removing intermediate container 1aedd449ffa4
  ---> d6cbd51600e3
@@ -157,16 +155,8 @@ Successfully tagged {ACR_NAME}.azurecr.io/serialioports:1.0.0-x64
 At this point, we'll want to run the container locally to ensure that it is able to find and talk to our peripheral.
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialIOPorts.exe
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialIOPorts.exe --list
 
-SerialIOPorts 1.0.0.0
-  -h, --help                 show this message and exit
-  -l, --list                 list available devices and exit
-  -d, --device=ID            the ID of device to connect
-  -r, --receive              receive and display packets
-  -t, --transmit             transmit packets (combine with -r for loopback)
-  -c, --config               display device configuration
-  -e, --edge                 transmit through azure edge
 Available devices:
 COM1
 COM3
@@ -178,9 +168,9 @@ Notice that we are overriding the entry point from the command line.
 Now let's pick a device and ensure we can open it:
 
 ```
-PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialIOPorts.exe -c -dCOM3
+PS D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker run --device "class/86E0D1E0-8089-11D0-9CE4-08003E301F73" --isolation process $Container SerialIOPorts.exe -c -dCOM3 -t1
 
-11/20/2018 8:11:29 AM Connecting to device COM3}...
+11/20/2018 8:11:29 AM Connecting to device COM3...
 =====================================
 BaudRate: 0x1C200
 Parity: 0x2

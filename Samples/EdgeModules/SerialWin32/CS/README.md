@@ -111,7 +111,7 @@ Removing intermediate container b8f3943ab2e5
  ---> 37f5488097e5
 Step 4/5 : COPY $EXE_DIR/ ./
  ---> 49f265682955
-Step 5/5 : CMD [ "SerialWin32.exe", "-rte", "-dPID_6001" ]
+Step 5/5 : CMD [ "SerialWin32.exe", "-rs", "-dPID_6001" ]
  ---> Running in 1aedd449ffa4
 Removing intermediate container 1aedd449ffa4
  ---> d6cbd51600e3

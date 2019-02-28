@@ -97,10 +97,10 @@ Microsoftr LifeCam Studio(TM)
 IntelIRCameraSensorGroup
 ```
 
-From this list, we will choose the camera to use as input, as pass that into the next call with the --device parameter, along with the model using the --model parameter.
+From this list, we will choose the camera to use as input, as pass that into the next call with the --device parameter, along with the model using the --model parameter. Use the "test mode" switch, "-t{seconds}" to briefly test the module locally.
 
 ```
-PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> dotnet run --model=SqueezeNet.onnx --device=LifeCam
+PS C:\Windows-iotcore-samples\Samples\EdgeModules\SqueezeNetObjectDetection\cs> dotnet run --model=SqueezeNet.onnx --device=LifeCam -t1
 
 Loading modelfile 'SqueezeNet.onnx' on the 'default' device...
 ...OK 2484 ticks
@@ -143,7 +143,7 @@ Step 3/5 : WORKDIR /app
  ---> 5b66e01e041a
 Step 4/5 : COPY $EXE_DIR/ ./
  ---> 3798927f4eaa
-Step 5/5 : CMD [ "SqueezeNetObjectDetection.exe", "-mSqueezeNet.onnx", "-dLifeCam", "-ef" ]
+Step 5/5 : CMD [ "SqueezeNetObjectDetection.exe", "-mSqueezeNet.onnx", "-dLifeCam" ]
  ---> Running in c4f09d9edc5b
 Removing intermediate container c4f09d9edc5b
  ---> e7ab7ea5bd16

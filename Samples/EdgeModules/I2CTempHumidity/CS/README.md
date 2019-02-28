@@ -110,10 +110,10 @@ PS C:\Windows-iotcore-samples\Samples\EdgeModules\I2CTempHumidity\cs> robocopy b
 
 ## Test the sample on the target device
 
-Run the app on the target device to ensure the sensor is connected correctly.
+Run the app on the target device to ensure the sensor is connected correctly. Use the "test mode" switch, "-t{seconds}".
 
 ```
-PS C:\data\modules\i2ctemp> .\I2CTempHumidity.exe
+PS C:\data\modules\i2ctemp> .\I2CTempHumidity.exe -t5
 2/23/2019 10:16:05 PM: Model: Si7021
 2/23/2019 10:16:05 PM: Serial Number: 976CD8F615FFFFFF
 2/23/2019 10:16:05 PM: Firmware Rev: 2.0
@@ -155,7 +155,7 @@ Removing intermediate container 6baefc13e4a8
  ---> 3e071099a8a8
 Step 4/5 : COPY $EXE_DIR/ ./
  ---> eb256a087fbf
-Step 5/5 : CMD [ "I2CTempHumidity.exe", "-e" ]
+Step 5/5 : CMD [ "I2CTempHumidity.exe" ]
  ---> Running in 987ca3fe7aaf
 Removing intermediate container 987ca3fe7aaf
  ---> 02c4909eecd7
@@ -170,7 +170,7 @@ Adding the --device parameter to the docker tool with the class GUID shown below
 from the host through to the container.
 
 ```
-PS C:\data\modules\i2ctemp> docker run --device "class/A11EE3C6-8421-4202-A3E7-B91FF90188E4" --isolation process $Container I2CTempHumidity.exe
+PS C:\data\modules\i2ctemp> docker run --device "class/A11EE3C6-8421-4202-A3E7-B91FF90188E4" --isolation process $Container I2CTempHumidity.exe -t5
 2/23/2019 10:32:17 PM: Model: Si7021
 2/23/2019 10:32:18 PM: Serial Number: 976CD8F615FFFFFF
 2/23/2019 10:32:18 PM: Firmware Rev: 2.0
