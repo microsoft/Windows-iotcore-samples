@@ -4,6 +4,7 @@
 
 using EdgeModuleSamples.Common.Logging;
 using EdgeModuleSamples.Common.Messages;
+using EdgeModuleSamples.Common.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +20,7 @@ namespace ConsoleDotNetCoreSPI
         static async Task<int> MainAsync(string[] args)
         {
             Log.WriteLine("Starting async...");
-            var Options = new AppOptions();
+            var Options = new DeviceAppOptions();
 
             Options.Parse(args);
             Log.Enabled = !Options.Quiet;

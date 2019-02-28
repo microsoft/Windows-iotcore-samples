@@ -20,6 +20,7 @@ namespace SampleModule
 
     using EdgeModuleSamples.Common.Logging;
     using EdgeModuleSamples.Devices;
+    using EdgeModuleSamples.Common.Options;
     using static EdgeModuleSamples.Common.AsyncHelper;
 
     class Program
