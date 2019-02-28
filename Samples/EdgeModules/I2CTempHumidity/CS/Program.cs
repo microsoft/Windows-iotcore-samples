@@ -26,7 +26,6 @@ namespace SampleModule
     {
         static AppOptions Options;
         static ModuleClient ioTHubModuleClient;
-        static readonly Random Rnd = new Random();
 
         static async Task Main(string[] args)
         {
@@ -39,9 +38,6 @@ namespace SampleModule
                 Options = new AppOptions();
 
                 Options.Parse(args);
-
-                if (Options.Exit)
-                    return;
 
                 //
                 // Open Device
@@ -64,7 +60,7 @@ namespace SampleModule
                     // Init module client
                     //
 
-                    if (Options.UseEdge)
+                    if (! Options.Test.HasValue)
                     {
                         Init().Wait();
                     }
@@ -89,7 +85,7 @@ namespace SampleModule
                             var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
                             Log.WriteLine($"SendEvent: [{dataBuffer}]");
 
-                            if (Options.UseEdge)
+                            if (!Options.Test.HasValue)
                             {
                                 await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
                             }

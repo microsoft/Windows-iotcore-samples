@@ -6,4 +6,4 @@ WORKDIR /app
 
 COPY $EXE_DIR/ ./
 
-CMD [ "I2CTempHumidity.exe", "-e" ]
+CMD [ "I2CTempHumidity.exe" ]
