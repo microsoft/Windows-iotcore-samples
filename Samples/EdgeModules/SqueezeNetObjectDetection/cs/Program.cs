@@ -60,14 +60,14 @@ namespace SampleModule
                     Environment.Exit(1);
                 }
 
-                if (string.IsNullOrEmpty(Options.DeviceId))
+                if (string.IsNullOrEmpty(Options.DeviceName))
                     throw new ApplicationException("Please use --device to specify which camera to use");
 
                 //
                 // Init module client
                 //
 
-                if (Options.UseEdge)
+                if (! Options.Test.HasValue)
                 {
                     Log.WriteLine($"{AppOptions.AppName} module starting.");
                     await BlockTimer("Initializing Azure IoT Edge", async () => await InitEdge());
@@ -104,7 +104,7 @@ namespace SampleModule
 
                 using (var frameSource = new FrameSource())
                 {
-                    await frameSource.StartAsync(Options.DeviceId,Options.UseGpu);
+                    await frameSource.StartAsync(Options.DeviceName,Options.UseGpu);
 
                     //
                     // Main loop
@@ -142,7 +142,7 @@ namespace SampleModule
                             // Send results to Edge
                             //
 
-                            if (Options.UseEdge)
+                            if (! Options.Test.HasValue)
                             { 
                                 var eventMessage = new Message(Encoding.UTF8.GetBytes(json));
                                 await ioTHubModuleClient.SendEventAsync("resultsOutput", eventMessage); 
@@ -152,7 +152,7 @@ namespace SampleModule
                             }
                         }
                     }
-                    while (Options.RunForever && ! cts.Token.IsCancellationRequested);
+                    while (! Options.Test.HasValue && ! cts.Token.IsCancellationRequested);
 
                     await frameSource.StopAsync();
                 }
