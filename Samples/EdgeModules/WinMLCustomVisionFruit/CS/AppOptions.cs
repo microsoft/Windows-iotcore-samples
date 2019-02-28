@@ -15,7 +15,7 @@ namespace ConsoleDotNetCoreWinML
 
         public AppOptions()
         {
-            Add("gpu", "use gpu acceleration for model evaluation", v => Gpu = v != null);
+            Add("g|gpu", "use gpu acceleration for model evaluation", v => Gpu = v != null);
         }
     }
 }

@@ -9,7 +9,7 @@ using EdgeModuleSamples.Common.Logging;
 
 namespace SampleModule
 {
-    public class AppOptions: EdgeModuleSamples.Common.Options.SpbAppOptions
+    public class AppOptions: EdgeModuleSamples.Common.Options.DeviceAppOptions
     {
         public bool ShowList { get; private set; }
         public bool ShowConfig { get; private set; }

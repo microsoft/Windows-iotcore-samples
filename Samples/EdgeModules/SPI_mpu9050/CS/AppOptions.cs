@@ -9,12 +9,7 @@ using System.Collections.Generic;
 
 namespace ConsoleDotNetCoreSPI
 {
-    public class AppOptions: EdgeModuleSamples.Common.Options.SpbAppOptions
+    public class AppOptions: EdgeModuleSamples.Common.Options.DeviceAppOptions
     {
-
-        public AppOptions() 
-        {
-        }
-
     }
 }

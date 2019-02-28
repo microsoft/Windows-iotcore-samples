@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace EdgeModuleSamples.Common.Options
 {
-    abstract public class AppOptions: OptionSet
+    public class AppOptions: OptionSet
     {
         public bool Help { get; private set; }
         public TimeSpan? Test { get; private set; }
@@ -43,14 +43,14 @@ namespace EdgeModuleSamples.Common.Options
         static public string AppVersion => typeof(AppOptions).Assembly.GetName().Version.ToString();
     }
 
-    public class SpbAppOptions : EdgeModuleSamples.Common.Options.AppOptions
+    public class DeviceAppOptions : EdgeModuleSamples.Common.Options.AppOptions
     {
 
         public string DeviceName { get; private set; }
 
-        public SpbAppOptions()
+        public DeviceAppOptions()
         {
-            Add<string>("d=|dev=|devicename=", "Friendly {NAME} of device", v => DeviceName = v);
+            Add<string>("d=|dev=|devicename=", "friendly {NAME} of device", v => DeviceName = v);
         }
 
     }
