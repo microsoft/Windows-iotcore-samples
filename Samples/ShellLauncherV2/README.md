@@ -17,6 +17,7 @@ Shell Launcher V2 allows user to configure an UWP app (using AUMID) or Win32 app
 *	[Win32 Primary App](./ShellLauncherV2/ShellLauncherV2DemoWin32/README.md)
 *	[Installer for Win32 Primary App](./ShellLauncherV2/ShellLauncherV2DemoWin32Installer/README.md)
 *	[Sample Shell Launcher Configuration files](./ShellLauncherV2/SampleConfigXmls/README.md)
+* [Sample bridge WMI powershell scripts](./ShellLauncherV2/SampleBridgeWmiScripts/README.md)
 
 ## Additional resources
 * [ShellLauncher general info](https://docs.microsoft.com/en-us/windows-hardware/customize/enterprise/shell-launcher)
