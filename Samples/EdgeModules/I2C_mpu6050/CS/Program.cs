@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 
-namespace ConsoleDotNetCoreI2c
+namespace I2CMPU6050
 {
     class Program
     {

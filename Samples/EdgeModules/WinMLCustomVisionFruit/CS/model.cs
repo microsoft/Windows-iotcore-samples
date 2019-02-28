@@ -14,7 +14,7 @@ using Windows.Media;
 using Windows.Media.Capture.Frames;
 using Windows.Storage;
 
-namespace ConsoleDotNetCoreWinML
+namespace WinMLCustomVisionFruit
 {
     public sealed class ModelInput
     {
