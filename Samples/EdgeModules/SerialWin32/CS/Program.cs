@@ -108,7 +108,7 @@ namespace SampleModule
                     // Init module client
                     //
 
-                    if (Options.UseEdge)
+                    if (!Options.IsTesting)
                     {
                         Init().Wait();
                     }
@@ -155,7 +155,7 @@ namespace SampleModule
             uint numbytes;
             int i = 1;
             const uint size = MessageBody.SerialSize;
-            while (!Options.Test.HasValue || i <= Options.Test.Value.TotalSeconds)
+            while (!Options.IsTesting || i <= Options.TestDuration.Value.TotalSeconds)
             {
                 // Come up with a new message
 
@@ -220,7 +220,7 @@ namespace SampleModule
                     Log.WriteLine($"Async Read {i} Completed. Received {numbytes} bytes: \"{message}\"");
 
                     // Send it over Edge as a messagebody
-                    if (Options.UseEdge)
+                    if (!Options.IsTesting)
                     {
                         var tempData = new MessageBody();
                         tempData.SerialEncode = message;

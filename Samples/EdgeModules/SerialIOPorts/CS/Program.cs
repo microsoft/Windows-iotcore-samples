@@ -101,7 +101,7 @@ namespace SampleModule
                     // Init module client
                     //
 
-                    if (Options.UseEdge)
+                    if (!Options.IsTesting)
                     {
                         Init().Wait();
                     }
@@ -143,7 +143,7 @@ namespace SampleModule
         private static void TransmitTask(SerialPort device)
         {
             int i = 1;
-            while (!Options.Test.HasValue || i <= Options.Test.Value.Seconds)
+            while (!Options.IsTesting || i <= Options.TestDuration.Value.Seconds)
             {
                 // Come up with a new message
 
@@ -191,7 +191,7 @@ namespace SampleModule
                         Log.WriteLine($"Read {i} Completed. Received {message.Length} bytes: \"{message}\"");
 
                         // Translate it into a messagebody
-                        if (Options.UseEdge)
+                        if (!Options.IsTesting)
                         {
                             var tempData = new MessageBody();
                             tempData.SerialEncode = message;

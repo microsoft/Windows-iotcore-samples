@@ -67,7 +67,7 @@ namespace SampleModule
                 // Init module client
                 //
 
-                if (! Options.Test.HasValue)
+                if (! Options.IsTesting)
                 {
                     Log.WriteLine($"{AppOptions.AppName} module starting.");
                     await BlockTimer("Initializing Azure IoT Edge", async () => await InitEdge());
@@ -144,7 +144,7 @@ namespace SampleModule
                             // Send results to Edge
                             //
 
-                            if (! Options.Test.HasValue)
+                            if (! Options.IsTesting)
                             { 
                                 var eventMessage = new Message(Encoding.UTF8.GetBytes(json));
                                 await ioTHubModuleClient.SendEventAsync("resultsOutput", eventMessage); 
@@ -155,7 +155,7 @@ namespace SampleModule
                         }
                         elapsed = DateTime.Now - started; 
                     }
-                    while ((!Options.Test.HasValue || elapsed < Options.Test.Value) && ! cts.Token.IsCancellationRequested);
+                    while ((!Options.IsTesting || elapsed < Options.TestDuration.Value) && ! cts.Token.IsCancellationRequested);
 
                     await frameSource.StopAsync();
                 }
@@ -164,7 +164,7 @@ namespace SampleModule
             }
             catch (Exception ex)
             {
-                Log.WriteLineError($"{ex.GetType().Name} {ex.Message}");
+                Log.WriteLineException(ex);
                 return -1;
             }
         }

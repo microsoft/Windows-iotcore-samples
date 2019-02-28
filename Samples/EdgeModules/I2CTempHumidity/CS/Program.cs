@@ -61,7 +61,7 @@ namespace SampleModule
                     // Init module client
                     //
 
-                    if (! Options.Test.HasValue)
+                    if (! Options.IsTesting)
                     {
                         Init().Wait();
                     }
@@ -86,7 +86,7 @@ namespace SampleModule
                             var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
                             Log.WriteLine($"SendEvent: [{dataBuffer}]");
 
-                            if (!Options.Test.HasValue)
+                            if (!Options.IsTesting)
                             {
                                 await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
                             }

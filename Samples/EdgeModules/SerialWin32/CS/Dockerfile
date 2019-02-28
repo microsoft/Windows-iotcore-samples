@@ -6,4 +6,4 @@ WORKDIR /app
 
 COPY $EXE_DIR/ ./
 
-CMD [ "SerialWin32.exe", "-rte", "-dPID_6001" ]
+CMD [ "SerialWin32.exe", "-rs", "-dPID_6001" ]

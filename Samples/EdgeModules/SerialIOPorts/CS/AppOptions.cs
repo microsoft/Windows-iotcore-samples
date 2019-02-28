@@ -13,8 +13,6 @@ namespace SampleModule
         public bool ShowConfig { get; private set; }
         public bool Receive { get; private set; }
         public bool Transmit { get; private set; }
-        public bool UseEdge => ! base.Test.HasValue;
-        public bool Exit { get; private set; } = false;
 
         public AppOptions()
         {

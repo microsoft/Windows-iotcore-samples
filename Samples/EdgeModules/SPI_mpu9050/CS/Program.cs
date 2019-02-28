@@ -31,7 +31,7 @@ namespace ConsoleDotNetCoreSPI
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
-                        if (!Options.Test.HasValue)
+                        if (!Options.IsTesting)
                         {
                             Log.WriteLine("starting connection creation");
                             connection = await AzureConnection.CreateAzureConnectionAsync();
@@ -50,10 +50,10 @@ namespace ConsoleDotNetCoreSPI
                             mpu = await SPIMpuDevice.CreateMpuDevice(Options.DeviceName);
                             //var settings = new SPIDevice.
                             mpu.InitAsync().Wait();
-                            if (Options.Test.HasValue)
+                            if (Options.IsTesting)
                             {
                                 Log.WriteLine("initiating test");
-                                mpu.Test(Options.Test.Value);
+                                mpu.Test(Options.TestDuration.Value);
                                 Environment.Exit(2);
                             }                            
                         }

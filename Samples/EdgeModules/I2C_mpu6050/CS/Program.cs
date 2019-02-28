@@ -31,7 +31,7 @@ namespace ConsoleDotNetCoreI2c
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
-                        if (!Options.Test.HasValue)
+                        if (!Options.IsTesting)
                         {
                             Log.WriteLine("starting connection creation");
                             connection = await AzureConnection.CreateAzureConnectionAsync();
@@ -49,10 +49,10 @@ namespace ConsoleDotNetCoreI2c
                             Log.WriteLine("creating mpu device {0}", Options.DeviceName != null ? Options.DeviceName : "(default)");
                             mpu = await I2CMpuDevice.CreateMpuDevice(Options.DeviceName);
                             mpu.InitAsync().Wait();
-                            if (Options.Test.HasValue)
+                            if (Options.IsTesting)
                             {
                                 Log.WriteLine("initiating test");
-                                mpu.Test(Options.Test.Value);
+                                mpu.Test(Options.TestDuration.Value);
                                 Environment.Exit(2);
                             }                            
                         }
