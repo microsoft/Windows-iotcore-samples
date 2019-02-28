@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
-    <Copy SourceFiles="Dockerfile.$(RuntimeIdentifier)" DestinationFiles="$(PublishDir)\Dockerfile" />
+    <Copy SourceFiles="Dockerfile" DestinationFiles="$(PublishDir)\Dockerfile" />
   </Target>
 
 </Project>

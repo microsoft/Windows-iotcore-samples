@@ -155,10 +155,8 @@ namespace SampleModule
             uint numbytes;
             int i = 1;
             const uint size = MessageBody.SerialSize;
-            while (true)
+            while (!Options.Test.HasValue || i <= Options.Test.Value.TotalSeconds)
             {
-                Thread.Sleep(1000);
-
                 // Come up with a new message
 
                 var tempData = new MessageBody
@@ -186,7 +184,9 @@ namespace SampleModule
 
                 Log.WriteLine($"Write {i} Completed. Wrote {numbytes} bytes: \"{message}\"");
                 i++;
+                Thread.Sleep(1000);
             }            
+            Environment.Exit(0);
         }
 
         private static async void ReaderTask(Win32Serial.Device device)
