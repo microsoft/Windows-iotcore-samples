@@ -14,7 +14,7 @@ using Windows.Devices.Enumeration;
 
 
 
-namespace EdgeModuleSamples.Common.MpuDevice
+namespace EdgeModuleSamples.Common.Device
 {
 
     public abstract class SPBDevice

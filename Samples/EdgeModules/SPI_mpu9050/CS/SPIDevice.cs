@@ -2,14 +2,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
-using EdgeModuleSamples.Common;
 using static EdgeModuleSamples.Common.AsyncHelper;
+using EdgeModuleSamples.Common.Device;
 using EdgeModuleSamples.Common.Logging;
-using EdgeModuleSamples.Common.MpuDevice;
-using SPIMPU9050;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Spi;
