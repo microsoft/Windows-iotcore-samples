@@ -21,7 +21,7 @@ namespace EdgeModuleSamples.Common.Logging
 
         private static string TimeStamp()
         {
-            return DateTime.Now.ToLocalTime().ToString("yyyy/MM/dd:HH:mm:ss:FFFFFFF");
+            return DateTime.Now.ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss.ffffff ");
         }
         public static bool Enabled { get; set; } = true;
 
