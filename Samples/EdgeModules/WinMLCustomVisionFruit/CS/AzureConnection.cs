@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleDotNetCoreWinML
+namespace WinMLCustomVisionFruit
 {
     public class AzureModule : AzureModuleBase {
         public event EventHandler<string> ModuleLoaded;

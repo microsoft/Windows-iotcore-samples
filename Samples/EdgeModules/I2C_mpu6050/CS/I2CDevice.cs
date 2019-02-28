@@ -6,7 +6,7 @@ using EdgeModuleSamples.Common;
 using static EdgeModuleSamples.Common.AsyncHelper;
 using EdgeModuleSamples.Common.Logging;
 using EdgeModuleSamples.Common.MpuDevice;
-using ConsoleDotNetCoreI2c;
+using I2CMPU6050;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using Windows.Devices.I2c;
 
 
 
-namespace ConsoleDotNetCoreI2c
+namespace I2CMPU6050
 {
 
 

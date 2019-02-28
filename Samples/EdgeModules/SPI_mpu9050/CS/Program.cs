@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 
-namespace ConsoleDotNetCoreSPI
+namespace SPIMPU9050
 {
     class Program
     {
