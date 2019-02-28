@@ -109,6 +109,8 @@ namespace SampleModule
                     //
                     // Main loop
                     //
+                    DateTime started = DateTime.Now;
+                    TimeSpan elapsed;
                     do
                     {
                         Log.WriteLineVerbose("Getting frame...");
@@ -151,8 +153,9 @@ namespace SampleModule
                                 await Task.Delay(500);
                             }
                         }
+                        elapsed = DateTime.Now - started; 
                     }
-                    while (! Options.Test.HasValue && ! cts.Token.IsCancellationRequested);
+                    while ((!Options.Test.HasValue || elapsed < Options.Test.Value) && ! cts.Token.IsCancellationRequested);
 
                     await frameSource.StopAsync();
                 }
