@@ -1,12 +1,12 @@
-# Windows IoT Edge GPIO Sample
+# Windows IoT Edge I2C Sample
 
 This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with a .NET Core C# console app to demonstrate I2C access.  Additionally, it can do this in a way that can coordinate with the other Edge samples.
 
 ## App Overview
 
+This app uses an Invensense MPU 6050 6 axis accelerometer.  This is a common and inexpensive part that comes in many Arduino and other Maker starter kits.
 
 ## Other things of interest in this sample
-
 
 ### Prerequisites
 
