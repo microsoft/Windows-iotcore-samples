@@ -20,7 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 
-namespace ConsoleDotNetCoreSPI
+namespace SPIMPU9050
 {
     [JsonObject(MemberSerialization.Fields)]
     class ConfigurationType : BaseConfigurationType

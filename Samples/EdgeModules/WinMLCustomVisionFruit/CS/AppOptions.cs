@@ -7,7 +7,7 @@ using Mono.Options;
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleDotNetCoreWinML
+namespace WinMLCustomVisionFruit
 {
     public class AppOptions: EdgeModuleSamples.Common.Options.AppOptions
     {

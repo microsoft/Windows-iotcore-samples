@@ -20,7 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 
-namespace ConsoleDotNetCoreI2c
+namespace I2CMPU6050
 {
     [JsonObject(MemberSerialization.Fields)]
     class ConfigurationType : BaseConfigurationType

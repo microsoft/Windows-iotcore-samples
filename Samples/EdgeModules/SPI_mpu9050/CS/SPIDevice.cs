@@ -6,7 +6,7 @@ using EdgeModuleSamples.Common;
 using static EdgeModuleSamples.Common.AsyncHelper;
 using EdgeModuleSamples.Common.Logging;
 using EdgeModuleSamples.Common.MpuDevice;
-using ConsoleDotNetCoreSPI;
+using SPIMPU9050;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Spi;
 
 
-namespace ConsoleDotNetCoreSPI
+namespace SPIMPU9050
 {
 
     public class SPIMpuDevice : MpuDevice

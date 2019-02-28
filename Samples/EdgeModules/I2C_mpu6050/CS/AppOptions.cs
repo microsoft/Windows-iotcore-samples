@@ -7,7 +7,7 @@ using Mono.Options;
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleDotNetCoreI2c
+namespace I2CMPU6050
 {
     public class AppOptions: EdgeModuleSamples.Common.Options.SpbAppOptions
     {

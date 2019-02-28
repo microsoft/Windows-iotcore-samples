@@ -7,7 +7,7 @@ using Mono.Options;
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleDotNetCoreSPI
+namespace SPIMPU9050
 {
     public class AppOptions: EdgeModuleSamples.Common.Options.SpbAppOptions
     {
