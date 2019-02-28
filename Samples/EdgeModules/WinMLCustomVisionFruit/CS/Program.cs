@@ -20,7 +20,7 @@ using Windows.Media.Capture.Frames;
 using Windows.Storage;
 using System.Collections.Generic;
 
-namespace ConsoleDotNetCoreWinML
+namespace WinMLCustomVisionFruit
 {
     class Program
     {
