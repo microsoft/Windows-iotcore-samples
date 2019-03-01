@@ -73,7 +73,8 @@ namespace SampleModule
 
                     var background = Task.Run(async ()=>
                     {
-                        while(true)
+                        int i = 1;
+                        while (!Options.IsTesting || i <= Options.TestDuration.Value.Seconds)
                         {
                             device.Update();
 
@@ -91,6 +92,7 @@ namespace SampleModule
                                 await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
                             }
 
+                            ++i;
                             await Task.Delay(1000);
                         }
                     });
