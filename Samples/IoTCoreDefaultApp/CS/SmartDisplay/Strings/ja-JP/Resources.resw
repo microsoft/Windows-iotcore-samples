@@ -1420,6 +1420,12 @@ Windows デバイス ポータルでは、[アプリ] &gt; [エクスプロー�
   <data name="WindowsUpdatePageTitle.Text" xml:space="preserve">
     <value>Windows Update</value>
   </data>
+  <data name="BlinkyPageTileText" xml:space="preserve">
+    <value>ブリンキー</value>
+  </data>
+  <data name="BlinkyPageTitle.Text" xml:space="preserve">
+    <value>ブリンキー</value>
+  </data>
   <data name="WorkingDirectoryInvalid" xml:space="preserve">
     <value>作業ディレクトリが無効です: {0}</value>
   </data>

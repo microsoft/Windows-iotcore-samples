@@ -1420,6 +1420,12 @@ Se você não tiver chaves da API Clima, navegue até weatherunlocked.com. Salve
   <data name="WindowsUpdatePageTitle.Text" xml:space="preserve">
     <value>Windows Update</value>
   </data>
+  <data name="BlinkyPageTileText" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
+  <data name="BlinkyPageTitle.Text" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
   <data name="WorkingDirectoryInvalid" xml:space="preserve">
     <value>Diretório de trabalho inválido: {0}</value>
   </data>

@@ -1420,6 +1420,12 @@
   <data name="WindowsUpdatePageTitle.Text" xml:space="preserve">
     <value>Windows 更新</value>
   </data>
+  <data name="BlinkyPageTileText" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
+  <data name="BlinkyPageTitle.Text" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
   <data name="WorkingDirectoryInvalid" xml:space="preserve">
     <value>工作目录无效: {0}</value>
   </data>

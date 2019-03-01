@@ -58,6 +58,7 @@ namespace SmartDisplay.Utils
             { "🔔", Common.GetLocalizedText("NotificationsPageTileText"), typeof(NotificationsPage), "\xE8BD", ExploreCategory },
             { "📜", Common.GetLocalizedText("LogsPageTileText"), typeof(LogsPage), "\xEA37", ExploreCategory },
             { "🐱‍🐉", Common.GetLocalizedText("GitHubPageTileText"), typeof(GitHubPage), "\uF1AD", ExploreCategory },
+            { "\u229A", Common.GetLocalizedText("BlinkyPageTileText"), typeof(BlinkyPage), PageUtil.DefaultPageIcon, ExploreCategory },
 
             // Windows Device Portal
             { "📋", Common.GetLocalizedText("OSInfoPageTileText"), typeof(InfoPage), "\uE946", WdpCategory },

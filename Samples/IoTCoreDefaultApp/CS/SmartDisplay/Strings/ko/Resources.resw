@@ -1420,6 +1420,12 @@ OS 버전: {1}
   <data name="WindowsUpdatePageTitle.Text" xml:space="preserve">
     <value>Windows 업데이트</value>
   </data>
+  <data name="BlinkyPageTileText" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
+  <data name="BlinkyPageTitle.Text" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
   <data name="WorkingDirectoryInvalid" xml:space="preserve">
     <value>잘못된 작업 디렉토리: {0}</value>
   </data>

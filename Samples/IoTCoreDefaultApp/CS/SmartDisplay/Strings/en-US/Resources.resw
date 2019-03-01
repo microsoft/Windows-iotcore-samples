@@ -1570,6 +1570,12 @@ If you don't have Weather API keys, navigate to weatherunlocked.com. Save the ke
   <data name="WindowsUpdatePageTitle.Text" xml:space="preserve">
     <value>Windows Update</value>
   </data>
+  <data name="BlinkyPageTileText" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
+  <data name="BlinkyPageTitle.Text" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
   <data name="WindowsUpdateState1" xml:space="preserve">
     <value>Update in progress</value>
     <comment>Windows Update status based on id</comment>

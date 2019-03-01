@@ -1420,6 +1420,12 @@
   <data name="WindowsUpdatePageTitle.Text" xml:space="preserve">
     <value>Центр обновления Windows</value>
   </data>
+  <data name="BlinkyPageTileText" xml:space="preserve">
+    <value>Блинки</value>
+  </data>
+  <data name="BlinkyPageTitle.Text" xml:space="preserve">
+    <value>Блинки</value>
+  </data>
   <data name="WorkingDirectoryInvalid" xml:space="preserve">
     <value>Недопустимый рабочий каталог: {0}</value>
   </data>

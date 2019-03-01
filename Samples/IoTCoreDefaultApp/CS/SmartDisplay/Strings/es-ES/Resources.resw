@@ -1400,6 +1400,12 @@ Si no tiene claves de la API del Tiempo, ve a weatherunlocked.com. Guarda las cl
     <value> www.windowsondevices.com</value>
     <comment>Part of "Visit www.windowsondevices.com to start developing"</comment>
   </data>
+  <data name="BlinkyPageTileText" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
+  <data name="BlinkyPageTitle.Text" xml:space="preserve">
+    <value>Blinky</value>
+  </data>
   <data name="LastCheckedText" xml:space="preserve">
     <value>Última comprobación:</value>
     <comment>For a timestamp</comment>
