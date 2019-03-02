@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-// do not use anything out of Universal API contract except Windows.Devices.Enumeration
+// do not use anything out of Universal API contract except Windows.Devices.Enumeration and the portion of Windows.Storage.Streams needed for serial
 using Windows.Devices.Enumeration;
 
 

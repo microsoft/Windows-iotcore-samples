@@ -55,6 +55,39 @@ namespace ConsoleDotNetCoreGPIO
         public event EventHandler<string> FruitChanged;
         public event EventHandler<EdgeModuleSamples.Common.Orientation> Orientation0Changed;
         public event EventHandler<EdgeModuleSamples.Common.Orientation> Orientation1Changed;
+
+        // TODO: refactor setfruit and onfruitmessage to share common code
+        private Task<MethodResponse> SetFruit(MethodRequest req, Object context)
+        {
+            string data = Encoding.UTF8.GetString(req.Data);
+            Log.WriteLine("Direct Method SetFruit {0}", data);
+            var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(data);
+            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+            if (fruitMsg.OriginalEventUTCTime != null)
+            {
+                originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+                Log.WriteLine("SetFruit invoking event. parsed msg time {0} from {1}", originalEventUTC.ToString("o"), fruitMsg.OriginalEventUTCTime);
+            }
+            else
+            {
+                Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
+            }
+            if (originalEventUTC >= _lastFruitUTC)
+            {
+                Log.WriteLine("SetFruit invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+                AzureModule module = (AzureModule)context;
+                module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen);
+                _lastFruitUTC = originalEventUTC;
+            }
+            else
+            {
+                Log.WriteLine("SetFruit ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+            }
+            // Acknowlege the direct method call with a 200 success message
+            string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
+            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
+        }
+
         private static async Task<MessageResponse> OnFruitMessageReceived(Message msg, object ctx)
         {
             AzureModule module = (AzureModule)ctx;
@@ -170,37 +203,6 @@ namespace ConsoleDotNetCoreGPIO
                 }
             }
             Log.WriteLine("update complete -- current properties {0}", _desiredProperties.ToString());
-        }
-
-        private Task<MethodResponse> SetFruit(MethodRequest req, Object context)
-        {
-            string data = Encoding.UTF8.GetString(req.Data);
-            Log.WriteLine("Direct Method SetFruit {0}", data);
-            var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(data);
-            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
-            if (fruitMsg.OriginalEventUTCTime != null)
-            {
-                originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
-                Log.WriteLine("SetFruit invoking event. parsed msg time {0} from {1}", originalEventUTC.ToString("o"), fruitMsg.OriginalEventUTCTime);
-            }
-            else
-            {
-                Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
-            }
-            if (originalEventUTC >= _lastFruitUTC)
-            {
-                Log.WriteLine("SetFruit invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
-                AzureModule module = (AzureModule)context;
-                module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen);
-                _lastFruitUTC = originalEventUTC;
-            }
-            else
-            {
-                Log.WriteLine("SetFruit ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
-            }
-            // Acknowlege the direct method call with a 200 success message
-            string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
-            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
         }
 
         public AzureModule()

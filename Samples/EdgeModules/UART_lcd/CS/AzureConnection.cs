@@ -38,10 +38,72 @@ namespace UARTLCD
 
     class AzureModule : AzureModuleBase
     {
-        // TODO: move common config to basemodule
+        private DateTime _lastFruitUTC;
         private DesiredPropertiesType<ConfigurationType> _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
+        public event EventHandler<string> FruitChanged;
+
+        // TODO: refactor setfruit and onfruitmessage to share common code
+        private Task<MethodResponse> SetFruit(MethodRequest req, Object context)
+        {
+            string data = Encoding.UTF8.GetString(req.Data);
+            Log.WriteLine("Direct Method SetFruit {0}", data);
+            var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(data);
+            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+            if (fruitMsg.OriginalEventUTCTime != null)
+            {
+                originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+                Log.WriteLine("SetFruit invoking event. parsed msg time {0} from {1}", originalEventUTC.ToString("o"), fruitMsg.OriginalEventUTCTime);
+            }
+            else
+            {
+                Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
+            }
+            if (originalEventUTC >= _lastFruitUTC)
+            {
+                Log.WriteLine("SetFruit invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+                AzureModule module = (AzureModule)context;
+                module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen);
+                _lastFruitUTC = originalEventUTC;
+            }
+            else
+            {
+                Log.WriteLine("SetFruit ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+            }
+            // Acknowlege the direct method call with a 200 success message
+            string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
+            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
+        }
+        private static async Task<MessageResponse> OnFruitMessageReceived(Message msg, object ctx)
+        {
+            AzureModule module = (AzureModule)ctx;
+            var msgBytes = msg.GetBytes();
+            var msgString = Encoding.UTF8.GetString(msgBytes);
+            Log.WriteLine("fruit msg received: '{0}'", msgString);
+            var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msgString);
+            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+            if (fruitMsg.OriginalEventUTCTime != null)
+            {
+                originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            }
+            else
+            {
+                Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
+            }
+
+            if (originalEventUTC >= module._lastFruitUTC)
+            {
+                Log.WriteLine("FruitMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastFruitUTC.ToString("o"));
+                await Task.Run(() => module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen));
+                module._lastFruitUTC = originalEventUTC;
+            }
+            else
+            {
+                Log.WriteLine("FruitMsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastFruitUTC.ToString("o"));
+            }
+            return MessageResponse.Completed;
+        }
 
         public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
         {
@@ -78,104 +140,31 @@ namespace UARTLCD
         {
             AzureConnection c1 = c as AzureConnection;
             await base.AzureModuleInitAsync(c1);
-            //await _moduleClient.SetInputMessageHandlerAsync(Keys.InputFruit, OnFruitMessageReceived, this);
-            //await _moduleClient.SetMethodHandlerAsync(Keys.SetFruit, SetFruit, this);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputFruit, OnFruitMessageReceived, this);
+            await _moduleClient.SetMethodHandlerAsync(Keys.SetFruit, SetFruit, this);
             await base.AzureModuleInitEndAsync();
         }
     }
 
-#if USE_DEVICE_TWIN
-    class AzureDevice
-    {
-        private AzureConnection _connection { get; set; }
-        private DeviceClient _deviceClient { get; set; }
-
-        private Twin _deviceTwin { get; set; }
-        private TwinCollection _reportedDeviceProperties { get; set; }
-        private static async Task OnDesiredDevicePropertyChanged(TwinCollection desiredProperties, object ctx)
-        {
-            var device = (AzureDevice)ctx;
-            Log.WriteLine("desired properties contains {0} properties", desiredProperties.Count);
-            foreach (var p in desiredProperties)
-            {
-                Log.WriteLine("property {0}:{1}", p != null ? p.GetType().ToString() : "(null)", p != null ? p.ToString() : "(null)");
-            }
-            // TODO: couartte delta and only send changes
-            await device._deviceClient.UpdateReportedPropertiesAsync(device._reportedDeviceProperties).ConfigureAwait(false);
-        }
-    public AzureDevice() {
-        }
-        public async Task AzureDeviceInitAsync() {
-            TransportType transport = TransportType.Amqp;
-            _deviceClient = DeviceClient.CreateFromConnectionString(await DeploymentConfig.GetDeviceConnectionStringAsync(), transport);
-            // TODO: connection status changes handler
-            //newConnection._inputMessageHandler += OnInputMessageReceived;
-            //await newConnection._moduleClient.SetInputMessageHandlerAsync("????", _inputMessageHandler, newConnection)
-            // Connect to the IoT hub using the MQTT protocol
-
-            await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredDevicePropertyChanged, this);
-            await _deviceClient.OpenAsync();
-            Log.WriteLine("DeviceClient Initialized");
-            var _deviceTwin = await _deviceClient.GetTwinAsync();
-            Log.WriteLine("DeviceTwin Retrieved");
-        }
-    }
-#endif
 
     class AzureConnection : AzureConnectionBase
     {
-        private byte[] _lastOBody;
-
-#if USE_DEVICE_TWIN
-        private AzureDevice _device { get; set; }
-#endif
-            public AzureConnection()
+        public AzureConnection()
         {
-            _lastOBody = new byte[0];
         }
         public static async Task<AzureConnection> CreateAzureConnectionAsync() {
             return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
         }
 
-        public async Task NotifyNewModuleAsync()
+        public async Task NotifyModuleLoadAsync()
         {
-                if (_lastOBody.Length > 1)
-                {
-                    Message m = null;
-                    lock (_lastOBody)
-                    {
-                        m = new Message(_lastOBody);
-                    }
-                    await Module.SendMessageAsync(Keys.OutputOrientation, m);
-                }
+            await Task.WhenAll(
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0, Keys.GPIOModuleId)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1, Keys.GPIOModuleId)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream, Keys.GPIOModuleId))
+            );
+            Log.WriteLine("derived Module Load D2C message fired");
         }
-        public override async Task UpdateObjectAsync(KeyValuePair<string, object> kvp)
-        {
-            Log.WriteLine("\t\t\t\t\t\tI2C UpdateObjectAsync override kvp = {0}", kvp.ToString());
-            if (kvp.Key == Keys.Orientation)
-            {
-                // output the event stream
-                var msgvalue = new OrientationMessage();
-                msgvalue.OriginalEventUTCTime = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc).ToString("o");
-                msgvalue.OrientationState = (Orientation)kvp.Value;
-                byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msgvalue));
-                lock (_lastOBody)
-                {
-                    _lastOBody = msgbody;
-                }
-                await Task.WhenAll(
-                    Task.Run(async () =>
-                    {
-                        var m = new Message(msgbody);
-                        await Module.SendMessageAsync(Keys.OutputOrientation, m);
-                    }),
-                    Task.Run(async () =>
-                    {
-                        var m = new Message(msgbody);
-                        await Module.SendMessageAsync(Keys.OutputUpstream, m);
-                    })
-                );
-            }
-        }
+
     }
 }

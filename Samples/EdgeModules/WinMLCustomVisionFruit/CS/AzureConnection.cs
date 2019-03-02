@@ -82,8 +82,13 @@ namespace WinMLCustomVisionFruit
                     Task.Run(async () =>
                         {
                             var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputFruit, m);
+                            await Module.SendMessageAsync(Keys.OutputFruit0, m);
                         }),
+                    Task.Run(async () =>
+                    {
+                        var m = new Message(msgbody);
+                        await Module.SendMessageAsync(Keys.OutputFruit1, m);
+                    }),
                     Task.Run(async () =>
                         {
                             var m = new Message(msgbody);
@@ -96,12 +101,24 @@ namespace WinMLCustomVisionFruit
         {
             if (_lastFruitBody.Length > 1)
             {
-                Message m = null;
+                Message m0 = null;
+                Message m1 = null;
                 lock (_lastFruitBody)
                 {
-                    m = new Message(_lastFruitBody);
+                    m0 = new Message(_lastFruitBody);
+                    m1 = new Message(_lastFruitBody);
                 }
-                await Module.SendMessageAsync(Keys.OutputFruit, m);
+                await Task.WhenAll(
+                    Task.Run(async () =>
+                    {
+                        await Module.SendMessageAsync(Keys.OutputFruit0, m0);
+                    }),
+                    Task.Run(async () =>
+                    {
+                        await Module.SendMessageAsync(Keys.OutputFruit1, m1);
+                    })
+                );
+
             }
         }
     }

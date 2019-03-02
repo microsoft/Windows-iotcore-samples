@@ -20,75 +20,6 @@ using YamlDotNet.Serialization;
 
 namespace EdgeModuleSamples.Common.Azure
 {
-    public class DeploymentConfig
-    {
-        private static async Task<YamlDocument> LoadConfigAsync(string configFile)
-        {
-            StreamReader sr = null;
-            await Task.WhenAll(Task.Run(() => {
-                sr = new StreamReader(configFile);
-            }));
-            var yamlString = await sr.ReadToEndAsync();
-            YamlDocument yamlDoc = null;
-            await Task.WhenAll(Task.Run(() => {
-                yamlDoc = new YamlDocument(yamlString);
-            }));
-            return yamlDoc;
-        }
-        private static string GetDeviceConnectionStringInternal(YamlDocument doc)
-        {
-            return (string)doc.GetKeyValue("device_connection_string");
-        }
-        public static async Task<string> GetDeviceConnectionStringAsync()
-        {
-            string configRoot = System.Environment.GetEnvironmentVariable("ProgramData");
-            configRoot += @"\iotedge";
-            string configFileName = @"\config.yaml";
-            string configPath = null;
-            if (File.Exists(configRoot + configFileName)) {
-                configPath = configRoot + configFileName;
-            } else {
-                configRoot = System.Environment.GetEnvironmentVariable("LocalAppData");
-                configRoot += @"\iotedge";
-                configPath = configRoot + configFileName;
-            }
-
-            Log.WriteLine("loading config file from {0}", configPath);
-            var doc = await LoadConfigAsync(configPath);
-            return GetDeviceConnectionStringInternal(doc);
-        }
-    }
-    public class YamlDocument
-    {
-        readonly Dictionary<object, object> root;
-
-        public YamlDocument(string input)
-        {
-            var reader = new StringReader(input);
-            var deserializer = new Deserializer();
-            this.root = (Dictionary<object, object>)deserializer.Deserialize(reader);
-        }
-
-        public object GetKeyValue(string key)
-        {
-            if (this.root.ContainsKey(key))
-            {
-                return this.root[key];
-            }
-
-            foreach (var item in this.root)
-            {
-                var subItem = item.Value as Dictionary<object, object>;
-                if (subItem != null && subItem.ContainsKey(key))
-                {
-                    return subItem[key];
-                }
-            }
-
-            return null;
-        }
-    }
-
     abstract public class BaseConfigurationType
     {
         abstract public bool Update(BaseConfigurationType newValue);
@@ -232,52 +163,6 @@ namespace EdgeModuleSamples.Common.Azure
         }
     }
 
-#if USE_DEVICE_TWIN
-    abstract public class AzureDeviceBase
-    {
-        private AzureConnectionBase _connection { get; set; }
-        private DeviceClient _deviceClient { get; set; }
-
-        private Twin _deviceTwin { get; set; }
-        private TwinCollection _reportedDeviceProperties { get; set; }
-        public virtual async Task OnDesiredDevicePropertyChanged(TwinCollection desiredProperties)
-        {
-            Log.WriteLine("desired properties contains {0} properties", desiredProperties.Count);
-            foreach (var p in desiredProperties)
-            {
-                Log.WriteLine("property {0}:{1}", p != null ? p.GetType().ToString() : "(null)", p != null ? p.ToString() : "(null)");
-            }
-            // TODO: compute delta and only send changes
-            await _deviceClient.UpdateReportedPropertiesAsync(_reportedDeviceProperties).ConfigureAwait(false);
-        }
-        private static async Task DesiredDevicePropertyChangedHandler(TwinCollection desiredProperties, object ctx)
-        {
-            var device = (AzureDeviceBase)ctx;
-            await device.OnDesiredDevicePropertyChanged(desiredProperties);
-            return;
-        }
-
-        public AzureDeviceBase()
-        {
-        }
-        public async Task AzureDeviceInitAsync<C>(C c) where C : AzureConnectionBase {
-            _connection = c;
-            TransportType transport = TransportType.Amqp;
-            _deviceClient = DeviceClient.CreateFromConnectionString(await DeploymentConfig.GetDeviceConnectionStringAsync(), transport);
-            // TODO: connection status chnages handler
-            //newConnection._inputMessageHandler += OnInputMessageReceived;
-            //await newConnection._moduleClient.SetInputMessageHandlerAsync("????", _inputMessageHandler, newConnection)
-            // Connect to the IoT hub using the MQTT protocol
-
-            // Create a handler for the direct method call
-            await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(DesiredDevicePropertyChangedHandler, this);
-            await _deviceClient.OpenAsync();
-            Log.WriteLine("DeviceClient Initialized");
-            var _deviceTwin = await _deviceClient.GetTwinAsync();
-            Log.WriteLine("DeviceTwin Retrieved");
-        }
-    }
-#else
     abstract public class AzureDeviceBase
     {
         private AzureConnectionBase _connection { get; set; }
@@ -291,7 +176,6 @@ namespace EdgeModuleSamples.Common.Azure
             await Task.CompletedTask;
         }
     }
-#endif
 
     abstract public class AzureConnectionBase
     {

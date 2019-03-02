@@ -14,6 +14,29 @@ using Windows.Foundation;
 
 namespace UARTLCD
 {
+    // rolling our own simple color type to avoid referencing any UI dependencies
+    public struct RGBColor
+    {
+        public readonly byte Red;
+        public readonly byte Green;
+        public readonly byte Blue;
+        public RGBColor(byte r, byte g, byte b)
+        {
+            Red = r;
+            Green = g;
+            Blue = b;
+        }
+    }
+    public static class Colors
+    {
+        public readonly static RGBColor Red = new RGBColor(0xff, 0, 0);
+        public readonly static RGBColor Green = new RGBColor(0, 0xff, 0);
+        public readonly static RGBColor Blue = new RGBColor(0, 0, 0xff);
+        public readonly static RGBColor Yellow = new RGBColor(0xff, 0xff, 0);
+        public readonly static RGBColor Black = new RGBColor(0, 0, 0);
+        public readonly static RGBColor White = new RGBColor(0xff, 0xff, 0xff);
+    }
+
     class Program
     {
         static async Task<int> MainAsync(string[] args)
@@ -25,12 +48,19 @@ namespace UARTLCD
             Log.Enabled = !Options.Quiet;
             Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
+            Dictionary<string, RGBColor> FruitColors = new Dictionary<string, RGBColor>()
+            {
+                {"apple", Colors.Red},
+                {"pear", Colors.Yellow},
+                {"pen", Colors.Green},
+                {"grapes", Colors.Blue}
+            };
             AzureConnection connection = null;
             UARTDevice uart = null;
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
-                        if (!Options.Test.HasValue)
+                        if (!Options.Test)
                         {
                             Log.WriteLine("starting connection creation");
                             connection = await AzureConnection.CreateAzureConnectionAsync();
@@ -47,11 +77,18 @@ namespace UARTLCD
                         {
                             Log.WriteLine("creating UART device {0}", Options.DeviceName != null ? Options.DeviceName : "(default)");
                             uart = await UARTDevice.CreateUARTDevice(Options.DeviceName);
-                            uart.InitAsync().Wait();
-                            if (Options.Test.HasValue)
+                            await uart.InitAsync();
+                            Log.WriteLine("uart initialzed");
+                            if (Options.Test)
                             {
                                 Log.WriteLine("initiating test");
-                                uart.Test(Options.Test.Value);
+                                if (Options.TestMessage.Length > 1)
+                                {
+                                    await uart.TestAsync(Options.TestMessage);
+                                } else
+                                {
+                                    await uart.TestAsync("Test");
+                                }
                                 Environment.Exit(2);
                             }                            
                         }
@@ -63,12 +100,28 @@ namespace UARTLCD
                 )
             );
 
-#if TODO
-            uart.OrientationChanged += (device, change) =>
+            AzureModule m = (AzureModule)connection.Module;
+#if DISABLED
+            m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
             {
-                connection.UpdateObject(new KeyValuePair<string, object>(Keys.Orientation, change.newOrientation));
+                var module = (AzureModule)sender;
+                Log.WriteLine("updating gpio pin config with {0}", newConfiguration.ToString());
+                await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
             };
 #endif
+            m.FruitChanged += async (object sender, string fruit) =>
+            {
+                Log.WriteLine("fruit changed to {0}", fruit.ToLower());
+                var module = (AzureModule)sender;
+                await Task.Run(async () => {
+                    await uart.SetBackgroundAsync(FruitColors[fruit.ToLower()]);
+                    await uart.Clear();
+                    await uart.WriteStringAsync(fruit.ToLower());
+                });
+            };
+
+            await connection.NotifyModuleLoadAsync();
+
             Log.WriteLine("Initialization Complete. have connection and device.  ");
 
 #if TODO
@@ -79,7 +132,7 @@ namespace UARTLCD
                 }
                 catch (Exception e)
                 {
-                    Log.WriteLine("I2c wait spin exception {0}", e.ToString());
+                    Log.WriteLine("wait spin exception {0}", e.ToString());
                 }
 
             }));

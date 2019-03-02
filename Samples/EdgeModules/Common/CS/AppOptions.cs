@@ -12,7 +12,10 @@ namespace EdgeModuleSamples.Common.Options
     abstract public class AppOptions: OptionSet
     {
         public bool Help { get; private set; }
-        public TimeSpan? Test { get; private set; }
+        public bool Test { get; private set; }
+        public TimeSpan? TestTime { get; private set; }
+        public int? TestCount { get; private set; }
+        public string TestMessage { get; private set; }
         public bool Quiet { get; private set; }
         public bool Verbose { get; private set; }
 
@@ -21,7 +24,10 @@ namespace EdgeModuleSamples.Common.Options
         {
             Add( "?|h|help", "show this message and exit", v => Help = v != null );
             Add("q|quiet", "suppress progress and errors to console", v => Quiet = v != null);
-            Add<int>("t=|test=", "test for {SECONDS} without connecting to Azure", v => Test = TimeSpan.FromSeconds(v));
+            Add("t|test", "test without connecting to Azure", v => Test = v != null);
+            Add<int>("tc=|testcount=", "test {COUNT} iterations without connecting to Azure", v => TestCount = v );
+            Add<int>("tt=|testtime=", "test for {SECONDS} without connecting to Azure", v => TestTime = TimeSpan.FromSeconds(v) );
+            Add<string>("tm=|testmsg=|testmessage=", "test with {MESSAGE}", v => TestMessage = v);
             Add("v|verbose", "maximum detail in console logging", v => Verbose = v != null);
         }
 

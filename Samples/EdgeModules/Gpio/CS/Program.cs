@@ -36,7 +36,7 @@ namespace ConsoleDotNetCoreGPIO
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
-                        if (!Options.Test.HasValue)
+                        if (!Options.Test)
                         {
                             Log.WriteLine("starting connection creation");
                             connection = await AzureConnection.CreateAzureConnectionAsync();
@@ -53,10 +53,16 @@ namespace ConsoleDotNetCoreGPIO
                         {
                             gpio = new GPIODevice();
                             gpio.InitOutputPins(Options);
-                            if (Options.Test.HasValue)
+                            if (Options.Test)
                             {
                                 Log.WriteLine("initiating pin test");
-                                gpio.Test(Options.Test.Value, TimeSpan.FromSeconds(2));
+                                if (Options.TestTime.HasValue)
+                                {
+                                    gpio.Test(Options.TestTime.Value, TimeSpan.FromSeconds(2));
+                                } else
+                                {
+                                    gpio.Test(TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(2));
+                                }
                             }
                         }
                         catch (Exception e)

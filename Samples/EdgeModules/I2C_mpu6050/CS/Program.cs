@@ -30,7 +30,7 @@ namespace I2CMPU6050
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
-                        if (!Options.Test.HasValue)
+                        if (!Options.Test)
                         {
                             Log.WriteLine("starting connection creation");
                             connection = await AzureConnection.CreateAzureConnectionAsync();
@@ -48,10 +48,16 @@ namespace I2CMPU6050
                             Log.WriteLine("creating mpu device {0}", Options.DeviceName != null ? Options.DeviceName : "(default)");
                             mpu = await I2CMpuDevice.CreateMpuDevice(Options.DeviceName);
                             mpu.InitAsync().Wait();
-                            if (Options.Test.HasValue)
+                            if (Options.Test)
                             {
                                 Log.WriteLine("initiating test");
-                                mpu.Test(Options.Test.Value);
+                                if (Options.Test)
+                                {
+                                    mpu.Test(Options.TestTime.Value);
+                                } else
+                                {
+                                    mpu.Test(TimeSpan.FromSeconds(15));
+                                }
                                 Environment.Exit(2);
                             }                            
                         }

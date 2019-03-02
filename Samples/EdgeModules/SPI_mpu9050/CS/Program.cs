@@ -30,7 +30,7 @@ namespace SPIMPU9050
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
-                        if (!Options.Test.HasValue)
+                        if (!Options.Test)
                         {
                             Log.WriteLine("starting connection creation");
                             connection = await AzureConnection.CreateAzureConnectionAsync();
@@ -49,10 +49,16 @@ namespace SPIMPU9050
                             mpu = await SPIMpuDevice.CreateMpuDevice(Options.DeviceName);
                             //var settings = new SPIDevice.
                             mpu.InitAsync().Wait();
-                            if (Options.Test.HasValue)
+                            if (Options.Test)
                             {
                                 Log.WriteLine("initiating test");
-                                mpu.Test(Options.Test.Value);
+                                if (Options.TestTime.HasValue)
+                                {
+                                    mpu.Test(Options.TestTime.Value);
+                                } else
+                                {
+                                    mpu.Test(TimeSpan.FromSeconds(15));
+                                }
                                 Environment.Exit(2);
                             }                            
                         }

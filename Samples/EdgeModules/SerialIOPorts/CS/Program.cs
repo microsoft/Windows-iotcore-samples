@@ -143,7 +143,12 @@ namespace SampleModule
         private static void TransmitTask(SerialPort device)
         {
             int i = 1;
-            while (!Options.Test.HasValue || i <= Options.Test.Value.Seconds)
+            int limit = 5; 
+            if (Options.TestCount.HasValue)
+            {
+                limit = Options.TestCount.Value;
+            }
+            while (!Options.Test || i <= limit)
             {
                 // Come up with a new message
 

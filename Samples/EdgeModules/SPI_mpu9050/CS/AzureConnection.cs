@@ -84,52 +84,12 @@ namespace SPIMPU9050
         }
     }
 
-#if USE_DEVICE_TWIN
-    class AzureDevice
-    {
-        private AzureConnection _connection { get; set; }
-        private DeviceClient _deviceClient { get; set; }
-
-        private Twin _deviceTwin { get; set; }
-        private TwinCollection _reportedDeviceProperties { get; set; }
-        private static async Task OnDesiredDevicePropertyChanged(TwinCollection desiredProperties, object ctx)
-        {
-            var device = (AzureDevice)ctx;
-            Log.WriteLine("desired properties contains {0} properties", desiredProperties.Count);
-            foreach (var p in desiredProperties)
-            {
-                Log.WriteLine("property {0}:{1}", p != null ? p.GetType().ToString() : "(null)", p != null ? p.ToString() : "(null)");
-            }
-            // TODO: compute delta and only send changes
-            await device._deviceClient.UpdateReportedPropertiesAsync(device._reportedDeviceProperties).ConfigureAwait(false);
-        }
-    public AzureDevice() {
-        }
-        public async Task AzureDeviceInitAsync() {
-            TransportType transport = TransportType.Amqp;
-            _deviceClient = DeviceClient.CreateFromConnectionString(await DeploymentConfig.GetDeviceConnectionStringAsync(), transport);
-            // TODO: connection status changes handler
-            //newConnection._inputMessageHandler += OnInputMessageReceived;
-            //await newConnection._moduleClient.SetInputMessageHandlerAsync("????", _inputMessageHandler, newConnection)
-            // Connect to the IoT hub using the MQTT protocol
-
-            await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredDevicePropertyChanged, this);
-            await _deviceClient.OpenAsync();
-            Log.WriteLine("DeviceClient Initialized");
-            var _deviceTwin = await _deviceClient.GetTwinAsync();
-            Log.WriteLine("DeviceTwin Retrieved");
-        }
-    }
-#endif
 
     class AzureConnection : AzureConnectionBase
     {
         private byte[] _lastOBody;
 
-#if USE_DEVICE_TWIN
-        private AzureDevice _device { get; set; }
-#endif
-            public AzureConnection()
+        public AzureConnection()
         {
             _lastOBody = new byte[0];
         }

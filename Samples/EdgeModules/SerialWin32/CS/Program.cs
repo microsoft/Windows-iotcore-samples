@@ -155,7 +155,12 @@ namespace SampleModule
             uint numbytes;
             int i = 1;
             const uint size = MessageBody.SerialSize;
-            while (!Options.Test.HasValue || i <= Options.Test.Value.TotalSeconds)
+            int limit = 15;
+            if (Options.TestCount.HasValue)
+            {
+                limit = Options.TestCount.Value;
+            }
+            while (!Options.Test || i <= limit)
             {
                 // Come up with a new message
 
