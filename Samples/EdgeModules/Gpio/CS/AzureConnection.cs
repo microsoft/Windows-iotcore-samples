@@ -19,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YamlDotNet.Serialization;
 
-namespace ConsoleDotNetCoreGPIO
+namespace GPIOFruit
 {
     public class AzureDevice : AzureDeviceBase
     {

@@ -42,6 +42,7 @@ namespace EdgeModuleSamples.Common
             public readonly static string SetFruit = "SetFruit";
             public readonly static string Reported = "Reported";
             public readonly static string twinChangeNotification = "twinChangeNotification";
+            public readonly static string UARTModuleId = "UART";
         };
         public class AzureMessageBase
         {

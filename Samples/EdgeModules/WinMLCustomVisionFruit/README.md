@@ -1,4 +1,4 @@
-# ConsoleDotNetCoreWinML Azure IoT Edge module
+# WinMLCustomVisionFruit Azure IoT Edge module
 
 These are the available versions of this Azure IoT Edge module sample:
 

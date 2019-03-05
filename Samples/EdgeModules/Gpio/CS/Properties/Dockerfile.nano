@@ -10,4 +10,4 @@ COPY $EXE_DIR/ ./
 
 ENV IPInterfaceName vEthernet (Ethernet)
 
-CMD ["ConsoleDotNetCoreGPIO.exe -l"]
+CMD ["GPIOFruit.exe"]

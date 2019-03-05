@@ -7,7 +7,7 @@ using Mono.Options;
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleDotNetCoreGPIO
+namespace GPIOFruit
 {
     public class AppOptions: EdgeModuleSamples.Common.Options.AppOptions
     {

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinMLCustomVisionFruit", "W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\CS\Common.csproj", "{9A886E9C-763A-435D-965A-3ACF235645C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDotNetCoreGPIO", "Gpio\CS\ConsoleDotNetCoreGPIO.csproj", "{8C8730DB-C952-4EB0-8744-D569631EA3DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GPIOFruit", "Gpio\CS\GPIOFruit.csproj", "{8C8730DB-C952-4EB0-8744-D569631EA3DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqueezeNetObjectDetection", "SqueezeNetObjectDetection\cs\SqueezeNetObjectDetection.csproj", "{4425F393-903D-46F1-88E0-15352355D476}"
 EndProject

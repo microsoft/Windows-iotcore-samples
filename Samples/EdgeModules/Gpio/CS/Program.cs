@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 
-namespace ConsoleDotNetCoreGPIO
+namespace GPIOFruit
 {
     class Program
     {

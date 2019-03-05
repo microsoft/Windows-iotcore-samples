@@ -59,6 +59,16 @@
                             "image": "${I2CImage}",
                             "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/A11EE3C6-8421-4202-A3E7-B91FF90188E4\"}]}}"
                         }
+                    },
+                    "UART": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${UARTImage}",
+                            "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/86E0D1E0-8089-11D0-9CE4-08003E301F73\"}]}}"
+                        }
                     }
                 }
             }
@@ -69,9 +79,11 @@
                 "routes": {
                     "I2CLocal": "FROM /messages/modules/I2C/outputs/outputorientation INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputorientation0\")",
                     "SPILocal": "FROM /messages/modules/SPI/outputs/outputorientation INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputorientation1\")",
-                    "WinMLLocal": "FROM /messages/modules/WinML/outputs/outputfruit INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputfruit\")",
-                    "ModuleLocal0": "FROM /messages/modules/GPIO/outputs/outputModuleLocal0 INTO BrokeredEndpoint(\"/modules/I2C/inputs/inputModule\")",
-                    "ModuleLocal1": "FROM /messages/modules/GPIO/outputs/outputModuleLocal1 INTO BrokeredEndpoint(\"/modules/WinML/inputs/inputModule\")",
+                    "WinMLLocal0": "FROM /messages/modules/WinML/outputs/outputfruit0 INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputfruit\")",
+                    "WinMLLocal1": "FROM /messages/modules/WinML/outputs/outputfruit1 INTO BrokeredEndpoint(\"/modules/UART/inputs/inputfruit\")",
+                    "GPIOModuleLocal0": "FROM /messages/modules/GPIO/outputs/outputModuleLocal0 INTO BrokeredEndpoint(\"/modules/I2C/inputs/inputModule\")",
+                    "GPIOModuleLocal1": "FROM /messages/modules/GPIO/outputs/outputModuleLocal1 INTO BrokeredEndpoint(\"/modules/WinML/inputs/inputModule\")",
+                    "UARTModuleLocal1": "FROM /messages/modules/UART/outputs/outputModuleLocal0 INTO BrokeredEndpoint(\"/modules/WinML/inputs/inputModule\")",
                     "default": "FROM /* INTO $upstream"
                 },
                 "storeAndForwardConfiguration": {

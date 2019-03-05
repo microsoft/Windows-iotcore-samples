@@ -49,6 +49,16 @@
                             "image": "${SPIImage}",
                             "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/A11EE3C6-8421-4202-A3E7-B91FF90188E4\"}]}}"
                         }
+                    },
+                    "UART": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${UARTImage}",
+                            "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/86E0D1E0-8089-11D0-9CE4-08003E301F73\"}]}}"
+                        }
                     }
                 }
             }

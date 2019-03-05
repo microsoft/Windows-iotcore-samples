@@ -101,14 +101,12 @@ namespace UARTLCD
             );
 
             AzureModule m = (AzureModule)connection.Module;
-#if DISABLED
             m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
             {
                 var module = (AzureModule)sender;
-                Log.WriteLine("updating gpio pin config with {0}", newConfiguration.ToString());
-                await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
+                Log.WriteLine("updating UART_lcd config with {0}", newConfiguration.ToString());
+                //await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
             };
-#endif
             m.FruitChanged += async (object sender, string fruit) =>
             {
                 Log.WriteLine("fruit changed to {0}", fruit.ToLower());
@@ -124,11 +122,15 @@ namespace UARTLCD
 
             Log.WriteLine("Initialization Complete. have connection and device.  ");
 
-#if TODO
-            Task.WaitAll(Task.Run(async () =>
+            Task.WaitAll(Task.Run(() =>
             {
-                try {
-                    await uart.BeginOrientationMonitoringAsync();
+                try
+                {
+                    for (; ; )
+                    {
+                        Log.WriteLine("{0} wait spin", Environment.TickCount);
+                        Thread.Sleep(TimeSpan.FromSeconds(30));
+                    }
                 }
                 catch (Exception e)
                 {
@@ -136,7 +138,6 @@ namespace UARTLCD
                 }
 
             }));
-#endif
             return 0;
         }
 

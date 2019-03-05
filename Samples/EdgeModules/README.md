@@ -20,8 +20,8 @@ Additionally, several of them are designed to work together to demonstrate coord
 |--------| ---------- |
 |[Window Machine Learning (WinML) with Azure Custom Vision Service Fruit Object Classifier Model](./WinMLCustomVisionFruit/Readme.md)| [FruitWinML](./WinMLCustomVisionFruit/CS/WinMLCustomVisionFruit.csproj)|
 |[Serial I/O using PInvoke to Config Manager and Classic Win32 Serial APIs)](./SerialWin32/Readme.md)| [SerialWin32](./SerialWin32/CS/SerialWin32.csproj)|
-|[Windows Machine Learning using SqueezeNet Object Detection Model](./ConsoleDotNetCoreWinML/Readme.md) from the [ONNX Model Zoo](https://github.com/onnx/models/tree/master/squeezenet)| [SqueezeNetObjectDetection](./squeezenetobjectdetection/cs/squeezenetobjectdetection.csproj)|
-|[GPIO using standard WinRT Simple Peripheral Bus APIs](./gpio/Readme.md)| [GPIO](./Gpio/CS/ConsoleDotNetCoreGPIO/ConsoleDotNetCoreGPIO.csproj)|
+|[Windows Machine Learning using SqueezeNet Object Detection Model](./WinMLCustomVisionFruit/Readme.md) from the [ONNX Model Zoo](https://github.com/onnx/models/tree/master/squeezenet)| [SqueezeNetObjectDetection](./squeezenetobjectdetection/cs/squeezenetobjectdetection.csproj)|
+|[GPIO using standard WinRT Simple Peripheral Bus APIs](./gpio/Readme.md)| [GPIO](./Gpio/CS/GPIOFruit.csproj)|
 |[Azure Function that responds to Azure IoT Hub events and reflects GPIO state across devices](./HubEventHandler/README.Md)| [HubEventHandler](./HubEventHandler/cs/HubEventHandler.csproj)|
 |[I2C TempHumidity Sensor](./I2CTempHumidity/README.md)|[I2CTempHumidity](./I2CTempHumidity/CS/I2CTempHumidity)|
 |[Serial IO using legacy comX ports with classic .net APIs](./SerialIoPorts/README.md)[SerialIoPorts](./SerialIoPorts/CS/SerialIoPorts.csproj)|

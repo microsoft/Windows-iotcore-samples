@@ -10,4 +10,4 @@ COPY $EXE_DIR/ ./
 
 ENV IPInterfaceName vEthernet (Ethernet)
 
-CMD ["ConsoleDotNetCoreI2c.exe -l"]
+CMD ["I2c_mpu6050.exe"]

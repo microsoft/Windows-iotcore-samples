@@ -3,7 +3,7 @@
 //
 
 using EdgeModuleSamples.Common.Logging;
-using ConsoleDotNetCoreGPIO;
+using GPIOFruit;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 
 
-namespace ConsoleDotNetCoreGPIO
+namespace GPIOFruit
 {
     public static class Extensions
     {
