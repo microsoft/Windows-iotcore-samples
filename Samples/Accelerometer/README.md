@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: accelerometer
 languages:
--csharp
+    - csharp
 products:
--windows
+    - windows
 description: Create a simple app with an SPI accelerometer build with Windows 10 IoT Core.
 ---
 

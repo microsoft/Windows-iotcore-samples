@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: iotcore-defaultapp
 languages: 
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: The current IoT Core Default App, a fully featured sample app.
 ---
 

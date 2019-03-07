@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: azure-samples
 languages:
--csharp
+ - csharp
 products:
--windows
+ - windows
 description: Test out different Azure samples with the power of Windows 10 IoT Core.
 ---
 
