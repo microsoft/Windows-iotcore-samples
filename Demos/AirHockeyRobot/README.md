@@ -1,11 +1,11 @@
---- 
-topic: sample 
-urlFragment: airhockeyrobot 
-languages: 
--csharp 
-products: 
--windows 
-description: IoT Bus tools to interact with Gpio, I2c, Spi and UART. 
+---
+topic: sample
+urlFragment: airhockeyrobot
+languages:
+    - csharp
+products:
+    - windows
+description: IoT Bus tools to interact with Gpio, I2c, Spi and UART.
 ---
 
 # Air Hockey Robot

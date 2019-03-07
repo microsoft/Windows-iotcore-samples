@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Plant Sensor
-  description: The app collects and displays temperature, brightness, and soil moisture data from various sensors. It runs on a Raspberry Pi and Windows 10 IoT Core.
-  author: saraclay
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

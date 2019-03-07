@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: pet-recognition-door
 languages:
--cpp
+    - cpp
 products:
--windows
+    - windows
 description: Building a pet recognition door with Windows 10 IoT Core.
 ---
 

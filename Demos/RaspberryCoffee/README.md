@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: raspberry-coffee
 languages:
--csharp
+    - csharp
 products:
--windows
+    - windows
 description: Building a coffee maker that is controllable with your phone using Windows 10 IoT Core.
 ---
 
