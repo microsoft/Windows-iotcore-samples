@@ -47,7 +47,7 @@
                         "restartPolicy": "always",
                         "settings": {
                             "image": "${GPIOImage}",
-                            "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/916EF1CB-8426-468D-A6F7-9AE8076881B3\"}]}}"
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/916EF1CB-8426-468D-A6F7-9AE8076881B3\"}]}}"
                         }
                     },
                     "I2C": {
@@ -57,7 +57,7 @@
                         "restartPolicy": "always",
                         "settings": {
                             "image": "${I2CImage}",
-                            "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/A11EE3C6-8421-4202-A3E7-B91FF90188E4\"}]}}"
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/A11EE3C6-8421-4202-A3E7-B91FF90188E4\"}]}}"
                         }
                     },
                     "UART": {
@@ -67,7 +67,7 @@
                         "restartPolicy": "always",
                         "settings": {
                             "image": "${UARTImage}",
-                            "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/86E0D1E0-8089-11D0-9CE4-08003E301F73\"}]}}"
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/86E0D1E0-8089-11D0-9CE4-08003E301F73\"}]}}"
                         }
                     }
                 }
