@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: virtual-pwm
 languages:
-    - cpp
+  - cpp
 products:
-    - windows
+  - windows
 description: This is a Windows Universal Driver sample for PWM that implements the PWM DDI.
 ---
 
