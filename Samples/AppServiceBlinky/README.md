@@ -1,4 +1,4 @@
---- 
+---
 topic: sample
 urlFragment: appservice-blinky
 languages:

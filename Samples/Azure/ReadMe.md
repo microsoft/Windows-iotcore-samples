@@ -1,4 +1,4 @@
---- 
+---
 topic: sample
 urlFragment: azure-samples
 languages:
