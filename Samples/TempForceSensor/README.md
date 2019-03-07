@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: temp-force-sensor
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Control a basic temperature and force sensor.
 ---
 

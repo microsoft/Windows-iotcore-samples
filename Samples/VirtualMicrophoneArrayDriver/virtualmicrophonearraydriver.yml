@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Virtual Microphone Array Driver
-  description: An app service to blink an LED and a client app to call it.
-  author: brian.fjeldstad
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: internet-radio
 languages: 
--cpp
+  - cpp
 products:
--windows
+  - windows
 description: Build a streaming audio device.
 ---
 

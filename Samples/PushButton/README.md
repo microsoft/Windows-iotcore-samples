@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: push-button
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Make an LED blink with the push of a button.
 ---
 

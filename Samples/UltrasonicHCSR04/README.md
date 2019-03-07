@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: ultrasonic-hcsr04
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: This sample demonstrates using the HC-SR04 ultrasonic sensor.
 ---
 

@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: iot-onboarding
 languages: 
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: This sample illustrates a technique for remotely joining your Headless IoT Device (an IoT device without a display) to your home Wi-Fi network.
 ---
 

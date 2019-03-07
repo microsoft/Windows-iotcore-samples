@@ -1,8 +1,10 @@
 ---
 topic: sample
 urlFragment: I2CCompass
-languages: csharp
-products: windows
+languages:
+  - csharp
+products:
+  - windows
 description: This sample uses I2C on Windows IoT Core to communicate with an HMC5883L Magnetometer device.
 ---
 

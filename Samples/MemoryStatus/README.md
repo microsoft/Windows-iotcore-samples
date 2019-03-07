@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: memory-status
 languages: 
--cpp
+  - cpp
 products:
--windows
+  - windows
 description: Create a console app that monitors memory usage on devices running Windows 10 IoT Core.
 ---
 

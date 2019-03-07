@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Speech Translator
-  description: Translate your speech to different languages.
-  author: brian.fjeldstad
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

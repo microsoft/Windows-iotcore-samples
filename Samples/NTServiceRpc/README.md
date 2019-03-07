@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: NTService-RPC
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: This sample demonstrates the use of a NT service with an UWP app
 ---
 

@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Vibration device
-  description: A sample that shows how to use the vibration device on supported hardware.
-  author: brian.fjeldstad
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

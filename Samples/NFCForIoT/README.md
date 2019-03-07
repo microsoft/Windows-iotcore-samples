@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: nfc-iot
 languages: 
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Learn how use NFC on IoT Core.
 ---
 

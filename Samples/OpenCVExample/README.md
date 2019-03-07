@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: opencv
 languages:
--cpp
+  - cpp
 products:
--windows
+  - windows
 description: In this sample, we will build the OpenCV library for Windows and add it to a UWP C++ app, which will run facial and body recognition on a photo.
 ---
 

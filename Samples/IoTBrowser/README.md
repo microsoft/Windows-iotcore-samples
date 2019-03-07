@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: iot-browser
 languages: 
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Build a simple web browser for Windows 10 IoT Core.
 ---
 

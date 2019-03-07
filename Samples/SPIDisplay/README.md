@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: spi-display
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Write lines of text to an SPI LED display.
 ---
 
