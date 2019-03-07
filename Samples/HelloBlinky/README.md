@@ -2,10 +2,10 @@
 topic: sample
 urlFragment: hello-blinky
 languages: 
--csharp
--cpp
+  - csharp
+  - cpp
 products:
--windows
+  - windows
 description: A sample that shows how to make an LED attached to a GPIO pin blink on and off.
 ---
 

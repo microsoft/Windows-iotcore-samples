@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: digital-sign
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: This sample showcases a Digital Sign UWP running on Windows IoT Core.
 ---
 

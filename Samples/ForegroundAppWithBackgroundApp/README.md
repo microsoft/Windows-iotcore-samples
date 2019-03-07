@@ -2,10 +2,10 @@
 topic: sample
 urlFragment: foregroundapp-backgroundapp
 languages:
--csharp
--cpp
+  - csharp
+  - cpp
 products:
--windows
+  - windows
 description: An example of building a foreground app and background app within the same APPX file.
 ---
 

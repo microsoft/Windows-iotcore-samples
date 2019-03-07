@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: deviceIO-controller
 languages:
--cpp
+  - cpp
 products:
--windows
+  - windows
 description: Sample for leveraging Device IO Controller.
 ---
 
