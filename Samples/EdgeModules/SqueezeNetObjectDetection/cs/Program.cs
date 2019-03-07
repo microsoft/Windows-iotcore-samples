@@ -47,7 +47,7 @@ namespace SampleModule
                 Log.Enabled = !Options.Quiet;
                 Log.Verbose = Options.Verbose;
 
-                if (Options.ShowList)
+                if (Options.List)
                 {
                     var devices = await FrameSource.GetSourceNamesAsync();
 

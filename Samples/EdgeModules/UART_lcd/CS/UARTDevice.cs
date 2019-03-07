@@ -142,7 +142,7 @@ namespace UARTLCD
             await AsAsync(_write.StoreAsync());
         }
 
-        public static async Task<UARTDevice> CreateUARTDevice(string deviceName)
+        public static async Task<UARTDevice> CreateUARTDeviceAsync(string deviceName)
         {
             Log.WriteLine("finding device {0}", deviceName != null ? deviceName : "(default)");
 

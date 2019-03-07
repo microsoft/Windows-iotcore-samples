@@ -41,7 +41,7 @@ namespace SampleModule
                 //
 
                 var devicepaths = SerialPort.GetPortNames();
-                if (Options.ShowList || string.IsNullOrEmpty(Options.DeviceName))
+                if (Options.List || string.IsNullOrEmpty(Options.DeviceName))
                 {
                     if (devicepaths.Length > 0)
                     {

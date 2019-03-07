@@ -7,9 +7,9 @@ using Mono.Options;
 using System;
 using System.Collections.Generic;
 
-namespace GPIOFruit
+namespace PWMFruit
 {
-    public class AppOptions: EdgeModuleSamples.Common.Options.AppOptions
+    public class AppOptions: EdgeModuleSamples.Common.Options.SpbAppOptions
     {
         public int? Red { get; set; }
         public int? Green { get; set; }

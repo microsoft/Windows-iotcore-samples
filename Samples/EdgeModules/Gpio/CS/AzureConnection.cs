@@ -25,7 +25,7 @@ namespace GPIOFruit
         public AzureDevice() { }
     }
     [JsonObject(MemberSerialization.Fields)]
-    class ConfigurationType : BaseConfigurationType
+    class ConfigurationType : SpbBaseConfigurationType
     {
         public GpioPinIndexesType GpioPins;
         public override bool Update(BaseConfigurationType newValue)

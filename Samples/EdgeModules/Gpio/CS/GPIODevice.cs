@@ -243,6 +243,8 @@ namespace GPIOFruit
             var p = new GPIOOutputPin(this, index, value, mode);
             AddPin(name, p, ref _outputPins);
         }
+        // not same as other SPB, private ctor, public static cread to allow multiple GPIOController 
+        // gpiocontroller class only has getdefault(). there is no getdeviceselector(friendlynamestring)
         public GPIODevice()
         {
             _activeValue = _defaultOutputState.Invert();

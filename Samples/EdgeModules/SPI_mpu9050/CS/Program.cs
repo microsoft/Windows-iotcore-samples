@@ -25,6 +25,7 @@ namespace SPIMPU9050
             Log.Enabled = !Options.Quiet;
             Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
+            // TODO: Options.List
             AzureConnection connection = null;
             SPIMpuDevice mpu = null;
             await Task.WhenAll(
@@ -46,7 +47,7 @@ namespace SPIMPU9050
                         try
                         {
                             Log.WriteLine("creating mpu device {0}", Options.DeviceName != null ? Options.DeviceName : "(default)");
-                            mpu = await SPIMpuDevice.CreateMpuDevice(Options.DeviceName);
+                            mpu = await SPIMpuDevice.CreateMpuDeviceAsync(Options.DeviceName);
                             //var settings = new SPIDevice.
                             mpu.InitAsync().Wait();
                             if (Options.Test)

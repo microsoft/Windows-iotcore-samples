@@ -23,7 +23,7 @@ namespace I2CMPU6050
         private I2CMpuDevice() : base(false)
         {
         }
-        public static async Task<I2CMpuDevice> CreateMpuDevice(string deviceName)
+        public static async Task<I2CMpuDevice> CreateMpuDeviceAsync(string deviceName)
         {
             Log.WriteLine("finding device {0}", deviceName != null ? deviceName : "(default)");
 

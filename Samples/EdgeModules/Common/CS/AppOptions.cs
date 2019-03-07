@@ -18,11 +18,13 @@ namespace EdgeModuleSamples.Common.Options
         public string TestMessage { get; private set; }
         public bool Quiet { get; private set; }
         public bool Verbose { get; private set; }
+        public bool List { get; private set; }
 
 
         public AppOptions()
         {
-            Add( "?|h|help", "show this message and exit", v => Help = v != null );
+            Add("?|h|help", "show this message and exit", v => Help = v != null );
+            Add("l|list", "list available devices that can be used by this sample", v => List = v != null);
             Add("q|quiet", "suppress progress and errors to console", v => Quiet = v != null);
             Add("t|test", "test without connecting to Azure", v => Test = v != null);
             Add<int>("tc=|testcount=", "test {COUNT} iterations without connecting to Azure", v => TestCount = v );
@@ -52,6 +54,7 @@ namespace EdgeModuleSamples.Common.Options
     public class SpbAppOptions : EdgeModuleSamples.Common.Options.AppOptions
     {
 
+        // TODO: consider moving this to base
         public string DeviceName { get; private set; }
 
         public SpbAppOptions()

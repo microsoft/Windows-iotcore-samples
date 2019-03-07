@@ -11,7 +11,6 @@ namespace SampleModule
 {
     public class AppOptions: EdgeModuleSamples.Common.Options.AppOptions
     {
-        public bool ShowList { get; private set; }
         public bool RunForever { get; private set; }
         public string DeviceId { get; private set; }
         public bool UseEdge { get; private set; }
@@ -20,7 +19,6 @@ namespace SampleModule
 
         public AppOptions()
         {
-            Add( "l|list", "list available cameras and exit", v => ShowList = v != null);
             Add( "d|device=", "the {ID} of device to connect", v => DeviceId = v);
             Add( "e|edge", "transmit through azure edge", v => UseEdge = v != null);
             Add( "m|model=", "path to model {FILE}", v => ModelPath = v);
@@ -32,7 +30,7 @@ namespace SampleModule
         {
             var result = base.Parse(args);
 
-            if (!ShowList && string.IsNullOrEmpty(ModelPath))
+            if (!List && string.IsNullOrEmpty(ModelPath))
             {
                         Log.WriteLine($"{AppName} {AppVersion}");
                         WriteOptionDescriptions(Console.Out);

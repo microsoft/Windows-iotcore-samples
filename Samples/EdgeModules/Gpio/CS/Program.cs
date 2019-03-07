@@ -24,6 +24,7 @@ namespace GPIOFruit
             Log.Enabled = !Options.Quiet;
             Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
+            // TODO: Options.List
             Dictionary<string, string> FruitColors = new Dictionary<string, string>()
             {
                 {"apple", "red" },

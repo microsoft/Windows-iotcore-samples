@@ -23,7 +23,7 @@ namespace SPIMPU9050
         private SPIMpuDevice() : base(true)
         {
         }
-        public static async Task<SPIMpuDevice> CreateMpuDevice(string deviceName)
+        public static async Task<SPIMpuDevice> CreateMpuDeviceAsync(string deviceName)
         {
             Log.WriteLine("finding device {0}", deviceName != null ? deviceName : "(default)");
             Windows.Devices.Enumeration.DeviceInformation info;

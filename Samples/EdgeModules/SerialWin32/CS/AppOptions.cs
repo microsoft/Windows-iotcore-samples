@@ -19,7 +19,6 @@ namespace SampleModule
 
         public AppOptions()
         {
-            Add( "l|list", "list available devices and exit", v => ShowList = v != null);
             Add( "r|receive", "receive and display packets", v => Receive = v != null);
             Add( "s|send", "send packets (combine with -r for loopback)", v => Transmit = v != null);
             Add( "c|config", "display device configuration", v => ShowConfig = v != null);

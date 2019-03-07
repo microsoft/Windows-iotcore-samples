@@ -39,7 +39,7 @@ namespace EdgeModuleSamples.Common.Device
             {
                 if (r == null)
                 {
-                    r =i;
+                    r = i;
                 }
                 object o;
                 i.Properties.TryGetValue(friendlyNameProperty, out o);

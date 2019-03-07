@@ -27,6 +27,7 @@ namespace I2CMPU6050
             Log.WriteLine("arg parse complete...");
             AzureConnection connection = null;
             I2CMpuDevice mpu = null;
+            // TODO: Options.List
             await Task.WhenAll(
                 Task.Run(async () => {
                     try { 
@@ -46,7 +47,7 @@ namespace I2CMPU6050
                         try
                         {
                             Log.WriteLine("creating mpu device {0}", Options.DeviceName != null ? Options.DeviceName : "(default)");
-                            mpu = await I2CMpuDevice.CreateMpuDevice(Options.DeviceName);
+                            mpu = await I2CMpuDevice.CreateMpuDeviceAsync(Options.DeviceName);
                             mpu.InitAsync().Wait();
                             if (Options.Test)
                             {

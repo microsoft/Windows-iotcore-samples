@@ -18,27 +18,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GPIOFruit
+namespace PWMFruit
 {
     public class AzureDevice : AzureDeviceBase
     {
         public AzureDevice() { }
     }
     [JsonObject(MemberSerialization.Fields)]
-    class ConfigurationType : BaseConfigurationType
+    class ConfigurationType : SpbBaseConfigurationType
     {
-        public GpioPinIndexesType GpioPins;
         public override bool Update(BaseConfigurationType newValue)
         {
             var v = (ConfigurationType)newValue;
             Log.WriteLine("updating from {0} to {1}", this.ToString(), v.ToString());
-            bool rc = GpioPins.Update(v.GpioPins);
+            // TODO: implement cloud side device configuration
+            bool rc = false;
+            //bool rc = GpioPins.Update(v.GpioPins);
             Log.WriteLine("{0} update to {1}", rc ? "did" : "did not", this.ToString());
             return rc;
         }
         public override string ToString()
         {
-            return String.Format("{0} {1}", GetType().Name, GpioPins.ToString());
+            return String.Format("{0}", GetType().Name);
         }
 
     }

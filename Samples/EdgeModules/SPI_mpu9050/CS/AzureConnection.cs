@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 namespace SPIMPU9050
 {
     [JsonObject(MemberSerialization.Fields)]
-    class ConfigurationType : BaseConfigurationType
+    class ConfigurationType : SpbBaseConfigurationType
     {
         public override bool Update(BaseConfigurationType newValue)
         {

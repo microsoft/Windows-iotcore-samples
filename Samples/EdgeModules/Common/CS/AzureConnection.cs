@@ -24,6 +24,11 @@ namespace EdgeModuleSamples.Common.Azure
         abstract public bool Update(BaseConfigurationType newValue);
     }
 
+    abstract public class SpbBaseConfigurationType : BaseConfigurationType
+    {
+        public string DeviceName;
+        abstract override public bool Update(BaseConfigurationType newValue);
+    }
     public struct DesiredPropertiesType<CONFIGURATIONTYPE> where CONFIGURATIONTYPE : BaseConfigurationType
 {
         public CONFIGURATIONTYPE Configuration;

@@ -225,6 +225,11 @@ namespace WinMLCustomVisionFruit
             AzureConnection connection = null;
             MediaFrameReader reader = null;
             EventWaitHandle evtFrame = null;
+            if (options.List)
+            {
+                await EnumFrameSourcesAsync();
+                Environment.Exit(3);
+            }
 
             await Task.WhenAll(
                 Task.Run(async () =>

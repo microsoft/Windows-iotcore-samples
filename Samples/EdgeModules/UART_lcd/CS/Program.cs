@@ -48,6 +48,7 @@ namespace UARTLCD
             Log.Enabled = !Options.Quiet;
             Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
+            // TODO: Options.List
             Dictionary<string, RGBColor> FruitColors = new Dictionary<string, RGBColor>()
             {
                 {"apple", Colors.Red},
@@ -76,7 +77,7 @@ namespace UARTLCD
                         try
                         {
                             Log.WriteLine("creating UART device {0}", Options.DeviceName != null ? Options.DeviceName : "(default)");
-                            uart = await UARTDevice.CreateUARTDevice(Options.DeviceName);
+                            uart = await UARTDevice.CreateUARTDeviceAsync(Options.DeviceName);
                             await uart.InitAsync();
                             Log.WriteLine("uart initialzed");
                             if (Options.Test)
