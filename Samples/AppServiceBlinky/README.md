@@ -2,10 +2,10 @@
 topic: sample
 urlFragment: appservice-blinky
 languages:
--csharp
--cpp
+  - csharp
+  - cpp
 products:
--windows
+  - windows
 description: Create a simple Blinky app service and connect a LED to your Windows IoT Core device.
 ---
 
