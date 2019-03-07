@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerialIOPorts", "SerialIOPo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UART_lcd", "UART_lcd\CS\UART_lcd.csproj", "{286AEE43-76C8-41C8-8A3F-99D9E5BB8C13}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PWMFruit", "pwm\CS\PWMFruit.csproj", "{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{286AEE43-76C8-41C8-8A3F-99D9E5BB8C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{286AEE43-76C8-41C8-8A3F-99D9E5BB8C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{286AEE43-76C8-41C8-8A3F-99D9E5BB8C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
