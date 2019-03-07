@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Pet Recognition Door
-  description: This project employs computer vision to ensure that your cat will have exclusive entry access to your home. 
-  author: saraclay
-  languages:
-  - cpp
-  technologies:
-  - windows-iot

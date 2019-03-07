@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: GoPiGoXbox
-  description: This sample enables you to control your GoPiGo with your Xbox controller.
-  author: lamadio
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

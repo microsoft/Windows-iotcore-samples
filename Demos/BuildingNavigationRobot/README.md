@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: navigation-robot
 languages:
--csharp
+    - csharp
 products:
--windows
+    - windows
 description: Building a navigation robot with Windows 10 IoT Core.
 ---
 

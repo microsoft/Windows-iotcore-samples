@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: kegocnizer
 languages:
--csharp
+    - csharp
 products:
--windows
+    - windows
 description: Building an IoT beer device that dispenses to authorized users.
 ---
 

@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Facial Recognition Door
-  description: This project utilizes a Raspberry Pi, basic Webcam, and an internet connection to create a door that unlocks itself using facial recognition.
-  author: lamadio
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

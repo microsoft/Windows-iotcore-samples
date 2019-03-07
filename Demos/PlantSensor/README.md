@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: plant-sensor
 languages:
--csharp
+    - csharp
 products:
--windows
+    - windows
 description: Building a plant sensor with Windows 10 IoT Core.
 ---
 

@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: facial-recognition-door
 languages:
--csharp
+    - csharp
 products:
--windows
+    - windows
 description: Building a facial recognition door with Windows 10 IoT Core.
 ---
 

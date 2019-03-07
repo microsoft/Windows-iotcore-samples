@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Kegocnizer
-  description: This demo project describes the development of a device to allow beer to be dispensed to authorized users, which adheres to a identified set of company policies and state law.
-  author: mark.snyder
-  languages:
-  - csharp
-  technologies:
-  - windows-iot
