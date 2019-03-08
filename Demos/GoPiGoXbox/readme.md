@@ -12,7 +12,6 @@ description: Working with the GoPiGoXbox sample.
 
 This sample enables you to control your GoPiGo with your Xbox controller.  It demonstrates how to read inputs from the Xbox controller, translate these inputs as commands ('move forward',  ' move backward', etc) and issue these commands to the GoPiGo robot.
 
-
 ### Project Description
 
 This sample contains two projects: XboxControllerClient and GoPiGoXboxWebService.  The XboxControllerClient is a foreground application written in C#.  It is responsible for reading the Xbox controller's input and send it to GoPiGoXboxWebService.  GoPiGoXboxWebService is a background application written in python.  It exposes a WebAPI which takes the controller's input and issues commands to the GoPiGo robot.

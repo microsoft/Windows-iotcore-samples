@@ -1,9 +1,3 @@
----
-title: Virtual PWM Driver Sample
-ms.author: mlotfy
-description: This is a Windows Universal Driver sample for PWM that implements the PWM DDI.
----
-
 # Virtual PWM Driver Sample
 
 This is a Windows Universal Driver sample for PWM that implements the PWM DDI as documented on [MSDN here](https://docs.microsoft.com/en-us/windows/desktop/devio/pwm-api). A PWM DDI compliant PWM driver will allow user-mode UWP apps to access the PWM controllers through the PWM WinRT APIs as documented on [MSDN here](https://docs.microsoft.com/en-us/uwp/api/windows.devices.pwm).
