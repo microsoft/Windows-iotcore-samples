@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: IoT Hub Client sample
-  description: Learn how to  connect a device running Windows 10 IoT Core to your Microsoft IoT Central application.
-  author: saraclay
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: TPM Device Test
-  description: Learn how to use the TPM Device class to connect to the Azure IoT Hub from a provisioned device.
-  author: saraclay
-  languages:
-  - csharp
-  technologies:
-  - windows-iot
