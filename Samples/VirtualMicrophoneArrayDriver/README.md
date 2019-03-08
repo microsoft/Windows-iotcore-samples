@@ -5,7 +5,7 @@ languages:
   - cpp
 products:
   - windows
-description: An app service to blink an LED and a client app to call it.
+description: "An app service to blink an LED and a client app to call it."
 ---
 
 # Virtual Microphone Array Driver
