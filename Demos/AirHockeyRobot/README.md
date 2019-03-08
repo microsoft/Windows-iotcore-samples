@@ -9,6 +9,7 @@ description: IoT Bus tools to interact with Gpio, I2c, Spi and UART.
 ---
 
 # Air Hockey Robot
+
 This project showcases a full-sized air hockey robot controlled by a MinnowBoard Max running Windows 10 IoT Core. The robot uses a color blob tracking camera to detect the location goals and the XY mallet position. All of these devices hook into a Minnowboard Max, which is responsible for taking in puck position data and calculating motor movements in response.
 
 ## Cloning the project

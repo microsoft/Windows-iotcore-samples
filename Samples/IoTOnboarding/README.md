@@ -8,7 +8,7 @@ products:
 description: This sample illustrates a technique for remotely joining your Headless IoT Device (an IoT device without a display) to your home Wi-Fi network.
 ---
 
-IoT Onboarding
+# IoT Onboarding
 
 These are the available versions of this Windows 10 IoT Core sample:
 

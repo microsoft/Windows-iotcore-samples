@@ -2,13 +2,14 @@
 topic: sample
 urlFragment: plant-sensor
 languages:
-    - csharp
+  - csharp
 products:
-    - windows
+  - windows
 description: Building a plant sensor with Windows 10 IoT Core.
 ---
 
 # Windows IoT Plant Sensor
+
 digiPlant is a Universal Windows Platform app that helps users monitor their plant. The app collects and displays tempoerature, brightness, and soil moisture data from various sensors. It runs on a Raspberry Pi and Windows 10 IoT Core. 
 
 ## Cloning the project

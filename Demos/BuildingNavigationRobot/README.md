@@ -2,13 +2,14 @@
 topic: sample
 urlFragment: navigation-robot
 languages:
-    - csharp
+  - csharp
 products:
-    - windows
+  - windows
 description: Building a navigation robot with Windows 10 IoT Core.
 ---
 
 # Windows IoT Building Navigation Robot
+
 The Windows IoT Building Navigation Robot is a robot that will navigate a person to a conference room or office in a building.  The robot consists of an iRobot Create 2 with a LIDAR, screen, battery, and a device running Windows 10 IoT Core mounted on top.
 
 ## Cloning the project

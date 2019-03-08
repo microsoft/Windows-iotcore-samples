@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: appservice-sharednotepad
 languages:
-    - csharp
+  - csharp
 products:
-    - windows
+  - windows
 description: Create a simple notepad app service as well as two simple app service clients.
 ---
 

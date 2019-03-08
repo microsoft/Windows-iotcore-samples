@@ -8,7 +8,7 @@ products:
 description: Build a streaming audio device.
 ---
 
-Internet Radio
+# Internet Radio
 
 These are the available versions of this Windows 10 IoT Core sample:
 

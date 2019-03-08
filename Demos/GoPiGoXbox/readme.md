@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: gopigoxbox
 languages:
-    - csharp
+  - csharp
 products:
-    - windows
+  - windows
 description: Working with the GoPiGoXbox sample.
 ---
 

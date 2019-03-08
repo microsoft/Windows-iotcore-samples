@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: rgb-led
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: A sample that makes an LED blink red, green, and blue.
 ---
 
