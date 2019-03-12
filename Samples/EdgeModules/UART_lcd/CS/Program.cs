@@ -107,6 +107,7 @@ namespace UARTLCD
                 var module = (AzureModule)sender;
                 Log.WriteLine("updating UART_lcd config with {0}", newConfiguration.ToString());
                 //await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
+                await Task.CompletedTask;
             };
             m.FruitChanged += async (object sender, string fruit) =>
             {
@@ -118,6 +119,8 @@ namespace UARTLCD
                     await uart.WriteStringAsync(fruit.ToLower());
                 });
             };
+            await uart.SetBackgroundAsync(Colors.White);
+            await uart.WriteStringAsync("Loaded");
 
             await connection.NotifyModuleLoadAsync();
 

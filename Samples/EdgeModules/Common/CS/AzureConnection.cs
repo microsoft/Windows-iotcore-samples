@@ -276,6 +276,7 @@ namespace EdgeModuleSamples.Common.Azure
         }
         public virtual async Task UpdateObjectAsync(KeyValuePair<string, object> kvp)
         {
+            Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObjectAsync base -- no-op");
             await Task.CompletedTask;
         }
     }

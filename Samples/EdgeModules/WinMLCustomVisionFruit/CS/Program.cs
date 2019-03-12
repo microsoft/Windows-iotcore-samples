@@ -72,15 +72,18 @@ namespace WinMLCustomVisionFruit
             //init.MemoryPreference(a.opt.fgpu_only ? MediaCaptureMemoryPreference::Auto : MediaCaptureMemoryPreference::Cpu);
             init.MemoryPreference = MediaCaptureMemoryPreference.Cpu;
             init.StreamingCaptureMode = StreamingCaptureMode.Video;
-            Log.WriteLine("Enumerating Frame Sources");
+            Thread.Sleep(1000);
             await AsyncHelper.AsAsync(capture.InitializeAsync(init));
+            Thread.Sleep(1000);
             Log.WriteLine("capture initialized.  capture is {0}", capture == null ? "null" : "not null");
             var sources = capture.FrameSources;
-            Log.WriteLine("have frame sources");
+            Log.WriteLine("have frame sources.  FrameSources is {0}", sources == null ? "null" : "not null");
+            Log.WriteLine("selected source group {0}. looking for source {1}", frame_group.DisplayName, frame_source_info.Id);
             MediaFrameSource source;
             var found = sources.TryGetValue(frame_source_info.Id, out source);
             if (!found)
             {
+                Log.WriteLine("source {0} not found", frame_source_info.Id);
                 throw new ApplicationException(string.Format("can't find source {0}", source));
             }
             Log.WriteLine("have frame source that matches chosen source info id");

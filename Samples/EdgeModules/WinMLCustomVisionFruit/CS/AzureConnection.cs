@@ -103,10 +103,12 @@ namespace WinMLCustomVisionFruit
             {
                 Message m0 = null;
                 Message m1 = null;
+                Message mu = null;
                 lock (_lastFruitBody)
                 {
                     m0 = new Message(_lastFruitBody);
                     m1 = new Message(_lastFruitBody);
+                    mu = new Message(_lastFruitBody);
                 }
                 await Task.WhenAll(
                     Task.Run(async () =>
@@ -116,6 +118,10 @@ namespace WinMLCustomVisionFruit
                     Task.Run(async () =>
                     {
                         await Module.SendMessageAsync(Keys.OutputFruit1, m1);
+                    }),
+                    Task.Run(async () =>
+                    {
+                        await Module.SendMessageAsync(Keys.OutputUpstream, mu);
                     })
                 );
 

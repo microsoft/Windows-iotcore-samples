@@ -154,7 +154,7 @@ namespace UARTLCD
             {
                 info = await FindAsync(SerialDevice.GetDeviceSelector());
             }
-            Log.WriteLine("UART device info {0} null", info == null ? "is" : "is not");
+            Log.WriteLine("UART device info {0} null. selected {1}", info == null ? "is" : "is not", info.Id);
 
             var d = new UARTDevice();
             d.Device = await AsAsync(SerialDevice.FromIdAsync(info.Id));

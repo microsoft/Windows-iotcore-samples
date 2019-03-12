@@ -3,8 +3,8 @@
     <OutputType>Exe</OutputType>
     <!-->
     <RuntimeIdentifier>win-arm</RuntimeIdentifier> 
-    -->
     <Platform>win-arm</Platform>
+    -->
     <ProjectGuid>{286AEE43-76C8-41C8-8A3F-99D9E5BB8C13}</ProjectGuid>
   </PropertyGroup>
   <Import Project="..\..\Common.CS.Props" />
