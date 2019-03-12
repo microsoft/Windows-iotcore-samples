@@ -1,5 +1,5 @@
 ---
-title: Waveshare KMDF Filter Driver
+name: Waveshare KMDF Filter Driver
 description: Filter driver which enables the Waveshare touchscreen on IoT Core.
 topic: sample
 urlFragment: virtual-pwm
