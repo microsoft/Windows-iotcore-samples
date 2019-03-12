@@ -1,6 +1,6 @@
 ---
 topic: sample
-urlFragment: shelllauncherv2
+urlFragment: shelllauncher-v2
 languages:
   - csharp
 products:
