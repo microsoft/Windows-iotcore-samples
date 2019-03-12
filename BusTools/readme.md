@@ -11,10 +11,11 @@ description: IoT Bus tools to interact with Gpio, I2c, Spi and UART.
 # Windows IoT Bus Tools
 
 This folder contains tools that let you interact with Gpio, I2c, Spi, and UART on the command line. They will run on any edition of Windows, including Windows IoT Core and Windows Enterprise. The tools are:
- - GpioTestTool
- - I2cTestTool
- - SpiTestTool
- - MinComm (UART)
+
+- GpioTestTool
+- I2cTestTool
+- SpiTestTool
+- MinComm (UART)
  
 ## Building
 
@@ -22,8 +23,8 @@ This folder contains tools that let you interact with Gpio, I2c, Spi, and UART o
 1. From the start menu, run `Developer Command Prompt for VS 2017`
 1. Navigate to the root of this repository and run:
 
-```
-    msbuild /p:Platform=ARM /p:Configuration=Release
+```powershell
+msbuild /p:Platform=ARM /p:Configuration=Release
 ```
 
 Valid values of Platform are: `ARM, x86, x64`
