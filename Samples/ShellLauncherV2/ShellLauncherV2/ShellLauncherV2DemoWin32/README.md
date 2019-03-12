@@ -1,4 +1,4 @@
---- 
+---
 topic: sample
 urlFragment: ShellLauncherV2DemoWin32
 languages:
