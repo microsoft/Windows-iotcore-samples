@@ -16,7 +16,7 @@ This folder contains tools that let you interact with Gpio, I2c, Spi, and UART o
 - I2cTestTool
 - SpiTestTool
 - MinComm (UART)
- 
+
 ## Building
 
 1. Download [Visual Studio 2017](https://www.visualstudio.com/downloads/). Select options for C++, Windows UWP, and Windows Desktop app development. You may need to download the latest version of the [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk).

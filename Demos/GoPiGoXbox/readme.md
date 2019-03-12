@@ -16,7 +16,7 @@ This sample enables you to control your GoPiGo with your Xbox controller.  It de
 
 This sample contains two projects: XboxControllerClient and GoPiGoXboxWebService.  The XboxControllerClient is a foreground application written in C#.  It is responsible for reading the Xbox controller's input and send it to GoPiGoXboxWebService.  GoPiGoXboxWebService is a background application written in python.  It exposes a WebAPI which takes the controller's input and issues commands to the GoPiGo robot.
 
-Since XboxControllerClient is an universal application, it can be run locally on the Raspberry Pi or remotely on a PC.  This is especially useful in the case of a wired Xbox controller -- you can connect the Xbox control to the PC and still control the Raspberry Pi / GoPiGo Robot via wifi.  See configuration 2 - Running remotely.
+Since XboxControllerClient is an universal application, it can be run locally on the Raspberry Pi or remotely on a PC.  This is especially useful in the case of a wired Xbox controller -- you can connect the Xbox control to the PC and still control the Raspberry Pi / GoPiGo Robot via WiFi.  See configuration 2 - Running remotely.
 
 ## Requirements
 
@@ -43,5 +43,5 @@ Since XboxControllerClient is an universal application, it can be run locally on
 1. Connect the Xbox controller to your PC
 2. Connect your Raspberry Pi to your wireless network.
 3. On line 23 of `XboxControllerClient\MainPage.xaml.cs`, change the `localhost` to the IP of your Raspberry Pi.
-3. Deploy and run XboxControllerClient on your PC
-4. Use the left thumb stick or the d-pad to control the GoPiGo Robot.
+4. Deploy and run XboxControllerClient on your PC
+5. Use the left thumb stick or the d-pad to control the GoPiGo Robot.

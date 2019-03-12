@@ -14,7 +14,7 @@ This project showcases a full-sized air hockey robot controlled by a MinnowBoard
 
 ## Cloning the project
 
-Navigate to the root folder [here](https://github.com/Microsoft/Windows-iotcore-samples) and either download the samples as a zip file or clone them using git.
+Navigate to the root folder [here](https://github.com/Microsoft/Windows-iotcore-samples) and either download the samples as a ZIP file or clone them using git.
 
 The step-by-step instruction for building this project can be found on https://www.hackster.io/windowsiot/air-hockey-robot-7d7a24
 
