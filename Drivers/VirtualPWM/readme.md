@@ -1,6 +1,6 @@
 ---
 topic: sample
-urlFragment: virtual-pwm
+urlFragment: virtual-pwm-driver
 languages:
   - cpp
 products:
