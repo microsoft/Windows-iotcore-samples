@@ -39,6 +39,7 @@ namespace EdgeModuleSamples.Common
             public readonly static string OutputFruit1 = "outputfruit1";
             public readonly static string OutputOrientation = "outputorientation";
             public readonly static string OutputUpstream = "outputupstream";
+            public readonly static string PWMModuleId = "PWM";
             public readonly static string SetFruit = "SetFruit";
             public readonly static string Reported = "Reported";
             public readonly static string twinChangeNotification = "twinChangeNotification";

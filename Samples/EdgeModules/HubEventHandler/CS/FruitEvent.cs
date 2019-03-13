@@ -29,8 +29,13 @@ using C2DMessage = Microsoft.Azure.Devices.Message;
 using WebJobsExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
 namespace HubEventHandler
 {
-    public static class GPIOFruitEvent
+    public static class FruitEvent
     {
+        static string[] SettableModules => new string[] {
+            Keys.GPIOModuleId,
+            Keys.UARTModuleId,
+            Keys.PWMModuleId
+        };
         public static string Dump(EventData d)
         {
             string r = Dump(d.SystemProperties);
@@ -168,9 +173,9 @@ namespace HubEventHandler
                 var rm = RegistryManager.CreateFromConnectionString(conn);
                 log.LogInformation("Have registry manager");
                 ModuleLoadMessage loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msg);
-                if (loadMsg.ModuleName == Keys.GPIOModuleId)
+                if (((IList<string>)SettableModules).Contains(loadMsg.ModuleName))
                 {
-                    log.LogInformation("Load Module GPIO");
+                    log.LogInformation("Load Module {0}", loadMsg.ModuleName);
                     string fruit = await GetCurrentFruit(deviceName, rm, log);
                     log.LogInformation($"Have fruit {fruit}");
 
@@ -178,7 +183,7 @@ namespace HubEventHandler
                 }
                 else
                 {
-                    log.LogInformation("Not a GPIO Load Module -- checking for fruit");
+                    log.LogInformation("Not a Load Module -- checking for fruit");
                     FruitMessage fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msg);
                     if (fruitMsg.FruitSeen != null)
                     {
@@ -192,10 +197,14 @@ namespace HubEventHandler
                         }
                         foreach (var s in slaves)
                         {
-                            log.LogInformation("sending fruit slave {0}  originalUTC {1} GPIO fruit {2}", s, originaleventtime == null ? "(null)" : originaleventtime, fruitMsg.FruitSeen);
+                            log.LogInformation("sending fruit slave {0}  originalUTC {1} fruit {2}", s, originaleventtime == null ? "(null)" : originaleventtime, fruitMsg.FruitSeen);
                             try
                             {
-                                await C2DMessage(conn, s, Keys.GPIOModuleId, fruitMsg.FruitSeen, originaleventtime, log);
+                                foreach (var m in SettableModules)
+                                {
+                                    log.LogInformation("setting module {0}", m);
+                                    await C2DMessage(conn, s, m, fruitMsg.FruitSeen, originaleventtime, log);
+                                }
                             }
                             catch (Exception e)
                             {

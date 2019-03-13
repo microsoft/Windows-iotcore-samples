@@ -40,6 +40,16 @@
                             "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/916EF1CB-8426-468D-A6F7-9AE8076881B3\"}]}}"
                         }
                     },
+                    "PWM": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${PWMImage}",
+                            "createOptions": "{\"HostConfig\":{\"Binds\":[\"c:/programdata/iotedge:c:/users/containeruser/appdata/local/iotedge\"],\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/60824B4C-EED1-4C9C-B49C-1B961461A819\"}]}}"
+                        }
+                    },
                     "SPI": {
                         "version": "1.0",
                         "type": "docker",
