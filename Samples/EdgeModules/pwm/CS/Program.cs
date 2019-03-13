@@ -48,62 +48,70 @@ namespace PWMFruit
                     }
                     catch (Exception e)
                     {
-                        Log.WriteLine("GPIO Main CreateAzureConnectionAsync exception {0}", e.ToString());
+                        Log.WriteLine("PWM Main CreateAzureConnectionAsync exception {0}", e.ToString());
                     }
                 }),
                 Task.Run(async () =>
                     {
                         try
                         {
-                            pwm = await PWMDevice.CreatePWMDeviceAsync(Options.DeviceName);
+                            // TODO: fix appoptions to allow pin number to be specified.
+                            pwm = await PWMDevice.CreatePWMDeviceAsync(Options.DeviceName, 0);
 
                        
                             if (Options.Test)
                             {
                                 Log.WriteLine("initiating pin test");
+                                var ts = TimeSpan.FromSeconds(15);
+                                var tc = 80;
                                 if (Options.TestTime.HasValue)
                                 {
-                                    pwm.Test(Options.TestTime.Value, TimeSpan.FromSeconds(2));
-                                } else
-                                {
-                                    pwm.Test(TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(2));
+                                    ts = Options.TestTime.Value;
                                 }
+                                if (Options.TestCount.HasValue)
+                                {
+                                    tc = Options.TestCount.Value;
+                                }
+                                pwm.Test(ts, tc);
                             }
                         }
                         catch (Exception e)
                         {
-                            Log.WriteLine("GPIO InitOutputPins exception {0}", e.ToString());
+                            Log.WriteLine("PWM InitOutputPins exception {0}", e.ToString());
                         }
                     }
                 )
             );
-            AzureModule m = (AzureModule)connection.Module;
-            m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
+            if (!Options.Test)
             {
-                var module = (AzureModule)sender;
-                Log.WriteLine("updating pwm pin config with {0}", newConfiguration.ToString());
-                //await pwm.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
-            };
-            m.FruitChanged += async (object sender, string fruit) =>
-            {
-                Log.WriteLine("fruit changed to {0}", fruit.ToLower());
-                var module = (AzureModule)sender;
-                //await Task.Run(() => pwm.ActivePin = FruitColors[fruit.ToLower()]);
-            };
-            await Task.Run(async () =>
-            {
-                try { 
-                    //Log.WriteLine("initializing pwm pin config with {0}", m.Configuration.GpioPins);
-                    //await pwm.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
-                }
-                catch (Exception e)
+                AzureModule m = (AzureModule)connection.Module;
+                m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
                 {
-                    Log.WriteLine("GPIO UpdatePinConfig Lambda exception {0}", e.ToString());
-                }
-            });
-            await connection.NotifyModuleLoadAsync();
-
-            Log.WriteLine("Initialization Complete. have connection and device");
+                    var module = (AzureModule)sender;
+                    Log.WriteLine("updating pwm pin config with {0}", newConfiguration.ToString());
+                    //await pwm.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
+                };
+                m.FruitChanged += async (object sender, string fruit) =>
+                {
+                    Log.WriteLine("fruit changed to {0}", fruit.ToLower());
+                    var module = (AzureModule)sender;
+                    //await Task.Run(() => pwm.ActivePin = FruitColors[fruit.ToLower()]);
+                };
+                await Task.Run(async () =>
+                {
+                    try
+                    {
+                        //Log.WriteLine("initializing pwm pin config with {0}", m.Configuration.GpioPins);
+                        //await pwm.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("GPIO UpdatePinConfig Lambda exception {0}", e.ToString());
+                    }
+                });
+                await connection.NotifyModuleLoadAsync();
+            }
+            Log.WriteLine("Initialization Complete. have {0}", Options.Test ? "device" : "connection and device");
 
             Task.WaitAll(Task.Run(() =>
             {

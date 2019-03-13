@@ -20,7 +20,8 @@ namespace PWMFruit
 
     public class PWMDevice : SPBDevice
     {
-        public PwmController Device { get; set; }
+        public PwmController Device { get; private set; }
+        public PwmPin Pin { get; private set; } 
 
         private PWMDevice()
         {
@@ -29,7 +30,7 @@ namespace PWMFruit
         {
             var info = await FindAsync(PwmController.GetDeviceSelector());
         }
-        public static async Task<PWMDevice> CreatePWMDeviceAsync(string deviceName)
+        public static async Task<PWMDevice> CreatePWMDeviceAsync(string deviceName, int pinNumber)
         {
             Log.WriteLine("finding device {0}", deviceName != null ? deviceName : "(default)");
 
@@ -46,17 +47,30 @@ namespace PWMFruit
 
             var d = new PWMDevice();
             d.Device = await AsAsync(PwmController.FromIdAsync(info.Id));
+            if (d.Device != null)
+            {
+                Log.WriteLine("Pin Count {0}", d.Device.PinCount);
+            }
+            d.Pin = d.Device.OpenPin(pinNumber);
             return d;
         }
 
 
-        public void Test(TimeSpan testDuration, TimeSpan pinInterval)
+        public void Test(TimeSpan testDuration, int pct)
         {
             Log.WriteLine("Test started");
             var t = DateTime.Now;
+            Device.SetDesiredFrequency((Device.MinFrequency + Device.MaxFrequency) / 2);
+            Pin.Polarity = PwmPulsePolarity.ActiveHigh;
+            Pin.Start();
+            var dc = (pct * 1.0) / 100.0;
+            Pin.SetActiveDutyCyclePercentage(dc);
+            Log.WriteLine("duty cycle {0} at freq {1}", dc, Device.ActualFrequency);
             while (DateTime.Now - t < testDuration)
             {
             }
+            Log.WriteLine("Test complete");
+            Environment.Exit(3);
         }
 
     }
