@@ -485,8 +485,9 @@ namespace Keg.UWP
             {
                 if(e.Measurement != null)
                 {
-                    //Debug.WriteLine($"{e.GetType().Name}: {e.Measurement}");
-
+#if DEBUG
+                    Debug.WriteLine($"OnTemperatureChange:{e.GetType().Name}: {e.Measurement}");
+#endif
                     tempeUnitsToggle = !tempeUnitsToggle;
                     if (tempeUnitsToggle)
                     {

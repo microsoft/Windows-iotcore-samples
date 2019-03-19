@@ -26,8 +26,7 @@ namespace Keg.DAL.Models
             try
             {
                 var client = new System.Net.Http.HttpClient();
-                string url = $"{GlobalSettings.UrlCombine(Constants.COSMOSAzureFunctionsURL, "keguser", hashcode)}";
-                //string url = $"https://kegocnizerfunctions.azurewebsites.net/api/keguser/{hashcode}";
+                string url = $"{GlobalSettings.UrlCombine(Constants.COSMOSAzureFunctionsURL, "keguser", hashcode)}?code={Constants.AF_KEGKEY}";
                 var response = await client.GetAsync(url);
                 var body = await response.Content.ReadAsStringAsync();
                 List<User> list = JsonConvert.DeserializeObject<List<User>>(body);
@@ -45,7 +44,7 @@ namespace Keg.DAL.Models
             try
             {
                 var client = new System.Net.Http.HttpClient();
-                string url = $"{GlobalSettings.UrlCombine(Constants.COSMOSAzureFunctionsURL, "keguser")}";
+                string url = $"{GlobalSettings.UrlCombine(Constants.COSMOSAzureFunctionsURL, "keguser")}?code={Constants.AF_KEGKEY}";
                 //string url = $"https://kegocnizerfunctions.azurewebsites.net/api/keguser";
                 StringContent content = new StringContent(JsonConvert.SerializeObject(item));
                 var response = await client.PostAsync(url, content);
