@@ -18,8 +18,8 @@ namespace Keg.UWP.Utils
         /// <summary>
         /// UX Related Contants
         /// </summary>
-        public const Int32 COUNTERWAIT = 20;  //15 seconds
-        public const Int32 COUNTERSHORTWAIT = 20; //5 seconds
+        //public const Int32 COUNTERWAIT = 20;  //15 seconds
+        //public const Int32 COUNTERSHORTWAIT = 5; // seconds
         public const float MINIMUMLIMITTOEMPTY = 5.0f;
         public static double AppWindowWidth = 720; //Init
         public static double MaxTempInsideKeg = 45.0f;

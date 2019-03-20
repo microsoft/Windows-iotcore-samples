@@ -115,10 +115,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sensors.Temperature\Sensors.Temperature.vcxproj">
-      <Project>{2cd70a4f-9eed-4cda-9e07-1a2bd33b4976}</Project>
-      <Name>Sensors.Temperature</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sensors.Weight\Sensors.Weight.csproj">
       <Project>{76fb0145-f64b-4d6a-a94f-365e5dc3231f}</Project>
       <Name>Sensors.Weight</Name>

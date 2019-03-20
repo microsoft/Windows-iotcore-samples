@@ -72,7 +72,7 @@ namespace Keg.UWP
 
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromSeconds(15);//Initial wait
+            timer.Interval = TimeSpan.FromSeconds(10);//Initial wait
 
             countdown = new DispatcherTimer();
             countdown.Tick += Countdown_Tick;
@@ -218,7 +218,7 @@ namespace Keg.UWP
 
                             beepFileName = "fail-buzzer-04.wav";
 
-                            Counter = Common.COUNTERSHORTWAIT;
+                            Counter = Common.KegSettings.CounterSecondsShort;
                             timer.Start();
 
                             //Raise event on max count reached
@@ -241,7 +241,7 @@ namespace Keg.UWP
 
                         //TODO:
                         //Start a timer to return to main screen 
-                        Counter = Common.COUNTERSHORTWAIT;
+                        Counter = Common.KegSettings.CounterSecondsShort;
                         timer.Start();
                         
                     }
@@ -288,7 +288,7 @@ namespace Keg.UWP
                         //Initialize Flow measure
                         dispensed = new List<float>();
 
-                        Counter = Common.COUNTERWAIT;
+                        Counter = Common.KegSettings.CounterSeconds;
                         timer.Start();
                     }
                 }
@@ -302,7 +302,7 @@ namespace Keg.UWP
                     beepFileName = "fail-buzzer-04.wav";
                     //TODO:
                     //Start a timer to return to main screen 
-                    Counter = Common.COUNTERSHORTWAIT;
+                    Counter = Common.KegSettings.CounterSecondsShort;
                     timer.Start();
 
                     //denied users
@@ -496,7 +496,7 @@ namespace Keg.UWP
                 timer.Stop();
                 Debug.WriteLine("Reset:Timer.Stop");
                 //timer.Interval = new TimeSpan(0, 0, 0, 15);
-                this.CounterText.Text = Common.COUNTERWAIT.ToString();
+                this.CounterText.Text = Common.KegSettings.ToString();
             }
             else
             {
@@ -579,7 +579,7 @@ namespace Keg.UWP
                         Debug.WriteLine($"****: {e.GetType().Name}: {e.Measurement} ****");
                         lastMeasurement = e.Measurement.Amount;
 
-                        Counter = Common.COUNTERSHORTWAIT;
+                        Counter = Common.KegSettings.CounterSecondsShort;
 
                         if(!timer.IsEnabled)
                         {
