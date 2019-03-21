@@ -1,4 +1,6 @@
-FROM iotedgewinmlcontainerregistry.azurecr.io/nano
+ARG IMAGE=mcr.microsoft.com
+ARG IMAGE_TAG=1.0
+FROM ${IMAGE}:${TAG}
 
 USER ContainerUser
 

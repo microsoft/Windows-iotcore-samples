@@ -98,7 +98,7 @@ function SubstituteObject($macros, [PSCustomObject] $template )
         if ($tplobj[$_].GetType() -eq [string]) {
                 #Write-Host "substituting"
                 $newval = SubstituteString $macros $tplobj[$_]
-                #Write-host "substiture string returned" ($newval | out-string)
+                #Write-host "substitute string returned" ($newval | out-string)
         } else {
 # TODO: make sure this is the complete list of types that convertfrom-json can produce            
             if (
@@ -131,8 +131,9 @@ $macrohash = [ordered]@{}
 Write-Progress "Processing Macro Files"
 $macrofiles | %{ 
     Write-Progress "Processing $($_)"
-    #Write-host "macro hash now" ($macrohash | out-string)
-    get-content $_ | convertfrom-json | %{ 
+    Write-Host "Processing $($_)"
+    #Write-Host "macro hash now" ($macrohash | out-string)
+    get-content $_ -erroraction stop | convertfrom-json | %{ 
             $_.Macros | %{ 
                 #write-host "main macro hash before" ($macrohash | out-string)
                 $newval = SubstituteObject $macrohash $_
@@ -143,11 +144,12 @@ $macrofiles | %{
     }
 } | Out-Null
 
+#Write-Host "Reading Template"
 Write-Progress "Reading Template"
 $template = get-content $templatefile | convertfrom-json
 
 Write-Progress "Processing Template"
-#Write-Host "main macrohash now" ($macrohash | out-string)
+#Write-Host "Processing Template -- main macrohash now" ($macrohash | out-string)
 $t = SubstituteObject $macrohash $template 
 Write-Progress "Producing Output"
 $t | convertto-json -depth 100 | format-json

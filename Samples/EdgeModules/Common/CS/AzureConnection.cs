@@ -209,6 +209,7 @@ namespace EdgeModuleSamples.Common.Azure
                     catch (Exception e)
                     {
                         Log.WriteLine("AzureConnectionInitAsync DeviceInit lambda exception {0}", e.ToString());
+                        Environment.Exit(1); // failfast
                     }
                 }),
 
@@ -222,6 +223,7 @@ namespace EdgeModuleSamples.Common.Azure
                     catch (Exception e)
                     {
                         Log.WriteLine("AzureConnectionInitAsync ModuleInit lambda exception {0}", e.ToString());
+                        Environment.Exit(1); // failfast
                     }
                 })
             );

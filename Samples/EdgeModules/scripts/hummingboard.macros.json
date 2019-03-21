@@ -1,25 +1,25 @@
 {
     "Macros": [
         {
-            "AgentImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:19h1.18851.arm32.agent"
+            "AgentImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:rtm.17763.arm32.agent-107"
         },
         {
-            "GPIOImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:19h1.18851.arm32.GPIOFruit"
+            "GPIOImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.arm32.GPIOFruit"
         },
         {
-            "HubImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:19h1.18851.arm32.hub"
+            "HubImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:rtm.17763.arm32.hub-107"
         },
         {
-            "I2CImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:19h1.18851.arm32.I2C_mpu6050"
+            "I2CImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.arm32.I2C_mpu6050"
         },
         {
-            "SPIImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:19h1.18851.arm32.SPI_9050"
+            "SPIImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.arm32.SPI_9050"
         },
         {
-            "UARTImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:19h1fix.18851.arm32.UART_lcd"
+            "UARTImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.arm32.UART_lcd"
         },
         {
-            "WinMLImage" : "iotedgewinmlcontainerregistry.azurecr.io/iotuap:19h1.18851.arm32.WinMLCustomVisionFruit"
+            "WinMLImage" : "iotedgewinmlcontainerregistry.azurecr.io/iotuap:rtm.17763.arm32.WinMLCustomVisionFruit"
         },
         {
             "GpioPins": {
@@ -31,4 +31,4 @@
             }
         }
     ]
-}
+}

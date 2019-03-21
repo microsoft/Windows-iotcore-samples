@@ -69,6 +69,7 @@ namespace WinMLCustomVisionFruit
             Log.WriteLine("\t\t\t\t\t\tWinML UpdateObjectAsync override kvp = {0}", kvp.ToString());
             if (kvp.Key == Keys.FruitSeen)
             {
+                Log.WriteLine("\t\t\t\t\t\tWinML UpdateObjectAsync override FruitSeen D2C msg");
                 // output the event stream
                 var msgvalue = new FruitMessage();
                 msgvalue.OriginalEventUTCTime = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc).ToString("o");
@@ -81,16 +82,19 @@ namespace WinMLCustomVisionFruit
                 await Task.WhenAll(
                     Task.Run(async () =>
                         {
+                            Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit0 kvp = {0}", kvp.ToString());
                             var m = new Message(msgbody);
                             await Module.SendMessageAsync(Keys.OutputFruit0, m);
                         }),
                     Task.Run(async () =>
                     {
+                        Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit1 kvp = {0}", kvp.ToString());
                         var m = new Message(msgbody);
                         await Module.SendMessageAsync(Keys.OutputFruit1, m);
                     }),
                     Task.Run(async () =>
                         {
+                            Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to upstream kvp = {0}", kvp.ToString());
                             var m = new Message(msgbody);
                             await Module.SendMessageAsync(Keys.OutputUpstream, m);
                         })

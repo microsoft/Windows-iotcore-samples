@@ -64,6 +64,10 @@ namespace WinMLCustomVisionFruit
             MediaCaptureInitializationSettings init = new MediaCaptureInitializationSettings();
             Log.WriteLine("Enumerating Frame Source Info");
             var (frame_group, frame_source_info) = await EnumFrameSourcesAsync();
+            if (frame_group == null || frame_source_info == null)
+            {
+                throw new ApplicationException("no capture devices found");
+            }
             Log.WriteLine("Selecting Source");
 
             init.SourceGroup = frame_group;
@@ -72,9 +76,9 @@ namespace WinMLCustomVisionFruit
             //init.MemoryPreference(a.opt.fgpu_only ? MediaCaptureMemoryPreference::Auto : MediaCaptureMemoryPreference::Cpu);
             init.MemoryPreference = MediaCaptureMemoryPreference.Cpu;
             init.StreamingCaptureMode = StreamingCaptureMode.Video;
-            Thread.Sleep(1000);
+            await Task.Run(() => Thread.Sleep(1000));
             await AsyncHelper.AsAsync(capture.InitializeAsync(init));
-            Thread.Sleep(1000);
+            await Task.Run(() => Thread.Sleep(1000));
             Log.WriteLine("capture initialized.  capture is {0}", capture == null ? "null" : "not null");
             var sources = capture.FrameSources;
             Log.WriteLine("have frame sources.  FrameSources is {0}", sources == null ? "null" : "not null");
@@ -238,7 +242,7 @@ namespace WinMLCustomVisionFruit
                 Task.Run(async () =>
                     model = await Model.CreateModelAsync(
                         Directory.GetCurrentDirectory() + "\\resources\\office_fruit_coreml.onnx", options.Gpu)),
-                Task.Run(async () =>
+                options.Test ? Task.CompletedTask : Task.Run(async () =>
                     connection = await AzureConnection.CreateAzureConnectionAsync()),
                 Task.Run(async () => {
                     (reader, evtFrame) = await GetFrameReaderAsync();
