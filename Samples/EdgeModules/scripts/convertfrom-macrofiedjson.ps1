@@ -131,7 +131,7 @@ $macrohash = [ordered]@{}
 Write-Progress "Processing Macro Files"
 $macrofiles | %{ 
     Write-Progress "Processing $($_)"
-    Write-Host "Processing $($_)"
+    #Write-Host "Processing $($_)"
     #Write-Host "macro hash now" ($macrohash | out-string)
     get-content $_ -erroraction stop | convertfrom-json | %{ 
             $_.Macros | %{ 

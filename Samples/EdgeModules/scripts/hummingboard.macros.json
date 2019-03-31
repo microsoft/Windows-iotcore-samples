@@ -13,6 +13,9 @@
             "I2CImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.arm32.I2C_mpu6050"
         },
         {
+            "PWMImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.arm32.PWMFruit"
+        },
+        {
             "SPIImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.arm32.SPI_9050"
         },
         {

@@ -84,8 +84,7 @@ namespace UARTLCD
                 await SendCmdAsync(LCD_CMD_UNDERLINE_CURSOR_ON);
                 await Clear();
                 Log.WriteLine("cleared screen with underline cursor");
-                await SendCmdAsync(LCD_CMD_SET_CONTRAST);
-                await SetContrast(220); // 220 is what the reference code python test uses
+                await SetContrast(220); // 220 is what the device reference code python test uses
                 await SetBrightness(0xff);
                 await SetBackgroundAsync(Colors.Red);
                 Log.WriteLine("init complete");

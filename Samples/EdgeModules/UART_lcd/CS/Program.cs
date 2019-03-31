@@ -83,7 +83,7 @@ namespace UARTLCD
                             if (Options.Test)
                             {
                                 Log.WriteLine("initiating test");
-                                if (Options.TestMessage.Length > 1)
+                                if (Options.TestMessage != null && Options.TestMessage.Length > 1)
                                 {
                                     await uart.TestAsync(Options.TestMessage);
                                 } else

@@ -6,6 +6,7 @@ namespace EdgeModuleSamples.Common
 {
     public enum Orientation
     {
+        Unknown = 0,
         RightSideUp,
         UpsideDown
     }
@@ -23,7 +24,7 @@ namespace EdgeModuleSamples.Common
             public readonly static string FruitSlaves = "FruitSlaves";
             public readonly static string FruitTest = "FruitTest";
             public readonly static string GPIOModuleId = "GPIO";
-            public readonly static string I2cModuleId = "I2c";
+            public readonly static string I2CModuleId = "I2C";
             public readonly static string HubConnectionString = "HubConnectionString";
             public readonly static string InputFruit = "inputfruit";
             public readonly static string InputOrientation0 = "inputorientation0";
@@ -41,9 +42,11 @@ namespace EdgeModuleSamples.Common
             public readonly static string OutputUpstream = "outputupstream";
             public readonly static string PWMModuleId = "PWM";
             public readonly static string SetFruit = "SetFruit";
+            public readonly static string SPIModuleId = "SPI";
             public readonly static string Reported = "Reported";
             public readonly static string twinChangeNotification = "twinChangeNotification";
             public readonly static string UARTModuleId = "UART";
+            public readonly static string WinMLModuleId = "WinML";
         };
         public class AzureMessageBase
         {

@@ -3,6 +3,7 @@
 //
 
 
+using EdgeModuleSamples.Common;
 using EdgeModuleSamples.Common.Messages;
 using Microsoft.Azure.Devices;  
 using Microsoft.Azure.Devices.Client;
@@ -31,10 +32,24 @@ namespace HubEventHandler
 {
     public static class FruitEvent
     {
-        static string[] SettableModules => new string[] {
-            Keys.GPIOModuleId,
-            Keys.UARTModuleId,
-            Keys.PWMModuleId
+        static Tuple<string, string[]>[] ModulesNeedState => new Tuple<string, string[]>[] {
+            new Tuple<string, string[]> ( 
+                Keys.GPIOModuleId,
+                new string[] {Keys.WinMLModuleId, Keys.SPIModuleId }
+            ),
+            new Tuple<string, string[]> (
+                Keys.UARTModuleId,  
+                new string[] {Keys.WinMLModuleId, Keys.I2CModuleId }
+            ),
+            new Tuple<string, string[]>(
+                Keys.PWMModuleId, 
+                new string[] {Keys.WinMLModuleId}
+            )
+        };
+        static string[] ModulesWithState => new string[] {
+            Keys.WinMLModuleId,
+            Keys.I2CModuleId,
+            Keys.SPIModuleId
         };
         public static string Dump(EventData d)
         {
@@ -103,22 +118,39 @@ namespace HubEventHandler
             }
             return fruit;
         }
-        public static async Task<string[]> GetFruitSlaves(string deviceId, RegistryManager rm, ILogger log)
+        public static async Task<Tuple<Tuple<string, Twin>, Tuple<string, Twin>[]>> GetDeviceTopology(string deviceId, RegistryManager rm, ILogger log)
         {
-            List<string> slaves = new List<string>();
+            List<Tuple<string, Twin>> slaves = new List<Tuple<string, Twin>>();
 
             log.LogInformation($"finding slaves for {deviceId}");
             Twin selfTwin = await rm.GetTwinAsync(deviceId);
             var selfProps = selfTwin.Properties.Desired;
             string slaveProps = selfProps[Keys.FruitSlaves].ToString();
+            Tuple<string, Twin> master = null;
+            if (deviceId == selfProps[Keys.FruitMaster].ToString())
+            {
+                master = new Tuple<string, Twin>(deviceId, selfTwin);
+            }
+            else
+            {
+                string masterId = selfProps[Keys.FruitMaster].ToString();
+                Twin masterTwin = await rm.GetTwinAsync(masterId);
+                master = new Tuple<string, Twin>(masterId, masterTwin);
+                slaves.Add(new Tuple<string, Twin>(deviceId, selfTwin));
+            }
             //log.LogInformation($"slave props {slaveProps}");
 
             Dictionary<string, string> d = JsonConvert.DeserializeObject<Dictionary<string, string>>(slaveProps);
             foreach (var kvp in d)
             {
-                slaves.Add((string)kvp.Value);
+                if ((string)kvp.Value != deviceId) // we already added ourself
+                {
+                    string slaveName = (string)kvp.Value;
+                    Twin slaveTwin = await rm.GetTwinAsync(slaveName);
+                    slaves.Add(new Tuple<string, Twin>(slaveName, slaveTwin));
+                }
             }
-            return slaves.ToArray();
+            return new Tuple<Tuple<string, Twin>, Tuple<string, Twin>[]>(master, slaves.ToArray());
         }
         public static async Task C2DMessage(string connectionString, string deviceId, string moduleId, string fruit, string EventMsgTime, ILogger log)
         {
@@ -172,48 +204,77 @@ namespace HubEventHandler
                 log.LogInformation("Have connection string {0}", conn);
                 var rm = RegistryManager.CreateFromConnectionString(conn);
                 log.LogInformation("Have registry manager");
+                var topology = await GetDeviceTopology(deviceName, rm, log);
+                log.LogInformation("Have topology");
                 ModuleLoadMessage loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msg);
-                if (((IList<string>)SettableModules).Contains(loadMsg.ModuleName))
+                if ((loadMsg != null) && (loadMsg.ModuleName != null) && (loadMsg.ModuleName.Length > 0))
                 {
-                    log.LogInformation("Load Module {0}", loadMsg.ModuleName);
-                    string fruit = await GetCurrentFruit(deviceName, rm, log);
-                    log.LogInformation($"Have fruit {fruit}");
-
-                    await C2DMessage(conn, deviceName, loadMsg.ModuleName, fruit, null, log);
-                }
-                else
-                {
-                    log.LogInformation("Not a Load Module -- checking for fruit");
-                    FruitMessage fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msg);
-                    if (fruitMsg.FruitSeen != null)
+                    foreach (var m in ModulesNeedState)
                     {
-                        log.LogInformation("fruit msg original time {0} fruit {1}", fruitMsg.OriginalEventUTCTime, fruitMsg.FruitSeen);
-                        string[] slaves = await GetFruitSlaves(deviceName, rm, log);
-                        //log.LogInformation("found {0} slave devices", slaves.Length);
-                        string originaleventtime = fruitMsg.OriginalEventUTCTime;
-                        if (originaleventtime == null && message.Properties.ContainsKey(Keys.MessageCreationUTC))
+                        if (m.Item1 == loadMsg.ModuleName)
                         {
-                            originaleventtime = (string)message.Properties[Keys.MessageCreationUTC];
-                        }
-                        foreach (var s in slaves)
-                        {
-                            log.LogInformation("sending fruit slave {0}  originalUTC {1} fruit {2}", s, originaleventtime == null ? "(null)" : originaleventtime, fruitMsg.FruitSeen);
-                            try
-                            {
-                                foreach (var m in SettableModules)
-                                {
-                                    log.LogInformation("setting module {0}", m);
-                                    await C2DMessage(conn, s, m, fruitMsg.FruitSeen, originaleventtime, log);
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                log.LogInformation("{0} exception sending fruit slave {1} GPIO fruit {2}. ex = {3}", Thread.CurrentThread.ManagedThreadId, s, fruitMsg.FruitSeen, e.ToString());
-                            }
+                            log.LogInformation("Load Module {0}", loadMsg.ModuleName);
+                            string fruit = await GetCurrentFruit(deviceName, rm, log);
+                            log.LogInformation($"Have fruit {fruit}");
+
+                            await C2DMessage(conn, deviceName, loadMsg.ModuleName, fruit, null, log);
                         }
                     }
+                    return;
                 }
-            } catch (Exception e)
+                log.LogInformation("Not a Load Module -- checking for fruit");
+                FruitMessage fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msg);
+                if (fruitMsg.FruitSeen != null && fruitMsg.FruitSeen.Length > 0)
+                {
+                    log.LogInformation("fruit msg original time {0} fruit {1}", fruitMsg.OriginalEventUTCTime, fruitMsg.FruitSeen);
+                    //log.LogInformation("found {0} slave devices", slaves.Length);
+                    string originaleventtime = fruitMsg.OriginalEventUTCTime;
+                    if (originaleventtime == null && message.Properties.ContainsKey(Keys.MessageCreationUTC))
+                    {
+                        originaleventtime = (string)message.Properties[Keys.MessageCreationUTC];
+                    }
+                    foreach (var s in topology.Item2)
+                    {
+                        log.LogInformation("examining fruit slave {0}  originalUTC {1} fruit {2}", s, originaleventtime == null ? "(null)" : originaleventtime, fruitMsg.FruitSeen);
+                        string slaveId = s.Item1;
+                        var modules = await rm.GetModulesOnDeviceAsync(slaveId);
+                        try
+                        {
+                            foreach (var m in modules)
+                            {
+                                log.LogInformation("examing module {0}", m.Id);
+                                foreach (var need in ModulesNeedState)
+                                {
+                                    if (m.Id == need.Item1)
+                                    {
+                                        log.LogInformation("module {0} needs state", m.Id);
+                                        foreach (var from in need.Item2)
+                                        {
+                                            if (from == Keys.WinMLModuleId)
+                                            {
+                                                await C2DMessage(conn, slaveId, m.Id, fruitMsg.FruitSeen, originaleventtime, log);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            log.LogInformation("{0} exception sending fruit slave {1} GPIO fruit {2}. ex = {3}", Thread.CurrentThread.ManagedThreadId, s, fruitMsg.FruitSeen, e.ToString());
+                        }
+                    }
+                    return;
+                }
+                OrientationMessage oMsg = JsonConvert.DeserializeObject<OrientationMessage>(msg);
+                if (oMsg.OrientationState != Orientation.Unknown)
+                {
+                    log.LogInformation("orientation msg original time {0} orientation {1}", oMsg.OriginalEventUTCTime, oMsg.OrientationState);
+
+                }
+
+            }
+            catch (Exception e)
             {
                 log.LogInformation("{0} HubRun failed with exception {1}", Thread.CurrentThread.ManagedThreadId, e.ToString());
             }

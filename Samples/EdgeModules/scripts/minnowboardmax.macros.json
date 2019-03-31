@@ -16,7 +16,7 @@
             "SPIImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.amd64.SPI_9050"
         },
         {
-            "UARTImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.amd64.UART_lcd"
+            "UARTImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:uartfix.17763.amd64.UART_lcd"
         },
         {
             "WinMLImage" : "iotedgewinmlcontainerregistry.azurecr.io/iotuap:rtm.17763.amd64.WinMLCustomVisionFruit"
