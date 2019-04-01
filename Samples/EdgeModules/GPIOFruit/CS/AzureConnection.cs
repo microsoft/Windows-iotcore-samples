@@ -46,26 +46,20 @@ namespace GPIOFruit
     class AzureModule : AzureModuleBase
     {
         private DateTime _lastFruitUTC;
-        private DateTime _lastOrientation0UTC;
-        private DateTime _lastOrientation1UTC;
+        private DateTime _lastOrientationUTC;
         private DesiredPropertiesType<ConfigurationType> _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
         public event EventHandler<string> FruitChanged;
-        public event EventHandler<EdgeModuleSamples.Common.Orientation> Orientation0Changed;
-        public event EventHandler<EdgeModuleSamples.Common.Orientation> Orientation1Changed;
+        public event EventHandler<EdgeModuleSamples.Common.Orientation> OrientationChanged;
 
-        // TODO: refactor setfruit and onfruitmessage to share common code
-        private Task<MethodResponse> SetFruit(MethodRequest req, Object context)
+        private async Task ProcessFruitMessage(FruitMessage fruitMsg)
         {
-            string data = Encoding.UTF8.GetString(req.Data);
-            Log.WriteLine("Direct Method SetFruit {0}", data);
-            var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(data);
             DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
             if (fruitMsg.OriginalEventUTCTime != null)
             {
                 originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
-                Log.WriteLine("SetFruit invoking event. parsed msg time {0} from {1}", originalEventUTC.ToString("o"), fruitMsg.OriginalEventUTCTime);
+                Log.WriteLine("processing fruit message. parsed msg time {0} from {1}", originalEventUTC.ToString("o"), fruitMsg.OriginalEventUTCTime);
             }
             else
             {
@@ -73,18 +67,25 @@ namespace GPIOFruit
             }
             if (originalEventUTC >= _lastFruitUTC)
             {
-                Log.WriteLine("SetFruit invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
-                AzureModule module = (AzureModule)context;
-                module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen);
+                Log.WriteLine("processing fruit message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+                await Task.Run(() => FruitChanged?.Invoke(this, fruitMsg.FruitSeen));
                 _lastFruitUTC = originalEventUTC;
             }
             else
             {
-                Log.WriteLine("SetFruit ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+                Log.WriteLine("processing fruit message. ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
             }
+        }
+        private async Task<MethodResponse> SetFruit(MethodRequest req, Object context)
+        {
+            string data = Encoding.UTF8.GetString(req.Data);
+            Log.WriteLine("Direct Method SetFruit {0}", data);
+            var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(data);
+            AzureModule module = (AzureModule)context;
+            await module.ProcessFruitMessage(fruitMsg);
             // Acknowlege the direct method call with a 200 success message
             string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
-            return Task.FromResult(new MethodResponse(Encoding.UTF8.GetBytes(result), 200));
+            return new MethodResponse(Encoding.UTF8.GetBytes(result), 200);
         }
 
         private static async Task<MessageResponse> OnFruitMessageReceived(Message msg, object ctx)
@@ -94,74 +95,48 @@ namespace GPIOFruit
             var msgString = Encoding.UTF8.GetString(msgBytes);
             Log.WriteLine("fruit msg received: '{0}'", msgString);
             var fruitMsg = JsonConvert.DeserializeObject<FruitMessage>(msgString);
+            await module.ProcessFruitMessage(fruitMsg);
+            return MessageResponse.Completed;
+        }
+        private async Task ProcessOrientationMessage(OrientationMessage orientationMsg)
+        {
             DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
-            if (fruitMsg.OriginalEventUTCTime != null)
+            if (orientationMsg.OriginalEventUTCTime != null)
             {
-                originalEventUTC = DateTime.Parse(fruitMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+                originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            }
+            if (originalEventUTC >= _lastOrientationUTC)
+            {
+                Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastOrientationUTC.ToString("o"));
+                await Task.Run(() => OrientationChanged?.Invoke(this, orientationMsg.OrientationState));
+                _lastOrientationUTC = originalEventUTC;
             }
             else
             {
-                Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
+                Log.WriteLine("OrientationMsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastOrientationUTC.ToString("o"));
             }
+            return;
+        }
+        private async Task<MethodResponse> SetOrientation(MethodRequest req, Object context)
+        {
+            string data = Encoding.UTF8.GetString(req.Data);
+            Log.WriteLine("Direct Method SetOrientation {0}", data);
+            var oMsg = JsonConvert.DeserializeObject<OrientationMessage>(data);
+            AzureModule module = (AzureModule)context;
+            await module.ProcessOrientationMessage(oMsg);
+            // Acknowlege the direct method call with a 200 success message
+            string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
+            return new MethodResponse(Encoding.UTF8.GetBytes(result), 200);
+        }
 
-            if (originalEventUTC >= module._lastFruitUTC)
-            {
-                Log.WriteLine("FruitMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastFruitUTC.ToString("o"));
-                await Task.Run(() => module.FruitChanged?.Invoke(module, fruitMsg.FruitSeen));
-                module._lastFruitUTC = originalEventUTC;
-            }
-            else
-            {
-                Log.WriteLine("FruitMsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastFruitUTC.ToString("o"));
-            }
-            return MessageResponse.Completed;
-        }
-        private static async Task<MessageResponse> OnOrientation0MessageReceived(Message msg, object ctx)
+        private static async Task<MessageResponse> OnOrientationMessageReceived(Message msg, object ctx)
         {
             AzureModule module = (AzureModule)ctx;
             var msgBytes = msg.GetBytes();
             var msgString = Encoding.UTF8.GetString(msgBytes);
-            Log.WriteLine("orientation msg received: '{0}'", msgString);
+            Log.WriteLine("Orientation msg received: '{0}'", msgString);
             var orientationMsg = JsonConvert.DeserializeObject<OrientationMessage>(msgString);
-            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
-            if (orientationMsg.OriginalEventUTCTime != null)
-            {
-                originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
-            }
-            if (originalEventUTC >= module._lastOrientation0UTC)
-            {
-                Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientation0UTC.ToString("o"));
-                await Task.Run(() => module.Orientation0Changed?.Invoke(module, orientationMsg.OrientationState));
-                module._lastOrientation0UTC = originalEventUTC;
-            }
-            else
-            {
-                Log.WriteLine("Orientation0MsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientation0UTC.ToString("o"));
-            }
-            return MessageResponse.Completed;
-        }
-        private static async Task<MessageResponse> OnOrientation1MessageReceived(Message msg, object ctx)
-        {
-            AzureModule module = (AzureModule)ctx;
-            var msgBytes = msg.GetBytes();
-            var msgString = Encoding.UTF8.GetString(msgBytes);
-            Log.WriteLine("orientation msg received: '{0}'", msgString);
-            var orientationMsg = JsonConvert.DeserializeObject<OrientationMessage>(msgString);
-            DateTime originalEventUTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
-            if (orientationMsg.OriginalEventUTCTime != null)
-            {
-                originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
-            }
-            if (originalEventUTC >= module._lastOrientation1UTC)
-            {
-                Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientation1UTC.ToString("o"));
-                await Task.Run(() => module.Orientation1Changed?.Invoke(module, orientationMsg.OrientationState));
-                module._lastOrientation1UTC = originalEventUTC;
-            }
-            else
-            {
-                Log.WriteLine("Orientation1MsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), module._lastOrientation1UTC.ToString("o"));
-            }
+            await module.ProcessOrientationMessage(orientationMsg);
             return MessageResponse.Completed;
         }
         public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
@@ -207,17 +182,16 @@ namespace GPIOFruit
         public AzureModule()
         {
             _lastFruitUTC = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
-            _lastOrientation0UTC = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
-            _lastOrientation1UTC = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+            _lastOrientationUTC = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
         }
         public override async Task AzureModuleInitAsync<C>(C c) 
         {
             AzureConnection c1 = c as AzureConnection;
             await base.AzureModuleInitAsync(c1);
             await _moduleClient.SetInputMessageHandlerAsync(Keys.InputFruit, OnFruitMessageReceived, this);
-            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputOrientation0, OnOrientation0MessageReceived, this);
-            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputOrientation1, OnOrientation1MessageReceived, this);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.InputOrientation, OnOrientationMessageReceived, this);
             await _moduleClient.SetMethodHandlerAsync(Keys.SetFruit, SetFruit, this);
+            await _moduleClient.SetMethodHandlerAsync(Keys.SetOrientation, SetOrientation, this);
             await base.AzureModuleInitEndAsync();
         }
     }

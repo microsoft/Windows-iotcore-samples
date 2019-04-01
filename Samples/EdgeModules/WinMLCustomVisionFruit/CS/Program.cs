@@ -241,7 +241,7 @@ namespace WinMLCustomVisionFruit
             await Task.WhenAll(
                 Task.Run(async () =>
                     model = await Model.CreateModelAsync(
-                        Directory.GetCurrentDirectory() + "\\resources\\office_fruit_coreml.onnx", options.Gpu)),
+                        Directory.GetCurrentDirectory() + "\\resources\\office_fruit.onnx", options.Gpu)),
                 options.Test ? Task.CompletedTask : Task.Run(async () =>
                     connection = await AzureConnection.CreateAzureConnectionAsync()),
                 Task.Run(async () => {

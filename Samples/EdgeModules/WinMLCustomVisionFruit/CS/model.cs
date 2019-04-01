@@ -48,6 +48,7 @@ namespace WinMLCustomVisionFruit
             {
                 {"apple",  0f },
                 {"grapes", 0f },
+                {"other", 0f },
                 {"pear", 0f },
                 {"pen", 0f }
             };

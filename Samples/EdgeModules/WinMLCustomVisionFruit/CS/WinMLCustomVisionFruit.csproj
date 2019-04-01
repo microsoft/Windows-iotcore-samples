@@ -4,6 +4,9 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <Import Project="..\..\Common.CS.Props" />
+  <ItemGroup>
+    <None Remove="resources\office_fruit_coreml.onnx.bak" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.19.0" />
@@ -34,7 +37,7 @@
     <None Update="resources\labels.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="resources\office_fruit_coreml.onnx">
+    <None Update="resources\officefruit.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,9 +31,31 @@ using C2DMessage = Microsoft.Azure.Devices.Message;
 using WebJobsExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
 namespace HubEventHandler
 {
+    using TopologyType = Tuple<Tuple<string, Twin>, Tuple<string, Twin>[]>;
+
     public static class FruitEvent
     {
-        static Tuple<string, string[]>[] ModulesNeedState => new Tuple<string, string[]>[] {
+        //
+        // currently this is setup to expect the following
+        // device1: master
+        //     modules: winml, gpio, spi, uart, pwm
+        // device2: slave
+        //     modules: gpio, uart, i2c
+        //
+        // i2c sends orientation to both uarts
+        // spi sends orientation to both gpio
+        // winml sends fruit to both gpio, both uart, pwm
+        // gpio sends loadmodule to winml spi
+        // uart sends loadmodule to winml i2c
+        // pwm sends loadmodule to winml
+        //
+        // but local cross module traffic is handled by deployment routing 
+        // in the local hub and never reaches this module
+        //
+        //  multi-slave is coded for but not tested
+        //
+
+        static Tuple<string, string[]>[] LoadMsgRouting => new Tuple<string, string[]>[] {
             new Tuple<string, string[]> ( 
                 Keys.GPIOModuleId,
                 new string[] {Keys.WinMLModuleId, Keys.SPIModuleId }
@@ -46,11 +69,23 @@ namespace HubEventHandler
                 new string[] {Keys.WinMLModuleId}
             )
         };
-        static string[] ModulesWithState => new string[] {
-            Keys.WinMLModuleId,
-            Keys.I2CModuleId,
-            Keys.SPIModuleId
+        static Tuple<string, string[]>[] FruitMsgRouting => new Tuple<string, string[]>[] {
+            new Tuple<string, string[]>(
+                Keys.WinMLModuleId,
+                new string[] {Keys.GPIOModuleId, Keys.UARTModuleId, Keys.PWMModuleId}
+            )
         };
+        static Tuple<string, string[]>[] OrientationMsgRouting => new Tuple<string, string[]>[] {
+            new Tuple<string, string[]>(
+                Keys.I2CModuleId,
+                new string[] {Keys.UARTModuleId}
+            ),
+            new Tuple<string, string[]>(
+                Keys.SPIModuleId,
+                new string[] {Keys.GPIOModuleId}
+            )
+        };
+
         public static string Dump(EventData d)
         {
             string r = Dump(d.SystemProperties);
@@ -94,38 +129,33 @@ namespace HubEventHandler
         }
         private static HttpClient client = new HttpClient();
 
-        public static async Task<string> GetCurrentFruit(string deviceId, RegistryManager rm, ILogger log)
+        public static async Task<List<string>> GetDeviceModulesAsync(string deviceId, RegistryManager rm)
         {
-            string fruit = null;
-
-            // await twin = GetModuleTwinAsync(deviceId, moduleId);
-            log.LogInformation($"finding master for {deviceId}");
-            Twin selfTwin = await rm.GetTwinAsync(deviceId);
-            var selfProps = selfTwin.Properties.Desired;
-            var masterId = (string)selfProps[Keys.FruitMaster];
-            log.LogInformation($"master device id {masterId} module id {Keys.FruitModuleId}");
-            Twin masterTwin = await rm.GetTwinAsync(masterId, Keys.FruitModuleId);
-            log.LogInformation("have master module twin");
-            var masterProps = masterTwin.Properties.Reported;
-            if (masterProps.Contains(Keys.FruitSeen))
-            {
-                fruit = masterProps[Keys.FruitSeen];
-                log.LogInformation($"Current Fruit {fruit}");
-            }
-            else
-            {
-                log.LogInformation("master has not seen fruit");
-            }
-            return fruit;
+            List<string> destCandidateNames = new List<string>();
+            // TODO: GetModulesOnDeviceAsync is throwing an unauthorized exception
+            // until i can figure out why we're just going to hard code what we know is there
+#if DISABLED
+                        var deviceModules = await rm.GetModulesOnDeviceAsync(destDeviceId);
+                        log.LogInformation("destination {0} has {1} modules", destDeviceId, deviceModules.Count());
+                        var destModuleCandidates = deviceModules.Where(module => module.Id != sourceModuleId);
+                        log.LogInformation("destination {0} has {1} module candidates", destDeviceId, destModuleCandidates.Count());
+                        var destCandidateNames = destModuleCandidates.Select(m => m.Id);
+#else
+            await Task.CompletedTask;
+            destCandidateNames.Add(Keys.GPIOModuleId);
+            destCandidateNames.Add(Keys.I2CModuleId);
+            destCandidateNames.Add(Keys.UARTModuleId);
+#endif
+            return destCandidateNames;
         }
-        public static async Task<Tuple<Tuple<string, Twin>, Tuple<string, Twin>[]>> GetDeviceTopology(string deviceId, RegistryManager rm, ILogger log)
+        public static async Task<TopologyType> GetDeviceTopologyAsync(string deviceId, RegistryManager rm, ILogger log)
         {
             List<Tuple<string, Twin>> slaves = new List<Tuple<string, Twin>>();
 
             log.LogInformation($"finding slaves for {deviceId}");
             Twin selfTwin = await rm.GetTwinAsync(deviceId);
             var selfProps = selfTwin.Properties.Desired;
-            string slaveProps = selfProps[Keys.FruitSlaves].ToString();
+            var slaveProps = selfProps[Keys.FruitSlaves];
             Tuple<string, Twin> master = null;
             if (deviceId == selfProps[Keys.FruitMaster].ToString())
             {
@@ -136,28 +166,96 @@ namespace HubEventHandler
                 string masterId = selfProps[Keys.FruitMaster].ToString();
                 Twin masterTwin = await rm.GetTwinAsync(masterId);
                 master = new Tuple<string, Twin>(masterId, masterTwin);
-                slaves.Add(new Tuple<string, Twin>(deviceId, selfTwin));
             }
-            //log.LogInformation($"slave props {slaveProps}");
 
-            Dictionary<string, string> d = JsonConvert.DeserializeObject<Dictionary<string, string>>(slaveProps);
+            string slavejson = slaveProps.ToJson();
+            log.LogInformation("Deserializing slave json {0}", slavejson);
+            Dictionary<string, string> d = JsonConvert.DeserializeObject<Dictionary<string, string>>(slavejson);
+            log.LogInformation("Deserialized {0} slave names", d.Count);
             foreach (var kvp in d)
             {
-                if ((string)kvp.Value != deviceId) // we already added ourself
+                string slaveName = (string)kvp.Value;
+                Twin slaveTwin = null;
+                if (slaveName != deviceId)
                 {
-                    string slaveName = (string)kvp.Value;
-                    Twin slaveTwin = await rm.GetTwinAsync(slaveName);
-                    slaves.Add(new Tuple<string, Twin>(slaveName, slaveTwin));
+                    slaveTwin = await rm.GetTwinAsync(slaveName);
+                } else
+                {
+                    slaveTwin = selfTwin;
                 }
+                slaves.Add(new Tuple<string, Twin>(slaveName, slaveTwin));
             }
+            log.LogInformation("adding {0} slaves to topology", slaves.Count);
+
             return new Tuple<Tuple<string, Twin>, Tuple<string, Twin>[]>(master, slaves.ToArray());
         }
-        public static async Task C2DMessage(string connectionString, string deviceId, string moduleId, string fruit, string EventMsgTime, ILogger log)
+        public static string[] GetDestinationDevicesFromTopology(string sourceDeviceId, TopologyType topology, ILogger log)
         {
-            if (fruit == null)
+            List<string> results = new List<string>();
+            if (sourceDeviceId != topology.Item1.Item1)
             {
-                return; // nothing seen yet
+                var s = topology.Item1.Item1;
+                results.Append(s);
             }
+            //var slaves = topology.Item2.Where(s => s.Item1 != sourceDeviceId).Select(s => results.Append(s.Item1));
+            var slavelist = topology.Item2.Where(s => s.Item1 != sourceDeviceId);
+            log.LogInformation("found {0} slave topo entries", slavelist.Count());
+            var slavenames = slavelist.Select(s => s.Item1);
+            log.LogInformation("found {0} slavenames", slavenames.Count());
+            results = results.Concat(slavenames).ToList<string>();
+            //foreach (string s in slavenames)
+            //{
+            //    results.Add(s);
+            //}
+            log.LogInformation("found {0} destination device", results.Count);
+            return results.ToArray();
+        }
+        public static async Task<string[]> GetDestinationDevices(string sourceDeviceId, RegistryManager rm, ILogger log)
+        {
+            var topology = await GetDeviceTopologyAsync(sourceDeviceId, rm, log);
+            var results =  GetDestinationDevicesFromTopology(sourceDeviceId, topology, log);
+            return results;
+        }
+
+        public static async Task C2DModuleMessage(string connectionString, string destDeviceId, string destModule, string sourceModuleId, ILogger log)
+        {
+            ServiceClient client = ServiceClient.CreateFromConnectionString(connectionString);
+            log.LogInformation("have service client");
+            ModuleLoadMessage loadMsg = new ModuleLoadMessage();
+            loadMsg.ModuleName = sourceModuleId;
+            var mi = new CloudToDeviceMethod("SetModuleLoad");
+            mi.ConnectionTimeout = TimeSpan.FromSeconds(10);
+            mi.ResponseTimeout = TimeSpan.FromSeconds(120);
+            mi.SetPayloadJson(JsonConvert.SerializeObject(loadMsg));
+
+            // Invoke the direct method asynchronously and get the response from the simulated device.
+            log.LogInformation("invoking device method for {0} {1} with {2}", destDeviceId, destModule, mi.ToString());
+            var r = await client.InvokeDeviceMethodAsync(destDeviceId, destModule, mi);
+            log.LogInformation("device method invocation complete");
+
+            return;
+        }
+        public static async Task C2DOrientationMessage(string connectionString, string destDeviceId, string destModule, Orientation oState, string EventMsgTime, ILogger log)
+        {
+            ServiceClient client = ServiceClient.CreateFromConnectionString(connectionString);
+            log.LogInformation("have service client");
+            OrientationMessage oMsg = new OrientationMessage();
+            oMsg.OrientationState = oState;
+            oMsg.OriginalEventUTCTime = EventMsgTime;
+            var mi = new CloudToDeviceMethod("SetOrientation");
+            mi.ConnectionTimeout = TimeSpan.FromSeconds(10);
+            mi.ResponseTimeout = TimeSpan.FromSeconds(120);
+            mi.SetPayloadJson(JsonConvert.SerializeObject(oMsg));
+
+            // Invoke the direct method asynchronously and get the response from the simulated device.
+            log.LogInformation("invoking device method for {0} {1} with {2}", destDeviceId, destModule, mi.ToString());
+            var r = await client.InvokeDeviceMethodAsync(destDeviceId, destModule, mi);
+            log.LogInformation("device method invocation complete");
+
+            return;
+        }
+        public static async Task C2DFruitMessage(string connectionString, string deviceId, string moduleId, string fruit, string EventMsgTime, ILogger log)
+        {
             ServiceClient client = ServiceClient.CreateFromConnectionString(connectionString);
             log.LogInformation("have service client");
             FruitMessage fruitMsg = new FruitMessage();
@@ -197,27 +295,57 @@ namespace HubEventHandler
                     log.LogInformation("twin notification -- ignoring");
                     return;
                 }
-                string deviceName = (string)message.SystemProperties[Keys.DeviceIdMetadata];
-                log.LogInformation($"Have device id {deviceName}");
+                string sourceDeviceId = (string)message.SystemProperties[Keys.DeviceIdMetadata];
+                string sourceModuleId = (string)message.SystemProperties[Keys.ModuleIdMetadata];
+                log.LogInformation($"Have device id {sourceDeviceId}");
                 var config = new ConfigurationBuilder().SetBasePath(context.FunctionAppDirectory).AddJsonFile("local.settings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build();
                 string conn = config[Keys.HubConnectionString];
                 log.LogInformation("Have connection string {0}", conn);
                 var rm = RegistryManager.CreateFromConnectionString(conn);
                 log.LogInformation("Have registry manager");
-                var topology = await GetDeviceTopology(deviceName, rm, log);
+                var destDevices = await GetDestinationDevices(sourceDeviceId, rm, log);
                 log.LogInformation("Have topology");
                 ModuleLoadMessage loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msg);
                 if ((loadMsg != null) && (loadMsg.ModuleName != null) && (loadMsg.ModuleName.Length > 0))
                 {
-                    foreach (var m in ModulesNeedState)
+                    if (sourceModuleId != loadMsg.ModuleName)
                     {
-                        if (m.Item1 == loadMsg.ModuleName)
-                        {
-                            log.LogInformation("Load Module {0}", loadMsg.ModuleName);
-                            string fruit = await GetCurrentFruit(deviceName, rm, log);
-                            log.LogInformation($"Have fruit {fruit}");
+                        log.LogError("ignoring message because metadata inconsistency.  system property moduleId = {0} message module {1}", sourceModuleId, loadMsg.ModuleName);
+                        return;
+                    }
+                    log.LogInformation("Load Module {0}", loadMsg.ModuleName);
 
-                            await C2DMessage(conn, deviceName, loadMsg.ModuleName, fruit, null, log);
+                    var destModulesFromRouteList = LoadMsgRouting.Where(routeSourceModuleEntry => routeSourceModuleEntry.Item1 == sourceModuleId);
+                    int destModulesFromRouteSize = destModulesFromRouteList.Count();
+                    if (destModulesFromRouteSize == 0)
+                    {
+                        log.LogInformation("no destination routes for module {0} -- ignoring", sourceModuleId);
+                        return;
+                    }
+                    if (destModulesFromRouteSize > 1)
+                    {
+                        log.LogError("configuration error. found {0} route destination lists. expected at most 1.", destModulesFromRouteSize);
+                        return;
+                    }
+                    var destModulesFromRoute = destModulesFromRouteList.First().Item2;
+                    foreach (var destDeviceId in destDevices)
+                    {
+                        log.LogInformation("examining destination device {0}", destDeviceId);
+                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm);
+
+                        var destModules = destCandidateNames.Where(n => n != sourceModuleId).Intersect(destModulesFromRoute, StringComparer.InvariantCulture);
+                        log.LogInformation("sending loadmsg to destination {0} modules", destModules.Count());
+                        foreach (var destModule in destModules)
+                        {
+                            try
+                            {
+                                log.LogInformation("sending loadmsg to destination module {0} on {1}", destModule, destDeviceId);
+                                await C2DModuleMessage(conn, destDeviceId, destModule, sourceModuleId, log);
+                            }
+                            catch (Exception e)
+                            {
+                                log.LogInformation("{0} exception sending module load of {0} to device {1} module {2}", e.ToString(), sourceModuleId, destDeviceId, destModule);
+                            }
                         }
                     }
                     return;
@@ -233,35 +361,42 @@ namespace HubEventHandler
                     {
                         originaleventtime = (string)message.Properties[Keys.MessageCreationUTC];
                     }
-                    foreach (var s in topology.Item2)
+                    var destModulesFromRouteList = FruitMsgRouting.Where(routeSourceModuleEntry => routeSourceModuleEntry.Item1 == sourceModuleId);
+                    int destModulesFromRouteSize = destModulesFromRouteList.Count();
+                    if (destModulesFromRouteSize == 0)
                     {
-                        log.LogInformation("examining fruit slave {0}  originalUTC {1} fruit {2}", s, originaleventtime == null ? "(null)" : originaleventtime, fruitMsg.FruitSeen);
-                        string slaveId = s.Item1;
-                        var modules = await rm.GetModulesOnDeviceAsync(slaveId);
-                        try
+                        log.LogInformation("no destination routes for module {0} -- ignoring", sourceModuleId);
+                        return;
+                    }
+                    if (destModulesFromRouteSize > 1)
+                    {
+                        log.LogError("configuration error. found {0} route destination lists. expected at most 1.", destModulesFromRouteSize);
+                        return;
+                    }
+                    var destModulesFromRoute = destModulesFromRouteList.First().Item2;
+                    log.LogInformation("{0} destination modules for route", destModulesFromRoute.Count());
+                    foreach (var destDeviceId in destDevices)
+                    {
+                        log.LogInformation("examining destination device {0}", destDeviceId);
+                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm);
+                        log.LogInformation("interecting {0} destmodules with {1} routemodules", destCandidateNames.Count(), destModulesFromRoute.Length);
+                        var destModules = destCandidateNames.Intersect(destModulesFromRoute, StringComparer.InvariantCulture);
+                        log.LogInformation("{0} modules after intersection", destModules.Count());
+                        if (destModules == null || destModules.Count() == 0)
                         {
-                            foreach (var m in modules)
-                            {
-                                log.LogInformation("examing module {0}", m.Id);
-                                foreach (var need in ModulesNeedState)
-                                {
-                                    if (m.Id == need.Item1)
-                                    {
-                                        log.LogInformation("module {0} needs state", m.Id);
-                                        foreach (var from in need.Item2)
-                                        {
-                                            if (from == Keys.WinMLModuleId)
-                                            {
-                                                await C2DMessage(conn, slaveId, m.Id, fruitMsg.FruitSeen, originaleventtime, log);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            log.LogInformation("destination modules and routes list have empty intersection");
                         }
-                        catch (Exception e)
+                        foreach (var destModule in destModules)
                         {
-                            log.LogInformation("{0} exception sending fruit slave {1} GPIO fruit {2}. ex = {3}", Thread.CurrentThread.ManagedThreadId, s, fruitMsg.FruitSeen, e.ToString());
+                            try
+                            {
+                                log.LogInformation("sending fruitmsg to destination module {0} on {1}", destModule, destDeviceId);
+                                await C2DFruitMessage(conn, destDeviceId, destModule, fruitMsg.FruitSeen, originaleventtime, log);
+                            }
+                            catch (Exception e)
+                            {
+                                log.LogInformation("{0} exception sending module load of {0} to device {1} module {2}", e.ToString(), sourceModuleId, destDeviceId, destModule);
+                            }
                         }
                     }
                     return;
@@ -270,7 +405,46 @@ namespace HubEventHandler
                 if (oMsg.OrientationState != Orientation.Unknown)
                 {
                     log.LogInformation("orientation msg original time {0} orientation {1}", oMsg.OriginalEventUTCTime, oMsg.OrientationState);
+                    //log.LogInformation("found {0} slave devices", slaves.Length);
+                    string originaleventtime = oMsg.OriginalEventUTCTime;
+                    if (originaleventtime == null && message.Properties.ContainsKey(Keys.MessageCreationUTC))
+                    {
+                        originaleventtime = (string)message.Properties[Keys.MessageCreationUTC];
+                    }
+                    var destModulesFromRouteList = OrientationMsgRouting.Where(routeSourceModuleEntry => routeSourceModuleEntry.Item1 == sourceModuleId);
+                    int destModulesFromRouteSize = destModulesFromRouteList.Count();
+                    if (destModulesFromRouteSize == 0)
+                    {
+                        log.LogInformation("no destination routes for module {0} -- ignoring", sourceModuleId);
+                        return;
+                    }
+                    if (destModulesFromRouteSize > 1)
+                    {
+                        log.LogError("configuration error. found {0} route destination lists. expected at most 1.", destModulesFromRouteSize);
+                        return;
+                    }
+                    var destModulesFromRoute = destModulesFromRouteList.First().Item2;
+                    foreach (var destDeviceId in destDevices)
+                    {
+                        log.LogInformation("examining destination device {0}", destDeviceId);
+                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm);
 
+                        var destModules = destCandidateNames.Where(n => n != sourceModuleId).Intersect(destModulesFromRoute, StringComparer.InvariantCulture);
+                        log.LogInformation("sending loadmsg to destination {0} modules", destModules.Count());
+                        foreach (var destModule in destModules)
+                        {
+                            try
+                            {
+                                log.LogInformation("sending orientation msg to destination module {0} on {1}", destModule, destDeviceId);
+                                await C2DOrientationMessage(conn, destDeviceId, destModule, oMsg.OrientationState, originaleventtime, log);
+                            }
+                            catch (Exception e)
+                            {
+                                log.LogInformation("{0} exception sending module load of {0} to device {1} module {2}", e.ToString(), sourceModuleId, destDeviceId, destModule);
+                            }
+                        }
+                    }
+                    return;
                 }
 
             }

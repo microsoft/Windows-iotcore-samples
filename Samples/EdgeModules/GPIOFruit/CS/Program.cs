@@ -2,6 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
+using EdgeModuleSamples.Common;
 using EdgeModuleSamples.Common.Logging;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,7 @@ namespace GPIOFruit
                 )
             );
             AzureModule m = (AzureModule)connection.Module;
+            Orientation currentOrientation = Orientation.RightSideUp;
             m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
             {
                 var module = (AzureModule)sender;
@@ -84,19 +86,29 @@ namespace GPIOFruit
             {
                 Log.WriteLine("fruit changed to {0}", fruit.ToLower());
                 var module = (AzureModule)sender;
-                await Task.Run(() => gpio.ActivePin = FruitColors[fruit.ToLower()]);
+                string color = null;
+                if (FruitColors.ContainsKey(fruit.ToLower()))
+                {
+                    color = FruitColors[fruit.ToLower()];
+                }
+                await Task.Run(() => gpio.ActivePin = color);
             };
-            m.Orientation0Changed += async (object sender, EdgeModuleSamples.Common.Orientation o) =>
+            m.OrientationChanged += async (object sender, EdgeModuleSamples.Common.Orientation o) =>
             {
-                Log.WriteLine("orientation0 changed to {0}", o.ToString());
-                var module = (AzureModule)sender;
-                await Task.Run(() => gpio.InvertOutputPins());
-            };
-            m.Orientation1Changed += async (object sender, EdgeModuleSamples.Common.Orientation o) =>
-            {
-                Log.WriteLine("orientation1 changed to {0}", o.ToString());
-                var module = (AzureModule)sender;
-                await Task.Run(() => gpio.Blink());
+                Log.WriteLine("OrientationChanged sent {0}", o.ToString());
+                //var module = (AzureModule)sender;
+                Log.WriteLine("Current Orientation {0}", currentOrientation.ToString());
+                if (o != currentOrientation)
+                {
+                    currentOrientation = o;
+                    Log.WriteLine("Orientation changing to {0}", o.ToString());
+                    await Task.Run(() => gpio.InvertOutputPins());
+                }
+                else
+                {
+                    Log.WriteLine("Orientation already correct -- skipping", o.ToString());
+                    await Task.CompletedTask;
+                }
             };
             await Task.Run(async () =>
             {

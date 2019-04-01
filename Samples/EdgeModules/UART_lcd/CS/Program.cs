@@ -2,8 +2,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
 
+using EdgeModuleSamples.Common;
 using EdgeModuleSamples.Common.Logging;
-using EdgeModuleSamples.Common.Messages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -54,7 +54,8 @@ namespace UARTLCD
                 {"apple", Colors.Red},
                 {"pear", Colors.Yellow},
                 {"pen", Colors.Green},
-                {"grapes", Colors.Blue}
+                {"grapes", Colors.Blue},
+                {"other", Colors.Black}
             };
             AzureConnection connection = null;
             UARTDevice uart = null;
@@ -101,6 +102,8 @@ namespace UARTLCD
                 )
             );
 
+            string currentFruit = null;
+            Orientation currentOrientation = Orientation.RightSideUp;
             AzureModule m = (AzureModule)connection.Module;
             m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
             {
@@ -111,13 +114,43 @@ namespace UARTLCD
             };
             m.FruitChanged += async (object sender, string fruit) =>
             {
-                Log.WriteLine("fruit changed to {0}", fruit.ToLower());
-                var module = (AzureModule)sender;
-                await Task.Run(async () => {
-                    await uart.SetBackgroundAsync(FruitColors[fruit.ToLower()]);
-                    await uart.Clear();
-                    await uart.WriteStringAsync(fruit.ToLower());
-                });
+                Log.WriteLine("fruit changed sent {0}", fruit.ToLower());
+                Log.WriteLine("current fruit {0}", currentFruit);
+                if (fruit.ToLower() != currentFruit)
+                {
+                    currentFruit = fruit.ToLower();
+                    Log.WriteLine("setting fruit to {0}", fruit.ToLower());
+                    await Task.Run(async () =>
+                    {
+                        await uart.SetBackgroundAsync(FruitColors[fruit.ToLower()]);
+                        await uart.Clear();
+                        await uart.WriteStringAsync(fruit.ToLower());
+                    });
+                }
+                else
+                {
+                    Log.WriteLine("fruit already correct -- skipping");
+                    await Task.CompletedTask;
+                }
+            };
+            m.OrientationChanged += async (object sender, Orientation o) =>
+            {
+                Log.WriteLine("orientation changed sent {0}", o.ToString());
+                Log.WriteLine("current orientation {0}", currentOrientation);
+                if (o != currentOrientation)
+                {
+                    currentOrientation = o;
+                    Log.WriteLine("setting orientation to {0}", o.ToString());
+                    await Task.Run(async () =>
+                    {
+                        await uart.SetBackgroundAsync(o == Orientation.RightSideUp ? FruitColors[currentFruit.ToLower()] : Colors.White);
+                    });
+                }
+                else
+                {
+                    Log.WriteLine("fruit already correct -- skipping");
+                    await Task.CompletedTask;
+                }
             };
             await uart.SetBackgroundAsync(Colors.White);
             await uart.WriteStringAsync("Loaded");

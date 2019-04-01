@@ -52,6 +52,7 @@ namespace UARTLCD
         protected static readonly byte LCD_CMD_AUTO_LINEWRAP_OFF = 0x44;
 
         private DataWriter _write = null;
+        private RGBColor _lastColor = Colors.Black;
 
         public SerialDevice Device { get; private set; }
 
@@ -121,6 +122,7 @@ namespace UARTLCD
             b[1] = c.Green;
             b[2] = c.Blue;
             await WriteBytesAsync(b);
+            _lastColor = c;
         }
 
         // note: this is the only async write that doesn't flush
@@ -139,6 +141,18 @@ namespace UARTLCD
         {
             _write.WriteString(s);
             await AsAsync(_write.StoreAsync());
+        }
+
+        public async Task DisableColorUseAsync(bool off)
+        {
+            if (off)
+            {
+                await SetBackgroundAsync(Colors.White);
+            }
+            else
+            {
+                await SetBackgroundAsync(_lastColor);
+            }
         }
 
         public static async Task<UARTDevice> CreateUARTDeviceAsync(string deviceName)

@@ -33,7 +33,8 @@ namespace PWMFruit
                 {"apple", 50 },
                 {"pear", 50 },
                 {"pen", 0 },
-                {"grapes", 100}
+                {"grapes", 100},
+                {"other", 0}
             };
             AzureConnection connection = null;
             PWMDevice pwm = null;
@@ -90,12 +91,14 @@ namespace PWMFruit
                     var module = (AzureModule)sender;
                     Log.WriteLine("updating pwm pin config with {0}", newConfiguration.ToString());
                     //await pwm.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
+                    await Task.CompletedTask;
                 };
                 m.FruitChanged += async (object sender, string fruit) =>
                 {
                     Log.WriteLine("fruit changed to {0}", fruit.ToLower());
                     var module = (AzureModule)sender;
                     //await Task.Run(() => pwm.ActivePin = FruitColors[fruit.ToLower()]);
+                    await Task.CompletedTask;
                 };
                 await Task.Run(async () =>
                 {
@@ -103,6 +106,7 @@ namespace PWMFruit
                     {
                         //Log.WriteLine("initializing pwm pin config with {0}", m.Configuration.GpioPins);
                         //await pwm.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
+                        await Task.CompletedTask;
                     }
                     catch (Exception e)
                     {

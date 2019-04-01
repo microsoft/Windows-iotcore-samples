@@ -18,6 +18,7 @@ namespace EdgeModuleSamples.Common
             public readonly static string Configuration = "Configuration";
             public readonly static string Desired = "Desired";
             public readonly static string DeviceIdMetadata = "iothub-connection-device-id";
+            public readonly static string ModuleIdMetadata = "iothub-connection-module-id";
             public readonly static string FruitMaster = "FruitMaster";
             public readonly static string FruitModuleId = "WinML";
             public readonly static string FruitSeen = "FruitSeen";
@@ -27,8 +28,7 @@ namespace EdgeModuleSamples.Common
             public readonly static string I2CModuleId = "I2C";
             public readonly static string HubConnectionString = "HubConnectionString";
             public readonly static string InputFruit = "inputfruit";
-            public readonly static string InputOrientation0 = "inputorientation0";
-            public readonly static string InputOrientation1 = "inputorientation1";
+            public readonly static string InputOrientation = "inputorientation";
             public readonly static string iothubMessageSchema = "iothub-message-schema";
             public readonly static string MessageCreationUTC = "iothub-creation-time-utc";
             public readonly static string ModuleLoadInputRoute = "inputModule";
@@ -42,6 +42,7 @@ namespace EdgeModuleSamples.Common
             public readonly static string OutputUpstream = "outputupstream";
             public readonly static string PWMModuleId = "PWM";
             public readonly static string SetFruit = "SetFruit";
+            public readonly static string SetOrientation = "SetOrientation";
             public readonly static string SPIModuleId = "SPI";
             public readonly static string Reported = "Reported";
             public readonly static string twinChangeNotification = "twinChangeNotification";
@@ -51,9 +52,13 @@ namespace EdgeModuleSamples.Common
         public class AzureMessageBase
         {
         }
-        public class FruitMessage : AzureMessageBase
+        public class OrderedMessage : AzureMessageBase
         {
             public string OriginalEventUTCTime { get; set; }
+
+        }
+        public class FruitMessage : OrderedMessage
+        {
             public string FruitSeen { get; set; }
         }
         public class ModuleLoadMessage : AzureMessageBase
@@ -61,10 +66,9 @@ namespace EdgeModuleSamples.Common
             public string ModuleName { get; set; }
         }
 
-        public class OrientationMessage : AzureMessageBase
+        public class OrientationMessage : OrderedMessage
         {
-            public string OriginalEventUTCTime { get; set; }
-            public Orientation OrientationState;
+            public Orientation OrientationState { get; set; }
         };
     }
 }
