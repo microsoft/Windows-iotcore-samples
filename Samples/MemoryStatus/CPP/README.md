@@ -20,7 +20,7 @@ This sample is intended to show how to create a console application that can be 
 Select the template 'Blank Windows IoT Core Console Application'
 Remember to give a good name to your first app! In this example, we called the project 'MemoryStatus'.
 
-![New CPP Project](../../../Resources/images/MemoryStatus/blank_template.png)
+![New CPP Project](../../../Resources/images/MemoryStatus/blank-template.png)
 
 * Let's add some content to the console application. From Solution Explorer, select the 'ConsoleApplication.cpp' file.
 
