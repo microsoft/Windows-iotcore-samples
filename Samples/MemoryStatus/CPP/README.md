@@ -12,14 +12,15 @@ This sample is intended to show how to create a console application that can be 
 ### Usage
 
 1. Download this sample
-2. Open the project in Visual Studio
+2. Download the [Windows 10 IoT Core Project Templates for Visual Studio](https://marketplace.visualstudio.com/items?itemName=MicrosoftIoT.WindowsIoTCoreProjectTemplatesforVS15) 
+3. Open the project in Visual Studio
 
 ### To create you own project
 * Create a new project (File | New Project...). In the 'New Project' dialog, navigate to 'Windows IoT Core' as shown below (in the left pane in the dialog: Templates | Visual C++ | Windows | Windows IoT Core).
 Select the template 'Blank Windows IoT Core Console Application'
 Remember to give a good name to your first app! In this example, we called the project 'MemoryStatus'.
 
-![New CPP Project](../../../Resources/images/MemoryStatus/new_cpp_console_proj.png)
+![New CPP Project](../../../Resources/images/MemoryStatus/blank_template.png)
 
 * Let's add some content to the console application. From Solution Explorer, select the 'ConsoleApplication.cpp' file.
 
