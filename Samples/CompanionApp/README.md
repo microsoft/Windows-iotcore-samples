@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: companion-app
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: This sample is intended to show how to remotely configure an IoT core device when it is not attached to a network.
 ---
 

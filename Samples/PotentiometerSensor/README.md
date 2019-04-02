@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: potentiometer-sensor
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Connect a rotary potentiometer and LED to your IoT Core device.
 ---
 

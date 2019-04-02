@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: webcam-app
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Create an app that initializes a web cam, takes pictures, and records video and audio.
 ---
 

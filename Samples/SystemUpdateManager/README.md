@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: system-update-manager
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Use System Update Manager to control system updates.
 ---
 

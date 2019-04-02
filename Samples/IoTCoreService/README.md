@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: iotcore-service
 languages: 
--cpp
+  - cpp
 products:
--windows
+  - windows
 description: A simple shared host service for Windows 10 IoT Core.
 ---
 

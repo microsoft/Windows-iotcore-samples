@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: gpio-kmdf-demo
 languages:
--cpp
+  - cpp
 products:
--windows
+  - windows
 description: Create a simple GPIO demo.
 ---
 

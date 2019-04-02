@@ -2,10 +2,10 @@
 topic: sample
 urlFragment: virtual-microphone-array-driver
 languages:
--cpp
+  - cpp
 products:
--windows
-description: An app service to blink an LED and a client app to call it.
+  - windows
+description: "An app service to blink an LED and a client app to call it."
 ---
 
 # Virtual Microphone Array Driver

@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: video-capture
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Initialize a video capture device, record video to a file, preview video feed, and playback recorded video.
 ---
 

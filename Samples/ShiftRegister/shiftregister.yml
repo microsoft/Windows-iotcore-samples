@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Shift Register
-  description: Connect an 8-bit serial-in, parallel-out shift register to your device to toggle eight LED's.
-  author: brian.fjeldstad
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

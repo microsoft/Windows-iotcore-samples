@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: RPi Cognitive Services
-  description: A sample that leverages Cognitive Services for Windows 10 IoT Core devices.
-  author: shijiong
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

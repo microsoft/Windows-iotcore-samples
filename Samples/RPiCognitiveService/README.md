@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: rpi-cognitive-service
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: A Microsoft Cognitive Services app designed for Windows 10 IoT Core devices.
 ---
 

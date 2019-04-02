@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Video capture sample
-  description: Initialize a video capture device, record video to a file, preview video feed, and playback recorded video.
-  author: brian.fjeldstad
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

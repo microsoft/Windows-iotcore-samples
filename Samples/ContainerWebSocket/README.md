@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: container-websocket
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: This sample is designed to work with Windows containers on Windows IoT Core and Windows IoT Enterprise.
 ---
 

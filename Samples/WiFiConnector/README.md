@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: wifi-connector
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Learn how to find and connect to WiFi networks using a Universal Windows Platform (UWP) app that makes use of the Windows.Devices.WiFi.WiFiAdapter API.
 ---
 

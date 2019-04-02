@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: hello-world
 languages: 
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Create and deploy your first IoT Core app.
 ---
 

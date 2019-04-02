@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: kegocnizer
 languages:
-    - csharp
+  - csharp
 products:
-    - windows
+  - windows
 description: Building an IoT beer device that dispenses to authorized users.
 ---
 
@@ -118,14 +118,13 @@ to route between the board and the sensors.  During testing, we had to move the 
 the connectors, causing them to come unplugged and in a couple of instances, the crimps were pulled out and had to be redone.  In the next prototype, we plan to use aircraft 
 style connectors so that the connections are more securely fastened without requiring an unattractive hole in the case.
 
-
-
 ![Careful Soldering](../../Resources/images/Kegocnizer/Soldering.jpg)
  
 Incremental testing was also crucial.  We learned that testing each soldered connection, each cable, each component, and each connector, was a huge timesaver over waiting 
 until final assembly and trying to debug issues back to the broken component at the end.
 
-Each component was tested on its own prior to integrating with the prototype. 
+Each component was tested on its own prior to integrating with the prototype.
+
 ![DHT11](../../Resources/images/Kegocnizer/DHT11Breadboard.jpg "DHT11 temperature sensor testing")
 ![HX711](../../Resources/images/Kegocnizer/HX711Breadboard.jpg "HX711 force sensor testing")
 ![Flow Assembly](../../Resources/images/Kegocnizer/ValveRelayBreadboard.jpg "Flow meter and valve testing")

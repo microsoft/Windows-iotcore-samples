@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: gpio-onewire
 languages:
--cpp
+  - cpp
 products:
--windows
+  - windows
 description: This sample shows how to read from the DHT11 from a Universal Windows Application.
 ---
 

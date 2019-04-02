@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: iot-onboarding-rfcomm
 languages: 
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Create a simple solution to configure your Headless IoT Device (an IoT device without a display) to connect WiFi network through Bluetooth RFCOMM at startup.
 ---
 

@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: System Update Manager
-  description: Use System Update Manager to control system updates.
-  author: paulmon
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

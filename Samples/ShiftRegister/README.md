@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: shift-register
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Connect an 8-bit serial-in, parallel-out shift register to your device to toggle eight LED's.
 ---
 

@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Webcam App
-  description: Create an app that initializes a web cam, takes pictures, and records video and audio.
-  author: lamadio
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

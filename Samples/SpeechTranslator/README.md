@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: speech-translator
 languages:
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Translate your speech to different languages.
 ---
 

@@ -2,13 +2,13 @@
 topic: sample
 urlFragment: internet-radio
 languages: 
--cpp
+  - cpp
 products:
--windows
+  - windows
 description: Build a streaming audio device.
 ---
 
-Internet Radio
+# Internet Radio
 
 These are the available versions of this Windows 10 IoT Core sample:
 

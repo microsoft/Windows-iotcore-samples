@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: accelerometer
 languages:
-    - csharp
+  - csharp
 products:
-    - windows
+  - windows
 description: Create a simple app with an SPI accelerometer build with Windows 10 IoT Core.
 ---
 
@@ -12,9 +12,10 @@ description: Create a simple app with an SPI accelerometer build with Windows 10
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[C#](./CS/README.md)
+-	[C#](./CS/README.md)
 
 ## Additional resources
-* [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
+
+- [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
 
 This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.

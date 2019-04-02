@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: iotcore-mediaplayer
 languages: 
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: A demonstration of how to play music from an IoT device.
 ---
 

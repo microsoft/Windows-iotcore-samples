@@ -1,13 +1,3 @@
----
-title: Windows 10 IoT Core Default App
-author: saraclay
-ms.author: saclayt
-ms.date: 08/08/2018
-ms.topic: article
-description: Learn about the Windows 10 IoT Core Default App and its features.
-keywords: windows iot, windows 10 iot core, default app
----
-
 # Windows 10 IoT Core Default App Overview
 
 > If you find that you'd like to see a feature added to this sample app, [open an issue](https://docs.microsoft.com/en-us/windows/iot-core/develop-your-app/iotcoredefaultapp) on GitHub to let us know. 

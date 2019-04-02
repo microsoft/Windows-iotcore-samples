@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Azure Hello Cloud
-  description: Set up your first Azure and Windows 10 IoT Core app for a headed device.
-  author: saraclay
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

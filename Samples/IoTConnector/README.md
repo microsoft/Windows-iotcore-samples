@@ -2,9 +2,9 @@
 topic: sample
 urlFragment: iot-connector
 languages: 
--csharp
+  - csharp
 products:
--windows
+  - windows
 description: Demonstrate device to device communication with Azure IoT Hub.
 ---
 

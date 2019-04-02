@@ -1,9 +1,0 @@
-### YamlMime:Sample
-sample:
-- name: Temperature and force sensor
-  description: Control a basic temperature and force sensor.
-  author: lamadio
-  languages:
-  - csharp
-  technologies:
-  - windows-iot

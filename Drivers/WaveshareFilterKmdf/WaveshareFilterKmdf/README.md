@@ -1,16 +1,15 @@
 ---
-title: Waveshare KMDF Filter Driver
-ms.author: christopher.co
+name: Waveshare KMDF Filter Driver
 description: Filter driver which enables the Waveshare touchscreen on IoT Core.
 topic: sample
 urlFragment: virtual-pwm
 languages:
-    - csharp
+  - csharp
 products:
-    - windows
+  - windows
 ---
 
-# “Waveshare KMDF Filter Driver”
+# Waveshare KMDF Filter Driver
 
 This sample filter driver enables touch events on the Waveshare 7" HDMI LCD Touchscreen for use on Windows IoT Core.  The driver is a HidUsb KMDF Lower Filter Driver.  The driver alters the HID input reports received from the touchscreen to comply with the HID specification.
 

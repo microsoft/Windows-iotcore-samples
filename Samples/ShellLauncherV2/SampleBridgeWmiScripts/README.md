@@ -1,10 +1,10 @@
---- 
+---
 topic: sample
 urlFragment: SampleBridgeWmiScripts
 languages:
--xml
+- xml
 products:
--windows
+- windows
 description: sample powershell scripts to call bridge WMI Shell Launcher node
 ---
 
