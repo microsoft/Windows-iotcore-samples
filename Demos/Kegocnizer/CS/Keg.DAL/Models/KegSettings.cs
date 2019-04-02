@@ -112,6 +112,17 @@ namespace Keg.DAL.Models
         [JsonProperty("flowcalibrationoffset")]
         public float FlowCalibrationOffset { get; set; }
 
+        /// <summary>
+        /// Counter Seconds
+        /// </summary>
+        [JsonProperty("counterSeconds")]
+        public Int32 CounterSeconds { get; set; }
+
+        /// <summary>
+        /// CounterShort Seconds
+        /// </summary>
+        [JsonProperty("counterSecondsShort")]
+        public Int32 CounterSecondsShort { get; set; }
 
     }
 
@@ -129,7 +140,7 @@ namespace Keg.DAL.Models
                 result += url.Trim('/');
             }
 
-            return result;
+            return result.TrimEnd('/');
         }
 
         private static bool CheckValidUrl()
@@ -155,7 +166,7 @@ namespace Keg.DAL.Models
                 return null;
             }
             var client = new System.Net.Http.HttpClient();
-            string url =  UrlCombine(Constants.COSMOSAzureFunctionsURL,"kegconfig");
+            string url =  $"{UrlCombine(Constants.COSMOSAzureFunctionsURL,"kegconfig")}?code={Constants.AF_KEGKEY}";
             var response = await client.GetAsync(url);
             var body = await response.Content.ReadAsStringAsync();
             List<KegConfig> list = JsonConvert.DeserializeObject<List<KegConfig>>(body);
@@ -180,7 +191,7 @@ namespace Keg.DAL.Models
             };
 
             //var client = new Windows.Web.Http.HttpClient();
-            string url = UrlCombine(Constants.COSMOSAzureFunctionsURL, "kegconfig", id);
+            string url = $"{UrlCombine(Constants.COSMOSAzureFunctionsURL, "kegconfig", id)}?code={Constants.AF_KEGKEY}";
 
             try
             {
@@ -208,7 +219,7 @@ namespace Keg.DAL.Models
         public static async void SetKegSettings(this KegConfig item)
         {
             var client = new System.Net.Http.HttpClient();
-            string url = UrlCombine(Constants.COSMOSAzureFunctionsURL, "kegconfig");
+            string url = $"{UrlCombine(Constants.COSMOSAzureFunctionsURL, "kegconfig")}?code={Constants.AF_KEGKEY}";
             StringContent content = new StringContent(JsonConvert.SerializeObject(item));
             var response = await client.PostAsync(url, content);
             var body = await response.Content.ReadAsStringAsync();

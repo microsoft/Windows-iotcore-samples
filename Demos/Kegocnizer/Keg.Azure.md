@@ -39,12 +39,17 @@ c. Create Function App
   * Application Insights Location: 'West US2' or appropriate
 	
 d. Navigate to Azure Function created above
+  * Host Key Creation
+      * Click on the Resource Name and naviagate to 'Function app settings'
+	  * Create Key using 'Add new host key' button
+	  * Provide any name and save for autogeneration of key. This key should be updated in the Keg.DAL\Constants.cs for 'AF_KEGKEY'
+	  * Make sure Authorization level is 'Function' for all the methods
 
   * Method: AddConfig
     * Click '+' adjacent to Functions to create new Method
     * Select 'HTTP trigger' template
     * Select c# as Language, and enter 'AddConfig' as Name
-    * Select AuthroizationLevel: Anonymous
+    * Select AuthroizationLevel: Function
     * And Click on 'Create'
     * Once 'AddConfig' method is created, 
     * Expand AddConfig and Select 'Integrate'
@@ -55,7 +60,7 @@ d. Navigate to Azure Function created above
             b. Collection Name: Items
             c. Click on 'new' for Azure Cosmos DB account connection and select KegocnizerDemodb account
         * Under Triggers 'HTTP(req)
-          * Make sure Authorization level is 'Anonymous', POST HTTP methods
+          * Make sure Authorization level is 'Function', POST HTTP methods
         * Select AddConfig Function in left pane
         * In the space provided on the right: run.csx, copy code from Functions.txt under Method: AddConfig 
         * And Click Save

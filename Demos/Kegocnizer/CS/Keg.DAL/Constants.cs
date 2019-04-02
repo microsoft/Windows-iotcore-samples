@@ -24,6 +24,8 @@ namespace Keg.DAL
 
         //Change this Key as required.
         public static readonly string INSTRUMENTKEY = "YOUR KEY HERE";
+
+        public static readonly string AF_KEGKEY = "YOUR KEY HERE";
     }
 
 }
