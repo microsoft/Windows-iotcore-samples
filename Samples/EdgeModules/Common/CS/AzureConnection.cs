@@ -54,6 +54,7 @@ namespace EdgeModuleSamples.Common.Azure
     }
     abstract public class AzureModuleBase
     {
+        public virtual string ModuleId { get { throw new NotImplementedException(); } }
         protected AzureConnectionBase _connection { get; set; }
         protected ModuleClient _moduleClient { get; set; }
         protected Twin _moduleTwin { get; set; }
@@ -88,10 +89,10 @@ namespace EdgeModuleSamples.Common.Azure
             await _moduleClient.UpdateReportedPropertiesAsync(delta).ConfigureAwait(false);
 
         }
-        public async Task NotifyModuleLoadAsync(string route, string defaultId)
+        public async Task NotifyModuleLoadAsync(string route)
         {
             ModuleLoadMessage msg = new ModuleLoadMessage();
-            string id = defaultId;
+            string id = ModuleId;
             if (_moduleTwin == null)
             {
                 Log.WriteLine("missing module twin -- assuming moduleId {0}", id);
@@ -134,15 +135,16 @@ namespace EdgeModuleSamples.Common.Azure
         }
         //NOTE: actual work for module init split in 2 parts to allow derived classes to attach additional
         // message handlers prior to the module client open
+        readonly int DEFAULT_NETWORK_TIMEOUT = 180;
         private async Task AzureModuleInitBeginAsync()
         {
             AmqpTransportSettings[] settings = new AmqpTransportSettings[2];
             settings[0] = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
-            settings[0].OpenTimeout = TimeSpan.FromSeconds(120);
-            settings[0].OperationTimeout = TimeSpan.FromSeconds(120);
+            settings[0].OpenTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
+            settings[0].OperationTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             settings[1] = new AmqpTransportSettings(TransportType.Amqp_WebSocket_Only);
-            settings[1].OpenTimeout = TimeSpan.FromSeconds(120);
-            settings[1].OperationTimeout = TimeSpan.FromSeconds(120);
+            settings[1].OpenTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
+            settings[1].OperationTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             _reportedDeviceProperties = new TwinCollection();
             _moduleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
             Log.WriteLine("ModuleClient Initialized");
@@ -237,10 +239,10 @@ namespace EdgeModuleSamples.Common.Azure
             Log.WriteLine("Azure connection Creation Complete");
             return newConnection;
         }
-        protected async Task NotifyModuleLoadAsync(string route, string defaultId)
+        protected async Task NotifyModuleLoadAsync(string route)
         {
-            await Module.NotifyModuleLoadAsync(route, defaultId);
-            Log.WriteLine("Module Load D2C message fired module {0} route {1}", defaultId, route);
+            await Module.NotifyModuleLoadAsync(route);
+            Log.WriteLine("Module Load D2C message fired module {0} route {1}", Module.ModuleId, route);
         }
 
 

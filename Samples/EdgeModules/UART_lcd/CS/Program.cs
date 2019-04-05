@@ -32,7 +32,7 @@ namespace UARTLCD
         public readonly static RGBColor Red = new RGBColor(0xff, 0, 0);
         public readonly static RGBColor Green = new RGBColor(0, 0xff, 0);
         public readonly static RGBColor Blue = new RGBColor(0, 0, 0xff);
-        public readonly static RGBColor Yellow = new RGBColor(0xff, 0xff, 0);
+        public readonly static RGBColor Yellow = new RGBColor(0xff, 0x80, 0);
         public readonly static RGBColor Black = new RGBColor(0, 0, 0);
         public readonly static RGBColor White = new RGBColor(0xff, 0xff, 0xff);
     }
@@ -120,12 +120,11 @@ namespace UARTLCD
                 {
                     currentFruit = fruit.ToLower();
                     Log.WriteLine("setting fruit to {0}", fruit.ToLower());
-                    await Task.Run(async () =>
-                    {
-                        await uart.SetBackgroundAsync(FruitColors[fruit.ToLower()]);
-                        await uart.Clear();
-                        await uart.WriteStringAsync(fruit.ToLower());
-                    });
+                    LCDMessage msg;
+                    msg.bgcolor = FruitColors[currentFruit];
+                    msg.clear = true;
+                    msg.msg = currentFruit;
+                    uart.QueueMessage(msg);
                 }
                 else
                 {
@@ -141,10 +140,11 @@ namespace UARTLCD
                 {
                     currentOrientation = o;
                     Log.WriteLine("setting orientation to {0}", o.ToString());
-                    await Task.Run(async () =>
-                    {
-                        await uart.SetBackgroundAsync(o == Orientation.RightSideUp ? FruitColors[currentFruit.ToLower()] : Colors.White);
-                    });
+                    LCDMessage msg;
+                    msg.bgcolor = o == Orientation.RightSideUp ? FruitColors[currentFruit.ToLower()] : Colors.White;
+                    msg.clear = false;
+                    msg.msg = null;
+                    uart.QueueMessage(msg);
                 }
                 else
                 {

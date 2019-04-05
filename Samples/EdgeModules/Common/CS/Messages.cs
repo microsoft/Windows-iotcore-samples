@@ -36,8 +36,9 @@ namespace EdgeModuleSamples.Common
             public readonly static string ModuleLoadOutputRouteLocal1 = "outputModuleLocal1";
             public readonly static string ModuleLoadOutputRouteUpstream = "outputModuleUpstream";
             public readonly static string Orientation = "Orientation";
-            public readonly static string OutputFruit0 = "outputfruit0";
-            public readonly static string OutputFruit1 = "outputfruit1";
+            public readonly static string OutputFruit0 = "outputfruit0"; // gpio
+            public readonly static string OutputFruit1 = "outputfruit1"; // uart
+            public readonly static string OutputFruit2 = "outputfruit2"; // pwm
             public readonly static string OutputOrientation = "outputorientation";
             public readonly static string OutputUpstream = "outputupstream";
             public readonly static string PWMModuleId = "PWM";

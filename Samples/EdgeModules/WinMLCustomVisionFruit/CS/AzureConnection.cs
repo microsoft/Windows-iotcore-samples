@@ -18,6 +18,7 @@ namespace WinMLCustomVisionFruit
 {
     public class AzureModule : AzureModuleBase {
         public event EventHandler<string> ModuleLoaded;
+        public override string ModuleId { get { return Keys.WinMLModuleId; } }
 
         static async Task<MessageResponse> ModuleLoadMessageHandler(Message msg, Object ctx)
         {
@@ -91,6 +92,12 @@ namespace WinMLCustomVisionFruit
                         Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit1 kvp = {0}", kvp.ToString());
                         var m = new Message(msgbody);
                         await Module.SendMessageAsync(Keys.OutputFruit1, m);
+                    }),
+                    Task.Run(async () =>
+                    {
+                        Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit2 kvp = {0}", kvp.ToString());
+                        var m = new Message(msgbody);
+                        await Module.SendMessageAsync(Keys.OutputFruit2, m);
                     }),
                     Task.Run(async () =>
                         {

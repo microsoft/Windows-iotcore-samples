@@ -195,7 +195,11 @@ namespace HubEventHandler
             if (sourceDeviceId != topology.Item1.Item1)
             {
                 var s = topology.Item1.Item1;
-                results.Append(s);
+                log.LogInformation("source is not master. adding master {0} to dest list", s);
+                results = results.Append(s).ToList<string>();
+            } else
+            {
+                log.LogInformation("source is master. ignoring master");
             }
             //var slaves = topology.Item2.Where(s => s.Item1 != sourceDeviceId).Select(s => results.Append(s.Item1));
             var slavelist = topology.Item2.Where(s => s.Item1 != sourceDeviceId);
@@ -401,10 +405,11 @@ namespace HubEventHandler
                     }
                     return;
                 }
+                log.LogInformation("Not a fruit message -- checking for orientation");
                 OrientationMessage oMsg = JsonConvert.DeserializeObject<OrientationMessage>(msg);
                 if (oMsg.OrientationState != Orientation.Unknown)
                 {
-                    log.LogInformation("orientation msg original time {0} orientation {1}", oMsg.OriginalEventUTCTime, oMsg.OrientationState);
+                    log.LogInformation("orientation msg original time {0} orientation {1} sourceDeviceId {2} sourceModuleId {3}", oMsg.OriginalEventUTCTime, oMsg.OrientationState, sourceDeviceId, sourceModuleId);
                     //log.LogInformation("found {0} slave devices", slaves.Length);
                     string originaleventtime = oMsg.OriginalEventUTCTime;
                     if (originaleventtime == null && message.Properties.ContainsKey(Keys.MessageCreationUTC))
@@ -423,6 +428,7 @@ namespace HubEventHandler
                         log.LogError("configuration error. found {0} route destination lists. expected at most 1.", destModulesFromRouteSize);
                         return;
                     }
+                    log.LogInformation("orientation msg 1 route list as expected. examining {0} dest devices", destDevices.Count());
                     var destModulesFromRoute = destModulesFromRouteList.First().Item2;
                     foreach (var destDeviceId in destDevices)
                     {

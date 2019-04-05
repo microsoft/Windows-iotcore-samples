@@ -21,8 +21,10 @@ namespace PWMFruit
     public class PWMDevice : SPBDevice
     {
         public PwmController Device { get; private set; }
-        public PwmPin Pin { get; private set; } 
+        public PwmPin Pin { get; private set; }
 
+        float _currentSpeed = 0.0f;
+        bool _started = false;
         private PWMDevice()
         {
         }
@@ -55,6 +57,61 @@ namespace PWMFruit
             return d;
         }
 
+        public void SetSpeed(int pct)
+        {
+            float val = pct * 1.0f / 100;
+            Log.WriteLine("SetSpeed(int) val {0}", val);
+            if (val > 0.0f)
+            {
+                SetSpeed(1.0f);  // full blast for a moment to overcome inertia and get the motor shaft turning
+                Thread.Sleep(100);
+            }
+            SetSpeed(val);
+        }
+        // note: empirically my motor will only run at minimum 45%.  likely this will need to be tuned for each motor
+        readonly float MINIMUM_DUTY_CYCLE = 0.45f;
+        public void SetSpeed(float pct)
+        {
+            if (pct <= 0.01f)
+            {
+                pct = 0.0f;
+            } else if (pct > 1.0f)
+            {
+                pct = 1.0f;
+            } else
+            {
+                if (pct < MINIMUM_DUTY_CYCLE)
+                {
+                    pct = MINIMUM_DUTY_CYCLE;
+                } else
+                {
+                    // scale 0-100 to min-100
+                    float val = (1.0f - MINIMUM_DUTY_CYCLE) * pct + MINIMUM_DUTY_CYCLE;
+                }
+            }
+            set(pct);
+        }
+        private void set(float val)
+        {
+            if (Math.Abs(_currentSpeed - val) < 0.01f)
+            {
+                Pin.Stop();
+                _started = false;
+                Log.WriteLine("duty cycle already at {0} -- skipping set to {1}", _currentSpeed, val);
+                return;
+            }
+            if (!_started)
+            {
+                Device.SetDesiredFrequency((Device.MinFrequency + Device.MaxFrequency) / 2);
+                Pin.Polarity = PwmPulsePolarity.ActiveHigh;
+                Pin.Start();
+                _started = true;
+            }
+            Pin.SetActiveDutyCyclePercentage(val);
+            _currentSpeed = val;
+            Log.WriteLine("duty cycle {0} at freq {1}", val, Device.ActualFrequency);
+
+        }
 
         public void Test(TimeSpan testDuration, int pct)
         {

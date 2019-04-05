@@ -44,6 +44,7 @@ namespace UARTLCD
         public event EventHandler<ConfigurationType> ConfigurationChanged;
         public event EventHandler<string> FruitChanged;
         public event EventHandler<Orientation> OrientationChanged;
+        public override string ModuleId { get { return Keys.UARTModuleId; } }
 
         private async Task ProcessFruitMessage(FruitMessage fruitMsg)
         {
@@ -190,9 +191,9 @@ namespace UARTLCD
         public async Task NotifyModuleLoadAsync()
         {
             await Task.WhenAll(
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0, Keys.UARTModuleId)),
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1, Keys.UARTModuleId)),
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream, Keys.UARTModuleId))
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream))
             );
             Log.WriteLine("derived Module Load D2C message fired");
         }

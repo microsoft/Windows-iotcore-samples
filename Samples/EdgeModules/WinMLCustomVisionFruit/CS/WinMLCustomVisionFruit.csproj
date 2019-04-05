@@ -5,6 +5,8 @@
   </PropertyGroup>
   <Import Project="..\..\Common.CS.Props" />
   <ItemGroup>
+    <None Remove="resources\officefruit.onnx.bak" />
+    <None Remove="resources\officefruit4.onnx.bak" />
     <None Remove="resources\office_fruit_coreml.onnx.bak" />
   </ItemGroup>
 

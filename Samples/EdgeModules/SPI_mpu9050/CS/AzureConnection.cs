@@ -41,6 +41,7 @@ namespace SPIMPU9050
         private DesiredPropertiesType<ConfigurationType> _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
+        public override string ModuleId { get { return Keys.SPIModuleId; } }
 
         public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
         {

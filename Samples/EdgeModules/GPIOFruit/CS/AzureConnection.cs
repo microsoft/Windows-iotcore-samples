@@ -48,6 +48,8 @@ namespace GPIOFruit
         private DateTime _lastFruitUTC;
         private DateTime _lastOrientationUTC;
         private DesiredPropertiesType<ConfigurationType> _desiredProperties;
+        public override string ModuleId { get { return Keys.GPIOModuleId; } }
+
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
         public event EventHandler<string> FruitChanged;
@@ -215,9 +217,9 @@ namespace GPIOFruit
         public async Task NotifyModuleLoadAsync()
         {
             await Task.WhenAll(
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0, Keys.GPIOModuleId)),
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1, Keys.GPIOModuleId)),
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream, Keys.GPIOModuleId))
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream))
             );
             Log.WriteLine("derived Module Load D2C message fired");
         }

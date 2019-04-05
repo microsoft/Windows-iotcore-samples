@@ -28,7 +28,8 @@ namespace PWMFruit
             {
                 await PWMDevice.ListPWMDevicesAsync();
             }
-            Dictionary<string, int> FruitColors = new Dictionary<string, int>()
+            // speed as int pct 0-100
+            Dictionary<string, int> FruitSpeed = new Dictionary<string, int>()
             {
                 {"apple", 50 },
                 {"pear", 50 },
@@ -93,12 +94,11 @@ namespace PWMFruit
                     //await pwm.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
                     await Task.CompletedTask;
                 };
-                m.FruitChanged += async (object sender, string fruit) =>
+                m.FruitChanged += (object sender, string fruit) =>
                 {
                     Log.WriteLine("fruit changed to {0}", fruit.ToLower());
                     var module = (AzureModule)sender;
-                    //await Task.Run(() => pwm.ActivePin = FruitColors[fruit.ToLower()]);
-                    await Task.CompletedTask;
+                    pwm.SetSpeed(FruitSpeed[fruit.ToLower()]);                    
                 };
                 await Task.Run(async () =>
                 {

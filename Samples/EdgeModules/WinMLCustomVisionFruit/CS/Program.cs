@@ -240,21 +240,51 @@ namespace WinMLCustomVisionFruit
 
             await Task.WhenAll(
                 Task.Run(async () =>
-                    model = await Model.CreateModelAsync(
-                        Directory.GetCurrentDirectory() + "\\resources\\office_fruit.onnx", options.Gpu)),
-                options.Test ? Task.CompletedTask : Task.Run(async () =>
-                    connection = await AzureConnection.CreateAzureConnectionAsync()),
+                {
+                    try
+                    {
+                        model = await Model.CreateModelAsync(
+                            Directory.GetCurrentDirectory() + "\\resources\\office_fruit.onnx", options.Gpu);
+                        if (options.Test)
+                        {
+                            await Task.CompletedTask;
+                        }
+                        else
+                        {
+                            connection = await AzureConnection.CreateAzureConnectionAsync();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLineError("failed to create model {0}", e.ToString());
+                        Environment.Exit(2);
+                    }
+                }),                   
                 Task.Run(async () => {
-                    (reader, evtFrame) = await GetFrameReaderAsync();
-                    await AsyncHelper.AsAsync(reader.StartAsync());
-                    })
-                );
+                    try
+                    {
+                        (reader, evtFrame) = await GetFrameReaderAsync();
+                        await AsyncHelper.AsAsync(reader.StartAsync());
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLineError("failed to start frame reader {0}", e.ToString());
+                        Environment.Exit(2);
+                    }
+                }));
             AzureModule m = (AzureModule)connection.Module;
             m.ModuleLoaded += async (Object sender, string moduleName) =>
             {
-
-                Log.WriteLine("module loaded.   resending state");
-                await connection.NotifyNewModuleAsync();
+                try
+                {
+                    Log.WriteLine("module loaded.   resending state");
+                    await connection.NotifyNewModuleAsync();
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLineError("failed to notify state {0}", e.ToString());
+                    Environment.Exit(2);
+                }
             };
 
             Log.WriteLine("Model loaded, Azure Connection created, and FrameReader Started\n\n\n\n");

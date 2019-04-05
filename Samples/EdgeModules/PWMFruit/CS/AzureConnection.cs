@@ -51,6 +51,7 @@ namespace PWMFruit
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
         public event EventHandler<string> FruitChanged;
+        public override string ModuleId { get { return Keys.PWMModuleId; } }
 
         private async Task ProcessFruitMessage(FruitMessage fruitMsg)
         {
@@ -159,9 +160,9 @@ namespace PWMFruit
         public async Task NotifyModuleLoadAsync()
         {
             await Task.WhenAll(
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0, Keys.GPIOModuleId)),
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1, Keys.GPIOModuleId)),
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream, Keys.GPIOModuleId))
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream))
             );
             Log.WriteLine("derived Module Load D2C message fired");
         }

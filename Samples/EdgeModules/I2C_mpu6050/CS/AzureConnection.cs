@@ -41,6 +41,7 @@ namespace I2CMPU6050
         private DesiredPropertiesType<ConfigurationType> _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
+        public override string ModuleId { get { return Keys.I2CModuleId; } }
 
         public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
         {
@@ -125,13 +126,29 @@ namespace I2CMPU6050
                 await Task.WhenAll(
                     Task.Run(async () =>
                     {
-                        var m = new Message(msgbody);
-                        await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                        try
+                        {
+                            var m = new Message(msgbody);
+                            await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("failed to send output orientation local {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
+
                     }),
                     Task.Run(async () =>
                     {
-                        var m = new Message(msgbody);
-                        await Module.SendMessageAsync(Keys.OutputUpstream, m);
+                        try { 
+                            var m = new Message(msgbody);
+                            await Module.SendMessageAsync(Keys.OutputUpstream, m);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("failed to send output orientation upstream {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
                     })
                 );
             }

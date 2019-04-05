@@ -7,6 +7,7 @@ using static EdgeModuleSamples.Common.AsyncHelper;
 using EdgeModuleSamples.Common.Device;
 using EdgeModuleSamples.Common.Logging;
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.SerialCommunication;
@@ -17,8 +18,18 @@ using Windows.Storage.Streams;
 namespace UARTLCD
 {
 
+    public struct LCDMessage
+    {
+        public bool clear;
+        public RGBColor bgcolor;
+        public string msg;
+    }
     public class UARTDevice : SPBDevice
     {
+        private ConcurrentQueue<LCDMessage> _msgcq { get; set; }
+        private BlockingCollection<LCDMessage> _msgq { get; set; }
+        private CancellationTokenSource _msgCancel;
+        private Task _msgTask;
         protected static readonly byte LCD_ROWS = 0x02;
         protected static readonly byte LCD_COLS = 0x10;
 
@@ -58,38 +69,69 @@ namespace UARTLCD
 
         private UARTDevice() 
         {
+            _msgcq = new ConcurrentQueue<LCDMessage>();
+            _msgq = new BlockingCollection<LCDMessage>(_msgcq);
+            _msgCancel = new CancellationTokenSource();
         }
+        // TODO: finalizer cancel q consumer
+
         public async Task InitAsync()
         {
             // reset display
             // configure display
-            await Task.Run(async () =>
-            {
-                await SendCmdAsync(LCD_CMD_SET_SAVE_SIZE);
-                await WriteByteAsync(LCD_COLS);
-                await WriteByteAsync(LCD_ROWS);
-                await SendCmdAsync(LCD_CMD_DISPLAY_ON);
-                await WriteByteAsync(0); // unclear why display on needs an extra 0 byte. but, it does -- see firmware source.
-                await AsAsync(_write.StoreAsync());
-                Log.WriteLine("display on cmd sent, pausing");
-                Thread.Sleep(TimeSpan.FromMilliseconds(300));
-                await SendCmdAsync(LCD_CMD_DISPLAY_OFF); // display off doesn't need the mystery 0
-                Log.WriteLine("display off cmd sent, pausing");
-                Thread.Sleep(TimeSpan.FromMilliseconds(1000));
-                await SendCmdAsync(LCD_CMD_DISPLAY_ON);
-                await WriteByteAsync(0); // unclear why display on needs an extra 0 byte. but, it does -- see firmware source.
-                await AsAsync(_write.StoreAsync()); //flush before pause
-                Thread.Sleep(TimeSpan.FromMilliseconds(300));
-                Log.WriteLine("display on again pausing");
-                await SendCmdAsync(LCD_CMD_BLOCK_CURSOR_OFF);
-                await SendCmdAsync(LCD_CMD_UNDERLINE_CURSOR_ON);
-                await Clear();
-                Log.WriteLine("cleared screen with underline cursor");
-                await SetContrast(220); // 220 is what the device reference code python test uses
-                await SetBrightness(0xff);
-                await SetBackgroundAsync(Colors.Red);
-                Log.WriteLine("init complete");
-            });
+            await SendCmdAsync(LCD_CMD_SET_SAVE_SIZE);
+            await WriteByteAsync(LCD_COLS);
+            await WriteByteAsync(LCD_ROWS);
+            await SendCmdAsync(LCD_CMD_DISPLAY_ON);
+            await WriteByteAsync(0); // unclear why display on needs an extra 0 byte. but, it does -- see firmware source.
+            await AsAsync(_write.StoreAsync());
+            Log.WriteLine("display on cmd sent, pausing");
+            Thread.Sleep(TimeSpan.FromMilliseconds(300));
+            await SendCmdAsync(LCD_CMD_DISPLAY_OFF); // display off doesn't need the mystery 0
+            Log.WriteLine("display off cmd sent, pausing");
+            Thread.Sleep(TimeSpan.FromMilliseconds(1000));
+            await SendCmdAsync(LCD_CMD_DISPLAY_ON);
+            await WriteByteAsync(0); // unclear why display on needs an extra 0 byte. but, it does -- see firmware source.
+            await AsAsync(_write.StoreAsync()); //flush before pause
+            Thread.Sleep(TimeSpan.FromMilliseconds(300));
+            Log.WriteLine("display on again pausing");
+            await SendCmdAsync(LCD_CMD_BLOCK_CURSOR_OFF);
+            await SendCmdAsync(LCD_CMD_UNDERLINE_CURSOR_ON);
+            await Clear();
+            Log.WriteLine("cleared screen with underline cursor");
+            await SetContrast(220); // 220 is what the device reference code python test uses
+            await SetBrightness(0xff);
+            await SetBackgroundAsync(Colors.Red);
+
+            _msgTask = Task.Factory.StartNew(async () =>
+                {
+                    try
+                    {
+                        while (!_msgCancel.Token.IsCancellationRequested)
+                        {
+                            LCDMessage msg = _msgq.Take();
+                            Log.WriteLineVerbose("msgq processing {0}, {1} clear, msg {2}", msg.bgcolor, msg.clear ? "do" : "do net", msg.msg);
+                            await SetBackgroundAsync(msg.bgcolor);
+                            if (msg.clear)
+                            {
+                                await Clear();
+                            }
+                            if ((msg.msg != null) && (msg.msg.Length > 0))
+                            {
+                                await WriteStringAsync(msg.msg);
+                            }
+                        }
+                    } catch (Exception e)
+                    {
+                        Log.WriteLineError("UART msgq consumer exception {0}", e.ToString());
+                    }
+                },
+                _msgCancel.Token,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            );
+
+            Log.WriteLine("init complete");
 
             return;
         }
@@ -124,7 +166,12 @@ namespace UARTLCD
             await WriteBytesAsync(b);
             _lastColor = c;
         }
+        public void QueueMessage(LCDMessage msg)
+        {
 
+            Log.WriteLine("UARTDevice Qmsg");
+            _msgq.Add(msg);
+        }
         // note: this is the only async write that doesn't flush
         private async Task WriteByteAsync(byte b)
         {
