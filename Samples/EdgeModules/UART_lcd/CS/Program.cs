@@ -103,7 +103,7 @@ namespace UARTLCD
             );
 
             string currentFruit = null;
-            Orientation currentOrientation = Orientation.RightSideUp;
+            Orientation currentOrientation = Orientation.Unknown;
             AzureModule m = (AzureModule)connection.Module;
             m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
             {
@@ -121,7 +121,7 @@ namespace UARTLCD
                     currentFruit = fruit.ToLower();
                     Log.WriteLine("setting fruit to {0}", fruit.ToLower());
                     LCDMessage msg;
-                    msg.bgcolor = FruitColors[currentFruit];
+                    msg.bgcolor = currentOrientation == Orientation.UpsideDown ? Colors.White : FruitColors[currentFruit.ToLower()];
                     msg.clear = true;
                     msg.msg = currentFruit;
                     uart.QueueMessage(msg);
@@ -141,7 +141,7 @@ namespace UARTLCD
                     currentOrientation = o;
                     Log.WriteLine("setting orientation to {0}", o.ToString());
                     LCDMessage msg;
-                    msg.bgcolor = o == Orientation.RightSideUp ? FruitColors[currentFruit.ToLower()] : Colors.White;
+                    msg.bgcolor = o == Orientation.UpsideDown ? Colors.White : FruitColors[currentFruit.ToLower()];
                     msg.clear = false;
                     msg.msg = null;
                     uart.QueueMessage(msg);

@@ -59,10 +59,11 @@ namespace PWMFruit
 
         public void SetSpeed(int pct)
         {
-            float val = pct * 1.0f / 100;
+            float val = pct * 1.0f / 100.0f;
             Log.WriteLine("SetSpeed(int) val {0}", val);
-            if (val > 0.0f)
+            if (val > 0.01f)
             {
+                Log.WriteLineVerbose("Inertial boost");
                 SetSpeed(1.0f);  // full blast for a moment to overcome inertia and get the motor shaft turning
                 Thread.Sleep(100);
             }
@@ -89,19 +90,27 @@ namespace PWMFruit
                     float val = (1.0f - MINIMUM_DUTY_CYCLE) * pct + MINIMUM_DUTY_CYCLE;
                 }
             }
+            Log.WriteLine("SetSpeed(float) final clipped pct {0}", pct);
             set(pct);
         }
         private void set(float val)
         {
             if (Math.Abs(_currentSpeed - val) < 0.01f)
             {
+                Log.WriteLine("current speed already {0} -- ignoring", val);
+                return;
+            }
+            if (val < 0.01f)
+            {
+                Log.WriteLine("speed 0 Stopping Pin");
                 Pin.Stop();
                 _started = false;
-                Log.WriteLine("duty cycle already at {0} -- skipping set to {1}", _currentSpeed, val);
+                _currentSpeed = 0.0f;
                 return;
             }
             if (!_started)
             {
+                Log.WriteLine("starting pin");
                 Device.SetDesiredFrequency((Device.MinFrequency + Device.MaxFrequency) / 2);
                 Pin.Polarity = PwmPulsePolarity.ActiveHigh;
                 Pin.Start();
@@ -110,7 +119,6 @@ namespace PWMFruit
             Pin.SetActiveDutyCyclePercentage(val);
             _currentSpeed = val;
             Log.WriteLine("duty cycle {0} at freq {1}", val, Device.ActualFrequency);
-
         }
 
         public void Test(TimeSpan testDuration, int pct)
