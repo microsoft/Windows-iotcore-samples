@@ -65,16 +65,21 @@ namespace PWMFruit
             {
                 Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
             }
-            if (originalEventUTC >= _lastFruitUTC)
+            lock (FruitChanged)
             {
-                Log.WriteLine("processing fruit message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
-                await Task.Run(() => FruitChanged?.Invoke(this, fruitMsg.FruitSeen));
-                _lastFruitUTC = originalEventUTC;
+                if (originalEventUTC >= _lastFruitUTC)
+                {
+                    Log.WriteLine("processing fruit message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+                    FruitChanged?.Invoke(this, fruitMsg.FruitSeen);
+                    _lastFruitUTC = originalEventUTC;
+                }
+                else
+                {
+                    Log.WriteLine("processing fruit message. ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+                }
             }
-            else
-            {
-                Log.WriteLine("processing fruit message. ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
-            }
+            await Task.CompletedTask;
+            return;
         }
 
         private static async Task<MessageResponse> OnFruitMessageReceived(Message msg, object ctx)

@@ -74,73 +74,108 @@ namespace GPIOFruit
                     }
                 )
             );
-            AzureModule m = (AzureModule)connection.Module;
-            Orientation currentOrientation = Orientation.RightSideUp;
-            m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
+            try
             {
-                var module = (AzureModule)sender;
-                Log.WriteLine("updating gpio pin config with {0}", newConfiguration.ToString());
-                await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
-            };
-            m.FruitChanged += async (object sender, string fruit) =>
-            {
-                Log.WriteLine("fruit changed to {0}", fruit.ToLower());
-                var module = (AzureModule)sender;
-                string color = null;
-                if (FruitColors.ContainsKey(fruit.ToLower()))
+                AzureModule m = (AzureModule)connection.Module;
+                Orientation currentOrientation = Orientation.RightSideUp;
+                EventHandler<ConfigurationType> ConfigurationChangedHandler = async (object sender, ConfigurationType newConfiguration) =>
                 {
-                    color = FruitColors[fruit.ToLower()];
-                }
-                await Task.Run(() => gpio.ActivePin = color);
-            };
-            m.OrientationChanged += async (object sender, EdgeModuleSamples.Common.Orientation o) =>
-            {
-                Log.WriteLine("OrientationChanged sent {0}", o.ToString());
-                //var module = (AzureModule)sender;
-                Log.WriteLine("Current Orientation {0}", currentOrientation.ToString());
-                if (o != currentOrientation)
+                    var module = (AzureModule)sender;
+                    Log.WriteLine("updating gpio pin config with {0}", newConfiguration.ToString());
+                    await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
+                };
+                m.ConfigurationChanged += ConfigurationChangedHandler;
+                try
                 {
-                    currentOrientation = o;
-                    Log.WriteLine("Orientation changing to {0}", o.ToString());
-                    await Task.Run(() => gpio.InvertOutputPins());
-                }
-                else
-                {
-                    Log.WriteLine("Orientation already correct -- skipping", o.ToString());
-                    await Task.CompletedTask;
-                }
-            };
-            await Task.Run(async () =>
-            {
-                try { 
-                    Log.WriteLine("initializing gpio pin config with {0}", m.Configuration.GpioPins);
-                    await gpio.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLine("GPIO UpdatePinConfig Lambda exception {0}", e.ToString());
-                }
-            });
-            await connection.NotifyModuleLoadAsync();
-
-            Log.WriteLine("Initialization Complete. have connection and device pins.  Active Pin is {0}", gpio.ActivePin == null ? "(null)" : gpio.ActivePin);
-
-            Task.WaitAll(Task.Run(() =>
-            {
-                try { 
-                    for (; ; )
+                    EventHandler<string> FruitChangedHandler = async (object sender, string fruit) =>
                     {
-                        Log.WriteLine("{0} wait spin", Environment.TickCount);
-                        gpio.LogInputPins();
-                        Thread.Sleep(TimeSpan.FromSeconds(30));
+                        Log.WriteLine("fruit changed to {0}", fruit.ToLower());
+                        var module = (AzureModule)sender;
+                        string color = null;
+                        if (FruitColors.ContainsKey(fruit.ToLower()))
+                        {
+                            color = FruitColors[fruit.ToLower()];
+                        }
+                        await Task.Run(() => gpio.ActivePin = color);
+                    };
+                    m.FruitChanged += FruitChangedHandler;
+                    try
+                    {
+                        EventHandler<Orientation> OrientationChangedHandler = async (object sender, EdgeModuleSamples.Common.Orientation o) =>
+                        {
+                            Log.WriteLine("OrientationChanged sent {0}", o.ToString());
+                            //var module = (AzureModule)sender;
+                            Log.WriteLine("Current Orientation {0}", currentOrientation.ToString());
+                            if (o != currentOrientation)
+                            {
+                                currentOrientation = o;
+                                Log.WriteLine("Orientation changing to {0}", o.ToString());
+                                await Task.Run(() => gpio.InvertOutputPins());
+                            }
+                            else
+                            {
+                                Log.WriteLine("Orientation already correct -- skipping", o.ToString());
+                                await Task.CompletedTask;
+                            }
+                        };
+                        m.OrientationChanged += OrientationChangedHandler;
+                        try
+                        {
+                            await Task.Run(async () =>
+                            {
+                                try
+                                {
+                                    Log.WriteLine("initializing gpio pin config with {0}", m.Configuration.GpioPins);
+                                    await gpio.UpdatePinConfigurationAsync(m.Configuration.GpioPins);
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.WriteLine("GPIO UpdatePinConfig Lambda exception {0}", e.ToString());
+                                }
+                            });
+                            await connection.NotifyModuleLoadAsync();
+
+                            Log.WriteLine("Initialization Complete. have connection and device pins.  Active Pin is {0}", gpio.ActivePin == null ? "(null)" : gpio.ActivePin);
+
+                            Task.WaitAll(Task.Run(() =>
+                            {
+                                try
+                                {
+                                    // TODO: cancellation token
+                                    for (; ; )
+                                    {
+                                        Log.WriteLine("{0} wait spin", Environment.TickCount);
+                                        gpio.LogInputPins();
+                                        Thread.Sleep(TimeSpan.FromSeconds(30));
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.WriteLine("GPIO wait spin exception {0}", e.ToString());
+                                }
+
+                            }));
+                        }
+                        finally
+                        {
+                            m.OrientationChanged -= OrientationChangedHandler;
+                        }
+                    }
+                    finally
+                    {
+                        m.FruitChanged -= FruitChangedHandler;
                     }
                 }
-                catch (Exception e)
+                finally
                 {
-                    Log.WriteLine("GPIO wait spin exception {0}", e.ToString());
+                    m.ConfigurationChanged += ConfigurationChangedHandler;
                 }
+            } finally
+            {
+                gpio.Dispose();
+                connection.Dispose();
+            }
 
-            }));
             return 0;
         }
 

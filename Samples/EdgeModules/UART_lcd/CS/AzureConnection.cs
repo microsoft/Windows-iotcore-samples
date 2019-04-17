@@ -58,16 +58,20 @@ namespace UARTLCD
             {
                 Log.WriteLine("msg has no time.  using current {0}", originalEventUTC.ToString("o"));
             }
-            if (originalEventUTC >= _lastFruitUTC)
+            lock (FruitChanged)
             {
-                Log.WriteLine("processing fruit message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
-                await Task.Run(() => FruitChanged?.Invoke(this, fruitMsg.FruitSeen));
-                _lastFruitUTC = originalEventUTC;
+                if (originalEventUTC >= _lastFruitUTC)
+                {
+                    Log.WriteLine("processing fruit message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+                    FruitChanged?.Invoke(this, fruitMsg.FruitSeen);
+                    _lastFruitUTC = originalEventUTC;
+                }
+                else
+                {
+                    Log.WriteLine("processing fruit message. ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
+                }
             }
-            else
-            {
-                Log.WriteLine("processing fruit message. ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastFruitUTC.ToString("o"));
-            }
+            await Task.CompletedTask;
         }
         private async Task<MethodResponse> SetFruit(MethodRequest req, Object context)
         {
@@ -100,16 +104,20 @@ namespace UARTLCD
             {
                 originalEventUTC = DateTime.Parse(orientationMsg.OriginalEventUTCTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
             }
-            if (originalEventUTC >= _lastOrientationUTC)
+            lock (OrientationChanged)
             {
-                Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastOrientationUTC.ToString("o"));
-                await Task.Run(() => OrientationChanged?.Invoke(this, orientationMsg.OrientationState));
-                _lastOrientationUTC = originalEventUTC;
+                if (originalEventUTC >= _lastOrientationUTC)
+                {
+                    Log.WriteLine("OrientationMsgHandler invoking event. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastOrientationUTC.ToString("o"));
+                    OrientationChanged?.Invoke(this, orientationMsg.OrientationState);
+                    _lastOrientationUTC = originalEventUTC;
+                }
+                else
+                {
+                    Log.WriteLine("OrientationMsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastOrientationUTC.ToString("o"));
+                }
             }
-            else
-            {
-                Log.WriteLine("OrientationMsgHandler ignoring stale message. original event UTC {0} prev {1}", originalEventUTC.ToString("o"), _lastOrientationUTC.ToString("o"));
-            }
+            await Task.CompletedTask;
             return;
         }
         private async Task<MethodResponse> SetOrientation(MethodRequest req, Object context)

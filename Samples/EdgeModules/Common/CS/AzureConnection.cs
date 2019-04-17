@@ -52,10 +52,21 @@ namespace EdgeModuleSamples.Common.Azure
             return rc;
         }
     }
-    abstract public class AzureModuleBase
+    abstract public class AzureModuleBase : IDisposable
     {
         public virtual string ModuleId { get { throw new NotImplementedException(); } }
-        protected AzureConnectionBase _connection { get; set; }
+        WeakReference<AzureConnectionBase> _actualConnection;
+        protected AzureConnectionBase _connection {
+            get {
+                AzureConnectionBase b = null;
+                _actualConnection.TryGetTarget(out b);
+                return b;
+            }
+            set
+            {
+                _actualConnection.SetTarget(value);
+            }
+        }
         protected ModuleClient _moduleClient { get; set; }
         protected Twin _moduleTwin { get; set; }
         private TwinCollection _reportedDeviceProperties { get; set; }
@@ -127,7 +138,30 @@ namespace EdgeModuleSamples.Common.Azure
 
         public AzureModuleBase()
         {
+            _actualConnection = new WeakReference<AzureConnectionBase>(null);
         }
+        ~AzureModuleBase()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_moduleClient != null)
+                {
+                    _moduleClient.Dispose();
+                    _moduleClient = null;
+                }
+            }
+        }
+
         public virtual async Task AzureModuleInitAsync<C>(C c) where C : AzureConnectionBase
         {
             _connection = c;
@@ -135,7 +169,7 @@ namespace EdgeModuleSamples.Common.Azure
         }
         //NOTE: actual work for module init split in 2 parts to allow derived classes to attach additional
         // message handlers prior to the module client open
-        readonly int DEFAULT_NETWORK_TIMEOUT = 180;
+        readonly int DEFAULT_NETWORK_TIMEOUT = 300;
         private async Task AzureModuleInitBeginAsync()
         {
             AmqpTransportSettings[] settings = new AmqpTransportSettings[2];
@@ -149,12 +183,30 @@ namespace EdgeModuleSamples.Common.Azure
             _moduleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
             Log.WriteLine("ModuleClient Initialized");
 
-            _moduleClient.SetConnectionStatusChangesHandler(async (ConnectionStatus status, ConnectionStatusChangeReason reason) => { await this.OnConnectionChanged(status, reason); });
+            _moduleClient.SetConnectionStatusChangesHandler(async (ConnectionStatus status, ConnectionStatusChangeReason reason) => {
+                try
+                {
+                    await this.OnConnectionChanged(status, reason);
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLine("AzureModuleBase ConnectionStatusChangesHandler lambda exception {0}", e.ToString());
+                    Environment.Exit(1); // failfast
+                }
+            });
             //await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredModulePropertyChanged, this);
             await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(async (TwinCollection newDesiredProperties, object ctx) => 
             {
-                var module = (AzureModuleBase)ctx;
-                await module.OnDesiredModulePropertyChanged(newDesiredProperties);
+                try
+                {
+                    var module = (AzureModuleBase)ctx;
+                    await module.OnDesiredModulePropertyChanged(newDesiredProperties);
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLine("AzureModuleBase DesiredPropertyUpdateCallback lambda exception {0}", e.ToString());
+                    Environment.Exit(1); // failfast
+                }
             }, this);
         }
         protected async Task AzureModuleInitEndAsync()
@@ -171,7 +223,21 @@ namespace EdgeModuleSamples.Common.Azure
 
     abstract public class AzureDeviceBase
     {
-        private AzureConnectionBase _connection { get; set; }
+        WeakReference<AzureConnectionBase> _actualConnection;
+        protected AzureConnectionBase _connection
+        {
+            get
+            {
+                AzureConnectionBase b = null;
+                _actualConnection.TryGetTarget(out b);
+                return b;
+            }
+            set
+            {
+                _actualConnection.SetTarget(value);
+            }
+        }
+
 
         public AzureDeviceBase()
         {
@@ -183,7 +249,7 @@ namespace EdgeModuleSamples.Common.Azure
         }
     }
 
-    abstract public class AzureConnectionBase
+    abstract public class AzureConnectionBase : IDisposable
     {
         private ConcurrentQueue<KeyValuePair<string, object>> _updateq { get; set; }
 
@@ -193,6 +259,29 @@ namespace EdgeModuleSamples.Common.Azure
         {
             _updateq = new ConcurrentQueue<KeyValuePair<string, object>>();
         }
+        ~AzureConnectionBase()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (Module != null)
+                {
+                    Module.Dispose();
+                    Module = null;
+                }
+            }
+        }
+
+
         // private async Task<MessageResponse> OnInputMessageReceived(Message msg, object ctx)
         // {
         // 
@@ -274,7 +363,8 @@ namespace EdgeModuleSamples.Common.Azure
                 } catch (Exception e)
                 {
                     Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject lambda exception {0}", e.ToString());
-                }
+                    Environment.Exit(1); // failfast
+            }
             });
             Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject sync complete");
         }

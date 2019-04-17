@@ -2,7 +2,7 @@
 
   <Import Project="..\..\Common.CS.Props" />
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.19.0" />
+    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.20.0" />
     <PackageReference Include="Mono.Options.Core" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>

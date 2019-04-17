@@ -54,6 +54,10 @@ namespace GPIOFruit
             Pin = controller.OpenPin(index);
             Pin.SetDriveMode(mode);
         }
+        ~GPIOBasePin()
+        {
+            Dispose(false);
+        }
         public void Dispose()
         {
             Dispose(true);
@@ -194,13 +198,60 @@ namespace GPIOFruit
         }
     }
 
-    public class GPIODevice
+    public class GPIODevice : IDisposable
     {
         public GpioController Device { get; set; }
 
         Dictionary<string, GPIOInputPin> _inputPins;
         Dictionary<string, GPIOOutputPin> _outputPins;
         GpioPinValue _defaultOutputState = GPIOOutputPin.LED_OFF;
+        // not same as other SPB, private ctor, public static cread to allow multiple GPIOController 
+        // gpiocontroller class only has getdefault(). there is no getdeviceselector(friendlynamestring)
+        public GPIODevice()
+        {
+            _activeValue = _defaultOutputState.Invert();
+            _inputPins = new Dictionary<string, GPIOInputPin>();
+            _outputPins = new Dictionary<string, GPIOOutputPin>();
+            Device = GpioController.GetDefault();
+            Log.WriteLine("GPIO Device ctor complete.  controller {0} null", Device == null ? "is" : "is not");
+        }
+        ~GPIODevice()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (Device != null)
+                {
+                    //Device.Dispose();
+                    Device = null;
+                }
+                if (_inputPins != null)
+                {
+                    foreach (var kvp in _inputPins)
+                    {
+                        kvp.Value.Dispose();
+                    }
+                    _inputPins = null;
+                }
+                if (_outputPins != null)
+                {
+                    foreach (var kvp in _outputPins)
+                    {
+                        kvp.Value.Dispose();
+                    }
+                    _outputPins = null;
+                }
+            }
+        }
         public void AddPin<T>(string name, T p, ref Dictionary<string, T> pins)
         {
             lock (pins)
@@ -243,16 +294,7 @@ namespace GPIOFruit
             var p = new GPIOOutputPin(this, index, value, mode);
             AddPin(name, p, ref _outputPins);
         }
-        // not same as other SPB, private ctor, public static cread to allow multiple GPIOController 
-        // gpiocontroller class only has getdefault(). there is no getdeviceselector(friendlynamestring)
-        public GPIODevice()
-        {
-            _activeValue = _defaultOutputState.Invert();
-            _inputPins = new Dictionary<string, GPIOInputPin>();
-            _outputPins = new Dictionary<string, GPIOOutputPin>();
-            Device = GpioController.GetDefault();
-            Log.WriteLine("GPIO Device ctor complete.  controller {0} null", Device == null ? "is" : "is not");
-        }
+
         void AddOutputPin(string name, int newVal)
         {
             Log.WriteLine("adding {0} with default state {1}", name, _defaultOutputState);
@@ -494,14 +536,14 @@ namespace GPIOFruit
                         Log.WriteLine("no previous active pin to clear");
                     }
                     _activePin = value;
-                    if (_outputPins.ContainsKey(_activePin))
+                    if (_activePin != null && _outputPins.ContainsKey(_activePin))
                     {
                         var p = _outputPins[_activePin];
                         Log.WriteLine("turning new pin '{0}' {1}", _activePin, p.Value.Invert().ToStateString());
                         p.Toggle();
                     } else
                     {
-                        Log.WriteLine("active pin missing from _outputPins");
+                        Log.WriteLine("active pin missing from _outputPins. _activePin {0} null", _activePin == null ? "is" : "is not");
                     }
                 }
             }

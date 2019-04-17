@@ -35,6 +35,8 @@ namespace HubEventHandler
 
     public static class FruitEvent
     {
+        static readonly int DEFAULT_NETWORK_TIMEOUT = 300;
+
         //
         // currently this is setup to expect the following
         // device1: master
@@ -228,8 +230,8 @@ namespace HubEventHandler
             ModuleLoadMessage loadMsg = new ModuleLoadMessage();
             loadMsg.ModuleName = sourceModuleId;
             var mi = new CloudToDeviceMethod("SetModuleLoad");
-            mi.ConnectionTimeout = TimeSpan.FromSeconds(10);
-            mi.ResponseTimeout = TimeSpan.FromSeconds(120);
+            mi.ConnectionTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
+            mi.ResponseTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.SetPayloadJson(JsonConvert.SerializeObject(loadMsg));
 
             // Invoke the direct method asynchronously and get the response from the simulated device.
@@ -247,8 +249,8 @@ namespace HubEventHandler
             oMsg.OrientationState = oState;
             oMsg.OriginalEventUTCTime = EventMsgTime;
             var mi = new CloudToDeviceMethod("SetOrientation");
-            mi.ConnectionTimeout = TimeSpan.FromSeconds(10);
-            mi.ResponseTimeout = TimeSpan.FromSeconds(120);
+            mi.ConnectionTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
+            mi.ResponseTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.SetPayloadJson(JsonConvert.SerializeObject(oMsg));
 
             // Invoke the direct method asynchronously and get the response from the simulated device.
@@ -266,8 +268,8 @@ namespace HubEventHandler
             fruitMsg.FruitSeen = fruit;
             fruitMsg.OriginalEventUTCTime = EventMsgTime;
             var mi = new CloudToDeviceMethod("SetFruit");
-            mi.ConnectionTimeout = TimeSpan.FromSeconds(10);
-            mi.ResponseTimeout = TimeSpan.FromSeconds(120);
+            mi.ConnectionTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
+            mi.ResponseTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.SetPayloadJson(JsonConvert.SerializeObject(fruitMsg));
 
             // Invoke the direct method asynchronously and get the response from the simulated device.
