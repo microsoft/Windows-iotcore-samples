@@ -15,7 +15,7 @@ namespace I2CMPU6050
 {
 
 
-    public class I2CMpuDevice : MpuDevice
+    public class I2CMpuDevice : MpuDevice, IDisposable
     {
 
         public I2cDevice Device { get; private set; }
@@ -23,6 +23,28 @@ namespace I2CMPU6050
         private I2CMpuDevice() : base(false)
         {
         }
+        ~I2CMpuDevice()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (Device != null)
+                {
+                    Device.Dispose();
+                    Device = null;
+                }
+            }
+        }
+
         public static async Task<I2CMpuDevice> CreateMpuDeviceAsync(string deviceName)
         {
             Log.WriteLine("finding device {0}", deviceName != null ? deviceName : "(default)");

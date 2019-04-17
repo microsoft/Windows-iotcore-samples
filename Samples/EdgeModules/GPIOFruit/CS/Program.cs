@@ -170,10 +170,14 @@ namespace GPIOFruit
                 {
                     m.ConfigurationChanged += ConfigurationChangedHandler;
                 }
-            } finally
+            }
+            finally
             {
                 gpio.Dispose();
-                connection.Dispose();
+                if (connection != null)
+                {
+                    connection.Dispose();
+                }
             }
 
             return 0;

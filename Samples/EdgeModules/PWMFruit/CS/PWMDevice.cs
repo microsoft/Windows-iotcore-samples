@@ -18,7 +18,7 @@ namespace PWMFruit
 {
 
 
-    public class PWMDevice : SPBDevice
+    public class PWMDevice : SPBDevice, IDisposable
     {
         public PwmController Device { get; private set; }
         public PwmPin Pin { get; private set; }
@@ -28,6 +28,28 @@ namespace PWMFruit
         private PWMDevice()
         {
         }
+        ~PWMDevice()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (Pin != null)
+                {
+                    Pin.Dispose();
+                    Pin = null;
+                }
+            }
+        }
+
         public static async Task ListPWMDevicesAsync()
         {
             var info = await FindAsync(PwmController.GetDeviceSelector());

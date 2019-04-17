@@ -84,22 +84,25 @@ namespace PWMFruit
                     }
                 )
             );
+            AzureModule m = null;
+            EventHandler <ConfigurationType> ConfigurationChangedHandler = async (object sender, ConfigurationType newConfiguration) =>
+            {
+                var module = (AzureModule)sender;
+                Log.WriteLine("updating pwm pin config with {0}", newConfiguration.ToString());
+                //await pwm.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
+                await Task.CompletedTask;
+            };
+            EventHandler<string> FruitChangedHandler = (object sender, string fruit) =>
+            {
+                Log.WriteLine("fruit changed to {0}", fruit.ToLower());
+                var module = (AzureModule)sender;
+                pwm.SetSpeed(FruitSpeed[fruit.ToLower()]);
+            };
             if (!Options.Test)
             {
-                AzureModule m = (AzureModule)connection.Module;
-                m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
-                {
-                    var module = (AzureModule)sender;
-                    Log.WriteLine("updating pwm pin config with {0}", newConfiguration.ToString());
-                    //await pwm.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
-                    await Task.CompletedTask;
-                };
-                m.FruitChanged += (object sender, string fruit) =>
-                {
-                    Log.WriteLine("fruit changed to {0}", fruit.ToLower());
-                    var module = (AzureModule)sender;
-                    pwm.SetSpeed(FruitSpeed[fruit.ToLower()]);                    
-                };
+                m = (AzureModule)connection.Module;
+                m.ConfigurationChanged += ConfigurationChangedHandler;
+                m.FruitChanged += FruitChangedHandler;
                 await Task.Run(async () =>
                 {
                     try
@@ -115,24 +118,40 @@ namespace PWMFruit
                 });
                 await connection.NotifyModuleLoadAsync();
             }
-            Log.WriteLine("Initialization Complete. have {0}", Options.Test ? "device" : "connection and device");
-
-            Task.WaitAll(Task.Run(() =>
+            try
             {
-                try { 
-                    for (; ; )
-                    {
-                        Log.WriteLine("{0} wait spin", Environment.TickCount);
-                        //pwm.LogInputPins();
-                        Thread.Sleep(TimeSpan.FromSeconds(30));
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLine("PWM wait spin exception {0}", e.ToString());
-                }
+                Log.WriteLine("Initialization Complete. have {0}", Options.Test ? "device" : "connection and device");
 
-            }));
+                Task.WaitAll(Task.Run(() =>
+                {
+                    try
+                    {
+                        for (; ; )
+                        {
+                            Log.WriteLine("{0} wait spin", Environment.TickCount);
+                            //pwm.LogInputPins();
+                            Thread.Sleep(TimeSpan.FromSeconds(30));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("PWM wait spin exception {0}", e.ToString());
+                    }
+
+                }));
+            } finally
+            {
+                if (!Options.Test)
+                {
+                    m.ConfigurationChanged -= ConfigurationChangedHandler;
+                    m.FruitChanged -= FruitChangedHandler;
+                }
+                if (connection != null)
+                {
+                    connection.Dispose();
+                }
+                pwm.Dispose();
+            }
             return 0;
         }
 

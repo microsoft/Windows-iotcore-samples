@@ -14,7 +14,7 @@ using Windows.Devices.Spi;
 namespace SPIMPU9050
 {
 
-    public class SPIMpuDevice : MpuDevice
+    public class SPIMpuDevice : MpuDevice, IDisposable
     {
 
         static readonly int Mhz20 = 20000;
@@ -23,6 +23,28 @@ namespace SPIMPU9050
         private SPIMpuDevice() : base(true)
         {
         }
+        ~SPIMpuDevice()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (Device != null)
+                {
+                    Device.Dispose();
+                    Device = null;
+                }
+            }
+        }
+
         public static async Task<SPIMpuDevice> CreateMpuDeviceAsync(string deviceName)
         {
             Log.WriteLine("finding device {0}", deviceName != null ? deviceName : "(default)");

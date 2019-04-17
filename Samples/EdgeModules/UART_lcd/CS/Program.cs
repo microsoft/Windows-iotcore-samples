@@ -102,79 +102,114 @@ namespace UARTLCD
                 )
             );
 
-            string currentFruit = null;
-            Orientation currentOrientation = Orientation.Unknown;
-            AzureModule m = (AzureModule)connection.Module;
-            m.ConfigurationChanged += async (object sender, ConfigurationType newConfiguration) =>
+            try
             {
-                var module = (AzureModule)sender;
-                Log.WriteLine("updating UART_lcd config with {0}", newConfiguration.ToString());
-                //await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
-                await Task.CompletedTask;
-            };
-            m.FruitChanged += async (object sender, string fruit) =>
-            {
-                Log.WriteLine("fruit changed sent {0}", fruit.ToLower());
-                Log.WriteLine("current fruit {0}", currentFruit);
-                if (fruit.ToLower() != currentFruit)
+                string currentFruit = null;
+                Orientation currentOrientation = Orientation.Unknown;
+                AzureModule m = (AzureModule)connection.Module;
+               EventHandler<ConfigurationType> ConfigurationChangedHandler = async (object sender, ConfigurationType newConfiguration) =>
                 {
-                    currentFruit = fruit.ToLower();
-                    Log.WriteLine("setting fruit to {0}", fruit.ToLower());
-                    LCDMessage msg;
-                    msg.bgcolor = currentOrientation == Orientation.UpsideDown ? Colors.White : FruitColors[currentFruit.ToLower()];
-                    msg.clear = true;
-                    msg.msg = currentFruit;
-                    uart.QueueMessage(msg);
-                }
-                else
-                {
-                    Log.WriteLine("fruit already correct -- skipping");
+                    var module = (AzureModule)sender;
+                    Log.WriteLine("updating UART_lcd config with {0}", newConfiguration.ToString());
+                    //await gpio.UpdatePinConfigurationAsync(newConfiguration.GpioPins);
                     await Task.CompletedTask;
-                }
-            };
-            m.OrientationChanged += async (object sender, Orientation o) =>
-            {
-                Log.WriteLine("orientation changed sent {0}", o.ToString());
-                Log.WriteLine("current orientation {0}", currentOrientation);
-                if (o != currentOrientation)
-                {
-                    currentOrientation = o;
-                    Log.WriteLine("setting orientation to {0}", o.ToString());
-                    LCDMessage msg;
-                    msg.bgcolor = o == Orientation.UpsideDown ? Colors.White : FruitColors[currentFruit.ToLower()];
-                    msg.clear = false;
-                    msg.msg = null;
-                    uart.QueueMessage(msg);
-                }
-                else
-                {
-                    Log.WriteLine("fruit already correct -- skipping");
-                    await Task.CompletedTask;
-                }
-            };
-            await uart.SetBackgroundAsync(Colors.White);
-            await uart.WriteStringAsync("Loaded");
-
-            await connection.NotifyModuleLoadAsync();
-
-            Log.WriteLine("Initialization Complete. have connection and device.  ");
-
-            Task.WaitAll(Task.Run(() =>
-            {
+                };
+                m.ConfigurationChanged += ConfigurationChangedHandler;
                 try
                 {
-                    for (; ; )
+                    EventHandler<string> FruitChangedHandler = async (object sender, string fruit) =>
                     {
-                        Log.WriteLine("{0} wait spin", Environment.TickCount);
-                        Thread.Sleep(TimeSpan.FromSeconds(30));
+                        Log.WriteLine("fruit changed sent {0}", fruit.ToLower());
+                        Log.WriteLine("current fruit {0}", currentFruit);
+                        if (fruit.ToLower() != currentFruit)
+                        {
+                            currentFruit = fruit.ToLower();
+                            Log.WriteLine("setting fruit to {0}", fruit.ToLower());
+                            LCDMessage msg;
+                            msg.bgcolor = currentOrientation == Orientation.UpsideDown ? Colors.White : FruitColors[currentFruit.ToLower()];
+                            msg.clear = true;
+                            msg.msg = currentFruit;
+                            uart.QueueMessage(msg);
+                        }
+                        else
+                        {
+                            Log.WriteLine("fruit already correct -- skipping");
+                            await Task.CompletedTask;
+                        }
+                    };
+                    m.FruitChanged += FruitChangedHandler;
+                    try
+                    {
+                        EventHandler<Orientation> OrientationChangedHandler = async (object sender, Orientation o) =>
+                        {
+                            Log.WriteLine("orientation changed sent {0}", o.ToString());
+                            Log.WriteLine("current orientation {0}", currentOrientation);
+                            if (o != currentOrientation)
+                            {
+                                currentOrientation = o;
+                                Log.WriteLine("setting orientation to {0}", o.ToString());
+                                LCDMessage msg;
+                                msg.bgcolor = o == Orientation.UpsideDown ? Colors.White : FruitColors[currentFruit.ToLower()];
+                                msg.clear = false;
+                                msg.msg = null;
+                                uart.QueueMessage(msg);
+                            }
+                            else
+                            {
+                                Log.WriteLine("fruit already correct -- skipping");
+                                await Task.CompletedTask;
+                            }
+                        };
+                        m.OrientationChanged += OrientationChangedHandler;
+                        try
+                        {
+                            await uart.SetBackgroundAsync(Colors.White);
+                            await uart.WriteStringAsync("Loaded");
+
+                            await connection.NotifyModuleLoadAsync();
+
+                            Log.WriteLine("Initialization Complete. have connection and device.  ");
+
+                            Task.WaitAll(Task.Run(() =>
+                            {
+                                try
+                                {
+                                    // TODO: cancellation token
+                                    for (; ; )
+                                    {
+                                        Log.WriteLine("{0} wait spin", Environment.TickCount);
+                                        Thread.Sleep(TimeSpan.FromSeconds(30));
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.WriteLine("wait spin exception {0}", e.ToString());
+                                }
+
+                            }));
+                        }
+                        finally
+                        {
+                            m.OrientationChanged -= OrientationChangedHandler;
+                        }
+                    }
+                    finally
+                    {
+                        m.FruitChanged -= FruitChangedHandler;
                     }
                 }
-                catch (Exception e)
-                {
-                    Log.WriteLine("wait spin exception {0}", e.ToString());
+                finally
+                { 
+                    m.ConfigurationChanged -= ConfigurationChangedHandler;
                 }
-
-            }));
+            } finally
+            {
+                uart.Dispose();
+                if (connection != null)
+                {
+                    connection.Dispose();
+                }
+            }
             return 0;
         }
 

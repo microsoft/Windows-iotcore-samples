@@ -16,9 +16,32 @@ using Windows.Storage;
 
 namespace WinMLCustomVisionFruit
 {
-    public sealed class ModelInput
+    public sealed class ModelInput : IDisposable
     {
         public VideoFrame data { get; set; }
+        ModelInput() { }
+        ~ModelInput()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (data != null)
+                {
+                    data.Dispose();
+                    data = null;
+                }
+            }
+        }
+
     }
 
     public sealed class ModelOutput
@@ -135,13 +158,49 @@ namespace WinMLCustomVisionFruit
             }
         }
     }
-    public sealed class Model
+    public sealed class Model : IDisposable
     {
         private LearningModelSession _session { get; set; }
         private LearningModel _model { get; set; }
         private LearningModelDevice _device { get; set; }
 
         static private Dictionary<string, ModelResult> _results = new Dictionary<string, ModelResult>();
+        Model() { }
+        ~Model()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_model != null)
+                {
+                    _model.Dispose();
+                    _model = null;
+                }
+                if (_session != null)
+                {
+                    _session.Dispose();
+                    _session = null;
+                }
+                if (_device != null)
+                {
+                    if (_device.Direct3D11Device != null)
+                    {
+                        _device.Direct3D11Device.Dispose();
+                    }
+                }
+            }
+        }
+
+
         public static async Task<Model> CreateModelAsync(string filename, bool gpu)
         {
             Log.WriteLine("creating model");

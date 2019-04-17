@@ -272,25 +272,39 @@ namespace WinMLCustomVisionFruit
                         Environment.Exit(2);
                     }
                 }));
-            AzureModule m = (AzureModule)connection.Module;
-            m.ModuleLoaded += async (Object sender, string moduleName) =>
+            try
             {
+                AzureModule m = (AzureModule)connection.Module;
+                EventHandler<string> ModuleLoadedHandler = async (Object sender, string moduleName) =>
+                {
+                    try
+                    {
+                        Log.WriteLine("module loaded.   resending state");
+                        await connection.NotifyNewModuleAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLineError("failed to notify state {0}", e.ToString());
+                        Environment.Exit(2);
+                    }
+                };
+                m.ModuleLoaded += ModuleLoadedHandler;
                 try
                 {
-                    Log.WriteLine("module loaded.   resending state");
-                    await connection.NotifyNewModuleAsync();
-                }
-                catch (Exception e)
+
+                    Log.WriteLine("Model loaded, Azure Connection created, and FrameReader Started\n\n\n\n");
+
+                    await CameraProcessingAsync(model, reader, evtFrame, connection);
+                } finally
                 {
-                    Log.WriteLineError("failed to notify state {0}", e.ToString());
-                    Environment.Exit(2);
+                    m.ModuleLoaded -= ModuleLoadedHandler;
                 }
-            };
-
-            Log.WriteLine("Model loaded, Azure Connection created, and FrameReader Started\n\n\n\n");
-
-            await CameraProcessingAsync(model, reader, evtFrame, connection);
-
+            } finally
+            {
+                connection.Dispose();
+                reader.Dispose();
+                model.Dispose();
+            }
             return 0;
         }
         static int Main(string[] args)

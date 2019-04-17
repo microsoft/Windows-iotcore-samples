@@ -71,31 +71,40 @@ namespace SPIMPU9050
                 )
             );
 
-            mpu.OrientationChanged += (device, change) =>
+            try
             {
-                connection.UpdateObject(new KeyValuePair<string, object>(Keys.Orientation, change.newOrientation));
-            };
-            Log.WriteLine("Initialization Complete. have connection and device.  ");
-
-            Task.WaitAll(Task.Run(async () =>
-            {
-                try {
-                    await mpu.BeginOrientationMonitoringAsync();
-                }
-                catch (Exception e)
+                EdgeModuleSamples.Common.Device.MpuDevice.OrientationEventHandler OrientationChangedHandler = (device, change) =>
                 {
-                    Log.WriteLine("SPI wait spin exception {0}", e.ToString());
-                }
+                    connection.UpdateObject(new KeyValuePair<string, object>(Keys.Orientation, change.newOrientation));
+                };
+                mpu.OrientationChanged += OrientationChangedHandler;
+                try
+                {
+                    Log.WriteLine("Initialization Complete. have connection and device.  ");
 
-            }));
-#if DISABLE            
-            var w = new EventWaitHandle(false, EventResetMode.ManualReset);
-            for (; ; )
+                    Task.WaitAll(Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await mpu.BeginOrientationMonitoringAsync();
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLine("SPI wait spin exception {0}", e.ToString());
+                        }
+                    }));
+                } finally
+                {
+                    mpu.OrientationChanged -= OrientationChangedHandler;
+                }
+            } finally
             {
-                Log.WriteLine("{0} waiting spin", Environment.TickCount);
-                w.WaitOne(TimeSpan.FromSeconds(30));
+                mpu.Dispose();
+                if (connection != null)
+                {
+                    connection.Dispose();
+                }
             }
-#endif
             return 0;
         }
 

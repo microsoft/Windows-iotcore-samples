@@ -69,24 +69,41 @@ namespace I2CMPU6050
                     }
                 )
             );
-
-            mpu.OrientationChanged += (device, change) =>
+            try
             {
-                connection.UpdateObject(new KeyValuePair<string, object>(Keys.Orientation, change.newOrientation));
-            };
-            Log.WriteLine("Initialization Complete. have connection and device.  ");
-
-            Task.WaitAll(Task.Run(async () =>
-            {
-                try {
-                    await mpu.BeginOrientationMonitoringAsync();
-                }
-                catch (Exception e)
+                EdgeModuleSamples.Common.Device.MpuDevice.OrientationEventHandler OrientationChangedHandler = (device, change) =>
                 {
-                    Log.WriteLine("I2c wait spin exception {0}", e.ToString());
-                }
+                    connection.UpdateObject(new KeyValuePair<string, object>(Keys.Orientation, change.newOrientation));
+                };
+                mpu.OrientationChanged += OrientationChangedHandler;
+                try
+                {
+                    Log.WriteLine("Initialization Complete. have connection and device.  ");
 
-            }));
+                    Task.WaitAll(Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await mpu.BeginOrientationMonitoringAsync();
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLine("I2c wait spin exception {0}", e.ToString());
+                        }
+
+                    }));
+                } finally
+                {
+                    mpu.OrientationChanged -= OrientationChangedHandler;
+                }
+            } finally
+            {
+                if (connection != null)
+                {
+                    connection.Dispose();
+                }
+                mpu.Dispose();
+            }
             return 0;
         }
 

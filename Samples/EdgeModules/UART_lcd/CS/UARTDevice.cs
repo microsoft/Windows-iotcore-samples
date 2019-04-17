@@ -24,7 +24,7 @@ namespace UARTLCD
         public RGBColor bgcolor;
         public string msg;
     }
-    public class UARTDevice : SPBDevice
+    public class UARTDevice : SPBDevice, IDisposable
     {
         private ConcurrentQueue<LCDMessage> _msgcq { get; set; }
         private BlockingCollection<LCDMessage> _msgq { get; set; }
@@ -73,7 +73,37 @@ namespace UARTLCD
             _msgq = new BlockingCollection<LCDMessage>(_msgcq);
             _msgCancel = new CancellationTokenSource();
         }
-        // TODO: finalizer cancel q consumer
+        ~UARTDevice()
+        {
+            Dispose(false);
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_msgCancel != null)
+                {
+                    _msgCancel.Cancel();
+                }
+                if (_msgq != null)
+                {
+                    _msgq.Dispose();
+                }
+                if (Device != null)
+                {
+                    Device.Dispose();
+                    Device = null;
+                }
+            }
+        }
+
+
 
         public async Task InitAsync()
         {

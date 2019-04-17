@@ -211,10 +211,7 @@ namespace GPIOFruit
         {
             
         }
-        // private async Task<MessageResponse> OnInputMessageReceived(Message msg, object ctx)
-        // {
-        // 
-        // }
+
         public static async Task<AzureConnection> CreateAzureConnectionAsync() {
             return await CreateAzureConnectionAsync<AzureConnection, AzureModule>();
         }
