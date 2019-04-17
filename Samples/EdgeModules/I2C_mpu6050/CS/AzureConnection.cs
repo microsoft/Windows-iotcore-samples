@@ -30,11 +30,6 @@ namespace I2CMPU6050
             return true;
         }
     }
-    public class AzureDevice : AzureDeviceBase
-    {
-        public AzureDevice() { }
-    }
-
     class AzureModule : AzureModuleBase
     {
         // TODO: move common config to basemodule
@@ -94,7 +89,7 @@ namespace I2CMPU6050
             _lastOBody = new byte[0];
         }
         public static async Task<AzureConnection> CreateAzureConnectionAsync() {
-            return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
+            return await CreateAzureConnectionAsync<AzureConnection, AzureModule>();
         }
 
         public async Task NotifyNewModuleAsync()

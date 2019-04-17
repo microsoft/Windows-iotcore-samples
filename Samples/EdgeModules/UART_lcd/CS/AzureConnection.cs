@@ -30,11 +30,6 @@ namespace UARTLCD
             return true;
         }
     }
-    public class AzureDevice : AzureDeviceBase
-    {
-        public AzureDevice() { }
-    }
-
     class AzureModule : AzureModuleBase
     {
         private DateTime _lastFruitUTC;
@@ -193,7 +188,7 @@ namespace UARTLCD
         {
         }
         public static async Task<AzureConnection> CreateAzureConnectionAsync() {
-            return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
+            return await CreateAzureConnectionAsync<AzureConnection, AzureModule>();
         }
 
         public async Task NotifyModuleLoadAsync()

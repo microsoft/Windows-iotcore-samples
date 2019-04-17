@@ -50,10 +50,6 @@ namespace WinMLCustomVisionFruit
         }
 
     };
-    public class AzureDevice : AzureDeviceBase
-    {
-        public AzureDevice() { }
-    };
     public class AzureConnection : AzureConnectionBase
     {
         private byte[] _lastFruitBody;
@@ -62,7 +58,7 @@ namespace WinMLCustomVisionFruit
         }
         public static async Task<AzureConnection> CreateAzureConnectionAsync()
         {
-            return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
+            return await CreateAzureConnectionAsync<AzureConnection, AzureModule>();
         }
 
         public override async Task UpdateObjectAsync(KeyValuePair<string, object> kvp)

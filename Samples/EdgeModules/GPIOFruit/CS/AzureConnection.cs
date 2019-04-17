@@ -20,10 +20,6 @@ using System.Threading.Tasks;
 
 namespace GPIOFruit
 {
-    public class AzureDevice : AzureDeviceBase
-    {
-        public AzureDevice() { }
-    }
     [JsonObject(MemberSerialization.Fields)]
     class ConfigurationType : SpbBaseConfigurationType
     {
@@ -220,7 +216,7 @@ namespace GPIOFruit
         // 
         // }
         public static async Task<AzureConnection> CreateAzureConnectionAsync() {
-            return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
+            return await CreateAzureConnectionAsync<AzureConnection, AzureModule>();
         }
 
         public async Task NotifyModuleLoadAsync()

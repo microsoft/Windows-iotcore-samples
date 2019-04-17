@@ -221,40 +221,11 @@ namespace EdgeModuleSamples.Common.Azure
         }
     }
 
-    abstract public class AzureDeviceBase
-    {
-        WeakReference<AzureConnectionBase> _actualConnection;
-        protected AzureConnectionBase _connection
-        {
-            get
-            {
-                AzureConnectionBase b = null;
-                _actualConnection.TryGetTarget(out b);
-                return b;
-            }
-            set
-            {
-                _actualConnection.SetTarget(value);
-            }
-        }
-
-
-        public AzureDeviceBase()
-        {
-        }
-        public async Task AzureDeviceInitAsync<C>(C c) where C : AzureConnectionBase
-        {
-            _connection = c;
-            await Task.CompletedTask;
-        }
-    }
-
     abstract public class AzureConnectionBase : IDisposable
     {
         private ConcurrentQueue<KeyValuePair<string, object>> _updateq { get; set; }
 
         public virtual AzureModuleBase Module { get; protected set; }
-        public virtual AzureDeviceBase Device { get; protected set; }
         protected AzureConnectionBase()
         {
             _updateq = new ConcurrentQueue<KeyValuePair<string, object>>();
@@ -286,25 +257,9 @@ namespace EdgeModuleSamples.Common.Azure
         // {
         // 
         // }
-        protected virtual async Task AzureConnectionInitAsync<D, M>() where D : AzureDeviceBase, new() where M : AzureModuleBase, new()
+        protected virtual async Task AzureConnectionInitAsync<M>() where M : AzureModuleBase, new()
         {
-            await Task.WhenAll(
-
-                // ignore twin until 
-                Task.Run(async () => {
-                    try
-                    {
-                        Device = new D();
-                        await Device.AzureDeviceInitAsync(this);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.WriteLine("AzureConnectionInitAsync DeviceInit lambda exception {0}", e.ToString());
-                        Environment.Exit(1); // failfast
-                    }
-                }),
-
-                Task.Run(async () =>
+            await Task.Run(async () =>
                 {
                     try
                     {
@@ -316,14 +271,13 @@ namespace EdgeModuleSamples.Common.Azure
                         Log.WriteLine("AzureConnectionInitAsync ModuleInit lambda exception {0}", e.ToString());
                         Environment.Exit(1); // failfast
                     }
-                })
-            );
+                });
             Log.WriteLine("Azure connection Initialized");
         }
-        public static async Task<C> CreateAzureConnectionAsync<C, D, M>() where C : AzureConnectionBase, new() where D : AzureDeviceBase, new() where M : AzureModuleBase, new()
+        public static async Task<C> CreateAzureConnectionAsync<C, M>() where C : AzureConnectionBase, new() where M : AzureModuleBase, new()
         {
             var newConnection = new C();
-            await newConnection.AzureConnectionInitAsync<D, M>();
+            await newConnection.AzureConnectionInitAsync<M>();
 
             Log.WriteLine("Azure connection Creation Complete");
             return newConnection;

@@ -20,10 +20,6 @@ using System.Threading.Tasks;
 
 namespace PWMFruit
 {
-    public class AzureDevice : AzureDeviceBase
-    {
-        public AzureDevice() { }
-    }
     [JsonObject(MemberSerialization.Fields)]
     class ConfigurationType : SpbBaseConfigurationType
     {
@@ -159,7 +155,7 @@ namespace PWMFruit
         // 
         // }
         public static async Task<AzureConnection> CreateAzureConnectionAsync() {
-            return await CreateAzureConnectionAsync<AzureConnection, AzureDevice, AzureModule>();
+            return await CreateAzureConnectionAsync<AzureConnection, AzureModule>();
         }
 
         public async Task NotifyModuleLoadAsync()
