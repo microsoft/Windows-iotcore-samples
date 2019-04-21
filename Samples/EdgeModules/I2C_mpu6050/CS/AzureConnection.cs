@@ -26,6 +26,7 @@ namespace I2CMPU6050
     {
         public override bool Update(BaseConfigurationType newValue)
         {
+            // TODO: implement cloud side device configuration
             Log.WriteLine("updating from {0} to {1}", this.ToString(), newValue.ToString());
             return true;
         }

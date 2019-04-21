@@ -481,7 +481,6 @@ namespace GPIOFruit
                     });
                 }
             }
-            // TODO: increment blinking
         }
         public async Task UpdatePinConfigurationAsync(GpioPinIndexesType newPinIndexes)
         {
