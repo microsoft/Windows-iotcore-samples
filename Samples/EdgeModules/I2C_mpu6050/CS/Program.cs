@@ -71,6 +71,24 @@ namespace I2CMPU6050
             );
             try
             {
+                EventHandler<string> ModuleLoadedHandler = async (Object sender, string moduleName) =>
+                {
+                    try
+                    {
+                        Log.WriteLine("module loaded.   resending state");
+                        await connection.NotifyNewModuleOfCurrentStateAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLineError("failed to notify state {0}", e.ToString());
+                        Environment.Exit(2);
+                    }
+                };
+                if (connection != null)
+                {
+                    ((AzureModule)(connection.Module)).ModuleLoaded += ModuleLoadedHandler;
+                }
+
                 EdgeModuleSamples.Common.Device.MpuDevice.OrientationEventHandler OrientationChangedHandler = (device, change) =>
                 {
                     connection.UpdateObject(new KeyValuePair<string, object>(Keys.Orientation, change.newOrientation));
@@ -95,6 +113,10 @@ namespace I2CMPU6050
                 } finally
                 {
                     mpu.OrientationChanged -= OrientationChangedHandler;
+                    if (connection != null)
+                    {
+                        ((AzureModule)(connection.Module)).ModuleLoaded -= ModuleLoadedHandler;
+                    }
                 }
             } finally
             {

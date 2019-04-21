@@ -20,32 +20,49 @@ namespace WinMLCustomVisionFruit
         public event EventHandler<string> ModuleLoaded;
         public override string ModuleId { get { return Keys.WinMLModuleId; } }
 
-        static async Task<MessageResponse> ModuleLoadMessageHandler(Message msg, Object ctx)
+        async Task<MessageResponse> ProcessModuleLoadedMessage(ModuleLoadedMessage msg)
+        {
+            await Task.Run(() => {
+                try
+                {
+                    ModuleLoaded?.Invoke(this, msg.ModuleName);
+                } catch (Exception e)
+                {
+                    Log.WriteLine("ModuleLoadedMessageHandler event lambda exception {0}", e.ToString());
+                }
+                });
+            return MessageResponse.Completed;
+        }
+        static async Task<MessageResponse> ModuleLoadedMessageHandler(Message msg, Object ctx)
         {
             AzureModule module = (AzureModule)ctx;
             var msgBytes = msg.GetBytes();
             var msgString = Encoding.UTF8.GetString(msgBytes);
             Log.WriteLine("loadModule msg received: '{0}'", msgString);
-            var loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msgString);
-            await Task.Run(() => {
-                try
-                {
-                    module.ModuleLoaded?.Invoke(module, loadMsg.ModuleName);
-                } catch (Exception e)
-                {
-                    Log.WriteLine("ModuleLoadMessageHandler event lambda exception {0}", e.ToString());
-                }
-                });
+            var loadMsg = JsonConvert.DeserializeObject<ModuleLoadedMessage>(msgString);
+            await module.ProcessModuleLoadedMessage(loadMsg);
             return MessageResponse.Completed;
-
         }
+        private async Task<MethodResponse> SetModuleLoaded(MethodRequest req, Object context)
+        {
+            string data = Encoding.UTF8.GetString(req.Data);
+            Log.WriteLine("Direct Method SetOrientation {0}", data);
+            var loadMsg = JsonConvert.DeserializeObject<ModuleLoadedMessage>(data);
+            AzureModule module = (AzureModule)context;
+            await module.ProcessModuleLoadedMessage(loadMsg);
+            // Acknowlege the direct method call with a 200 success message
+            string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
+            return new MethodResponse(Encoding.UTF8.GetBytes(result), 200);
+        }
+
         public AzureModule() {
         }
         public override async Task AzureModuleInitAsync<C>(C c)
         {
             AzureConnection c1 = c as AzureConnection;
             await base.AzureModuleInitAsync(c1);
-            await _moduleClient.SetInputMessageHandlerAsync(Keys.ModuleLoadInputRoute, ModuleLoadMessageHandler, this);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.ModuleLoadedInputRoute, ModuleLoadedMessageHandler, this);
+            await _moduleClient.SetMethodHandlerAsync(Keys.SetModuleLoaded, SetModuleLoaded, this);
             await base.AzureModuleInitEndAsync();
         }
 
@@ -104,17 +121,19 @@ namespace WinMLCustomVisionFruit
                 );
              }
         }
-        public async Task NotifyNewModuleAsync()
+        public async Task NotifyNewModuleOfCurrentStateAsync()
         {
             if (_lastFruitBody.Length > 1)
             {
                 Message m0 = null;
                 Message m1 = null;
+                Message m2 = null;
                 Message mu = null;
                 lock (_lastFruitBody)
                 {
                     m0 = new Message(_lastFruitBody);
                     m1 = new Message(_lastFruitBody);
+                    m2 = new Message(_lastFruitBody);
                     mu = new Message(_lastFruitBody);
                 }
                 await Task.WhenAll(
@@ -125,6 +144,10 @@ namespace WinMLCustomVisionFruit
                     Task.Run(async () =>
                     {
                         await Module.SendMessageAsync(Keys.OutputFruit1, m1);
+                    }),
+                    Task.Run(async () =>
+                    {
+                        await Module.SendMessageAsync(Keys.OutputFruit2, m2);
                     }),
                     Task.Run(async () =>
                     {

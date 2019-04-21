@@ -131,23 +131,15 @@ namespace HubEventHandler
         }
         private static HttpClient client = new HttpClient();
 
-        public static async Task<List<string>> GetDeviceModulesAsync(string deviceId, RegistryManager rm)
+        public static async Task<List<string>> GetDeviceModulesAsync(string deviceId, RegistryManager rm, ILogger log)
         {
             List<string> destCandidateNames = new List<string>();
-            // TODO: GetModulesOnDeviceAsync is throwing an unauthorized exception
-            // until i can figure out why we're just going to hard code what we know is there
-#if DISABLED
-                        var deviceModules = await rm.GetModulesOnDeviceAsync(destDeviceId);
-                        log.LogInformation("destination {0} has {1} modules", destDeviceId, deviceModules.Count());
-                        var destModuleCandidates = deviceModules.Where(module => module.Id != sourceModuleId);
-                        log.LogInformation("destination {0} has {1} module candidates", destDeviceId, destModuleCandidates.Count());
-                        var destCandidateNames = destModuleCandidates.Select(m => m.Id);
-#else
-            await Task.CompletedTask;
-            destCandidateNames.Add(Keys.GPIOModuleId);
-            destCandidateNames.Add(Keys.I2CModuleId);
-            destCandidateNames.Add(Keys.UARTModuleId);
-#endif
+            var deviceModules = await rm.GetModulesOnDeviceAsync(deviceId);
+            log.LogInformation("destination {0} has {1} modules", deviceId, deviceModules.Count());
+            //var destModuleCandidates = deviceModules.Where(module => module.Id != sourceModuleId);
+            //log.LogInformation("destination {0} has {1} module candidates", destDeviceId, destModuleCandidates.Count());
+            //var destCandidateNames = destModuleCandidates.Select(m => m.Id);
+            destCandidateNames = deviceModules.Select(m => m.Id).ToList<string>();
             return destCandidateNames;
         }
         public static async Task<TopologyType> GetDeviceTopologyAsync(string deviceId, RegistryManager rm, ILogger log)
@@ -227,15 +219,15 @@ namespace HubEventHandler
         {
             ServiceClient client = ServiceClient.CreateFromConnectionString(connectionString);
             log.LogInformation("have service client");
-            ModuleLoadMessage loadMsg = new ModuleLoadMessage();
+            ModuleLoadedMessage loadMsg = new ModuleLoadedMessage();
             loadMsg.ModuleName = sourceModuleId;
-            var mi = new CloudToDeviceMethod("SetModuleLoad");
+            var mi = new CloudToDeviceMethod(Keys.SetModuleLoaded);
             mi.ConnectionTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.ResponseTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.SetPayloadJson(JsonConvert.SerializeObject(loadMsg));
 
             // Invoke the direct method asynchronously and get the response from the simulated device.
-            log.LogInformation("invoking device method for {0} {1} with {2}", destDeviceId, destModule, mi.ToString());
+            log.LogInformation("invoking device method for {0} {1} with {2} json {3}", destDeviceId, destModule, mi.MethodName, mi.GetPayloadAsJson());
             var r = await client.InvokeDeviceMethodAsync(destDeviceId, destModule, mi);
             log.LogInformation("device method invocation complete");
 
@@ -248,13 +240,13 @@ namespace HubEventHandler
             OrientationMessage oMsg = new OrientationMessage();
             oMsg.OrientationState = oState;
             oMsg.OriginalEventUTCTime = EventMsgTime;
-            var mi = new CloudToDeviceMethod("SetOrientation");
+            var mi = new CloudToDeviceMethod(Keys.SetOrientation);
             mi.ConnectionTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.ResponseTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.SetPayloadJson(JsonConvert.SerializeObject(oMsg));
 
             // Invoke the direct method asynchronously and get the response from the simulated device.
-            log.LogInformation("invoking device method for {0} {1} with {2}", destDeviceId, destModule, mi.ToString());
+            log.LogInformation("invoking device method for {0} {1} with {2} json {3}", destDeviceId, destModule, mi.MethodName, mi.GetPayloadAsJson());
             var r = await client.InvokeDeviceMethodAsync(destDeviceId, destModule, mi);
             log.LogInformation("device method invocation complete");
 
@@ -267,19 +259,20 @@ namespace HubEventHandler
             FruitMessage fruitMsg = new FruitMessage();
             fruitMsg.FruitSeen = fruit;
             fruitMsg.OriginalEventUTCTime = EventMsgTime;
-            var mi = new CloudToDeviceMethod("SetFruit");
+            var mi = new CloudToDeviceMethod(Keys.SetFruit);
             mi.ConnectionTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.ResponseTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
             mi.SetPayloadJson(JsonConvert.SerializeObject(fruitMsg));
 
             // Invoke the direct method asynchronously and get the response from the simulated device.
-            log.LogInformation("invoking device method for {0} {1} with {2}", deviceId, moduleId, mi.ToString());
+            log.LogInformation("invoking device method for {0} {1} with {2} json {3}", deviceId, moduleId, mi.MethodName, mi.GetPayloadAsJson());
             var r = await client.InvokeDeviceMethodAsync(deviceId, moduleId, mi);
             log.LogInformation("device method invocation complete");
 
             return;
         }
 
+        //[Singleton]
         [FunctionName("ModuleLoadHub")]
         public static async Task HubRun([IoTHubTrigger("messages/events", Connection = "EndpointConnectionString")]EventData message, 
                                         ILogger log, WebJobsExecutionContext context)
@@ -311,7 +304,7 @@ namespace HubEventHandler
                 log.LogInformation("Have registry manager");
                 var destDevices = await GetDestinationDevices(sourceDeviceId, rm, log);
                 log.LogInformation("Have topology");
-                ModuleLoadMessage loadMsg = JsonConvert.DeserializeObject<ModuleLoadMessage>(msg);
+                ModuleLoadedMessage loadMsg = JsonConvert.DeserializeObject<ModuleLoadedMessage>(msg);
                 if ((loadMsg != null) && (loadMsg.ModuleName != null) && (loadMsg.ModuleName.Length > 0))
                 {
                     if (sourceModuleId != loadMsg.ModuleName)
@@ -337,7 +330,7 @@ namespace HubEventHandler
                     foreach (var destDeviceId in destDevices)
                     {
                         log.LogInformation("examining destination device {0}", destDeviceId);
-                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm);
+                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm, log);
 
                         var destModules = destCandidateNames.Where(n => n != sourceModuleId).Intersect(destModulesFromRoute, StringComparer.InvariantCulture);
                         log.LogInformation("sending loadmsg to destination {0} modules", destModules.Count());
@@ -384,7 +377,7 @@ namespace HubEventHandler
                     foreach (var destDeviceId in destDevices)
                     {
                         log.LogInformation("examining destination device {0}", destDeviceId);
-                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm);
+                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm, log);
                         log.LogInformation("interecting {0} destmodules with {1} routemodules", destCandidateNames.Count(), destModulesFromRoute.Length);
                         var destModules = destCandidateNames.Intersect(destModulesFromRoute, StringComparer.InvariantCulture);
                         log.LogInformation("{0} modules after intersection", destModules.Count());
@@ -435,7 +428,7 @@ namespace HubEventHandler
                     foreach (var destDeviceId in destDevices)
                     {
                         log.LogInformation("examining destination device {0}", destDeviceId);
-                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm);
+                        List<string> destCandidateNames = await GetDeviceModulesAsync(destDeviceId, rm, log);
 
                         var destModules = destCandidateNames.Where(n => n != sourceModuleId).Intersect(destModulesFromRoute, StringComparer.InvariantCulture);
                         log.LogInformation("sending loadmsg to destination {0} modules", destModules.Count());

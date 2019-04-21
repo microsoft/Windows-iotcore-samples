@@ -107,7 +107,7 @@ namespace UARTLCD
                 string currentFruit = null;
                 Orientation currentOrientation = Orientation.Unknown;
                 AzureModule m = (AzureModule)connection.Module;
-               EventHandler<ConfigurationType> ConfigurationChangedHandler = async (object sender, ConfigurationType newConfiguration) =>
+                EventHandler<ConfigurationType> ConfigurationChangedHandler = async (object sender, ConfigurationType newConfiguration) =>
                 {
                     var module = (AzureModule)sender;
                     Log.WriteLine("updating UART_lcd config with {0}", newConfiguration.ToString());
@@ -149,7 +149,8 @@ namespace UARTLCD
                                 currentOrientation = o;
                                 Log.WriteLine("setting orientation to {0}", o.ToString());
                                 LCDMessage msg;
-                                msg.bgcolor = o == Orientation.UpsideDown ? Colors.White : FruitColors[currentFruit.ToLower()];
+
+                                msg.bgcolor = o == Orientation.UpsideDown ? Colors.White : FruitColors[currentFruit != null ? currentFruit.ToLower() : "other"];
                                 msg.clear = false;
                                 msg.msg = null;
                                 uart.QueueMessage(msg);

@@ -31,10 +31,10 @@ namespace EdgeModuleSamples.Common
             public readonly static string InputOrientation = "inputorientation";
             public readonly static string iothubMessageSchema = "iothub-message-schema";
             public readonly static string MessageCreationUTC = "iothub-creation-time-utc";
-            public readonly static string ModuleLoadInputRoute = "inputModule";
-            public readonly static string ModuleLoadOutputRouteLocal0 = "outputModuleLocal0";
-            public readonly static string ModuleLoadOutputRouteLocal1 = "outputModuleLocal1";
-            public readonly static string ModuleLoadOutputRouteUpstream = "outputModuleUpstream";
+            public readonly static string ModuleLoadedInputRoute = "inputModule";
+            public readonly static string ModuleLoadedOutputRouteLocal0 = "outputModuleLocal0";
+            public readonly static string ModuleLoadedOutputRouteLocal1 = "outputModuleLocal1";
+            public readonly static string ModuleLoadedOutputRouteUpstream = "outputModuleUpstream";
             public readonly static string Orientation = "Orientation";
             public readonly static string OutputFruit0 = "outputfruit0"; // gpio
             public readonly static string OutputFruit1 = "outputfruit1"; // uart
@@ -43,6 +43,7 @@ namespace EdgeModuleSamples.Common
             public readonly static string OutputUpstream = "outputupstream";
             public readonly static string PWMModuleId = "PWM";
             public readonly static string SetFruit = "SetFruit";
+            public readonly static string SetModuleLoaded = "SetModuleLoaded";
             public readonly static string SetOrientation = "SetOrientation";
             public readonly static string SPIModuleId = "SPI";
             public readonly static string Reported = "Reported";
@@ -62,7 +63,7 @@ namespace EdgeModuleSamples.Common
         {
             public string FruitSeen { get; set; }
         }
-        public class ModuleLoadMessage : AzureMessageBase
+        public class ModuleLoadedMessage : AzureMessageBase
         {
             public string ModuleName { get; set; }
         }

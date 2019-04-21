@@ -83,7 +83,7 @@ namespace PWMFruit
         {
             float val = pct * 1.0f / 100.0f;
             Log.WriteLine("SetSpeed(int) val {0}", val);
-            if (val > 0.01f)
+            if (val > 0.01f && _currentSpeed <= 0.01f)
             {
                 Log.WriteLineVerbose("Inertial boost");
                 SetSpeed(1.0f);  // full blast for a moment to overcome inertia and get the motor shaft turning

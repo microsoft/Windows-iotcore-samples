@@ -280,7 +280,7 @@ namespace WinMLCustomVisionFruit
                     try
                     {
                         Log.WriteLine("module loaded.   resending state");
-                        await connection.NotifyNewModuleAsync();
+                        await connection.NotifyNewModuleOfCurrentStateAsync();
                     }
                     catch (Exception e)
                     {

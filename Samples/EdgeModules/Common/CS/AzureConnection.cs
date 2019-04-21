@@ -93,7 +93,26 @@ namespace EdgeModuleSamples.Common.Azure
         }
         public virtual async Task UpdateReportedPropertiesAsync(KeyValuePair<string, object> u)
         {
-            _reportedDeviceProperties[u.Key] = u.Value.ToString();
+            Log.WriteLine("\t\t\t\t\tConnectionBase UpdateReportedPropertiesAsync kvp = {0}", u.ToString());
+
+            if (_reportedDeviceProperties.Contains(u.Key))
+            {
+                var old = _reportedDeviceProperties;
+                _reportedDeviceProperties = new TwinCollection();
+                foreach (KeyValuePair<string, object> p in old)
+                {
+                    if (p.Key == u.Key)
+                    {
+                        _reportedDeviceProperties[u.Key] = u.Value;
+                    } else
+                    {
+                        _reportedDeviceProperties[p.Key] = p.Value;
+                    }
+                }
+            } else
+            {
+                _reportedDeviceProperties[u.Key] = u.Value;
+            }
             TwinCollection delta = new TwinCollection();
             delta[u.Key] = u.Value;
             Log.WriteLine("updating twin reported properties with key = {0}, vt = {1}:{2}", u.Key, u.Value.GetType(), u.Value.ToString());
@@ -102,7 +121,7 @@ namespace EdgeModuleSamples.Common.Azure
         }
         public async Task NotifyModuleLoadAsync(string route)
         {
-            ModuleLoadMessage msg = new ModuleLoadMessage();
+            ModuleLoadedMessage msg = new ModuleLoadedMessage();
             string id = ModuleId;
             if (_moduleTwin == null)
             {
@@ -183,6 +202,25 @@ namespace EdgeModuleSamples.Common.Azure
             _moduleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
             Log.WriteLine("ModuleClient Initialized");
 
+            // set default message handler to log unexpected requests and fail them immediately without
+            // blocking queues waiting for timeouts
+            await _moduleClient.SetMessageHandlerAsync(async (Message msg, Object ctx) => {
+                AzureModuleBase m = (AzureModuleBase)ctx;
+                Log.WriteLine("Unexpected Input Message in module {0}", m.ModuleId);
+                Log.WriteLine("    {0}", msg.ToString());
+                await Task.CompletedTask;
+                return MessageResponse.Abandoned;
+            }, this);
+            // set default method handler to log unexpected requests and fail them immediately without
+            // blocking queues waiting for timeouts
+            await _moduleClient.SetMethodDefaultHandlerAsync(async (MethodRequest req, Object ctx) => {
+                AzureModuleBase m = (AzureModuleBase)ctx;
+                Log.WriteLine("Unexpected Method Request in module {0}", m.ModuleId);
+                Log.WriteLine("    {0}", req.ToString());
+                await Task.CompletedTask;
+                string result = "{\"result\":\"Unrecognized direct method: " + req.Name + "\"}";
+                return new MethodResponse(Encoding.UTF8.GetBytes(result), 404);
+            }, this);
             _moduleClient.SetConnectionStatusChangesHandler(async (ConnectionStatus status, ConnectionStatusChangeReason reason) => {
                 try
                 {

@@ -194,9 +194,9 @@ namespace UARTLCD
         public async Task NotifyModuleLoadAsync()
         {
             await Task.WhenAll(
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal0)),
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteLocal1)),
-                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadOutputRouteUpstream))
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadedOutputRouteLocal0)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadedOutputRouteLocal1)),
+                Task.Run(async () => await NotifyModuleLoadAsync(Keys.ModuleLoadedOutputRouteUpstream))
             );
             Log.WriteLine("derived Module Load D2C message fired");
         }

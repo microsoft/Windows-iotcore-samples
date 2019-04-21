@@ -32,11 +32,48 @@ namespace I2CMPU6050
     }
     class AzureModule : AzureModuleBase
     {
-        // TODO: move common config to basemodule
+        public event EventHandler<string> ModuleLoaded;
+
         private DesiredPropertiesType<ConfigurationType> _desiredProperties;
         public ConfigurationType Configuration { get { return _desiredProperties.Configuration; } }
         public event EventHandler<ConfigurationType> ConfigurationChanged;
         public override string ModuleId { get { return Keys.I2CModuleId; } }
+
+        async Task<MessageResponse> ProcessModuleLoadedMessage(ModuleLoadedMessage msg)
+        {
+            await Task.Run(() => {
+                try
+                {
+                    ModuleLoaded?.Invoke(this, msg.ModuleName);
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLine("ModuleLoadedMessageHandler event lambda exception {0}", e.ToString());
+                }
+            });
+            return MessageResponse.Completed;
+        }
+        static async Task<MessageResponse> ModuleLoadedMessageHandler(Message msg, Object ctx)
+        {
+            AzureModule module = (AzureModule)ctx;
+            var msgBytes = msg.GetBytes();
+            var msgString = Encoding.UTF8.GetString(msgBytes);
+            Log.WriteLine("loadModule msg received: '{0}'", msgString);
+            var loadMsg = JsonConvert.DeserializeObject<ModuleLoadedMessage>(msgString);
+            await module.ProcessModuleLoadedMessage(loadMsg);
+            return MessageResponse.Completed;
+        }
+        private async Task<MethodResponse> SetModuleLoaded(MethodRequest req, Object context)
+        {
+            string data = Encoding.UTF8.GetString(req.Data);
+            Log.WriteLine("Direct Method SetOrientation {0}", data);
+            var loadMsg = JsonConvert.DeserializeObject<ModuleLoadedMessage>(data);
+            AzureModule module = (AzureModule)context;
+            await module.ProcessModuleLoadedMessage(loadMsg);
+            // Acknowlege the direct method call with a 200 success message
+            string result = "{\"result\":\"Executed direct method: " + req.Name + "\"}";
+            return new MethodResponse(Encoding.UTF8.GetBytes(result), 200);
+        }
 
         public override async Task OnConnectionChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)
         {
@@ -73,8 +110,8 @@ namespace I2CMPU6050
         {
             AzureConnection c1 = c as AzureConnection;
             await base.AzureModuleInitAsync(c1);
-            //await _moduleClient.SetInputMessageHandlerAsync(Keys.InputFruit, OnFruitMessageReceived, this);
-            //await _moduleClient.SetMethodHandlerAsync(Keys.SetFruit, SetFruit, this);
+            await _moduleClient.SetInputMessageHandlerAsync(Keys.ModuleLoadedInputRoute, ModuleLoadedMessageHandler, this);
+            await _moduleClient.SetMethodHandlerAsync(Keys.SetModuleLoaded, SetModuleLoaded, this);
             await base.AzureModuleInitEndAsync();
         }
     }
@@ -84,25 +121,27 @@ namespace I2CMPU6050
     {
         private byte[] _lastOBody;
 
-            public AzureConnection()
+        public AzureConnection()
         {
             _lastOBody = new byte[0];
         }
         public static async Task<AzureConnection> CreateAzureConnectionAsync() {
             return await CreateAzureConnectionAsync<AzureConnection, AzureModule>();
         }
-
-        public async Task NotifyNewModuleAsync()
+        public async Task NotifyNewModuleOfCurrentStateAsync()
         {
-                if (_lastOBody.Length > 1)
+            if (_lastOBody.Length > 1)
+            {
+                Message m = null;
+                Message mu = null;
+                lock (_lastOBody)
                 {
-                    Message m = null;
-                    lock (_lastOBody)
-                    {
-                        m = new Message(_lastOBody);
-                    }
-                    await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                    m = new Message(_lastOBody);
+                    mu = new Message(_lastOBody);
                 }
+                await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                await Module.SendMessageAsync(Keys.OutputUpstream, mu);
+            }
         }
         public override async Task UpdateObjectAsync(KeyValuePair<string, object> kvp)
         {
@@ -146,6 +185,8 @@ namespace I2CMPU6050
                         }
                     })
                 );
+                Log.WriteLine("\t\t\t\t\t\tI2C UpdateObjectAsync orientation sent local and upstream");
+
             }
         }
     }
