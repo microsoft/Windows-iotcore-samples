@@ -175,7 +175,7 @@ namespace UARTLCD
                             {
                                 try
                                 {
-                                    // TODO: cancellation token
+                                    // TODO: implement ctl-c handler and cancellation token
                                     for (; ; )
                                     {
                                         Log.WriteLine("{0} wait spin", Environment.TickCount);

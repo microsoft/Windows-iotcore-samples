@@ -46,7 +46,7 @@ namespace WinMLCustomVisionFruit
         private async Task<MethodResponse> SetModuleLoaded(MethodRequest req, Object context)
         {
             string data = Encoding.UTF8.GetString(req.Data);
-            Log.WriteLine("Direct Method SetOrientation {0}", data);
+            Log.WriteLine("Direct Method ModuleLoaded {0}", data);
             var loadMsg = JsonConvert.DeserializeObject<ModuleLoadedMessage>(data);
             AzureModule module = (AzureModule)context;
             await module.ProcessModuleLoadedMessage(loadMsg);
@@ -123,19 +123,18 @@ namespace WinMLCustomVisionFruit
         }
         public async Task NotifyNewModuleOfCurrentStateAsync()
         {
-            if (_lastFruitBody.Length > 1)
+            byte[] fruit = null;
+            lock (_lastFruitBody)
             {
-                Message m0 = null;
-                Message m1 = null;
-                Message m2 = null;
-                Message mu = null;
-                lock (_lastFruitBody)
-                {
-                    m0 = new Message(_lastFruitBody);
-                    m1 = new Message(_lastFruitBody);
-                    m2 = new Message(_lastFruitBody);
-                    mu = new Message(_lastFruitBody);
-                }
+                fruit = _lastFruitBody;
+            }
+            if (fruit != null && fruit.Length > 1)
+            {
+                Log.WriteLine("NotifyNewModuleOfCurrentStateAsync {0}", Encoding.UTF8.GetString(fruit));
+                Message m0 = new Message(fruit);
+                Message m1 = new Message(fruit);
+                Message m2 = new Message(fruit);
+                Message mu = new Message(fruit);
                 await Task.WhenAll(
                     Task.Run(async () =>
                     {
@@ -154,7 +153,10 @@ namespace WinMLCustomVisionFruit
                         await Module.SendMessageAsync(Keys.OutputUpstream, mu);
                     })
                 );
-
+            }
+            else
+            {
+                Log.WriteLine("NotifyNewModuleOfCurrentStateAsync no current state yet");
             }
         }
     }

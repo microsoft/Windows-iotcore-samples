@@ -97,6 +97,7 @@ namespace EdgeModuleSamples.Common.Azure
 
             if (_reportedDeviceProperties.Contains(u.Key))
             {
+                Log.WriteLine("\t\t\t\t\tConnectionBase _reportedDeviceProperties contains key");
                 var old = _reportedDeviceProperties;
                 _reportedDeviceProperties = new TwinCollection();
                 foreach (KeyValuePair<string, object> p in old)
@@ -111,6 +112,7 @@ namespace EdgeModuleSamples.Common.Azure
                 }
             } else
             {
+                Log.WriteLine("\t\t\t\t\tConnectionBase _reportedDeviceProperties does not contain key");
                 _reportedDeviceProperties[u.Key] = u.Value;
             }
             TwinCollection delta = new TwinCollection();
