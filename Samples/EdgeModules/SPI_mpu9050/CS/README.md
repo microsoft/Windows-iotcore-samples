@@ -4,9 +4,12 @@ This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with 
 
 ## App Overview
 
+This app uses an Invensense MPU 9050 9-Degrees of Freedom motion processing unit.  It includes a 6 axis accelerometer very similar to the mpu6050 and a 3 axis magnetic compass.  This is a common and inexpensive part that comes in many Arduino and other Maker starter kits.
+It connects via an SPI interface.  The app monitors the Z-Axis orientation and sends RightSideUp or UpsideDown Device-to-Cloud Telemetry Messages.
 
 ## Other things of interest in this sample
 
+* The deployment.json file demonstrates container creation options for exposing PWM controllers into the container.
 
 ### Prerequisites
 

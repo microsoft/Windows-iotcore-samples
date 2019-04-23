@@ -13,8 +13,9 @@ You can change the model by providing a different model file and updating the lo
 The code assumes the model input and output features are in the form of a standard Azure Customer Vision Server *CoreML* format model converted to .onnx with the [standard Python ONNX image conversion tools](https://github.com/onnx/onnxmltools).  
 If you do change models you may also want to change the property names to match the new label type in the updateobject methods in the AzureConnection class in AzureHelper.cs
 
-The sample currently uses the CPU to do the WinML because that's available on all iot core boards.  To choose GPU evaluation you can change the LearningModelDeviceKind in the CreateModelAsync function in model.cs
-However, as of this writing -- December 2018, there are no supported GPU drivers for any IoT Core capable devices that have been upgraded to a sufficiently recent WDDM driver version(>=WDDM 2.4) to work in process isolation containers and are also provided in a universal driver package which is necessary to add a driver to an IoT Core image.  We expect this to change soon and plan to update this readme when something is available.
+The sample currently uses the CPU to do the WinML because that's available on all iot core boards.  To choose GPU evaluation you can pass a -gpu command line switch in the Dockerfile to change the LearningModelDeviceKind in the CreateModelAsync function in model.cs
+However, as of this writing -- (spring 2019), there are no supported GPU drivers for any IoT Core capable devices that have been upgraded to a sufficiently recent WDDM driver version(>=WDDM 2.4) to work in process isolation containers and are also provided in a universal driver package which is necessary to add a driver to an IoT Core image.  We expect this to change soon and plan to update this readme when something is available.
+For IoT Enterprise any of the normal GPUs supported by general WinML are expected to work if they've been upgraded to the latest display drivers >= WDDM v. 2.5.
 
 ## Other things of interest in this sample
 

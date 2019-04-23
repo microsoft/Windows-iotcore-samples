@@ -5,6 +5,7 @@ This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with 
 ## App Overview
 
 This app uses an Invensense MPU 6050 6 axis accelerometer.  This is a common and inexpensive part that comes in many Arduino and other Maker starter kits.
+It connects via an I2C interface.  The app monitors the Z-Axis orientation and sends RightSideUp or UpsideDown Device-to-Cloud Telemetry Messages.
 
 ## Other things of interest in this sample
 

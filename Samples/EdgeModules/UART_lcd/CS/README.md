@@ -5,6 +5,9 @@ This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with 
 ## App Overview
 
 This app uses an Adafruit 16x2 LCD display + Serial Backpack Kit as described here: https://www.adafruit.com/product/784
+It can be connected either via a USB bridged serial or a direct TTL UART serial port.
+When it receives a D2C Fruit Message or DirectMethod it prints the name of the fruit on the display and sets the display background color to the same fruit colors as the GPIO sample.
+If it receives an OrientationChanged Messages or DirectMethod, it sets the background color to the normal fruit color when RightSideUp.  And, it ignores the current fruit and sets the background color to white when UpsideDown.
 
 ## Other things of interest in this sample
 

@@ -4,8 +4,9 @@ This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with 
 
 ## App Overview
 
-The GPIO sample expects to be run on a board that is connected to 4 LEDS -- red, yellow, green, and blue.  The pins are configured via the [Module Twin's Desired Properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-module-twins).  the project contains example deployments for [Minnowboard Max](url to mbm), and [Hummingboard](url to hb) (TODO: take photos of the pinout and add to here).
-When the sample receives a device to cloud telemetry message of the type 'FruitMessage', it extracts the recognized object and maps it to one of the colors.  then it sets that color LED to on and turns any previously set led off.
+The GPIO sample expects to be run on a board that is connected to 4 LEDS -- red, yellow, green, and blue.  The pins are configured via the [Module Twin's Desired Properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-module-twins).  the project contains example deployments for [Minnowboard Max](https://minnowboard.org/), and [Hummingboard](https://www.solid-run.com/product/SRMX6QDW00D02GE008E00CH) (TODO: take photos of the pinout and add to here).
+When the sample receives a device to cloud telemetry message of the type 'FruitMessage' from another module in the system, or a SetFruit direct method call from the azure function , it extracts the recognized object and maps it to one of the colors.  then it sets that color LED to on and turns any previously set led off.
+if it receives an OrientationChanged message it inverts the sense of the LEDS and turns off the LED corresponding to the current fruit and turns all the others on.
 The FruitMessage can either come from a local instance of the Fruit WinML sample or from the cloud via reflection using the EventHubHandler Function sample.
 The EventHubHandler can mirror the 'FruitMessage' to multiple GPIO module instances running on multiple boards.  This simulates a remote status display in a separate location.
 
