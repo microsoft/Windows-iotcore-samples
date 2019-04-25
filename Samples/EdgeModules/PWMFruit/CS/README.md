@@ -19,8 +19,8 @@ When it receives a D2C Fruit Message or DirectMethod call it maps the fruit to a
     * [Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal)
     * [Function App]() with the [EventHubHandler Example] (..\..\EventHubHandler\Readme.md) installed if you wish to exercise the device state mirroring.
 * Hardware:
-    * An x64 Board with an 1809 version of IoT Core installed.
-    * USB web cam
+    * An Board with an 1809 version of IoT Core installed and PWM driver support.
+    * A PWM peripheral and support circuit.  What was used for developing this sample is a simple DC motor with fan from an Arduino starter kit.  There are many tutorial examples using an L293D motor controller chip that can be found on the internet. And, there are several other alternatives using different motor control circuits.
 * Required packages to install
     * [Windows sdk for 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
     * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
