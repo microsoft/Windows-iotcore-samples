@@ -67,7 +67,7 @@ namespace I2CMPU6050
         private async Task<MethodResponse> SetModuleLoaded(MethodRequest req, Object context)
         {
             string data = Encoding.UTF8.GetString(req.Data);
-            Log.WriteLine("Direct Method SetOrientation {0}", data);
+            Log.WriteLine("Direct Method SetModuleLoaded {0}", data);
             var loadMsg = JsonConvert.DeserializeObject<ModuleLoadedMessage>(data);
             AzureModule module = (AzureModule)context;
             await module.ProcessModuleLoadedMessage(loadMsg);
@@ -114,6 +114,7 @@ namespace I2CMPU6050
             await _moduleClient.SetInputMessageHandlerAsync(Keys.ModuleLoadedInputRoute, ModuleLoadedMessageHandler, this);
             await _moduleClient.SetMethodHandlerAsync(Keys.SetModuleLoaded, SetModuleLoaded, this);
             await base.AzureModuleInitEndAsync();
+            Log.WriteLine("I2C AzureModuleInitAsync complete.");
         }
     }
 
@@ -131,17 +132,42 @@ namespace I2CMPU6050
         }
         public async Task NotifyNewModuleOfCurrentStateAsync()
         {
-            if (_lastOBody.Length > 1)
+            byte[] obody = null;
+            lock (_lastOBody)
             {
-                Message m = null;
-                Message mu = null;
-                lock (_lastOBody)
-                {
-                    m = new Message(_lastOBody);
-                    mu = new Message(_lastOBody);
-                }
-                await Module.SendMessageAsync(Keys.OutputOrientation, m);
-                await Module.SendMessageAsync(Keys.OutputUpstream, mu);
+                obody = _lastOBody;
+            }
+            if (obody != null && obody.Length > 1)
+            {
+                Log.WriteLine("NotifyNewModuleOfCurrentStateAsync {0}", Encoding.UTF8.GetString(obody));
+                Message m = new Message(obody);
+                Message mu = new Message(obody);
+                await Task.WhenAll(
+                    Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("failed to notify new module local output of orientation {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
+                    }),
+                    Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await Module.SendMessageAsync(Keys.OutputUpstream, mu);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("failed to notify new moduleupstream of orientation {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
+                    })
+                );
             }
         }
         public override async Task UpdateObjectAsync(KeyValuePair<string, object> kvp)

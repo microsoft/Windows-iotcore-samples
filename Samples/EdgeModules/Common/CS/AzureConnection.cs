@@ -208,8 +208,8 @@ namespace EdgeModuleSamples.Common.Azure
             // blocking queues waiting for timeouts
             await _moduleClient.SetMessageHandlerAsync(async (Message msg, Object ctx) => {
                 AzureModuleBase m = (AzureModuleBase)ctx;
-                Log.WriteLine("Unexpected Input Message in module {0}", m.ModuleId);
-                Log.WriteLine("    {0}", msg.ToString());
+                Log.WriteLine("Unexpected Input Message to {0} in module {1}", msg.InputName, m.ModuleId);
+                Log.WriteLine("    {0}", Encoding.UTF8.GetString(msg.GetBytes()));
                 await Task.CompletedTask;
                 return MessageResponse.Abandoned;
             }, this);
@@ -312,14 +312,14 @@ namespace EdgeModuleSamples.Common.Azure
                         Environment.Exit(1); // failfast
                     }
                 });
-            Log.WriteLine("Azure connection Initialized");
+            Log.WriteLine("Azure base generic connection Initialized");
         }
         public static async Task<C> CreateAzureConnectionAsync<C, M>() where C : AzureConnectionBase, new() where M : AzureModuleBase, new()
         {
             var newConnection = new C();
             await newConnection.AzureConnectionInitAsync<M>();
 
-            Log.WriteLine("Azure connection Creation Complete");
+            Log.WriteLine("Azure base generic connection Creation Complete");
             return newConnection;
         }
         protected async Task NotifyModuleLoadAsync(string route)
@@ -341,18 +341,19 @@ namespace EdgeModuleSamples.Common.Azure
                     bool success = false;
                     while (!_updateq.IsEmpty)
                     {
-                        do
+                        success = _updateq.TryDequeue(out u);
+                        if (success)
                         {
-                            success = _updateq.TryDequeue(out u);
-                            if (success)
-                            {
-                                Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject lambda kvp = {0}", u.ToString());
-                                await UpdateObjectAsync(u);
-                                Log.WriteLine("\t\t\t\t\tConnectionBase calling module updatereportedproperties kvp = {0}", u.ToString());
-                                await Module.UpdateReportedPropertiesAsync(u);
-                            }
-                        } while (!success);
-                        Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject lambda complete");
+                            Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject lambda kvp = {0}", u.ToString());
+                            await UpdateObjectAsync(u);
+                            Log.WriteLine("\t\t\t\t\tConnectionBase calling module updatereportedproperties kvp = {0}", u.ToString());
+                            await Module.UpdateReportedPropertiesAsync(u);
+                            Log.WriteLine("\t\t\t\t\tConnectionBase UpdateObject lambda complete");
+                        }
+                        else
+                        {
+                            Log.WriteLine("\t\t\t\t\tTryDequeue failed even though q isn't empty");
+                        }
                     }
                 } catch (Exception e)
                 {

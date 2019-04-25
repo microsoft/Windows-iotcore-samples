@@ -96,27 +96,58 @@ namespace WinMLCustomVisionFruit
                 await Task.WhenAll(
                     Task.Run(async () =>
                         {
-                            Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit0 kvp = {0}", kvp.ToString());
-                            var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputFruit0, m);
+                            try { 
+                                Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit0 kvp = {0}", kvp.ToString());
+                                var m = new Message(msgbody);
+                                await Module.SendMessageAsync(Keys.OutputFruit0, m);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.WriteLineError("WinML UpdateObjectAsync failed to send outputfruit0 {0}", e.ToString());
+                                Environment.Exit(2);
+                            }
                         }),
                     Task.Run(async () =>
                     {
-                        Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit1 kvp = {0}", kvp.ToString());
-                        var m = new Message(msgbody);
-                        await Module.SendMessageAsync(Keys.OutputFruit1, m);
+                        try
+                        {
+                            Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit1 kvp = {0}", kvp.ToString());
+                            var m = new Message(msgbody);
+                            await Module.SendMessageAsync(Keys.OutputFruit1, m);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("WinML UpdateObjectAsync failed to send outputfruit1 {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
                     }),
                     Task.Run(async () =>
                     {
-                        Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit2 kvp = {0}", kvp.ToString());
-                        var m = new Message(msgbody);
-                        await Module.SendMessageAsync(Keys.OutputFruit2, m);
+                        try
+                        {
+                            Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit2 kvp = {0}", kvp.ToString());
+                            var m = new Message(msgbody);
+                            await Module.SendMessageAsync(Keys.OutputFruit2, m);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("WinML UpdateObjectAsync failed to send outputfruit2 {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
                     }),
                     Task.Run(async () =>
                         {
-                            Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to upstream kvp = {0}", kvp.ToString());
-                            var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputUpstream, m);
+                            try
+                            {
+                                Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to upstream kvp = {0}", kvp.ToString());
+                                var m = new Message(msgbody);
+                                await Module.SendMessageAsync(Keys.OutputUpstream, m);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.WriteLineError("WinML UpdateObjectAsync failed to send outputfruit upstream {0}", e.ToString());
+                                Environment.Exit(2);
+                            }
                         })
                 );
              }
@@ -138,19 +169,51 @@ namespace WinMLCustomVisionFruit
                 await Task.WhenAll(
                     Task.Run(async () =>
                     {
-                        await Module.SendMessageAsync(Keys.OutputFruit0, m0);
+                        try
+                        {
+                            await Module.SendMessageAsync(Keys.OutputFruit0, m0);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("WinML NotifyNewModuleOfCurrentStateAsync failed to send outputfruit0 {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
                     }),
                     Task.Run(async () =>
                     {
-                        await Module.SendMessageAsync(Keys.OutputFruit1, m1);
+                        try
+                        {
+                            await Module.SendMessageAsync(Keys.OutputFruit1, m1);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("WinML NotifyNewModuleOfCurrentStateAsync failed to send outputfruit1 {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
                     }),
                     Task.Run(async () =>
                     {
-                        await Module.SendMessageAsync(Keys.OutputFruit2, m2);
+                        try
+                        {
+                            await Module.SendMessageAsync(Keys.OutputFruit2, m2);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("WinML NotifyNewModuleOfCurrentStateAsync failed to send outputfruit2 {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
                     }),
                     Task.Run(async () =>
                     {
-                        await Module.SendMessageAsync(Keys.OutputUpstream, mu);
+                        try
+                        {
+                            await Module.SendMessageAsync(Keys.OutputUpstream, mu);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.WriteLineError("WinML NotifyNewModuleOfCurrentStateAsync failed to send outputfruit upstream {0}", e.ToString());
+                            Environment.Exit(2);
+                        }
                     })
                 );
             }

@@ -78,7 +78,7 @@ namespace SPIMPU9050
             try
             {
                 string data = Encoding.UTF8.GetString(req.Data);
-                Log.WriteLine("Direct Method SetOrientation {0}", data);
+                Log.WriteLine("Direct Method SetModuleLoaded {0}", data);
                 var loadMsg = JsonConvert.DeserializeObject<ModuleLoadedMessage>(data);
                 AzureModule module = (AzureModule)context;
                 await module.ProcessModuleLoadedMessage(loadMsg);
