@@ -1,0 +1,33 @@
+{
+    "Macros": [
+        {
+            "AgentImage" : "mcr.microsoft.com/azureiotedge-agent:1.0"
+        },
+        {
+            "GPIOImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.amd64.GPIOFruit"
+        },
+        {
+            "HubImage" : "mcr.microsoft.com/azureiotedge-hub:1.0"
+        },
+        {
+            "I2CImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.amd64.I2C_mpu6050"
+        },
+        {
+            "SPIImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:svcfix.17763.amd64.SPI_9050"
+        },
+        {
+            "UARTImage" : "iotedgewinmlcontainerregistry.azurecr.io/nano:uartfix.17763.amd64.UART_lcd"
+        },
+        {
+            "WinMLImage" : "iotedgewinmlcontainerregistry.azurecr.io/iotuap:rtm.17763.amd64.WinMLCustomVisionFruit"
+        },
+        {
+            "GpioPins" : {
+                "blue": 9,
+                "red": 0,
+                "green": 1,
+                "yellow": 2
+            }
+        }
+    ]
+}

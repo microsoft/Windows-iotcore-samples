@@ -1,4 +1,7 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿//
+// Copyright (c) Microsoft. All rights reserved.
+//
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;

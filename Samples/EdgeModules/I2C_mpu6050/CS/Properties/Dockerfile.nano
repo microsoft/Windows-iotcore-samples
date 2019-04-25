@@ -1,0 +1,13 @@
+FROM iotedgewinmlcontainerregistry.azurecr.io/nano
+
+USER ContainerUser
+
+ARG EXE_DIR=.
+
+WORKDIR /app
+
+COPY $EXE_DIR/ ./
+
+ENV IPInterfaceName vEthernet (Ethernet)
+
+CMD ["I2c_mpu6050.exe"]
