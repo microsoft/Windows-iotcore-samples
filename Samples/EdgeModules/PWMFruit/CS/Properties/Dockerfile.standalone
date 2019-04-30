@@ -1,4 +1,6 @@
-FROM iotedgewinmlcontainerregistry.azurecr.io/nano
+ARG IMAGE=mcr.microsoft.com/windows/nanoserver
+ARG IMAGE_TAG=1809
+FROM ${IMAGE}:${TAG}
 
 USER ContainerUser
 
@@ -10,4 +12,4 @@ COPY $EXE_DIR/ ./
 
 ENV IPInterfaceName vEthernet (Ethernet)
 
-CMD ["SPI_mpu9050.exe"]
+CMD ["PWMFruit.exe"]
