@@ -1,5 +1,5 @@
-ARG IMAGE=mcr.microsoft.com
-ARG IMAGE_TAG=1.0
+ARG IMAGE=mcr.microsoft.com/windows/nanoserver
+ARG IMAGE_TAG=1809
 FROM ${IMAGE}:${TAG}
 
 USER ContainerUser

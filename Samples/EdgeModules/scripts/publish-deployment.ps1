@@ -13,19 +13,11 @@ normal json file with the macros recursively substituted for their values
 [CmdletBinding()]
 param(
     [parameter(Mandatory, Position = 0, ValueFromPipeline)] [string] $templatefile,
-    [parameter(Mandatory)] [alias("hw")][ValidateSet("hb", "hummingboard", "mbm", "minnowboard", "minnowboardmax", "amd", "amd-v1000")][string] $HardwareType
+    [alias("hw")][string] $HardwareType="mbm"
 )
 
-if ($HardwareType -eq "hb") {
-    $HardwareType = "hummingboard"
-} else {
-    if ($HardwareType -eq "mbm" -or $HardwareType -eq "minnowboard") {
-        $HardwareType = "minnowboardmax"
-    } else {
-        if ($HardwareType -eq "amd") {
-            $HardwareType = "amd-v1000"
-        }
-    }
+if ($HardwareType -eq "mbm" -or $HardwareType -eq "minnowboard") {
+    $HardwareType = "minnowboardmax"
 }
 
 $macros = @("$PSScriptRoot\urls.creds.macros.json")

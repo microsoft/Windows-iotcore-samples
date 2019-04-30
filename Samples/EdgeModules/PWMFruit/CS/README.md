@@ -4,8 +4,7 @@ This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with 
 
 ## App Overview
 
-The pwm sample expects to be run on a board that is connected to a pwm motor circuit. The only Currently available(as of spring 2019) board that boots Windows IoT Core and has driver support for PWM is a [Hummingboard](https://www.solid-run.com/product/SRMX6QDW00D02GE008E00CH).
-When it receives a D2C Fruit Message or DirectMethod call it maps the fruit to a motor speed and runs the motor at that speed.  the mapping is Grapes - 100%, apple, pear - 50%, pen - 0%.
+The pwm sample expects to be run on a board that is connected to a pwm motor circuit.  When it receives a D2C Fruit Message or DirectMethod call it maps the fruit to a motor speed and runs the motor at that speed.  the mapping is Grapes - 100%, apple, pear - 50%, pen - 0%.
 
 ## Other things of interest in this sample
 
