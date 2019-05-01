@@ -15,6 +15,7 @@ using Windows.AI.MachineLearning;
 using Windows.Foundation;
 using Windows.Graphics.Imaging;
 using Windows.Media;
+using Windows.Devices.Enumeration;
 using Windows.Media.Capture;
 using Windows.Media.Capture.Frames;
 using Windows.Storage;
@@ -31,6 +32,18 @@ namespace WinMLCustomVisionFruit
             MediaFrameSourceGroup result_group = null;
             var sourcegroups = await AsyncHelper.AsAsync(MediaFrameSourceGroup.FindAllAsync());
             Log.WriteLine("found {0} Source Groups", sourcegroups.Count);
+            if (sourcegroups.Count == 0)
+            {
+                var dinfos =  await AsyncHelper.AsAsync(DeviceInformation.FindAllAsync(MediaFrameSourceGroup.GetDeviceSelector()));
+                Log.WriteLine("found {0} devices from MediaFrameSourceGroup selector", dinfos.Count);
+                foreach (var info in dinfos) { Log.WriteLine(info.Name); }
+                if (dinfos.Count == 0)
+                {
+                    dinfos = await AsyncHelper.AsAsync(DeviceInformation.FindAllAsync(DeviceClass.VideoCapture));
+                    Log.WriteLine("found {0} devices from Video Capture DeviceClass", dinfos.Count);
+                    foreach (var info in dinfos) { Log.WriteLine(info.Name); }
+                }
+            }
             foreach (var g in sourcegroups)
             {
                 var sourceinfos = g.SourceInfos;
@@ -178,7 +191,10 @@ namespace WinMLCustomVisionFruit
                 if (prevLabel == null || prevLabel != label)
                 {
                     prevLabel = label;
-                    azure.UpdateObject(new KeyValuePair<string, object>(Keys.FruitSeen, label));
+                    if (azure != null)
+                    {
+                        azure.UpdateObject(new KeyValuePair<string, object>(Keys.FruitSeen, label));
+                    }
 
                 }
 
@@ -274,7 +290,8 @@ namespace WinMLCustomVisionFruit
                 }));
             try
             {
-                AzureModule m = (AzureModule)connection.Module;
+
+                AzureModule m = null;
                 EventHandler<string> ModuleLoadedHandler = async (Object sender, string moduleName) =>
                 {
                     try
@@ -288,7 +305,11 @@ namespace WinMLCustomVisionFruit
                         Environment.Exit(2);
                     }
                 };
-                m.ModuleLoaded += ModuleLoadedHandler;
+                if (connection != null)
+                {
+                    m = (AzureModule)connection.Module;
+                    m.ModuleLoaded += ModuleLoadedHandler;
+                }
                 try
                 {
 
@@ -297,11 +318,17 @@ namespace WinMLCustomVisionFruit
                     await CameraProcessingAsync(model, reader, evtFrame, connection);
                 } finally
                 {
-                    m.ModuleLoaded -= ModuleLoadedHandler;
+                    if (connection != null)
+                    {
+                        m.ModuleLoaded -= ModuleLoadedHandler;
+                    }
                 }
             } finally
             {
-                connection.Dispose();
+                if (connection != null)
+                {
+                    connection.Dispose();
+                }
                 reader.Dispose();
                 model.Dispose();
             }
