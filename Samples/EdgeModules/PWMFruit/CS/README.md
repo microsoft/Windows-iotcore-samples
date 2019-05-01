@@ -18,12 +18,12 @@ The pwm sample expects to be run on a board that is connected to a pwm motor cir
     * [Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal)
     * [Function App]() with the [EventHubHandler Example] (..\..\EventHubHandler\Readme.md) installed if you wish to exercise the device state mirroring.
 * Hardware:
-    * An Board with an 1809 version of IoT Core installed and PWM driver support.
+    * An x64 Board with Windows 10 IoT Core version 1809 (Build 17763) installed and PWM driver support.
     * A PWM peripheral and support circuit.  What was used for developing this sample is a simple DC motor with fan from an Arduino starter kit.  There are many tutorial examples using an L293D motor controller chip that can be found on the internet. And, there are several other alternatives using different motor control circuits.
 * Required packages to install
     * [Windows 10 SDK, version 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
     * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
-    * [Azure device client for iot edge](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
+    * [Azure IoT Hub Device SDK](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
     * Either Visual Studio, VSCode, or the .NET Core dotnet.exe build environment
 
 ### Build and Publish the app

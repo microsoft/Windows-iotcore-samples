@@ -4,8 +4,8 @@ This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with 
 
 ## App Overview
 
-This app uses an Invensense MPU 9050 9-Degrees of Freedom motion processing unit.  It includes a 6 axis accelerometer very similar to the mpu6050 and a 3 axis magnetic compass.  This is a common and inexpensive part that comes in many Arduino and other Maker starter kits.
-It connects via an SPI interface.  The app monitors the Z-Axis orientation and sends RightSideUp or UpsideDown Device-to-Cloud Telemetry Messages.
+This app uses an Invensense MPU 9050 9-Degrees of Freedom motion processing unit connected through an SPI interface.  It includes a 6 axis accelerometer very similar to the mpu6050 and a 3 axis magnetic compass.  This is a common and inexpensive part that comes in many Arduino and other Maker starter kits.
+The app monitors the Z-Axis orientation and sends RightSideUp or UpsideDown Device-to-Cloud Telemetry Messages.
 
 ## Other things of interest in this sample
 
@@ -19,12 +19,12 @@ It connects via an SPI interface.  The app monitors the Z-Axis orientation and s
     * [Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal)
     * [Function App]() with the [EventHubHandler Example] (..\..\EventHubHandler\Readme.md) installed if you wish to exercise the device state mirroring.
 * Hardware:
-    * An x64 Board with an 1809 version of IoT Core installed.
-    * USB web cam
+    * An x64 Board with Windows 10 IoT Core version 1809 (Build 17763) installed and SPI driver support.
+    * Invensense MPU-9050
 * Required packages to install
     * [Windows 10 SDK, version 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
     * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
-    * [Azure device client for iot edge](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
+    * [Azure IoT Hub Device SDK](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
     * Either Visual Studio, VSCode, or the .NET Core dotnet.exe build environment
 
 ### Build and Publish the app

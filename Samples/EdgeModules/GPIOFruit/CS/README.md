@@ -22,12 +22,12 @@ The EventHubHandler can mirror the 'FruitMessage' to multiple GPIO module instan
     * [Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal)
     * [Function App]() with the [EventHubHandler Example] (..\..\EventHubHandler\Readme.md) installed if you wish to exercise the device state mirroring.
 * Hardware:
-    * An x64 Board with an 1809 version of IoT Core installed.
-    * USB web cam
+    * An x64 Board with Windows 10 IoT Core version 1809 (Build 17763) installed and GPIO driver support.
+    * GPIO connected LEDs
 * Required packages to install
     * [Windows 10 SDK, version 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
     * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
-    * [Azure device client for iot edge](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
+    * [Azure IoT Hub Device SDK](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
     * Either Visual Studio, VSCode, or the .NET Core dotnet.exe build environment
 
 ### Build and Publish the app
