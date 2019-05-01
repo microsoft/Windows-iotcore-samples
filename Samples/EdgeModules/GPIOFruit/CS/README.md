@@ -61,10 +61,9 @@ Unfortunately, this can't be done from a developer desktop since the IoT Core co
     * from a command prompt run 'dockerd.exe --register-service'
     * sc.exe start docker
 * Copy your app to the machine
-* (TODO: Edit the dockerfile in properties\Dockerfile.IoTUAP to point to real repo with Windows IoT Core + .NET Core)
-* Copy properties\Dockerfile.IoTUAP to the machine
+* Choose properties\dockerfile.dotnet or dockerfile.standalone depending on which kind of project you've built and copy that docker file to the machine
 * Do 'docker login' with creds to your container registry.
-* Do 'docker build -f < path to dockerfile.iotuap > -t <registry/repo:tag> .' to build the image.
+* Do 'docker build -f < path to dockerfile> -t <registry/repo:tag> .' to build the image.
 * docker push  <registry/repo:tag>
 
 ### Update deployment.nocreds.json
