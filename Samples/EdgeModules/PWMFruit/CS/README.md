@@ -21,7 +21,7 @@ The pwm sample expects to be run on a board that is connected to a pwm motor cir
     * An Board with an 1809 version of IoT Core installed and PWM driver support.
     * A PWM peripheral and support circuit.  What was used for developing this sample is a simple DC motor with fan from an Arduino starter kit.  There are many tutorial examples using an L293D motor controller chip that can be found on the internet. And, there are several other alternatives using different motor control circuits.
 * Required packages to install
-    * [Windows sdk for 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
+    * [Windows 10 SDK, version 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
     * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
     * [Azure device client for iot edge](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
     * Either Visual Studio, VSCode, or the .NET Core dotnet.exe build environment
@@ -41,13 +41,12 @@ The pwm sample expects to be run on a board that is connected to a pwm motor cir
 
 1. Load the solution
 2. Right click on the cs project and select publish.  
-    __*note:*__ Visual Studio won't allow you to select win-arm from the publish configuration dialog. But, if you edit the properties\FolderProfile.pubxml file directly with VS or another editor and set RuntimeIdentifier to win-arm the publish button will do the right thing after that.
 
 ### Build module container for the app
 
 #### Container build for amd64
 
-Unfortunately, this can't be done from a developer desktop since the iot core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
+Unfortunately, this can't be done from a developer desktop since the IoT Core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
 
 * Obtain an x64 machine with IoT Core installed.
 * ssh into a command prompt on the machine.
@@ -70,7 +69,7 @@ The "preview" creds in the deployment.json are public read-only creds to the sta
 
 ### Deploy the module
 
-There are multiple ways to do this:
+There are multiple ways to deploy the module:
 
 * [Azure web portal](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-portal)
 * [Azure Command Line CLI](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-cli)

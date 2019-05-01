@@ -4,8 +4,8 @@ This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with 
 
 ## App Overview
 
-This app uses an Invensense MPU 6050 6 axis accelerometer.  This is a common and inexpensive part that comes in many Arduino and other Maker starter kits.
-It connects via an I2C interface.  The app monitors the Z-Axis orientation and sends RightSideUp or UpsideDown Device-to-Cloud Telemetry Messages.
+This app uses an Invensense MPU 6050 6 axis accelerometer connected through an I2C interface.  This is a common and inexpensive part that comes in many Arduino and other Maker starter kits.
+The app monitors the Z-Axis orientation and sends RightSideUp or UpsideDown Device-to-Cloud Telemetry Messages.
 
 ## Other things of interest in this sample
 
@@ -20,7 +20,7 @@ It connects via an I2C interface.  The app monitors the Z-Axis orientation and s
     * An x64 Board with an 1809 version of IoT Core installed.
     * USB web cam
 * Required packages to install
-    * [Windows sdk for 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
+    * [Windows 10 SDK, version 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
     * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
     * [Azure device client for iot edge](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
     * Either Visual Studio, VSCode, or the .NET Core dotnet.exe build environment
@@ -40,13 +40,12 @@ It connects via an I2C interface.  The app monitors the Z-Axis orientation and s
 
 1. Load the solution
 2. Right click on the cs project and select publish.  
-    __*note:*__ Visual Studio won't allow you to select win-arm from the publish configuration dialog. But, if you edit the properties\FolderProfile.pubxml file directly with VS or another editor and set RuntimeIdentifier to win-arm the publish button will do the right thing after that.
 
 ### Build module container for the app
 
 #### Container build for amd64
 
-Unfortunately, this can't be done from a developer desktop since the iot core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
+Unfortunately, this can't be done from a developer desktop since the IoT Core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
 
 * Obtain an x64 machine with IoT Core installed.
 * ssh into a command prompt on the machine.

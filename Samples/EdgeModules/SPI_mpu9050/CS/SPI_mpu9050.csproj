@@ -4,7 +4,7 @@
     <!-->
     <RuntimeIdentifier>win-arm</RuntimeIdentifier> 
     -->
-    <Platform>win-arm</Platform>
+    <Platform>win-x64</Platform>
   </PropertyGroup>
   <Import Project="..\..\Common.CS.Props" />
   <ItemGroup>

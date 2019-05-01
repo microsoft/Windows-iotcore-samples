@@ -4,8 +4,8 @@ This is a sample showing an Azure IoT Edge deployment for Windows IoT Core with 
 
 ## App Overview
 
-The GPIO sample expects to be run on a board that is connected to 4 LEDS -- red, yellow, green, and blue.  The pins are configured via the [Module Twin's Desired Properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-module-twins).  the project contains example deployments for [Minnowboard Max](https://minnowboard.org/).
-When the sample receives a device to cloud telemetry message of the type 'FruitMessage' from another module in the system, or a SetFruit direct method call from the azure function , it extracts the recognized object and maps it to one of the colors.  then it sets that color LED to on and turns any previously set led off.
+The GPIO sample expects to be run on a board that is connected to 4 LEDS -- red, yellow, green, and blue.  The pins are configured via the [Module Twin's Desired Properties](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-module-twins).  The project contains example deployments for [Minnowboard Max](https://minnowboard.org/).
+When the sample receives a device to cloud telemetry message of the type 'FruitMessage' from another module in the system, or a SetFruit direct method call from the Azure function, it extracts the recognized object and maps it to one of the colors.  Then, it sets that color LED to on and turns any previously set led off.
 if it receives an OrientationChanged message it inverts the sense of the LEDS and turns off the LED corresponding to the current fruit and turns all the others on.
 The FruitMessage can either come from a local instance of the Fruit WinML sample or from the cloud via reflection using the EventHubHandler Function sample.
 The EventHubHandler can mirror the 'FruitMessage' to multiple GPIO module instances running on multiple boards.  This simulates a remote status display in a separate location.
@@ -25,7 +25,7 @@ The EventHubHandler can mirror the 'FruitMessage' to multiple GPIO module instan
     * An x64 Board with an 1809 version of IoT Core installed.
     * USB web cam
 * Required packages to install
-    * [Windows sdk for 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
+    * [Windows 10 SDK, version 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
     * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
     * [Azure device client for iot edge](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
     * Either Visual Studio, VSCode, or the .NET Core dotnet.exe build environment
@@ -45,13 +45,12 @@ The EventHubHandler can mirror the 'FruitMessage' to multiple GPIO module instan
 
 1. Load the solution
 2. Right click on the cs project and select publish.  
-    __*note:*__ Visual Studio won't allow you to select win-arm from the publish configuration dialog. But, if you edit the properties\FolderProfile.pubxml file directly with VS or another editor and set RuntimeIdentifier to win-arm the publish button will do the right thing after that.
 
 ### Build module container for the app
 
 #### Container build for amd64
 
-Unfortunately, this can't be done from a developer desktop since the iot core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
+Unfortunately, this can't be done from a developer desktop since the IoT Core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
 
 * Obtain an x64 machine with IoT Core installed.
 * ssh into a command prompt on the machine.
@@ -70,11 +69,11 @@ Unfortunately, this can't be done from a developer desktop since the iot core co
 
 ### Update deployment.nocreds.json
 
-The "preview" creds in the deployment.json are public read-only creds to the standard edge runtime modules.  But, for the sample you must update the creds in the deployment.json file to provide access to your module container repository where you've stored the module you just built. And, you must update the image url in the module section with the correct url for your module image.
+The "preview" creds in the deployment.json are public read-only creds to the standard edge runtime modules.  However, for the sample you must update the creds in the deployment.json file to provide access to your module container repository where you've stored the module you just built. Also, you must update the image url in the module section with the correct url for your module image.
 
 ### Deploy the module
 
-There are multiple ways to do this:
+There are multiple ways to deploy the module:
 
 * [Azure web portal](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-portal)
 * [Azure Command Line CLI](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-cli)

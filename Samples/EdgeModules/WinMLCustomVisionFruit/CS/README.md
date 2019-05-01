@@ -13,7 +13,7 @@ You can change the model by providing a different model file and updating the lo
 The code assumes the model input and output features are in the form of a standard Azure Customer Vision Server *CoreML* format model converted to .onnx with the [standard Python ONNX image conversion tools](https://github.com/onnx/onnxmltools).  
 If you do change models you may also want to change the property names to match the new label type in the updateobject methods in the AzureConnection class in AzureHelper.cs
 
-The sample currently uses the CPU to do the WinML because that's available on all iot core boards.  To choose GPU evaluation you can pass a -gpu command line switch in the Dockerfile to change the LearningModelDeviceKind in the CreateModelAsync function in model.cs
+The sample currently uses the CPU to do the WinML because that's available on all IoT Core boards.  To choose GPU evaluation you can pass a -gpu command line switch in the Dockerfile to change the LearningModelDeviceKind in the CreateModelAsync function in model.cs
 However, as of this writing -- (spring 2019), there are no supported GPU drivers for any IoT Core capable devices that have been upgraded to a sufficiently recent WDDM driver version(>=WDDM 2.4) to work in process isolation containers and are also provided in a universal driver package which is necessary to add a driver to an IoT Core image.  We expect this to change soon and plan to update this readme when something is available.
 For IoT Enterprise any of the normal GPUs supported by general WinML are expected to work if they've been upgraded to the latest display drivers >= WDDM v. 2.5.
 
@@ -31,7 +31,7 @@ For IoT Enterprise any of the normal GPUs supported by general WinML are expecte
     * An x64 Board with an 1809 version of IoT Core installed.
     * USB web cam
 * Required packages to install
-    * [Windows sdk for 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
+    * [Windows 10 SDK, version 1809](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive)
     * [.NET Core 2.2](https://dotnet.microsoft.com/download/dotnet-core/2.2)
     * [Azure device client for iot edge](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-sdks)
     * Either Visual Studio, VSCode, or the .NET Core dotnet.exe build environment
@@ -51,13 +51,12 @@ For IoT Enterprise any of the normal GPUs supported by general WinML are expecte
 
 1. Load the solution
 2. Right click on the cs project and select publish.  
-    __*note:*__ Visual Studio won't allow you to select win-arm from the publish configuration dialog. But, if you edit the properties\FolderProfile.pubxml file directly with VS or another editor and set RuntimeIdentifier to win-arm the publish button will do the right thing after that.
 
 ### Build module container for the app
 
 #### Container build for amd64
 
-Unfortunately, this can't be done from a developer desktop since the iot core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
+Unfortunately, this can't be done from a developer desktop since the IoT Core container cannot run on desktop.  Instead it must be done on real hardware.  After you have published your app do the following steps:
 
 * Obtain an x64 machine with IoT Core installed.
 * ssh into a command prompt on the machine.

@@ -44,7 +44,7 @@ Refer to [Quickstart: Create a private container registry using the Azure portal
 
 When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
 
-Be sure to log into the container respository from your device. If you are using the azure command line tools, you can use "az acr login" as described in the article above. Alternately, you can do it directly with the docker command line:
+Be sure to log into the container respository from your device. If you are using the Azure command line tools, you can use "az acr login" as described in the article above. Alternately, you can do it directly with the docker command line:
 
 ```
 PS  D:\Windows-iotcore-samples\Samples\EdgeModules\SerialIOPorts\CS> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}
@@ -130,7 +130,7 @@ SerialIOPorts 1.0.0.0
   -r, --receive              receive and display packets
   -t, --transmit             transmit packets (combine with -r for loopback)
   -c, --config               display device configuration
-  -e, --edge                 transmit through azure edge
+  -e, --edge                 transmit through Azure edge
 Available devices:
 COM1
 COM3

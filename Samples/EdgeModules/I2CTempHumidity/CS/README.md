@@ -131,7 +131,7 @@ Refer to [Quickstart: Create a private container registry using the Azure portal
 
 When following the sample, replace any "{ACR_*}" values with the correct values for your container repository.
 
-Be sure to log into the container respository from your target device. If you are using the azure command line tools, you can use "az acr login" as described in the article above. Alternately, you can do it directly with the docker command line:
+Be sure to log into the container respository from your target device. If you are using the Azure command line tools, you can use "az acr login" as described in the article above. Alternately, you can do it directly with the docker command line:
 
 ```
 [192.168.1.120]: PS C:\data\modules\i2ctemp> docker login {ACR_NAME}.azurecr.io -u {ACR_USER} -p {ACR_PASSWORD}

@@ -11,8 +11,8 @@ description: Learn how to leverage sample modules to demonstrate the various fea
 # Azure IoT Edge Modules on Windows IoT
 
 This directory contains sample modules demonstrating various features of Azure IoT Edge on Windows.
-Each of these samples can be treated as standalone samples that show how to use each Windows feature from an edge module.
-Additionally, several of them are designed to work together to demonstrate coordinating a set of modules in cooperation and distributed across multiple edge devices.  See [MultiModule Architecture](./readme.multimodule.md) for an overview of how the multiple module coordination is designed and installed.
+Each of these samples can be treated as standalone samples that show how to use each Windows feature from an Azure IoT Edge module.
+Additionally, several of them are designed to work together to demonstrate coordinating a set of modules in cooperation and distributed across multiple IoT Edge devices.  See [MultiModule Architecture](./readme.multimodule.md) for an overview of how the multiple module coordination is designed and installed.
 
 ## Samples
 
@@ -29,4 +29,8 @@ Additionally, several of them are designed to work together to demonstrate coord
 
 ### Building the samples
 
-All the projects reference a common MSBuild properties file in the root of the project set called [Common.CS.props](./Common.CS.props) .  this contains defaults for the windows sdk root path and the windows sdk version.  if you have different values you can either modify your copy of the props or override them from environment variables with the same names as the prop variables -- WindowsSdkRoot and WindowsSdkVersion
+All the projects reference a common MSBuild properties file in the root of the project set called [Common.CS.props](./Common.CS.props) .  In addition to other things, this file contains defaults for the windows sdk root path and the windows sdk version.  If you have different values you can either modify your copy of the props file, or override them from environment variables with the same names as the prop variables -- WindowsSdkRoot and WindowsSdkVersion
+
+### Running the samples
+
+These samples can be run on Window IoT Core or Windows IoT Enterprise.  If you use Enterprise then you will need to be sure the optional Windows container feature is enabled.  If you use IoT Core then you need a .ffu image that contains the Windows Container Optional Feature.
