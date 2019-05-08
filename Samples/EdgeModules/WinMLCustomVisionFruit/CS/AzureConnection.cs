@@ -98,8 +98,7 @@ namespace WinMLCustomVisionFruit
                         {
                             try { 
                                 Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit0 kvp = {0}", kvp.ToString());
-                                var m = new Message(msgbody);
-                                await Module.SendMessageAsync(Keys.OutputFruit0, m);
+                                await Module.SendMessageAsync(Keys.OutputFruit0, msgbody);
                             }
                             catch (Exception e)
                             {
@@ -112,8 +111,7 @@ namespace WinMLCustomVisionFruit
                         try
                         {
                             Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit1 kvp = {0}", kvp.ToString());
-                            var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputFruit1, m);
+                            await Module.SendMessageAsync(Keys.OutputFruit1, msgbody);
                         }
                         catch (Exception e)
                         {
@@ -126,8 +124,7 @@ namespace WinMLCustomVisionFruit
                         try
                         {
                             Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to OutputFruit2 kvp = {0}", kvp.ToString());
-                            var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputFruit2, m);
+                            await Module.SendMessageAsync(Keys.OutputFruit2, msgbody);
                         }
                         catch (Exception e)
                         {
@@ -140,8 +137,7 @@ namespace WinMLCustomVisionFruit
                             try
                             {
                                 Log.WriteLineVerbose("\t\t\t\t\t\tWinML UpdateObjectAsync to upstream kvp = {0}", kvp.ToString());
-                                var m = new Message(msgbody);
-                                await Module.SendMessageAsync(Keys.OutputUpstream, m);
+                                await Module.SendMessageAsync(Keys.OutputUpstream, msgbody);
                             }
                             catch (Exception e)
                             {
@@ -162,16 +158,12 @@ namespace WinMLCustomVisionFruit
             if (fruit != null && fruit.Length > 1)
             {
                 Log.WriteLine("NotifyNewModuleOfCurrentStateAsync {0}", Encoding.UTF8.GetString(fruit));
-                Message m0 = new Message(fruit);
-                Message m1 = new Message(fruit);
-                Message m2 = new Message(fruit);
-                Message mu = new Message(fruit);
                 await Task.WhenAll(
                     Task.Run(async () =>
                     {
                         try
                         {
-                            await Module.SendMessageAsync(Keys.OutputFruit0, m0);
+                            await Module.SendMessageAsync(Keys.OutputFruit0, fruit);
                         }
                         catch (Exception e)
                         {
@@ -183,7 +175,7 @@ namespace WinMLCustomVisionFruit
                     {
                         try
                         {
-                            await Module.SendMessageAsync(Keys.OutputFruit1, m1);
+                            await Module.SendMessageAsync(Keys.OutputFruit1, fruit);
                         }
                         catch (Exception e)
                         {
@@ -195,7 +187,7 @@ namespace WinMLCustomVisionFruit
                     {
                         try
                         {
-                            await Module.SendMessageAsync(Keys.OutputFruit2, m2);
+                            await Module.SendMessageAsync(Keys.OutputFruit2, fruit);
                         }
                         catch (Exception e)
                         {
@@ -207,7 +199,7 @@ namespace WinMLCustomVisionFruit
                     {
                         try
                         {
-                            await Module.SendMessageAsync(Keys.OutputUpstream, mu);
+                            await Module.SendMessageAsync(Keys.OutputUpstream, fruit);
                         }
                         catch (Exception e)
                         {

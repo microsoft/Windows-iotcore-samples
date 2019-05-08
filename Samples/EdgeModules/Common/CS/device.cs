@@ -53,6 +53,7 @@ namespace EdgeModuleSamples.Common.Device
 
     public abstract class MpuDevice : SPBDevice
     {
+        public readonly static int DEFAULT_MPU_DEVICE_RETRY_COUNT = 10;
         // NOTE: this sample is only using the Z-axis accelerometer for orientation detection
         // if you wanted to do something more complex see the 6050/9050 datasheet for additional register definitions
         protected static readonly byte DefaultMpuAddress = 0x68;
@@ -164,57 +165,75 @@ namespace EdgeModuleSamples.Common.Device
                 // notify initial state without worrying about bounce
                 CurrentOrientation = OrientationFromAccelerometer(CurrentAccelerometerZ);
                 Log.WriteLine("set initial orientation to {0}", CurrentOrientation);
+                int retry_count = 0;
                 while (!token.IsCancellationRequested) {
-                    var z = CurrentAccelerometerZ;
-                    var newOrientation = OrientationFromAccelerometer(z);
-                    var cur = CurrentOrientation;
-                    Log.WriteLineVerbose("cur = {0} Z = {1}, new = {2} c = {3}", cur, z, newOrientation, changing);
-                    DateTime currentFetch = DateTime.Now;
-                    TimeSpan delta = currentFetch - changeTime;
-                    if (newOrientation != cur)
+                    try
                     {
-                        if (!changing)
+                        var z = CurrentAccelerometerZ;
+                        var newOrientation = OrientationFromAccelerometer(z);
+                        var cur = CurrentOrientation;
+                        Log.WriteLineVerbose("cur = {0} Z = {1}, new = {2} c = {3}", cur, z, newOrientation, changing);
+                        DateTime currentFetch = DateTime.Now;
+                        TimeSpan delta = currentFetch - changeTime;
+                        if (newOrientation != cur)
                         {
-                            Log.WriteLineVerbose("Changing");
-                            changing = true;
-                            changeTime = currentFetch;
-                        }
-                        else
-                        {
-                            if (delta > DebounceInterval)
+                            if (!changing)
                             {
-                                Log.WriteLine("Completing Change from {0} to {1} after {2}", cur, newOrientation, delta.TotalMilliseconds);
-                                CurrentOrientation = newOrientation;
-                                changing = false;
+                                Log.WriteLineVerbose("Changing");
+                                changing = true;
                                 changeTime = currentFetch;
                             }
                             else
                             {
-                                Log.WriteLineVerbose("Settling for {0}", delta.TotalMilliseconds);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (changing)
-                        {
-                            if (delta > DebounceInterval)
-                            {
-                                Log.WriteLineVerbose("resetting bounce after {0}");
-                                changing = false;
-                                changeTime = currentFetch;
-                            }
-                            else
-                            {
-                                Log.WriteLineVerbose("settling for {0}", delta.TotalMilliseconds);
+                                if (delta > DebounceInterval)
+                                {
+                                    Log.WriteLine("Completing Change from {0} to {1} after {2}", cur, newOrientation, delta.TotalMilliseconds);
+                                    CurrentOrientation = newOrientation;
+                                    changing = false;
+                                    changeTime = currentFetch;
+                                }
+                                else
+                                {
+                                    Log.WriteLineVerbose("Settling for {0}", delta.TotalMilliseconds);
+                                }
                             }
                         }
                         else
                         {
-                            Log.WriteLineVerbose("no change for {0}", delta.TotalMilliseconds);
+                            if (changing)
+                            {
+                                if (delta > DebounceInterval)
+                                {
+                                    Log.WriteLineVerbose("resetting bounce after {0}");
+                                    changing = false;
+                                    changeTime = currentFetch;
+                                }
+                                else
+                                {
+                                    Log.WriteLineVerbose("settling for {0}", delta.TotalMilliseconds);
+                                }
+                            }
+                            else
+                            {
+                                Log.WriteLineVerbose("no change for {0}", delta.TotalMilliseconds);
+                            }
                         }
+                        retry_count = 0;
+                        Thread.Sleep((int)(DebounceInterval.TotalMilliseconds / 4));
+                    } catch (System.IO.FileNotFoundException e)
+                    {
+                        Log.WriteLineVerbose("MPU I/O exception {0}", e.ToString());
+                        if (++retry_count > DEFAULT_MPU_DEVICE_RETRY_COUNT)
+                        {
+                            Log.WriteLineError("MPU I/O exception retry count exceeded. last exception {0}", e.ToString());
+                            Environment.Exit(3);
+                        }
+                        else
+                        {
+                            Log.WriteLineVerbose("retrying");
+                        }
+
                     }
-                Thread.Sleep((int)(DebounceInterval.TotalMilliseconds / 4));
                 }
                 Monitoring = null;
             });

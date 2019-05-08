@@ -140,14 +140,12 @@ namespace I2CMPU6050
             if (obody != null && obody.Length > 1)
             {
                 Log.WriteLine("NotifyNewModuleOfCurrentStateAsync {0}", Encoding.UTF8.GetString(obody));
-                Message m = new Message(obody);
-                Message mu = new Message(obody);
                 await Task.WhenAll(
                     Task.Run(async () =>
                     {
                         try
                         {
-                            await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                            await Module.SendMessageAsync(Keys.OutputOrientation, obody);
                         }
                         catch (Exception e)
                         {
@@ -159,7 +157,7 @@ namespace I2CMPU6050
                     {
                         try
                         {
-                            await Module.SendMessageAsync(Keys.OutputUpstream, mu);
+                            await Module.SendMessageAsync(Keys.OutputUpstream, obody);
                         }
                         catch (Exception e)
                         {
@@ -186,31 +184,15 @@ namespace I2CMPU6050
                 }
                 await Task.WhenAll(
                     Task.Run(async () =>
-                    {
-                        try
                         {
-                            var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                            await Module.SendMessageAsync(Keys.OutputOrientation, msgbody);
                         }
-                        catch (Exception e)
-                        {
-                            Log.WriteLineError("failed to send output orientation local {0}", e.ToString());
-                            Environment.Exit(2);
-                        }
-
-                    }),
+                    ),
                     Task.Run(async () =>
-                    {
-                        try { 
-                            var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputUpstream, m);
-                        }
-                        catch (Exception e)
                         {
-                            Log.WriteLineError("failed to send output orientation upstream {0}", e.ToString());
-                            Environment.Exit(2);
+                            await Module.SendMessageAsync(Keys.OutputUpstream, msgbody);
                         }
-                    })
+                    )
                 );
                 Log.WriteLine("\t\t\t\t\t\tI2C UpdateObjectAsync orientation sent local and upstream");
 

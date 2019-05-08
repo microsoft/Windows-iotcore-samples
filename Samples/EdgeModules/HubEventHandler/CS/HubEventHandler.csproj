@@ -5,11 +5,11 @@
   <Import Project="..\..\Common.CS.Props" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Devices" Version="1.17.2" />
-    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.20.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EdgeHub" Version="1.0.5" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventHubs" Version="3.0.1" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
+    <PackageReference Include="Microsoft.Azure.Devices" Version="1.17.3" />
+    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.20.1" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EdgeHub" Version="1.0.7" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventHubs" Version="3.0.5" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.27" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\CS\Common.csproj" />

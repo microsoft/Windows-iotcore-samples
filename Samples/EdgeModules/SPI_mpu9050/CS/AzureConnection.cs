@@ -150,21 +150,19 @@ namespace SPIMPU9050
 
         public async Task NotifyNewModuleOfCurrentStateAsync()
         {
-                if (_lastOBody.Length > 1)
-                {
-                    Message m = null;
-                    Message mu = null;
-                    lock (_lastOBody)
-                    {
-                        m = new Message(_lastOBody);
-                        mu = new Message(_lastOBody);
-                    }
+            byte[] obody = null;
+            lock (_lastOBody)
+            {
+                obody = _lastOBody;
+            }
+            if (obody != null &&_lastOBody.Length > 1)
+            {
                 await Task.WhenAll(
                     Task.Run(async () =>
                     {
                         try
                         {
-                            await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                            await Module.SendMessageAsync(Keys.OutputOrientation, obody);
                         } catch (Exception e)
                         {
                             Log.WriteLineError("SPI Exception sending current state to local0 {0}", e.ToString());
@@ -173,7 +171,7 @@ namespace SPIMPU9050
                     Task.Run(async () =>
                     {
                         try { 
-                            await Module.SendMessageAsync(Keys.OutputUpstream, mu);
+                            await Module.SendMessageAsync(Keys.OutputUpstream, obody);
                         } catch (Exception e)
                         {
                             Log.WriteLineError("SPI Exception sending current state upstream {0}", e.ToString());
@@ -200,8 +198,7 @@ namespace SPIMPU9050
                     Task.Run(async () =>
                     {
                         try { 
-                            var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputOrientation, m);
+                            await Module.SendMessageAsync(Keys.OutputOrientation, msgbody);
                         } catch (Exception e)
                         {
                             Log.WriteLineError("SPI Exception updating orientation local {0}", e.ToString());
@@ -211,7 +208,7 @@ namespace SPIMPU9050
                     {
                         try { 
                             var m = new Message(msgbody);
-                            await Module.SendMessageAsync(Keys.OutputUpstream, m);
+                            await Module.SendMessageAsync(Keys.OutputUpstream, msgbody);
                         } catch (Exception e)
                         {
                             Log.WriteLineError("SPI Exception updating orientation upstream {0}", e.ToString());

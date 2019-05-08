@@ -65,6 +65,7 @@ namespace I2CMPU6050
                         catch (Exception e)
                         {
                             Log.WriteLine("I2c exception {0}", e.ToString());
+                            Environment.Exit(2);
                         }
                     }
                 )

@@ -13,7 +13,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -97,7 +97,7 @@ namespace EdgeModuleSamples.Common.Azure
 
             if (_reportedDeviceProperties.Contains(u.Key))
             {
-                Log.WriteLine("\t\t\t\t\tConnectionBase _reportedDeviceProperties contains key");
+                Log.WriteLine($"\t\t\t\t\tConnectionBase _reportedDeviceProperties contains key {u.Key}");
                 var old = _reportedDeviceProperties;
                 _reportedDeviceProperties = new TwinCollection();
                 foreach (KeyValuePair<string, object> p in old)
@@ -112,7 +112,7 @@ namespace EdgeModuleSamples.Common.Azure
                 }
             } else
             {
-                Log.WriteLine("\t\t\t\t\tConnectionBase _reportedDeviceProperties does not contain key");
+                Log.WriteLine($"\t\t\t\t\tConnectionBase _reportedDeviceProperties does not contain key {u.Key}");
                 _reportedDeviceProperties[u.Key] = u.Value;
             }
             TwinCollection delta = new TwinCollection();
@@ -147,14 +147,18 @@ namespace EdgeModuleSamples.Common.Azure
         public async Task SendMessageDataAsync<T>(string route, T msg) where T : AzureMessageBase
         {
             byte[] msgbody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(msg));
-            var m = new Message(msgbody);
-            await SendMessageAsync(route, m);
+            await SendMessageAsync(route, msgbody);
         }
 
-        public async Task SendMessageAsync(string route, Message msg)
+        public async Task SendMessageAsync(string route, byte[] msg)
         {
-            msg.Properties[Keys.MessageCreationUTC] = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc).ToString("o");
-            await _moduleClient.SendEventAsync(route, msg);
+            var original_UTC = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc).ToString("o");
+            await AzureConnectionBase.RetryOperationAsync($"SendMessageAsync {route} {Encoding.UTF8.GetString(msg)}", async () =>
+            {
+                Message m = new Message(msg);  // Azure device client can't re-use messages
+                m.Properties[Keys.MessageCreationUTC] = original_UTC;
+                await _moduleClient.SendEventAsync(route, m);
+            });
         }
 
         public AzureModuleBase()
@@ -206,48 +210,63 @@ namespace EdgeModuleSamples.Common.Azure
 
             // set default message handler to log unexpected requests and fail them immediately without
             // blocking queues waiting for timeouts
-            await _moduleClient.SetMessageHandlerAsync(async (Message msg, Object ctx) => {
-                AzureModuleBase m = (AzureModuleBase)ctx;
-                Log.WriteLine("Unexpected Input Message to {0} in module {1}", msg.InputName, m.ModuleId);
-                Log.WriteLine("    {0}", Encoding.UTF8.GetString(msg.GetBytes()));
-                await Task.CompletedTask;
-                return MessageResponse.Abandoned;
-            }, this);
+            await AzureConnectionBase.RetryOperationAsync("Initializing default message handler", async () =>
+            {
+                await _moduleClient.SetMessageHandlerAsync(async (Message msg, Object ctx) =>
+                {
+                    AzureModuleBase m = (AzureModuleBase)ctx;
+                    Log.WriteLine("Unexpected Input Message to {0} in module {1}", msg.InputName, m.ModuleId);
+                    Log.WriteLine("    {0}", Encoding.UTF8.GetString(msg.GetBytes()));
+                    await Task.CompletedTask;
+                    return MessageResponse.Abandoned;
+                }, this);
+            });
             // set default method handler to log unexpected requests and fail them immediately without
             // blocking queues waiting for timeouts
-            await _moduleClient.SetMethodDefaultHandlerAsync(async (MethodRequest req, Object ctx) => {
-                AzureModuleBase m = (AzureModuleBase)ctx;
-                Log.WriteLine("Unexpected Method Request in module {0}", m.ModuleId);
-                Log.WriteLine("    {0}", req.ToString());
-                await Task.CompletedTask;
-                string result = "{\"result\":\"Unrecognized direct method: " + req.Name + "\"}";
-                return new MethodResponse(Encoding.UTF8.GetBytes(result), 404);
-            }, this);
-            _moduleClient.SetConnectionStatusChangesHandler(async (ConnectionStatus status, ConnectionStatusChangeReason reason) => {
-                try
-                {
-                    await this.OnConnectionChanged(status, reason);
-                }
-                catch (Exception e)
-                {
-                    Log.WriteLine("AzureModuleBase ConnectionStatusChangesHandler lambda exception {0}", e.ToString());
-                    Environment.Exit(1); // failfast
-                }
+            await AzureConnectionBase.RetryOperationAsync("Initializing default method handler", async () =>
+            { 
+                await _moduleClient.SetMethodDefaultHandlerAsync(async (MethodRequest req, Object ctx) => {
+                    AzureModuleBase m = (AzureModuleBase)ctx;
+                    Log.WriteLine("Unexpected Method Request in module {0}", m.ModuleId);
+                    Log.WriteLine("    {0}", req.ToString());
+                    await Task.CompletedTask;
+                    string result = "{\"result\":\"Unrecognized direct method: " + req.Name + "\"}";
+                    return new MethodResponse(Encoding.UTF8.GetBytes(result), 404);
+                }, this);
             });
-            //await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredModulePropertyChanged, this);
-            await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(async (TwinCollection newDesiredProperties, object ctx) => 
+            await AzureConnectionBase.RetryOperationAsync("Set ConnectionStatusChangesHandler", async () =>
             {
-                try
+                _moduleClient.SetConnectionStatusChangesHandler(async (ConnectionStatus status, ConnectionStatusChangeReason reason) =>
                 {
-                    var module = (AzureModuleBase)ctx;
-                    await module.OnDesiredModulePropertyChanged(newDesiredProperties);
-                }
-                catch (Exception e)
+                    try
+                    {
+                        await this.OnConnectionChanged(status, reason);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("AzureModuleBase ConnectionStatusChangesHandler lambda exception {0}", e.ToString());
+                        Environment.Exit(1); // failfast
+                    }
+                });
+                await Task.CompletedTask;
+                return;
+            });
+            await AzureConnectionBase.RetryOperationAsync("Initializing SetDesiredPropertyUpdateCallback", async () =>
+            {
+                await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(async (TwinCollection newDesiredProperties, object ctx) =>
                 {
-                    Log.WriteLine("AzureModuleBase DesiredPropertyUpdateCallback lambda exception {0}", e.ToString());
-                    Environment.Exit(1); // failfast
-                }
-            }, this);
+                    try
+                    {
+                        var module = (AzureModuleBase)ctx;
+                        await module.OnDesiredModulePropertyChanged(newDesiredProperties);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("AzureModuleBase DesiredPropertyUpdateCallback lambda exception {0}", e.ToString());
+                        Environment.Exit(1); // failfast
+                    }
+                }, this);
+            });
         }
         protected async Task AzureModuleInitEndAsync()
         {
@@ -263,6 +282,7 @@ namespace EdgeModuleSamples.Common.Azure
 
     abstract public class AzureConnectionBase : IDisposable
     {
+        public readonly static int MAXIMUM_AZURE_CONNECTION_NETWORK_RETRIES = 2;
         private ConcurrentQueue<KeyValuePair<string, object>> _updateq { get; set; }
 
         public virtual AzureModuleBase Module { get; protected set; }
@@ -292,12 +312,40 @@ namespace EdgeModuleSamples.Common.Azure
             }
         }
 
+        public static async Task RetryOperationAsync(string description, Func<Task> a)
+        {
+            int retry = 0;
+            for (; ; )
+            {
+                try
+                {
+                    await a.Invoke();
+                    return;
+                }
+                catch (IotHubCommunicationException e)
+                {
+                    if (++retry > MAXIMUM_AZURE_CONNECTION_NETWORK_RETRIES)
+                    {
+                        Log.WriteLineError("IoTHubCommunicationException during Azure Connection Operation \"{0}\". FailFast because retry count exceeded {1}", description, e.ToString());
+                        Environment.Exit(2);
+                    } else
+                    {
+                        Log.WriteLine("IoTHubCommunicationException during Azure Connection Operation \"{0}\". retrying {1}", description, e.ToString());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.WriteLineError("Azure Connection Operation failed {0}", e.ToString());
+                    Environment.Exit(2);
+                }
+            }
+        }
 
-        // private async Task<MessageResponse> OnInputMessageReceived(Message msg, object ctx)
-        // {
-        // 
-        // }
-        protected virtual async Task AzureConnectionInitAsync<M>() where M : AzureModuleBase, new()
+    // private async Task<MessageResponse> OnInputMessageReceived(Message msg, object ctx)
+    // {
+    // 
+    // }
+    protected virtual async Task AzureConnectionInitAsync<M>() where M : AzureModuleBase, new()
         {
             await Task.Run(async () =>
                 {
