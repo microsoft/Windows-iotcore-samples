@@ -170,7 +170,7 @@ namespace GPIOFruit
                 Log.WriteLine("desired properties {0} different then current properties, notifying...", _desiredProperties.ToString());
                 ConfigurationChanged?.Invoke(this, dp.Configuration);
                 Log.WriteLine("local notification complete. updating reported properties to cloud twin");
-                await UpdateReportedPropertiesAsync(new KeyValuePair<string, Object>(Keys.Configuration, JsonConvert.SerializeObject(_desiredProperties.Configuration))).ConfigureAwait(false);
+                await UpdateReportedPropertiesAsync(new KeyValuePair<string, Object>(Keys.Configuration, JsonConvert.SerializeObject(_desiredProperties.Configuration)));
 
             }
             if (newDesiredProperties.Contains(Keys.FruitTest))

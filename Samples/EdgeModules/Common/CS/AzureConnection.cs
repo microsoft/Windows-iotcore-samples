@@ -118,7 +118,7 @@ namespace EdgeModuleSamples.Common.Azure
             TwinCollection delta = new TwinCollection();
             delta[u.Key] = u.Value;
             Log.WriteLine("updating twin reported properties with key = {0}, vt = {1}:{2}", u.Key, u.Value.GetType(), u.Value.ToString());
-            await _moduleClient.UpdateReportedPropertiesAsync(delta).ConfigureAwait(false);
+            await _moduleClient.UpdateReportedPropertiesAsync(delta);
 
         }
         public async Task NotifyModuleLoadAsync(string route)
@@ -326,11 +326,14 @@ namespace EdgeModuleSamples.Common.Azure
                 {
                     if (++retry > MAXIMUM_AZURE_CONNECTION_NETWORK_RETRIES)
                     {
-                        Log.WriteLineError("IoTHubCommunicationException during Azure Connection Operation \"{0}\". FailFast because retry count exceeded {1}", description, e.ToString());
-                        Environment.Exit(2);
-                    } else
+                        Log.WriteLineError("IoTHubCommunicationException during Azure Connection Operation \"{0}\".", description);
+                        Log.WriteLineError("\t\tretry count Exceeded. attempt abandoned \"{0}\". ", e.ToString());
+                        //Environment.Exit(2);
+                    }
+                    else
                     {
-                        Log.WriteLine("IoTHubCommunicationException during Azure Connection Operation \"{0}\". retrying {1}", description, e.ToString());
+                        Log.WriteLine("IoTHubCommunicationException during Azure Connection Operation \"{0}\". retrying", description);
+                        Log.WriteLineVerbose("\t\tIoTHubCommunicationException {0}", e.ToString());
                     }
                 }
                 catch (Exception e)
