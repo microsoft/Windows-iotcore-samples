@@ -80,7 +80,7 @@ namespace EdgeModuleSamples.Common.Device
         public delegate void OrientationEventHandler(MpuDevice device, OrientationEventArgs args);
         public event OrientationEventHandler OrientationChanged;
 
-        private Object _orientationLock = new object();
+        private object _orientationLock = new object();
         private Orientation? _orientation = Orientation.RightSideUp;
         public Orientation CurrentOrientation
         {

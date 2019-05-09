@@ -54,7 +54,7 @@ namespace SPIMPU9050
             });
             return MessageResponse.Completed;
         }
-        static async Task<MessageResponse> ModuleLoadedMessageHandler(Message msg, Object ctx)
+        static async Task<MessageResponse> ModuleLoadedMessageHandler(Message msg, object ctx)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace SPIMPU9050
             Environment.Exit(3);
             return MessageResponse.Abandoned;
         }
-        private async Task<MethodResponse> SetModuleLoaded(MethodRequest req, Object context)
+        private async Task<MethodResponse> SetModuleLoaded(MethodRequest req, object context)
         {
             try
             {

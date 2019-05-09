@@ -212,7 +212,7 @@ namespace EdgeModuleSamples.Common.Azure
             // blocking queues waiting for timeouts
             await AzureConnectionBase.RetryOperationAsync("Initializing default message handler", async () =>
             {
-                await _moduleClient.SetMessageHandlerAsync(async (Message msg, Object ctx) =>
+                await _moduleClient.SetMessageHandlerAsync(async (Message msg, object ctx) =>
                 {
                     AzureModuleBase m = (AzureModuleBase)ctx;
                     Log.WriteLine("Unexpected Input Message to {0} in module {1}", msg.InputName, m.ModuleId);
@@ -225,7 +225,7 @@ namespace EdgeModuleSamples.Common.Azure
             // blocking queues waiting for timeouts
             await AzureConnectionBase.RetryOperationAsync("Initializing default method handler", async () =>
             { 
-                await _moduleClient.SetMethodDefaultHandlerAsync(async (MethodRequest req, Object ctx) => {
+                await _moduleClient.SetMethodDefaultHandlerAsync(async (MethodRequest req, object ctx) => {
                     AzureModuleBase m = (AzureModuleBase)ctx;
                     Log.WriteLine("Unexpected Method Request in module {0}", m.ModuleId);
                     Log.WriteLine("    {0}", req.ToString());

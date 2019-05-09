@@ -54,7 +54,7 @@ namespace I2CMPU6050
             });
             return MessageResponse.Completed;
         }
-        static async Task<MessageResponse> ModuleLoadedMessageHandler(Message msg, Object ctx)
+        static async Task<MessageResponse> ModuleLoadedMessageHandler(Message msg, object ctx)
         {
             AzureModule module = (AzureModule)ctx;
             var msgBytes = msg.GetBytes();
@@ -64,7 +64,7 @@ namespace I2CMPU6050
             await module.ProcessModuleLoadedMessage(loadMsg);
             return MessageResponse.Completed;
         }
-        private async Task<MethodResponse> SetModuleLoaded(MethodRequest req, Object context)
+        private async Task<MethodResponse> SetModuleLoaded(MethodRequest req, object context)
         {
             string data = Encoding.UTF8.GetString(req.Data);
             Log.WriteLine("Direct Method SetModuleLoaded {0}", data);

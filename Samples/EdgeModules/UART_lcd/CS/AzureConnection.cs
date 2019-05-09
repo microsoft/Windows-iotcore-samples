@@ -69,7 +69,7 @@ namespace UARTLCD
             }
             await Task.CompletedTask;
         }
-        private async Task<MethodResponse> SetFruit(MethodRequest req, Object context)
+        private async Task<MethodResponse> SetFruit(MethodRequest req, object context)
         {
             string data = Encoding.UTF8.GetString(req.Data);
             Log.WriteLine("Direct Method SetFruit {0}", data);
@@ -116,7 +116,7 @@ namespace UARTLCD
             await Task.CompletedTask;
             return;
         }
-        private async Task<MethodResponse> SetOrientation(MethodRequest req, Object context)
+        private async Task<MethodResponse> SetOrientation(MethodRequest req, object context)
         {
             string data = Encoding.UTF8.GetString(req.Data);
             Log.WriteLine("Direct Method SetOrientation {0}", data);
