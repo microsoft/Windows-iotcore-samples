@@ -1,20 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <TreatSpecificWarningsAsErrors />
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\Common\CS\Common\Log.cs" Link="Log.cs" />
-  </ItemGroup>
+  <Import Project="..\..\Common.CS.Props" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.18.0" />
+    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.20.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.1" />
@@ -26,8 +18,13 @@
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\Common\CS\Log.cs" Link="Log.cs" />
+    <Compile Include="..\..\Common\CS\AppOptions.cs" Link="CommonAppOptions.cs" />
+  </ItemGroup>
+
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
-    <Copy SourceFiles="Dockerfile.$(RuntimeIdentifier)" DestinationFiles="$(PublishDir)\Dockerfile" />
+    <Copy SourceFiles="Dockerfile" DestinationFiles="$(PublishDir)\Dockerfile" />
   </Target>
 
 </Project>

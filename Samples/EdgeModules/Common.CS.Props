@@ -1,0 +1,28 @@
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RuntimeFrameworkVersion>2.2.0</RuntimeFrameworkVersion> <!-- modify build in this line -->
+    <WindowsSdkVersion Condition="$(WindowsSdkVersion) == ''">10.0.17763.0</WindowsSdkVersion>
+    <LangVersion>latest</LangVersion>
+  <!--
+  if you want a self contained project to install in a container that doesn't already have dotnet runtime
+  installed uncomment the appropriate architecture tag below and update .pubxml 
+      <RuntimeIdentifier>win-arm</RuntimeIdentifier> 
+      <RuntimeIdentifier>win-x64</RuntimeIdentifier> 
+  -->    
+    <AzureFunctionsVersion>v2</AzureFunctionsVersion>
+  </PropertyGroup>
+
+<!-- if your windows sdk is not in the default location add a common.props.user file with a PropertyGroup tag
+that contains an override tag value for WindowsSdkRoot
+-->
+  <Import Project="common.props.user" Condition="Exists('common.props.user')"/>
+
+  <PropertyGroup Condition="$(WindowsSdkRoot)==''">
+      <WindowsSdkRoot>C:\Program Files (x86)\Windows Kits\10\References</WindowsSdkRoot>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(WindowsSdkPath)==''">
+      <WindowsSdkPath>$(WindowsSdkRoot)\$(WindowsSdkVersion)</WindowsSdkPath>
+  </PropertyGroup>
+</Project>

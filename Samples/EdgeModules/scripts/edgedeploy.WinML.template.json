@@ -1,0 +1,114 @@
+{
+    "modulesContent": {
+        "$edgeAgent": {
+            "properties.desired": {
+                "schemaVersion": "1.0",
+                "runtime": {
+                    "type": "docker",
+                    "settings": {
+                        "minDockerVersion": "v1.25",
+                        "loggingOptions": "",
+                        "registryCredentials": "${Creds}"
+                    }
+                },
+                "systemModules": {
+                    "edgeAgent": {
+                        "type": "docker",
+                        "settings": {
+                            "image": "${AgentImage}",
+                            "createOptions": ""
+                        }
+                    },
+                    "edgeHub": {
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${HubImage}",
+                            "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5671/tcp\":[{\"HostPort\":\"5671\"}], \"8883/tcp\":[{\"HostPort\":\"8883\"}],\"443/tcp\":[{\"HostPort\":\"443\"}]}}}"
+                        }
+                    }
+                },
+                "modules": {
+                    "WinML": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${WinMLImage}",
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/E5323777-F976-4f5b-9B55-B94699C46E44\"},{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/5B45201D-F2F2-4F3B-85BB-30FF1F953599\"}]}}"
+                        }
+                    },
+                    "GPIO": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${GPIOImage}",
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/916EF1CB-8426-468D-A6F7-9AE8076881B3\"}]}}"
+                        }
+                    },
+                    "PWM": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${PWMImage}",
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/60824B4C-EED1-4C9C-B49C-1B961461A819\"}]}}"
+                        }
+                    },
+                    "SPI": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${SPIImage}",
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/DCDE6AF9-6610-4285-828F-CAAF78C424CC\"}]}}"
+                        }
+                    },
+                    "UART": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "${UARTImage}",
+                            "createOptions": "{\"HostConfig\":{\"Devices\":[{\"CgroupPermissions\":\"\",\"PathInContainer\":\"\",\"PathOnHost\":\"class/86E0D1E0-8089-11D0-9CE4-08003E301F73\"}]}}"
+                        }
+                    }
+                }
+            }
+        },
+        "$edgeHub": {
+            "properties.desired": {
+                "schemaVersion": "1.0",
+                "routes": {
+                    "SPILocal": "FROM /messages/modules/SPI/outputs/outputorientation INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputorientation\")",
+                    "WinMLLocal0": "FROM /messages/modules/WinML/outputs/outputfruit0 INTO BrokeredEndpoint(\"/modules/GPIO/inputs/inputfruit\")",
+                    "WinMLLocal1": "FROM /messages/modules/WinML/outputs/outputfruit1 INTO BrokeredEndpoint(\"/modules/UART/inputs/inputfruit\")",
+                    "WinMLLocal2": "FROM /messages/modules/WinML/outputs/outputfruit2 INTO BrokeredEndpoint(\"/modules/PWM/inputs/inputfruit\")",
+                    "GPIOModuleLocal0": "FROM /messages/modules/GPIO/outputs/outputModuleLocal0 INTO BrokeredEndpoint(\"/modules/SPI/inputs/inputModule\")",
+                    "GPIOModuleLocal1": "FROM /messages/modules/GPIO/outputs/outputModuleLocal1 INTO BrokeredEndpoint(\"/modules/WinML/inputs/inputModule\")",
+                    "UARTModuleLocal1": "FROM /messages/modules/UART/outputs/outputModuleLocal0 INTO BrokeredEndpoint(\"/modules/WinML/inputs/inputModule\")",
+                    "PWMModuleLocal0": "FROM /messages/modules/PWM/outputs/outputModuleLocal0 INTO BrokeredEndpoint(\"/modules/WinML/inputs/inputModule\")",
+                    "default": "FROM /* INTO $upstream"
+
+                },
+                "storeAndForwardConfiguration": {
+                    "timeToLiveSecs": 7200
+                }
+            }
+        },
+        "GPIO": {
+            "properties.desired": {
+                "Configuration": {
+                    "GpioPins" : "${GpioPins}"
+                }
+            }
+        }
+    }
+}

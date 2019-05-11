@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "<storage creds>",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "EndpointConnectionString": "<hub endpoint creds>",
+    "HubConnectionString": "<hub creds>"
+  }
+}

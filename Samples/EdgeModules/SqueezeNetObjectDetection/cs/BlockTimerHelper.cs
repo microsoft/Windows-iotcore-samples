@@ -1,7 +1,10 @@
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
 using System;
 using System.Threading.Tasks;
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 
 namespace Helpers
 {
