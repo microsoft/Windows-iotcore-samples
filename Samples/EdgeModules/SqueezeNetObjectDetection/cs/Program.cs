@@ -1,4 +1,7 @@
-﻿using Microsoft.Azure.Devices.Client;
+﻿//
+// Copyright (c) Microsoft. All rights reserved.
+//
+using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,7 +18,7 @@ using Windows.AI.MachineLearning;
 using Windows.Foundation;
 using Windows.Media;
 
-using EdgeModuleSamples.Common;
+using EdgeModuleSamples.Common.Logging;
 using static EdgeModuleSamples.Common.AsyncHelper;
 using static Helpers.BlockTimerHelper;
 
@@ -41,23 +44,24 @@ namespace SampleModule
                 Options = new AppOptions();
 
                 Options.Parse(args);
+                Log.Enabled = !Options.Quiet;
+                Log.Verbose = Options.Verbose;
 
-                if (Options.ShowList)
+                if (Options.List)
                 {
                     var devices = await FrameSource.GetSourceNamesAsync();
 
                     Log.WriteLine("Available cameras:");
-                    
-                    foreach(var device in devices)
-                        Log.WriteLine(device);
-                }
 
-                if (Options.Exit)
-                    return -1;
+                    foreach (var device in devices)
+                    {
+                        Log.WriteLine(device);
+                    }
+                    Environment.Exit(1);
+                }
 
                 if (string.IsNullOrEmpty(Options.DeviceId))
                     throw new ApplicationException("Please use --device to specify which camera to use");
-
 
                 //
                 // Init module client
@@ -132,7 +136,7 @@ namespace SampleModule
                             var message = ResultsToMessage(outcome);
                             message.metrics.evaltimeinms = evalticks;
                             var json = JsonConvert.SerializeObject(message);
-                            Log.WriteLineRaw($"Recognized {json}");
+                            Log.WriteLine($"Recognized {json}");
 
                             //
                             // Send results to Edge

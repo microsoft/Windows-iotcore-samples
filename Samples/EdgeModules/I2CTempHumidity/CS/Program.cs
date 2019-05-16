@@ -1,3 +1,6 @@
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
 namespace SampleModule
 {
     using System;
@@ -15,7 +18,7 @@ namespace SampleModule
     using Windows.Devices.Gpio;
     using Windows.Devices.I2c;
 
-    using EdgeModuleSamples.Common;
+    using EdgeModuleSamples.Common.Logging;
     using EdgeModuleSamples.Devices;
     using static EdgeModuleSamples.Common.AsyncHelper;
 
@@ -36,7 +39,7 @@ namespace SampleModule
                 Options = new AppOptions();
 
                 Options.Parse(args);
-
+                // TODO: Options.List
                 if (Options.Exit)
                     return;
 
@@ -53,9 +56,9 @@ namespace SampleModule
                     // Dump device info
                     //
 
-                    Log.WriteLineRaw($"Model: {device.Model}");
-                    Log.WriteLineRaw($"Serial Number: {device.SerialNumber}");
-                    Log.WriteLineRaw($"Firmware Rev: {device.FirmwareRevision}");
+                    Log.WriteLine($"Model: {device.Model}");
+                    Log.WriteLine($"Serial Number: {device.SerialNumber}");
+                    Log.WriteLine($"Firmware Rev: {device.FirmwareRevision}");
 
                     //
                     // Init module client
@@ -84,7 +87,7 @@ namespace SampleModule
 
                             string dataBuffer = JsonConvert.SerializeObject(message); 
                             var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
-                            Log.WriteLineRaw($"SendEvent: [{dataBuffer}]");
+                            Log.WriteLine($"SendEvent: [{dataBuffer}]");
 
                             if (Options.UseEdge)
                             {

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <Import Project="..\..\Common.CS.Props" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Devices" Version="1.17.3" />
+    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.20.1" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EdgeHub" Version="1.0.7" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventHubs" Version="3.0.5" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.27" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\CS\Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>

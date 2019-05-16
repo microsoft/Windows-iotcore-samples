@@ -1,3 +1,6 @@
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
 namespace SampleModule
 {
     using System;
@@ -13,7 +16,7 @@ namespace SampleModule
     using Microsoft.Azure.Devices.Client;
     using Newtonsoft.Json;
 
-    using EdgeModuleSamples.Common;
+    using EdgeModuleSamples.Common.Logging;
 
     class Program
     {
@@ -38,7 +41,7 @@ namespace SampleModule
                 //
 
                 var devicepaths = SerialPort.GetPortNames();
-                if (Options.ShowList || string.IsNullOrEmpty(Options.DeviceId))
+                if (Options.List || string.IsNullOrEmpty(Options.DeviceName))
                 {
                     if (devicepaths.Length > 0)
                     {
@@ -60,9 +63,9 @@ namespace SampleModule
                 // Open Device
                 //
 
-                var deviceid = devicepaths.Where(x => x.Contains(Options.DeviceId)).SingleOrDefault();
+                var deviceid = devicepaths.Where(x => x.Contains(Options.DeviceName)).SingleOrDefault();
                 if (null == deviceid)
-                    throw new ApplicationException($"Unable to find device containing {Options.DeviceId}");
+                    throw new ApplicationException($"Unable to find device containing {Options.DeviceName}");
 
                 Log.WriteLine($"Connecting to device {deviceid}...");
 
@@ -140,10 +143,13 @@ namespace SampleModule
         private static void TransmitTask(SerialPort device)
         {
             int i = 1;
-            while (true)
+            int limit = 5; 
+            if (Options.TestCount.HasValue)
             {
-                Thread.Sleep(1000);
-
+                limit = Options.TestCount.Value;
+            }
+            while (!Options.Test || i <= limit)
+            {
                 // Come up with a new message
 
                 var tempData = new MessageBody
@@ -165,8 +171,11 @@ namespace SampleModule
                 var message = tempData.SerialEncode;
                 device.WriteLine(message);
                 Log.WriteLine($"Write {i} Completed. Wrote {message.Length} bytes: \"{message}\"");
+
+                Thread.Sleep(1000);
                 i++;
-            }            
+            }
+            Environment.Exit(0);
         }
 
         private static async void ReaderTask(SerialPort device)
@@ -196,7 +205,7 @@ namespace SampleModule
                             {
                                 string dataBuffer = JsonConvert.SerializeObject(tempData); 
                                 var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
-                                Log.WriteLineRaw($"SendEvent: [{dataBuffer}]");
+                                Log.WriteLine($"SendEvent: [{dataBuffer}]");
                                 await ioTHubModuleClient.SendEventAsync("temperatureOutput", eventMessage);                        
                             }
                         }

@@ -133,7 +133,7 @@ SerialWin32 1.0.0.0
   -r, --receive              receive and display packets
   -t, --transmit             transmit packets (combine with -r for loopback)
   -c, --config               display device configuration
-  -e, --edge                 transmit through azure edge  
+  -e, --edge                 transmit through Azure edge  
 Available devices:
 \\?\ACPI#QCOM2424#2#{86e0d1e0-8089-11d0-9ce4-08003e301f73}
 \\?\FTDIBUS#VID_0403+PID_6001+A403A7H4A#0000#{86e0d1e0-8089-11d0-9ce4-08003e301f73}

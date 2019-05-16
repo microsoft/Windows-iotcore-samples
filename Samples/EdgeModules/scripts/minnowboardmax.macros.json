@@ -1,0 +1,33 @@
+{
+    "Macros": [
+        {
+            "AgentImage" : "mcr.microsoft.com/azureiotedge-agent:1.0"
+        },
+        {
+            "GPIOImage" : "<your module repo>:<your GPIO app module tag>"
+        },
+        {
+            "HubImage" : "mcr.microsoft.com/azureiotedge-hub:1.0"
+        },
+        {
+            "I2CImage" : "<your module repo>:<your I2C app module tag>"
+        },
+        {
+            "SPIImage" : "<your module repo>:<your SPI app module tag>"
+        },
+        {
+            "UARTImage" : "<your module repo>:<your UART app module tag>"
+        },
+        {
+            "WinMLImage" : "<your module repo>:<your WinML app module tag>"
+        },
+        {
+            "GpioPins" : {
+                "blue": 9,
+                "red": 0,
+                "green": 1,
+                "yellow": 2
+            }
+        }
+    ]
+}
