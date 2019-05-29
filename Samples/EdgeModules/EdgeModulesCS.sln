@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinMLCustomVisionFruit", "WinMLCustomVisionFruit\CS\WinMLCustomVisionFruit.csproj", "{15B6F191-D9E6-43D5-A3C0-0943A3A6FE1B}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UART_lcd", "UART_lcd\CS\UART_lcd.csproj", "{286AEE43-76C8-41C8-8A3F-99D9E5BB8C13}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PWMFruit", "PWMFruit\CS\PWMFruit.csproj", "{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioLoopback", "AudioLoopback\CS\AudioLoopback.csproj", "{B5A1A05D-C33E-4CCD-880C-FBC3C93BF0A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{289978C6-E7A6-4354-AD8F-C69E3A4B98D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5A1A05D-C33E-4CCD-880C-FBC3C93BF0A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5A1A05D-C33E-4CCD-880C-FBC3C93BF0A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5A1A05D-C33E-4CCD-880C-FBC3C93BF0A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5A1A05D-C33E-4CCD-880C-FBC3C93BF0A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
