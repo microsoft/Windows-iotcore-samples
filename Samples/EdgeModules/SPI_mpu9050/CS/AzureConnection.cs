@@ -127,10 +127,12 @@ namespace SPIMPU9050
         }
         public override async Task AzureModuleInitAsync<C>(C c) 
         {
+            Log.WriteLine("derived AzureModuleInit");
             AzureConnection c1 = c as AzureConnection;
             await base.AzureModuleInitAsync(c1);
             await _moduleClient.SetInputMessageHandlerAsync(Keys.ModuleLoadedInputRoute, ModuleLoadedMessageHandler, this);
             await _moduleClient.SetMethodHandlerAsync(Keys.SetModuleLoaded, SetModuleLoaded, this);
+            Log.WriteLine("derived Handlers Set");
             await base.AzureModuleInitEndAsync();
         }
     }
