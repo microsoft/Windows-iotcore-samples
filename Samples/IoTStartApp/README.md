@@ -12,7 +12,7 @@ description: In this sample, we'll create a UWP app to demonstrate how one can c
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*   [C#](./Cpp/README.md)
+*   [C++](./Cpp/README.md)
 
 ## Additional resources
 * [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
