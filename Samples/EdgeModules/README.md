@@ -20,11 +20,15 @@ Additionally, several of them are designed to work together to demonstrate coord
 |--------| ---------- |
 |[Window Machine Learning (WinML) with Azure Custom Vision Service Fruit Object Classifier Model](./WinMLCustomVisionFruit/Readme.md)| [FruitWinML](./WinMLCustomVisionFruit/CS/WinMLCustomVisionFruit.csproj)|
 |[Serial I/O using PInvoke to Config Manager and Classic Win32 Serial APIs)](./SerialWin32/Readme.md)| [SerialWin32](./SerialWin32/CS/SerialWin32.csproj)|
-|[Windows Machine Learning using SqueezeNet Object Detection Model](./WinMLCustomVisionFruit/Readme.md) from the [ONNX Model Zoo](https://github.com/onnx/models/tree/master/squeezenet)| [SqueezeNetObjectDetection](./squeezenetobjectdetection/cs/squeezenetobjectdetection.csproj)|
+|[Windows Machine Learning using SqueezeNet Object Detection Model](./squeezenetobjectdetection/Readme.md) from the [ONNX Model Zoo](https://github.com/onnx/models/tree/master/squeezenet)| [SqueezeNetObjectDetection](./squeezenetobjectdetection/cs/squeezenetobjectdetection.csproj)|
 |[GPIO using standard WinRT Simple Peripheral Bus APIs](./gpio/Readme.md)| [GPIO](./Gpio/CS/GPIOFruit.csproj)|
 |[Azure Function that responds to Azure IoT Hub events and reflects GPIO state across devices](./HubEventHandler/README.Md)| [HubEventHandler](./HubEventHandler/cs/HubEventHandler.csproj)|
-|[I2C TempHumidity Sensor](./I2CTempHumidity/README.md)|[I2CTempHumidity](./I2CTempHumidity/CS/I2CTempHumidity)|
-|[Serial IO using legacy comX ports with classic .net APIs](./SerialIoPorts/README.md)[SerialIoPorts](./SerialIoPorts/CS/SerialIoPorts.csproj)|
+|[I2C TempHumidity Sensor](./I2CTempHumidity/README.md)|[I2CTempHumidity](./I2CTempHumidity/CS/I2CTempHumidity.csproj)|
+|[I2C Accelerometer](./I2C_mpu6050/README.md)|[I2C_mpu6050](./I2C_mpu6050/CS/I2C_mpu6050.csproj)|
+|[SPI Accelerometer](./SPI_mpu9050/README.md)|[SPI_mpu9050](./SPI_mpu9050/CS/SPI_mpu9050.csproj)|
+|[Pulse Width Modulated Fan Motor](./PWMFruit/README.md)|[PWMFruit](./PWMFruit/CS/PWMFruit.csproj)|
+|[Serial IO using legacy comX ports with classic .net APIs](./SerialIoPorts/README.md)|[SerialIoPorts](./SerialIoPorts/CS/SerialIoPorts.csproj)|
+|[Serial IO using WinRT serial device API](./UART_lcd/README.md)|[UART_lcd](./UART_lcd/CS/UART_lcd.csproj)|
 |[Common library for shared utilities and abstract base classes](./Common/README.Md)| [Common](./common/cs/common.csproj)|
 
 ### Building the samples
