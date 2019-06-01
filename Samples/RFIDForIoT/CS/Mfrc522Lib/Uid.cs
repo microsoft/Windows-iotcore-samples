@@ -1,5 +1,7 @@
-using System;
-
+/*
+ This code is based on the library written by github user mlowijs.
+ The original library can be found here https://github.com/mlowijs/mfrc522-netmf
+ */
 namespace Mfrc522Lib
 {
     public class Uid

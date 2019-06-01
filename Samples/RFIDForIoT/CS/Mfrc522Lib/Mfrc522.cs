@@ -1,4 +1,8 @@
-﻿using Mfrc522Lib.Constants;
+﻿/*
+ This code is based on the library written by github user mlowijs.
+ The original library can be found here https://github.com/mlowijs/mfrc522-netmf
+ */
+using Mfrc522Lib.Constants;
 using System.Threading.Tasks;
 using Windows.Devices.Spi;
 using Windows.Devices.Gpio;
