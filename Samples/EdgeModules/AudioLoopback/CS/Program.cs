@@ -11,6 +11,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Media.Audio;
+using Windows.Media.MediaProperties;
 
 namespace AudioLoopback
 {
@@ -25,69 +27,78 @@ namespace AudioLoopback
             Log.Enabled = !Options.Quiet;
             Log.Verbose = Options.Verbose;
             Log.WriteLine("arg parse complete...");
-            // TODO: Options.List
-            Dictionary<string, string> FruitColors = new Dictionary<string, string>()
+            var inDevice = default(AudioInputDevice);
+            var outDevice = default(AudioOutputDevice);
+            var connection = default(AzureConnection);
+            var module = default(AzureModule);
+            try
             {
-                {"apple", "red" },
-                {"pear", "yellow" },
-                {"pen", "green" },
-                {"grapes", "blue"}
-            };
-            AzureConnection connection = null;
-            AudioDevice audio = null;
-            await Task.WhenAll(
-                Task.Run(async () => {
-                    try { 
-                        if (!Options.Test)
-                        {
-                            Log.WriteLine("starting connection creation");
-                            connection = await AzureConnection.CreateAzureConnectionAsync();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Log.WriteLine("Audio Main CreateAzureConnectionAsync exception {0}", e.ToString());
-                    }
-                }),
-                Task.Run(() =>
+
+                if (Options.List)
+                {
+                    await AudioInputDevice.ListDevicesAsync();
+                }
+                await Task.WhenAll(
+                    Task.Run(async () =>
                     {
                         try
                         {
-                            audio = new AudioDevice();
-                            if (Options.Test)
+                            if (!Options.Test)
                             {
-                                Log.WriteLine("initiating pin test");
-                                if (Options.TestTime.HasValue)
-                                {
-                                    audio.Test(Options.TestTime.Value, TimeSpan.FromSeconds(2));
-                                } else
-                                {
-                                    audio.Test(TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(2));
-                                }
+                                Log.WriteLine("starting connection creation");
+                                connection = await AzureConnection.CreateAzureConnectionAsync();
+                            }
+                            else
+                            {
+                                Log.WriteLine("test mode. skipping connection creation");
                             }
                         }
                         catch (Exception e)
                         {
-                            Log.WriteLine("Audio InitOutputPins exception {0}", e.ToString());
+                            Log.WriteLine("Audio Main CreateAzureConnectionAsync exception {0}", e.ToString());
                         }
-                    }
-                )
-            );
-            try
-            {
-                AzureModule m = (AzureModule)connection.Module;
-                Orientation currentOrientation = Orientation.RightSideUp;
+                    }),
+                    Task.Run(async () =>
+                        {
+                            try
+                            {
+                                var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Speech);
+                                settings.PrimaryRenderDevice = await AudioOutputDevice.SelectAsync(Options.OutputDeviceName);
+                                var graph = await AsyncHelper.AsAsync(AudioGraph.CreateAsync(settings));
+                                if (graph.Status != AudioGraphCreationStatus.Success)
+                                {
+                                    throw new ApplicationException($"Audio Graph Creation failed status = {graph.Status} err = {graph.ExtendedError}");
+                                }
+                                inDevice = new AudioInputDevice(graph.Graph);
+                                var encSettings = new AudioEncodingProperties();
+                                await inDevice.InitializeAsync(await AudioInputDevice.SelectAsync(Options.InputDeviceName), encSettings);
+                                outDevice = new AudioOutputDevice(graph.Graph);
+                                graph.Graph.Start();
+                            }
+                            catch (Exception e)
+                            {
+                                Log.WriteLine("Audio Initialization exception {0}", e.ToString());
+                                Environment.Exit(2);
+                            }
+                        }
+                    )
+                );
                 EventHandler<ConfigurationType> ConfigurationChangedHandler = async (object sender, ConfigurationType newConfiguration) =>
                 {
-                    var module = (AzureModule)sender;
+                    var m = (AzureModule)sender;
                     Log.WriteLine("updating Audio with {0}", newConfiguration.ToString());
+                    await Task.CompletedTask;
                 };
-                m.ConfigurationChanged += ConfigurationChangedHandler;
+                if (!Options.Test)
+                {
+                    module = (AzureModule)connection.Module;
+                    module.ConfigurationChanged += ConfigurationChangedHandler;
+                }
                 try
                 {
                     await connection.NotifyModuleLoadAsync();
 
-                    Log.WriteLine("Initialization Complete. have connection and device pins.  Active Pin is {0}", Audio.ActivePin == null ? "(null)" : Audio.ActivePin);
+                    Log.WriteLine("Initialization Complete. have connection and devices");
 
                     Task.WaitAll(Task.Run(() =>
                     {
@@ -109,18 +120,31 @@ namespace AudioLoopback
                 }
                 finally
                 {
-                    m.ConfigurationChanged += ConfigurationChangedHandler;
+                    if (!Options.Test)
+                    {
+                        module.ConfigurationChanged += ConfigurationChangedHandler;
+                    }
                 }
             }
             finally
             {
-                audio.Dispose();
-                if (connection != null)
+                if (connection != default(AzureConnection))
                 {
                     connection.Dispose();
                 }
+                if (module != default(AzureModule))
+                {
+                    module.Dispose();
+                }
+                if (inDevice != default(AudioInputDevice))
+                {
+                    inDevice.Dispose();
+                }
+                if (outDevice != default(AudioOutputDevice))
+                {
+                    outDevice.Dispose();
+                }
             }
-
             return 0;
         }
 
