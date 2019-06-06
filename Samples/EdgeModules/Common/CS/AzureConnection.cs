@@ -194,16 +194,15 @@ namespace EdgeModuleSamples.Common.Azure
         }
         //NOTE: actual work for module init split in 2 parts to allow derived classes to attach additional
         // message handlers prior to the module client open
-        readonly int DEFAULT_NETWORK_TIMEOUT = 300;
         private async Task AzureModuleInitBeginAsync()
         {
             AmqpTransportSettings[] settings = new AmqpTransportSettings[2];
             settings[0] = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only);
-            settings[0].OpenTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
-            settings[0].OperationTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
+            settings[0].OpenTimeout = TimeSpan.FromSeconds(AzureConnectionBase.DEFAULT_NETWORK_TIMEOUT);
+            settings[0].OperationTimeout = TimeSpan.FromSeconds(AzureConnectionBase.DEFAULT_NETWORK_TIMEOUT);
             settings[1] = new AmqpTransportSettings(TransportType.Amqp_WebSocket_Only);
-            settings[1].OpenTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
-            settings[1].OperationTimeout = TimeSpan.FromSeconds(DEFAULT_NETWORK_TIMEOUT);
+            settings[1].OpenTimeout = TimeSpan.FromSeconds(AzureConnectionBase.DEFAULT_NETWORK_TIMEOUT);
+            settings[1].OperationTimeout = TimeSpan.FromSeconds(AzureConnectionBase.DEFAULT_NETWORK_TIMEOUT);
             _reportedDeviceProperties = new TwinCollection();
             _moduleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
             Log.WriteLine("ModuleClient Initialized");
@@ -214,25 +213,42 @@ namespace EdgeModuleSamples.Common.Azure
             {
                 await _moduleClient.SetMessageHandlerAsync(async (Message msg, object ctx) =>
                 {
-                    AzureModuleBase m = (AzureModuleBase)ctx;
-                    Log.WriteLine("Unexpected Input Message to {0} in module {1}", msg.InputName, m.ModuleId);
-                    Log.WriteLine("    {0}", Encoding.UTF8.GetString(msg.GetBytes()));
-                    await Task.CompletedTask;
+                    try {
+                        AzureModuleBase m = (AzureModuleBase)ctx;
+                        Log.WriteLine("Unexpected Input Message to {0} in module {1}", msg.InputName, m.ModuleId);
+                        Log.WriteLine("    {0}", Encoding.UTF8.GetString(msg.GetBytes()));
+                        await Task.CompletedTask;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("AzureModuleBase Default MessageHandler lambda exception {0}", e.ToString());
+                        Environment.Exit(1); // failfast
+                    }
                     return MessageResponse.Abandoned;
                 }, this);
+                Log.WriteLine("AzureModuleBase default msg handler set");
             });
             // set default method handler to log unexpected requests and fail them immediately without
             // blocking queues waiting for timeouts
             await AzureConnectionBase.RetryOperationAsync("Initializing default method handler", async () =>
             { 
                 await _moduleClient.SetMethodDefaultHandlerAsync(async (MethodRequest req, object ctx) => {
-                    AzureModuleBase m = (AzureModuleBase)ctx;
-                    Log.WriteLine("Unexpected Method Request in module {0}", m.ModuleId);
-                    Log.WriteLine("    {0}", req.ToString());
-                    await Task.CompletedTask;
-                    string result = "{\"result\":\"Unrecognized direct method: " + req.Name + "\"}";
-                    return new MethodResponse(Encoding.UTF8.GetBytes(result), 404);
+                    try {
+                        AzureModuleBase m = (AzureModuleBase)ctx;
+                        Log.WriteLine("Unexpected Method Request in module {0}", m.ModuleId);
+                        Log.WriteLine("    {0}", req.ToString());
+                        await Task.CompletedTask;
+                        string result = "{\"result\":\"Unrecognized direct method: " + req.Name + "\"}";
+                        return new MethodResponse(Encoding.UTF8.GetBytes(result), 404);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.WriteLine("AzureModuleBase MethodDefaultHandler lambda exception {0}", e.ToString());
+                        Environment.Exit(1); // failfast
+                    }
+                    return new MethodResponse(null, 404);
                 }, this);
+                Log.WriteLine("AzureModuleBase default method handler set");
             });
             await AzureConnectionBase.RetryOperationAsync("Set ConnectionStatusChangesHandler", async () =>
             {
@@ -248,6 +264,8 @@ namespace EdgeModuleSamples.Common.Azure
                         Environment.Exit(1); // failfast
                     }
                 });
+                Log.WriteLine("AzureModuleBase connectionstatus handler set");
+
                 await Task.CompletedTask;
                 return;
             });
@@ -266,6 +284,7 @@ namespace EdgeModuleSamples.Common.Azure
                         Environment.Exit(1); // failfast
                     }
                 }, this);
+                Log.WriteLine("AzureModuleBase desired property update handler set");
             });
         }
         protected async Task AzureModuleInitEndAsync()
@@ -282,7 +301,8 @@ namespace EdgeModuleSamples.Common.Azure
 
     abstract public class AzureConnectionBase : IDisposable
     {
-        public readonly static int MAXIMUM_AZURE_CONNECTION_NETWORK_RETRIES = 2;
+        public static readonly int DEFAULT_NETWORK_TIMEOUT = 120;
+        public static readonly int MAXIMUM_AZURE_CONNECTION_NETWORK_RETRIES = 5;
         private ConcurrentQueue<KeyValuePair<string, object>> _updateq { get; set; }
 
         public virtual AzureModuleBase Module { get; protected set; }
@@ -328,7 +348,7 @@ namespace EdgeModuleSamples.Common.Azure
                     {
                         Log.WriteLineError("IoTHubCommunicationException during Azure Connection Operation \"{0}\".", description);
                         Log.WriteLineError("\t\tretry count Exceeded. attempt abandoned \"{0}\". ", e.ToString());
-                        //Environment.Exit(2);
+                        Environment.Exit(2);
                     }
                     else
                     {
