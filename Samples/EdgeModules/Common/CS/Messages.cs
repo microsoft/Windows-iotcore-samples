@@ -15,6 +15,7 @@ namespace EdgeModuleSamples.Common
     {
         public static class Keys
         {
+            public readonly static string AudioLoopbackModuleId = "AudioLoopback";
             public readonly static string Configuration = "Configuration";
             public readonly static string Desired = "Desired";
             public readonly static string DeviceIdMetadata = "iothub-connection-device-id";
