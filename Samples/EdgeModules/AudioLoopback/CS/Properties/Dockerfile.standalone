@@ -1,4 +1,4 @@
-ARG IMAGE=mcr.microsoft.com/windows/nanoserver
+ARG IMAGE=mcr.microsoft.com/windows/iotuap
 ARG IMAGE_TAG=1809
 FROM ${IMAGE}:${TAG}
 

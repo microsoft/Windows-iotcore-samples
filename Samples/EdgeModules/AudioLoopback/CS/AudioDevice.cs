@@ -22,7 +22,7 @@ using Windows.Media.Devices;
 namespace AudioLoopback
 {
 
-    public abstract class AudioBaseDevice<AudioDeviceT> : IDisposable where AudioDeviceT : IDisposable
+    public abstract class AudioBaseDevice<AudioDeviceT> : IDisposable where AudioDeviceT : IDisposable, IAudioNode
     {
         AudioDeviceT _device;
         AudioGraph _graph;
@@ -102,7 +102,6 @@ namespace AudioLoopback
             }
             await Task.CompletedTask;
         }
-
     }
 
     public class AudioInputDevice : AudioBaseDevice<AudioDeviceInputNode>
@@ -131,12 +130,20 @@ namespace AudioLoopback
         }
         public async Task InitializeAsync(DeviceInformation di, AudioEncodingProperties settings)
         {
+            Log.WriteLine($"attempting to create input device {di.Id}");
+
             var result = await AsyncHelper.AsAsync(Graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Speech, settings, di));
             if (result.Status != AudioDeviceNodeCreationStatus.Success)
             {
                 throw new ApplicationException($"audio input device {di.Id}:{di.Name} create failed. status = {result.Status} ex = {result.ExtendedError.ToString()}");
             }
+            Device = result.DeviceInputNode;
         }
+        public void Connect<AudioDeviceT>(AudioBaseDevice<AudioDeviceT> downstream) where AudioDeviceT : IDisposable, IAudioNode
+        {
+            Device.AddOutgoingConnection(downstream.Device);
+        }
+
     }
 
     public class AudioOutputDevice : AudioBaseDevice<AudioDeviceOutputNode>
@@ -170,7 +177,7 @@ namespace AudioLoopback
             {
                 throw new ApplicationException($"audio output device create failed. status = {result.Status} ex = {result.ExtendedError.ToString()}");
             }
-
+            Device = result.DeviceOutputNode;
         }
     }
 }

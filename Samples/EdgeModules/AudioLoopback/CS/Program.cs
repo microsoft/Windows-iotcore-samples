@@ -64,16 +64,25 @@ namespace AudioLoopback
                             {
                                 var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Speech);
                                 settings.PrimaryRenderDevice = await AudioOutputDevice.SelectAsync(Options.OutputDeviceName);
+                                Log.WriteLine($"found Primary Render Device {settings.PrimaryRenderDevice.Id}");
                                 var graph = await AsyncHelper.AsAsync(AudioGraph.CreateAsync(settings));
                                 if (graph.Status != AudioGraphCreationStatus.Success)
                                 {
                                     throw new ApplicationException($"Audio Graph Creation failed status = {graph.Status} err = {graph.ExtendedError}");
                                 }
+                                Log.WriteLine("Graph created");
                                 inDevice = new AudioInputDevice(graph.Graph);
-                                var encSettings = new AudioEncodingProperties();
+                                Log.WriteLine("input device created");
+                                var encSettings = AudioEncodingProperties.CreatePcm(16000, 1, 16);
                                 await inDevice.InitializeAsync(await AudioInputDevice.SelectAsync(Options.InputDeviceName), encSettings);
+                                Log.WriteLine("input device Initialized");
                                 outDevice = new AudioOutputDevice(graph.Graph);
+                                Log.WriteLine("output device created");
+                                await outDevice.InitializeAsync();
+                                Log.WriteLine("output device Initialized");
+                                inDevice.Connect(outDevice);
                                 graph.Graph.Start();
+                                Log.WriteLine("graph started");
                             }
                             catch (Exception e)
                             {
@@ -89,14 +98,15 @@ namespace AudioLoopback
                     Log.WriteLine("updating Audio with {0}", newConfiguration.ToString());
                     await Task.CompletedTask;
                 };
-                if (!Options.Test)
-                {
-                    module = (AzureModule)connection.Module;
-                    module.ConfigurationChanged += ConfigurationChangedHandler;
-                }
                 try
                 {
-                    await connection.NotifyModuleLoadAsync();
+
+                    if (!Options.Test)
+                    {
+                        module = (AzureModule)connection.Module;
+                        module.ConfigurationChanged += ConfigurationChangedHandler;
+                        await connection.NotifyModuleLoadAsync();
+                    }
 
                     Log.WriteLine("Initialization Complete. have connection and devices");
 
