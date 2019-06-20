@@ -1,0 +1,18 @@
+﻿<Page
+    x:Class="serialnumber.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:serialnumber"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel Orientation="Vertical" Margin="32">
+            <Button x:Name="GetSerialNumber" Content="Get Serial Number" Click="GetSerialNumber_Click"/>
+            <Viewbox>
+                <TextBlock x:Name="SerialNumber"  Text="[Serial Number]" />
+            </Viewbox>
+        </StackPanel>
+    </Grid>
+</Page>
