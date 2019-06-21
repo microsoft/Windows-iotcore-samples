@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.ProjectOxford.Vision;
-using Microsoft.ProjectOxford.Vision.Contract;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Capture;
@@ -24,6 +21,8 @@ using Windows.Storage.Search;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Media.MediaProperties;
 using Windows.Storage.Streams;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -35,10 +34,10 @@ namespace RPiCognitiveService
     public sealed partial class PhotoPage : Page
     {
         //Computer Vision Key
-        string key = "your Computer Vision Key";  //API key
-        string apiroot = "Your Computer Vision API endpoint" // For instance: https://westeurope.api.cognitive.microsoft.com/vision/v1.0
+        string key = "<your vision api key>";  //API key
+        string apiroot = "<your vision endpoint>"; // For instance: https://southcentralus.api.cognitive.microsoft.com/
         Size size_image;  //The size of the current image
-        AnalysisResult thisresult;  //The result of analysis
+        ImageAnalysis thisresult;  //The result of analysis
 
         StorageFolder currentFolder;
         StorageFile Picker_SelectedFile;
@@ -90,7 +89,7 @@ namespace RPiCognitiveService
                 // Set callbacks for failure and recording limit exceeded
                 txtLocation.Text = "Device successfully initialized for video recording!";
                 mediaCapture.Failed += new MediaCaptureFailedEventHandler(mediaCapture_Failed);
-                // Start Preview                
+                // Start Preview
                 previewElement.Source = mediaCapture;
                 await mediaCapture.StartPreviewAsync();
                 isPreviewing = true;
@@ -174,7 +173,7 @@ namespace RPiCognitiveService
         /// Dispaly data
         /// </summary>
         /// <param name="result"></param>
-        private void DisplayData(AnalysisResult result, bool init = true)
+        private void DisplayData(ImageAnalysis result, bool init = true)
         {
             if (result == null)
                 return;
@@ -312,7 +311,7 @@ namespace RPiCognitiveService
                     txt1.Tag = true;
 
                     TextBlock txt2 = new TextBlock();  //Sex
-                    txt2.Text = face.Gender;
+                    txt2.Text = face.Gender.ToString();
                     txt2.Padding = new Thickness(1);
                     Grid.SetRow(txt2, index + 1);
                     Grid.SetColumn(txt2, 2);
@@ -341,8 +340,19 @@ namespace RPiCognitiveService
         {
             size_image = new Size((imgPhoto.Source as BitmapImage).PixelWidth, (imgPhoto.Source as BitmapImage).PixelHeight);
 
-            VisionServiceClient client = new VisionServiceClient(key, apiroot);
-            var feature = new VisualFeature[] { VisualFeature.Tags, VisualFeature.Faces, VisualFeature.Description, VisualFeature.Adult, VisualFeature.Categories };
+            var client = new ComputerVisionClient(
+                new ApiKeyServiceClientCredentials(key),
+                new System.Net.Http.DelegatingHandler[] { });  // need to provide and endpoint and a delegate.
+            client.Endpoint = apiroot;
+
+            var feature = new VisualFeatureTypes []
+                {
+                    VisualFeatureTypes.Tags,
+                    VisualFeatureTypes.Faces,
+                    VisualFeatureTypes.Description,
+                    VisualFeatureTypes.Adult,
+                    VisualFeatureTypes.Categories
+                };
 
             var result = await client.AnalyzeImageAsync(txtLocation.Text, feature);
             thisresult = result;
@@ -425,7 +435,10 @@ namespace RPiCognitiveService
                 if (Picker_SelectedFile != null)
                 {
                     txtFileName.Text = Picker_SelectedFile.Path;
-                    var stream = await Picker_SelectedFile.OpenAsync(Windows.Storage.FileAccessMode.Read);
+                    var stream = await Picker_SelectedFile.OpenAsync(Windows.Storage.FileAccessMode.Read, StorageOpenOptions.AllowReadersAndWriters);
+                    //var reader = new StreamReader(;
+
+                    //var test = await reader.G;
 
                     var stream_send = stream.CloneStream();
                     var image = new BitmapImage();
@@ -435,10 +448,21 @@ namespace RPiCognitiveService
 
                     ringLoading.IsActive = true;
                     //Vision Service
-                    VisionServiceClient client = new VisionServiceClient(key);
-                    var feature = new VisualFeature[] { VisualFeature.Tags, VisualFeature.Faces, VisualFeature.Description, VisualFeature.Adult, VisualFeature.Categories };
+                    var client = new ComputerVisionClient(
+                        new ApiKeyServiceClientCredentials(key),
+                        new System.Net.Http.DelegatingHandler[] { });  // need to provide and endpoint and a delegate.
+                    client.Endpoint = apiroot;
 
-                    var result = await client.AnalyzeImageAsync(stream_send.AsStream(), feature);
+                    var feature = new VisualFeatureTypes []
+                        {
+                            VisualFeatureTypes.Tags,
+                            VisualFeatureTypes.Faces,
+                            VisualFeatureTypes.Description,
+                            VisualFeatureTypes.Adult,
+                            VisualFeatureTypes.Categories
+                        };
+
+                    var result = await client.AnalyzeImageInStreamAsync(stream_send.AsStream(), feature);
                     thisresult = result;
                     if (result != null)
                     {

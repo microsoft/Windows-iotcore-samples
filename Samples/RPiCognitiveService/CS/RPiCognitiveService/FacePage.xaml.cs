@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.ProjectOxford.Face;
-using Microsoft.ProjectOxford.Face.Contract;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -24,6 +22,8 @@ using System.Threading.Tasks;
 using Windows.Storage.Search;
 using Windows.Media.MediaProperties;
 using Windows.Storage.Streams;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -35,11 +35,11 @@ namespace RPiCognitiveService
     public sealed partial class FacePage : Page
     {
         //Face API Key
-        string key_face = "Your Face API Key";
-        string face_apiroot = "Your API Endpoint" // For instance: https://westeurope.api.cognitive.microsoft.com/face/v1.0
+        string key_face = "<your face api key>";
+        string face_apiroot = "<your face endpoint, example to the right>"; // For instance: https://southcentralus.api.cognitive.microsoft.com/
 
         Size size_image;
-        Face[] faces;
+        DetectedFace[] faces;
 
         StorageFolder currentFolder;
         StorageFile Picker_SelectedFile;
@@ -84,7 +84,7 @@ namespace RPiCognitiveService
                 // Set callbacks for failure and recording limit exceeded
                 txtLocation.Text = "Device successfully initialized for video recording!";
                 mediaCapture.Failed += new MediaCaptureFailedEventHandler(mediaCapture_Failed);
-                // Start Preview                
+                // Start Preview
                 previewElement.Source = mediaCapture;
                 await mediaCapture.StartPreviewAsync();
                 isPreviewing = true;
@@ -255,7 +255,10 @@ namespace RPiCognitiveService
                     ringLoading.IsActive = true;
 
                     //Face service
-                    FaceServiceClient f_client = new FaceServiceClient(key_face, face_apiroot);
+                    FaceClient f_client = new FaceClient(
+                        new ApiKeyServiceClientCredentials(key_face),
+                        new System.Net.Http.DelegatingHandler[] { });  // need to provide and endpoint and a delegate. key_face, face_apiroot);
+                    f_client.Endpoint = face_apiroot;
 
                     var requiedFaceAttributes = new FaceAttributeType[] {
                                 FaceAttributeType.Age,
@@ -266,9 +269,9 @@ namespace RPiCognitiveService
                                 FaceAttributeType.Emotion,
                                 FaceAttributeType.Glasses
                                 };
-                    var faces_task = f_client.DetectAsync(stream_send.AsStream(), true, true, requiedFaceAttributes);
+                    var faces_task =  await f_client.Face.DetectWithStreamAsync(stream_send.AsStream(), true, true, requiedFaceAttributes);
 
-                    faces = await faces_task;
+                    faces = faces_task.ToArray();
 
                     if (faces != null)
                     {
@@ -453,7 +456,7 @@ namespace RPiCognitiveService
         /// Display Face Data
         /// </summary>
         /// <param name="result"></param>
-        private void DisplayFacesData(Face[] faces, bool init = true)
+        private void DisplayFacesData(DetectedFace[] faces, bool init = true)
         {
             if (faces == null)
                 return;
@@ -502,7 +505,7 @@ namespace RPiCognitiveService
             if (!init)
                 return;
 
-            var list_child = gridFaces.Children.ToList();  
+            var list_child = gridFaces.Children.ToList();
             list_child.ForEach((e) =>
             {
                 if (e as TextBlock != null && (e as TextBlock).Tag != null)
@@ -522,21 +525,21 @@ namespace RPiCognitiveService
                 txt0.Tag = true;
 
                 TextBlock txt1 = new TextBlock();
-                txt1.Text = Math.Round(face.FaceAttributes.Age, 2).ToString();
+                txt1.Text = Math.Round(face.FaceAttributes.Age.Value, 2).ToString();
                 txt1.Padding = new Thickness(1);
                 Grid.SetRow(txt1, index + 1);
                 Grid.SetColumn(txt1, 1);
                 txt1.Tag = true;
 
                 TextBlock txt2 = new TextBlock();
-                txt2.Text = face.FaceAttributes.Gender;
+                txt2.Text = face.FaceAttributes.Gender.ToString();
                 txt2.Padding = new Thickness(1);
                 Grid.SetRow(txt2, index + 1);
                 Grid.SetColumn(txt2, 2);
                 txt2.Tag = true;
 
                 TextBlock txt3 = new TextBlock();
-                txt3.Text = Math.Round(face.FaceAttributes.Smile, 2).ToString();
+                txt3.Text = Math.Round(face.FaceAttributes.Smile.Value, 2).ToString();
                 txt3.Padding = new Thickness(1);
                 Grid.SetRow(txt3, index + 1);
                 Grid.SetColumn(txt3, 3);
@@ -561,14 +564,14 @@ namespace RPiCognitiveService
         /// Display Emotions data
         /// </summary>
         /// <param name="emotions"></param>
-        private void DisplayEmotionsData(Face[] faces, bool init = true)
+        private void DisplayEmotionsData(DetectedFace[] faces, bool init = true)
         {
             if (faces == null)
                 return;
             if (!init)
                 return;
 
-            var list_child = gridEmotions.Children.ToList();  
+            var list_child = gridEmotions.Children.ToList();
             list_child.ForEach((e) =>
             {
                 if (e as TextBlock != null && (e as TextBlock).Tag != null)
@@ -669,7 +672,10 @@ namespace RPiCognitiveService
         {
             size_image = new Size((imgPhoto.Source as BitmapImage).PixelWidth, (imgPhoto.Source as BitmapImage).PixelHeight);
 
-            FaceServiceClient f_client = new FaceServiceClient(key_face);
+            var f_client = new FaceClient(
+                        new ApiKeyServiceClientCredentials(key_face),
+                        new System.Net.Http.DelegatingHandler[] { });  // need to provide and endpoint and a delegate. key_face, face_apiroot);
+            f_client.Endpoint = face_apiroot;
 
             var requiedFaceAttributes = new FaceAttributeType[] {
                                 FaceAttributeType.Age,
@@ -680,9 +686,9 @@ namespace RPiCognitiveService
                                 FaceAttributeType.Emotion,
                                 FaceAttributeType.Glasses
                                 };
-            var faces_task = f_client.DetectAsync(txtLocation.Text, true, true, requiedFaceAttributes);
+            var faces_task = await f_client.Face.DetectWithUrlAsync(txtLocation.Text, true, true, requiedFaceAttributes);
 
-            faces = await faces_task;
+            faces = faces_task.ToArray();
 
             if (faces != null)
             {
