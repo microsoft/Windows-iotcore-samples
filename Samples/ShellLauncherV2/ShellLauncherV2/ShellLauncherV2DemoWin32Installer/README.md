@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: ShellLauncherV2DemoWin32Installer
 languages:
 - csharp
