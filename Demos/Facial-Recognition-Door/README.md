@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: Building a facial recognition door with Windows 10 IoT Core.
+description: "Building a facial recognition door with Windows 10 IoT Core."
 ---
 
 # Windows IoT Facial Recognition Door

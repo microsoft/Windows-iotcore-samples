@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: IoT Bus tools to interact with Gpio, I2c, Spi and UART.
+description: "IoT Bus tools to interact with Gpio, I2c, Spi and UART."
 ---
 
 # Windows IoT Bus Tools

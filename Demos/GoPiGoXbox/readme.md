@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: Working with the GoPiGoXbox sample.
+description: "Working with the GoPiGoXbox sample."
 ---
 
 # Windows 10 IoT GoPiGoXbox Sample
@@ -45,3 +45,4 @@ Since XboxControllerClient is an universal application, it can be run locally on
 3. On line 23 of `XboxControllerClient\MainPage.xaml.cs`, change the `localhost` to the IP of your Raspberry Pi.
 4. Deploy and run XboxControllerClient on your PC
 5. Use the left thumb stick or the d-pad to control the GoPiGo Robot.
+1. 
