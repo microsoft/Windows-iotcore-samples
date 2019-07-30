@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: system-update-manager
 languages:
   - csharp

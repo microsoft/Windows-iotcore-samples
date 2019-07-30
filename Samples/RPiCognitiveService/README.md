@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: rpi-cognitive-service
 languages:
   - csharp

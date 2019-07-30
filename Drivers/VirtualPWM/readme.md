@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: virtual-pwm-driver
 languages:
   - cpp

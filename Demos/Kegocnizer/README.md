@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: kegocnizer
 languages:
   - csharp
@@ -208,5 +208,4 @@ an 8 ounce glass of beer and then looked at the value the sensor produced, and c
 
 ## Conclusion
 
-The completed product has produced a kegerator that is available on the floor to developers around the clock, while it enforces state law and company policy.  When 
-an event is underway, individuals that have been previously whitelisted may swipe their employee id and receive beer.
+The completed product has produced a kegerator that is available on the floor to developers around the clock, while it enforces state law and company policy.  When an event is underway, individuals that have been previously whitelisted may swipe their employee id and receive beer.

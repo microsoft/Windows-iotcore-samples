@@ -1,11 +1,11 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: navigation-robot
 languages:
   - csharp
 products:
   - windows
-description: Building a navigation robot with Windows 10 IoT Core.
+description: "Building a navigation robot with Windows 10 IoT Core."
 ---
 
 # Windows IoT Building Navigation Robot
@@ -20,4 +20,4 @@ The step-by-step instruction for building this project can be found on https://w
 
 ## Code of Conduct
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments. 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

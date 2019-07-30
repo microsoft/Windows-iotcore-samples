@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: iot-startup-app
 languages: 
   - csharp

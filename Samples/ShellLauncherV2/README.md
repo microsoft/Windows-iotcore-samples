@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: shelllauncher-v2
 languages:
   - csharp

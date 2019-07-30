@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: iot-azure-samples
 languages:
  - csharp

@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: ultrasonic-hcsr04
 languages:
   - csharp

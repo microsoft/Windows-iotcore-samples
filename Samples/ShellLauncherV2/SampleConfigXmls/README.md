@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 urlFragment: SampleConfigXmls
 languages:
 - xml
