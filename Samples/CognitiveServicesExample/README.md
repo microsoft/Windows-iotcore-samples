@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: Create a UWP app that identifies faces in a photo and determine the emotions in those photos using Microsoft's Cognitive Services API.
+description: Create a UWP app that identifies faces in a photo and determine the emotions in those photos using Microsoft's Cognitive Services API and Windows 10 IoT Core.
 ---
 
 # Cognitive Services
