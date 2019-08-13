@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: Building a coffee maker that is controllable with your phone using Windows 10 IoT Core.
+description: Building a coffee maker that is controllable with your phone.
 ---
 
 # Raspberry Coffee
