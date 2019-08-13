@@ -2,7 +2,7 @@ Windows 10 IoT Core Service Sample
 ==============
 This sample creates a simple shared host service for Windows 10 IoT Core.
 
-###Usage
+### Usage
 1. Download this sample from [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
 2. Open IotCoreService.sln, select the appropriate platform and build the project.  The path containing IotCoreService.dll will be displayed in your Visual Studio Output view.  It will look something like this: IotCoreService.vcxproj -> D:\samples-develop\IotCoreService\ARM\Debug\IotCoreService.dll.
 3. Copy IotCoreService.dll to your device.  You can connect and make modifications to your device when it is running by opening Windows Explorer and entering \\<IP address or device name>\C$\Windows\System32.
