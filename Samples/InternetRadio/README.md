@@ -5,16 +5,14 @@ languages:
   - cpp
 products:
   - windows
-description: Build a streaming audio device.
+description: Build a streaming audio device for Windows 10 IoT Core.
 ---
 
-# Internet Radio
+# InternetRadio
 
-These are the available versions of this Windows 10 IoT Core sample:
+**Important!** After cloning this project you must remember to initialize the submodules to be able to build.
+This is done by running the following commands:
 
-*	[CPP](./CPP/README.md)
-
-## Additional resources
-* [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
-
-This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
+* change directory into the root of the git repository
+* git submodule init
+* git submodule update
