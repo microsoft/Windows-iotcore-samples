@@ -106,5 +106,3 @@ ___
 1. Having successfully deployed and debugged your first UWP application, create a Release version by simply changing the Visual Studio toolbar configuration dropdown from **Debug** to **Release**.  You can now build and deploy your app to your device by selecting **Build \| Rebuild Solution and Build \| Deploy Solution**.
 
 1. Congratulations! You just deployed your first UWP application to a device running IoT Core!
-
-{% include_relative IotStartupContent.md %}
