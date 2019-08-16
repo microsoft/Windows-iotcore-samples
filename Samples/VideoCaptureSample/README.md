@@ -1,3 +1,13 @@
+---
+page_type: sample	
+urlFragment: video-capture	
+languages:	
+  - csharp	
+products:	
+  - windows	
+description: Initialize a video capture device, record video to a file, preview video feed, and playback recorded video with Windows 10 IoT Core.
+---
+
 # Video Capture Sample
 
 Initialize a video capture device, record video to a file, preview video feed, and playback recorded video.
