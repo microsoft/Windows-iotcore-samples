@@ -1,9 +1,4 @@
-Windows 10 IoT Core sample code
-===============
-
-## How to download:
-
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
+# Memory Status
 
 ### Design
 
