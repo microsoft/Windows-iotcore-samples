@@ -5,7 +5,7 @@ languages:
   - cpp
 products:
   - windows
-description: "An app service to blink an LED and a client app to call it."
+description: An app service to blink an LED and a client app to call it with Windows 10 IoT Core.
 ---
 
 # Create A Virtual Audio Microphone Array For Your Windows 10 IoT Core Device
