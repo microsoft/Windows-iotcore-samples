@@ -18,7 +18,7 @@ Upon executing this sample, you'll have learned how to measure temperature and p
 
 [Each pin on this map](https://adafruitsample.azurewebsites.net/cardViewer?lesson=203) is another maker that has run this sample. Zoom around to see where they are and deploy the sample to put your pin on the map!
 
-![weather-station](../../../Resources/images/AdafruitStarterPack/WeatherStation.jpg)
+![weather-station](../../Resources/images/AdafruitStarterPack/WeatherStation.jpg)
 
 ### Click [here](https://www.hackster.io/windows-iot/weather-station) to get started!
 
