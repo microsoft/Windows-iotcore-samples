@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: Communicate between a desktop and an IoT device over a serial interface.
+description: Communicate between a desktop and a Windows 10 IoT Core device over a serial interface.
 ---
 
 # Serial UART 
