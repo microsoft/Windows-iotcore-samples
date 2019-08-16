@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: Use System Update Manager to control system updates.
+description: Use System Update Manager to control system updates with Windows 10 IoT Core.
 ---
 
 # System Update Manager
