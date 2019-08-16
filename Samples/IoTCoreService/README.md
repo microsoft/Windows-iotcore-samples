@@ -8,8 +8,8 @@ products:
 description: A simple shared host service for Windows 10 IoT Core.
 ---
 
-Windows 10 IoT Core Service Sample
-==============
+# Windows 10 IoT Core Service Sample
+
 This sample creates a simple shared host service for Windows 10 IoT Core.
 
 ### Usage
