@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: Connect a rotary potentiometer and LED to your IoT Core device.
+description: Connect a rotary potentiometer and LED to your Windows 10 IoT Core device.
 ---
 
 # Potentiometer sensor
