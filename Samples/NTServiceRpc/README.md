@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: This sample demonstrates the use of a NT service with an UWP app
+description: This sample demonstrates the use of a NT service with an UWP app and Windows 10 IoT Core.
 ---
 
 # NT Service example
