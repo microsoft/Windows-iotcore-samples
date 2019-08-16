@@ -10,8 +10,6 @@ description: Create a console app that monitors memory usage on devices running 
 
 # Memory Status Monitor
 
-### Design
-
 This sample is intended to show how to create a console application that can be used to query the memory usage on your Windows IoT Core device (Raspberry Pi 2 or 3, Up Squared, or a DragonBoard). Please note that you need to compile the project for ARM for Raspberry Pi 2 or 3 or DragonBoard and x86 for Up Squared.
 
 ### Usage
