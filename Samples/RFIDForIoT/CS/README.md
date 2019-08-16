@@ -4,13 +4,11 @@ In this sample, we will demonstrate how to use a relatively inexpensive device a
 Keep in mind that the GPIO APIs are only available on Windows 10 IoT Core, so this sample cannot run on your desktop.
 
 This is a headed sample. To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).
+
+
 ## Load the project in Visual Studio
 
-***
-
 ## Connect the MFRC522 to your Windows 10 IoT Core device
-
-***
 
 You'll need a few components:
 
@@ -34,13 +32,13 @@ For reference, here is the pinout of the RPi2 and RPi3:
 
 ## Deploy your app
 
-1.  With the application open in Visual Studio, set the architecture in the toolbar dropdown. We use `ARM` since we used the Raspberry Pi, but if you’re building for MinnowBoard Max, remember to select `x86`.
+1.  With the application open in Visual Studio, set the architecture in the toolbar dropdown. We use `ARM` since we used the Raspberry Pi, but if youâ€™re building for MinnowBoard Max, remember to select `x86`.
 
 2.  Next, in the Visual Studio toolbar, click on the `Local Machine` dropdown and select `Remote Machine`
 
     ![RemoteMachine Target](../../../Resources/images/HelloWorld/cs-remote-machine-debugging.png)
 
-3.  At this point, Visual Studio will present the **Remote Connections** dialog. If you previously used [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) to set a unique name for your device, you can enter it here (in this example, we’re using **my-device**). Otherwise, use the IP address of your Windows IoT Core device. After entering the device name/IP select `Universal` for Windows Authentication, then click **Select**.
+3.  At this point, Visual Studio will present the **Remote Connections** dialog. If you previously used [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) to set a unique name for your device, you can enter it here (in this example, weâ€™re using **my-device**). Otherwise, use the IP address of your Windows IoT Core device. After entering the device name/IP select `Universal` for Windows Authentication, then click **Select**.
 
     ![Remote Machine Debugging](../../../Resources/images/HelloWorld/cs-remote-connections.PNG)
 
@@ -56,7 +54,7 @@ For reference, here is the pinout of the RPi2 and RPi3:
 
 	Congratulations! You just read an ID off of a RFID card.
 
-	## Let’s look at the code
+	## Letâ€™s look at the code
 
 	This sample app relies on MFRC522 library written by a github user Michiel Lowijs. The original library can be found here [MFRC522](https://github.com/mlowijs/mfrc522-netmf).
 	We have adapted this library to Universal Windows platform. The adapted library can be found in the project directory by the name Mfrc522Lib.
