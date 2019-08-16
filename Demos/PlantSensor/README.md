@@ -5,8 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: Building a plant sensor with Windows 10 IoT Core.
----
+description: Building a plant sensor.
 
 # Windows IoT Plant Sensor
 
