@@ -34,19 +34,19 @@ You will need the following components :
 
 Let's start by wiring up the components on the breadboard as shown in the diagram below.
 
-![Breadboard connections](../../../Resources/images/RGBLED/RGBLED_bb.png)
+![Breadboard connections](../../Resources/images/RGBLED/RGBLED_bb.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here is the schematic:
 
-![Circuit Schematic](../../../Resources/images/RGBLED/RGBLED-schematic_schem.png)
+![Circuit Schematic](../../Resources/images/RGBLED/RGBLED-schematic_schem.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 The pinout of the Tri-color LED is shown below and can be found in the [datasheet](http://www.kingbrightusa.com/images/catalog/SPEC/WP154A4SUREQBFZGC.pdf)
 
-![Tri-color LED Pinout](../../../Resources/images/RGBLED/RGBLED_Pinout.png)
+![Tri-color LED Pinout](../../Resources/images/RGBLED/RGBLED_Pinout.png)
 
 #### Connecting the Tri-color LED
 
@@ -68,7 +68,7 @@ The pinout of the Tri-color LED is shown below and can be found in the [datashee
 
 Here is the pinout of the Raspberry Pi 2 and 3:
 
-![Raspberry Pi 2 and 3 pinout](../../../Resources/images/PinMappings/RP2_Pinout.png)
+![Raspberry Pi 2 and 3 pinout](../../Resources/images/PinMappings/RP2_Pinout.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
