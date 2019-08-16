@@ -4,8 +4,9 @@ urlFragment: shelllauncher-v2
 languages:
   - csharp
 products:
--windows
-description: sample apps demonstrating Shell Launcher V2 on Windows 10 Enterprise in the next feature update to Windows 10
+  - windows
+description: Sample apps demonstrating Shell Launcher V2 on Windows 10 Enterprise in the next feature update to Windows 10.
+---
 
 **Some information relates to prereleased product which may be substantially modified before it's commercially released. Microsoft makes no warranties, express or implied, with respect to the information provided here.**
 

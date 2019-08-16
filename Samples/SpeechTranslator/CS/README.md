@@ -1,4 +1,4 @@
-# Build the SpeechTranslator Project
+# Build the Speech Translator Project
 
 ### Component Lists
 - An IoT Device (e.g. 2 Raspberry Pi 2 or 3 boards)

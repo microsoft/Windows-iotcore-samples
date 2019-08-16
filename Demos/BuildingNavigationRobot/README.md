@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: "Building a navigation robot with Windows 10 IoT Core."
+description: Building a navigation robot.
 ---
 
 # Windows IoT Building Navigation Robot

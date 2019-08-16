@@ -5,7 +5,7 @@ languages:
   - cpp
 products:
   - windows
-description: "Building a pet recognition door with Windows 10 IoT Core."
+description: Building a pet recognition door.
 ---
 
 # Pet Recognition Door

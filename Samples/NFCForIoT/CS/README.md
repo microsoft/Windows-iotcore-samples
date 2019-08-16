@@ -4,7 +4,7 @@ On Windows 10 IoT Core, you can communicate with the hardware manually by using 
 
 In this sample, we will demonstrate how to set up the NXP NFC SBC Kit and how to communicate with an NXP NTAG21x.
 
-# Prerequisites 
+## Prerequisites 
 In order to build and test this sample, you will need the following:
 
   * [Visual Studio 2015 Update 3](http://go.microsoft.com/fwlink/?LinkId=691129).
