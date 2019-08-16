@@ -1,7 +1,5 @@
 # Push button
 
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip).
-
 In this sample, we connect a push button to your Raspberry Pi 2 or 3, Up Squared*, or the DragonBoard 410c and use it to control an LED. We use GPIO interrupts to detect when the button is pressed and toggle the LED in response.
 
 *The Up Squared should be used in place of the Minnowboard Max. We are in the process of updating our documentation to reflect this change.  
