@@ -5,7 +5,7 @@ languages:
   - csharp
 products:
   - windows
-description: A sample that makes an LED blink red, green, and blue.
+description: A sample that makes an LED blink red, green, and blue with Windows 10 IoT Core.
 ---
 
 # RGB LED Sample
