@@ -1,21 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10"
-  IgnorableNamespaces="uap mp iot">
+  IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="WeatherStation-uwp"
+    Name="47d77310-4819-4b33-aabc-2324f2167015"
     Publisher="CN=MSFT"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="891bba20-d8f1-4138-baf5-a3d07e9fe96e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="47d77310-4819-4b33-aabc-2324f2167015" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>WeatherStation</DisplayName>
+    <DisplayName>WeatherDataReporter</DisplayName>
     <PublisherDisplayName>MSFT</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -29,23 +28,18 @@
   </Resources>
 
   <Applications>
-    <Application Id="App">
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="WeatherDataReporter.App">
       <uap:VisualElements
-        DisplayName="WeatherStation"
+        DisplayName="WeatherDataReporter"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="WeatherStation"
-        BackgroundColor="transparent"
-        AppListEntry="none">
+        Description="WeatherDataReporter"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
-      <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="WeatherStation.StartupTask">
-          <BackgroundTasks>
-            <iot:Task Type="startup" />
-          </BackgroundTasks>
-        </Extension>
-      </Extensions>
     </Application>
   </Applications>
 
