@@ -1,4 +1,14 @@
-# Azure Weather Station
+---
+page_type: sample
+urlFragment: weather-station-pbi
+languages:
+  - csharp
+products:
+  - windows
+description: Communicate with an I2C/SPI based temperature and pressure sensor with Windows 10 IoT Core.
+---
+
+# Azure Weather Station with Power BI
 
 ## Adapted from [here](https://blogs.msdn.microsoft.com/iot/2016/01/26/using-power-bi-to-visualize-sensor-data-from-windows-10-iot-core/).
 
