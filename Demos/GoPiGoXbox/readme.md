@@ -21,14 +21,14 @@ Since XboxControllerClient is an universal application, it can be run locally on
 ## Requirements
 
 1. Raspberry Pi 2 or Raspberry Pi 3
-2. Dexter Industries GoPiGo Kit (http://www.dexterindustries.com/GoPiGo/)
+2. [Dexter Industries GoPiGo Kit](http://www.dexterindustries.com/GoPiGo/)
 3. Xbox 360 controller for PC (wired or wireless)
 
 ## Setup Instructions
 
-1. Set up your Raspberry Pi 2 or 3 running [Windows 10 IoT](https://developer.microsoft.com/en-us/windows/iot/getstarted)
-2. Assemble your GoPiGo kit following Dexter Industries [instructions](http://www.dexterindustries.com/GoPiGo/getting-started-with-your-gopigo-raspberry-pi-robot-kit-2/1-assemble-the-gopigo-2/assemble-gopigo-raspberry-pi-robot/1-assemble-the-gopigo2/)
-3. Setup your PC based on the instructions [here](https://developer.microsoft.com/en-us/windows/iot/win10/samples/python)
+1. Set up your Raspberry Pi 2 or 3 running [Windows 10 IoT](https://docs.microsoft.com/en-us/windows/iot-core/tutorials/rpi).
+2. Assemble your GoPiGo kit following Dexter Industries [these instructions](http://www.dexterindustries.com/GoPiGo/getting-started-with-your-gopigo-raspberry-pi-robot-kit-2/1-assemble-the-gopigo-2/assemble-gopigo-raspberry-pi-robot/1-assemble-the-gopigo2/).
+3. Setup your PC based on the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/developer-tools/python).
 4. Power on your Raspberry Pi along with the GoPiGo Robot.  
 5. Deploy and run the GoPiGoXboxWebService application to the Raspberry Pi.
 
@@ -45,4 +45,3 @@ Since XboxControllerClient is an universal application, it can be run locally on
 3. On line 23 of `XboxControllerClient\MainPage.xaml.cs`, change the `localhost` to the IP of your Raspberry Pi.
 4. Deploy and run XboxControllerClient on your PC
 5. Use the left thumb stick or the d-pad to control the GoPiGo Robot.
-1. 
