@@ -16,7 +16,7 @@ from the DHT11.
 For a description of the protocol used by the DHT11, see
 [this article](http://embedded-lab.com/blog/?p=4333). The datasheet is [here](http://akizukidenshi.com/download/ds/aosong/DHT11.pdf).
 
-![Screenshot](../../Resources/images/GpioOneWire/GpioOneWireScreen1.png)
+![Screenshot](../../../Resources/images/GpioOneWire/GpioOneWireScreen1.png)
 
 ### Requirements
 
@@ -34,12 +34,12 @@ You will need the following hardware to run this demo:
 
 Connect the components as shown in the following diagram:
 
-![Schematic](../../Resources/images/GpioOneWire/GpioOneWireSchematic.png)
-![Wiring Diagram](../../Resources/images/GpioOneWire/GpioOneWireFritz.png)
+![Schematic](../../../Resources/images/GpioOneWire/GpioOneWireSchematic.png)
+![Wiring Diagram](../../../Resources/images/GpioOneWire/GpioOneWireFritz.png)
 
 ### Running the Demo
 
- 1. Clone the [Microsoft/Windows-iotcore-samples git repository](https://github.com/Microsoft/Windows-iotcore-samples/blob/develop/Samples/GpioOneWire).
+ 1. Clone the [Microsoft/Windows-iotcore-samples git repository](https://github.com/microsoft/Windows-iotcore-samples/tree/master/Samples/GpioOneWire).
     and open GpioOneWire/GpioOneWire.vcxproj in Visual Studio 2017.
  1. Right click on the project in the solution explorer, and click `Properties`.
  1. In the project properties dialog, select the `Debugging` tab.
