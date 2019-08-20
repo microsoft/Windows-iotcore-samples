@@ -2,16 +2,16 @@
 IoTBlockly leverages various pieces of open source software to create a "block" development experience right on your Raspberry Pi.
 
 <ol>
-<li>[Google Blockly](https://developers.google.com/blockly) for the block editor.</li>
-<li>[Chakra JavaScript engine](https://github.com/Microsoft/Chakra-Samples) to execute JavaScript snippets.</li>
-<li>Emmellsoft.IoT.Rpi.SenseHat library to control the [Raspberry Pi Sense Hat](https://github.com/emmellsoft/RPi.SenseHat).</li>
+<li> [Google Blockly](https://developers.google.com/blockly) for the block editor.</li>
+<li> [Chakra JavaScript engine](https://github.com/Microsoft/Chakra-Samples) to execute JavaScript snippets.</li>
+<li> Emmellsoft.IoT.Rpi.SenseHat library to control the [Raspberry Pi Sense Hat](https://github.com/emmellsoft/RPi.SenseHat).</li>
 </ol>
 
 ## Requirements:
 <ol>
 <li>Raspberry Pi 2 or Raspberry Pi 3</li>
-<li>[Raspberry Pi Sense Hat]((https://www.raspberrypi.org/products/sense-hat)</li>
-<li>Windows 10 Core installed and running on the Raspberry Pi</li>
+<li> [Raspberry Pi Sense Hat](https://www.raspberrypi.org/products/sense-hat)</li>
+<li> Windows 10 Core installed and running on the Raspberry Pi</li>
 </ol>
 
 ## Usage
