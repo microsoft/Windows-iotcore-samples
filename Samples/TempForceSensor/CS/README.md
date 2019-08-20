@@ -32,7 +32,7 @@ Below are the pinouts of the MCP3002 and MCP3208 analog-to-digital converters (A
 
 * Raspberry Pi 2 and 3
 
- [Raspberry Pi 2 Pinout](../../../Resources/images/PinMappings/RP2_Pinout.png)
+ ![Raspberry Pi 2 Pinout](../../../Resources/images/PinMappings/RP2_Pinout.png)
 
 ## Parts Connection
 
