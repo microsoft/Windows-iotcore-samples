@@ -211,10 +211,10 @@ The tool is available as part of the *Windows 10 IoT Utilities* on [GitHub](http
 
 To use the tool:
 
-* Clone or download a zip of the *Windows 10 IoT Utilities* from [GitHub](https://github.com/ms-iot/iot-utilities)
-* Open and build the solution under *ProcessLauncherWhitelist* 
-* Copy the executable to your device using [FTP](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ftp)
-* Run it on the device using [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh) or [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell)
+* Clone or download a zip of the *Windows 10 IoT Utilities* from [GitHub](https://github.com/ms-iot/iot-utilities).
+* Open and build the solution under *ProcessLauncherWhitelist*.
+* Copy the executable to your device using [FTP](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ftp).
+* Run it on the device using [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh) or [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell).
 
 ![Proess Launcher Configuration ](../../Resources/images/ProcessLauncherSample/ProcessLauncherWhiteListConfigTool.png)
 
