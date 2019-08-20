@@ -1,11 +1,8 @@
-# Get Started
-Build a simple web browser for Windows 10 IoT Core.
-
-## IoT Browser Sample
+# IoT Browser Sample
 
 We'll create a simple web browser application for your your Windows 10 IoT Core device.
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).
 
 As this sample uses just standard Windows UWP features, it can also run on your desktop.
 
