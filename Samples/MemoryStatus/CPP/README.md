@@ -6,9 +6,9 @@ This sample is intended to show how to create a console application that can be 
 
 ### Usage
 
-1. Download this sample
-2. Download the [Windows 10 IoT Core Project Templates for Visual Studio](https://marketplace.visualstudio.com/items?itemName=MicrosoftIoT.WindowsIoTCoreProjectTemplatesforVS15) 
-3. Open the project in Visual Studio
+1. Download this sample.
+2. Download the [Windows 10 IoT Core Project Templates for Visual Studio](https://marketplace.visualstudio.com/items?itemName=MicrosoftIoT.WindowsIoTCoreProjectTemplatesforVS15). 
+3. Open the project in Visual Studio.
 
 ### To create you own project
 * Create a new project (File | New Project...). In the 'New Project' dialog, navigate to 'Windows IoT Core' as shown below (in the left pane in the dialog: Templates | Visual C++ | Windows | Windows IoT Core).
@@ -192,8 +192,3 @@ From the Configuration Manager, ensure that the Deploy checkbox is selected for 
 
 ![Stop remote debugger](../../../Resources/images/MemoryStatus/device_portal_stop_debugger.png)
 
-## Additional resources
-* [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
-* [Documentation for all samples](https://developer.microsoft.com/en-us/windows/iot/samples)
-
-This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
