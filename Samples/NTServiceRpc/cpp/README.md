@@ -34,13 +34,6 @@ with the definition of the RPC interface (functions and its arguments).
 or stop other NT services.
 * **NTServiceRpc**: Sample UWP app consuming the NT service.
 
-## Summary
-
-* [ACLs to limit service access](docs/ACL.md)
-* [RPC server implementation](docs/Server.md)
-* [Client connection to RPC](docs/Client.md)
-* [Deploying in Windows for IoT](docs/IoT.md)
-
 ## Further information
 
 * [Add a service component to Windows Universal OEM Packages](https://docs.microsoft.com/en-us/windows-hardware/manufacture/iot/create-packages#add-a-service-component)
