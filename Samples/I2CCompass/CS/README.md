@@ -1,11 +1,11 @@
-﻿# I2C Compass
+# I2C Compass
 
 This sample uses I2C on Windows IoT Core to communicate with an HMC5883L Magnetometer device.
 
 ## Set up your hardware
-Please reference the datasheet for the HMC3883L found [here](../HMC5883L_3-Axis_Digital_Compass_IC.pdf).
+Please reference the datasheet for the HMC3883L found [here](https://github.com/microsoft/Windows-iotcore-samples/blob/develop/Samples/I2CCompass/HMC5883L_3-Axis_Digital_Compass_IC.pdf).
 
-For more information on compass heading using magnetometers please see [here](../AN203_Compass_Heading_Using_Magnetometers.pdf).
+For more information on compass heading using magnetometers please see [here](https://github.com/microsoft/Windows-iotcore-samples/blob/develop/Samples/I2CCompass/AN203_Compass_Heading_Using_Magnetometers.pdf).
 
 ## Load the project in Visual Studio
 You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip). Extract the zip to your disk, then open the `Samples\I2CCompass\CS\I2CCompass.sln` project from Visual Studio.
