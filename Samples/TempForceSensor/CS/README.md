@@ -60,7 +60,7 @@ With each model of Raspberry Pi 2 or 3, the pin layout might be a little differe
 
 Detailed connection:
 
-![Overall Schematics](../../../Resources/images/TempSensor/OverallCon_mcp3208.PNG )
+![Overall Schematics](../../../Resources/images/TempSensor/OverallCon_mcp3208png)
 
 With each model of Raspberry Pi 2 or 3, the pin layout might be a little different.
 But the pin connection with MCP3208 should be as below:
