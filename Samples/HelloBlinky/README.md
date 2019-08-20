@@ -29,7 +29,7 @@ You’ll need a few components:
 
 *   a LED (any color you like)
 
-*   a 220 ? resistor for the Raspberry Pi 2, Raspberry Pi 3 and the MinnowBoard Max or a 330 ? resistor for the DragonBoard
+*   a 220 Ω resistor for the Raspberry Pi 2, Raspberry Pi 3 and the MinnowBoard Max or a 330 Ω resistor for the DragonBoard
 
 *   a breadboard and a couple of connector wires
 

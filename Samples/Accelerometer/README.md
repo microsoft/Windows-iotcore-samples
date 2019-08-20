@@ -15,7 +15,7 @@ However, if you're curious, SparkFun provides a great [tutorial on SPI](https://
 
 *The Up Squared should be used in place of the Minnowboard Max. We are in the process of updating our documentation to reflect this change.   
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).
 
 ### Load the project in Visual Studio
 
@@ -31,7 +31,7 @@ You'll need a few components:
 
 Visit the **Raspberry Pi 2 or 3/MinnowBoard Max** sections below depending on which device you have:
 
-![Electrical Components](../../../Resources/images/SPIAccelerometer/components.png)
+![Electrical Components](../../Resources/images/SPIAccelerometer/components.png)
 
 #### Raspberry Pi 2 or 3
 If you have a Raspberry Pi 2 or 3, we need to hook up power, ground, and the SPI lines to the accelerometer.
@@ -52,13 +52,13 @@ The ADXL345 breakout board has 8 IO pins, connect them as follows:
 
 Here are the connections shown on a breadboard:
 
-![Breadboard connections](../../../Resources/images/SPIAccelerometer/breadboard_assembled_rpi2.png)
+![Breadboard connections](../../Resources/images/SPIAccelerometer/breadboard_assembled_rpi2.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here are the schematics:
 
-![Accelerometer schematics](../../../Resources/images/SPIAccelerometer/schematics_rpi2.png)
+![Accelerometer schematics](../../Resources/images/SPIAccelerometer/schematics_rpi2.png)
 
 #### MinnowBoard Max
 If you have a MinnowBoard Max, we need to hook up power, ground, and the SPI lines to the accelerometer.
@@ -79,13 +79,13 @@ The ADXL345 breakout board has 8 IO pins, connect them as follows:
 
 Here are the connections shown on a breadboard:
 
-![Breadboard connections](../../../Resources/images/SPIAccelerometer/breadboard_assembled_mbm.png)
+![Breadboard connections](../../Resources/images/SPIAccelerometer/breadboard_assembled_mbm.png)
 
 <sub>*Image made with [Fritzing](http://fritzing.org/)*</sub>
 
 Here are the schematics:
 
-![Accelerometer schematics](../../../Resources/images/SPIAccelerometer/schematics_mbm.png)
+![Accelerometer schematics](../../Resources/images/SPIAccelerometer/schematics_mbm.png)
 
 #### DragonBoard 410c
 
@@ -116,11 +116,11 @@ The Voltage-Level Translator breakout board pins are connected to the DragonBoar
 
 The following diagram shows what your breadboard might resemble with the circuit assembled:
 
-![DragonBoard SPI Accelerometer Breadboard](../../../Resources/images/SPIAccelerometer/breadboard_assembled_db410c.png)
+![DragonBoard SPI Accelerometer Breadboard](../../Resources/images/SPIAccelerometer/breadboard_assembled_db410c.png)
 
 A schematic for the circuit is:
 
-![DragonBoard API Accelerometer Schematic](../../../Resources/images/SPIAccelerometer/schematics_db410c.png)
+![DragonBoard API Accelerometer Schematic](../../Resources/images/SPIAccelerometer/schematics_db410c.png)
 
 ### Deploy and run the app
 
@@ -140,7 +140,7 @@ Follow the instructions to [setup remote debugging and deploy the app](https://d
  This is normal and is due to minute vibrations and electrical noise. If you tilt or shake the sensor, you should see the values change in response. Note that this sample configures the device in 4G mode,
 so you wont be able to see G readings higher than 4Gs.
 
-![SPI Accelerometer running](../../../Resources/images/SPIAccelerometer/spiaccelerometer_screenshot.png)
+![SPI Accelerometer running](../../Resources/images/SPIAccelerometer/spiaccelerometer_screenshot.png)
 
 Congratulations! You've connected an SPI accelerometer.
 

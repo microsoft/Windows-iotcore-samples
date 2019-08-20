@@ -1,4 +1,4 @@
-# “IoT WiFi Onboarding with AllJoyn”
+# IoT WiFi Onboarding with AllJoyn
 
 This sample illustrates a technique for remotely joining your Headless IoT Device (an IoT device without a display) to your home Wi-Fi network.  To accomplish this, the sample starts a Wi-Fi Software Access Point (Soft-AP) on your IoT Device and then starts an AllJoyn Onboarding Producer.  The Soft-AP provides a way for a PC or Smart Phone to remotely connect to your IoT Device, and the AllJoyn Producer provides a service for remotely configuring your IoT Device's Wi-Fi configuration.
 
@@ -28,7 +28,7 @@ This sample illustrates a technique for remotely joining your Headless IoT Devic
 **Note:** These steps are not required for newer Windows 10 IoT Builds.
 
     1. Temporarily connect your Iot Device to a wired LAN connection shared with your development system.
-    2. Copy or clone samples from [here](https://github.com/ms-iot/samples) to your development system.
+    2. Copy or clone samples to your development system.
     3. Build the IotOnboarding Solution (c:\samples\IotOnboarding\IotOnboarding.sln) for your Iot Device's platform (e.g. ARM, x86, x64).
     4. Deploy the IotOnboarding Solution to your IoT Device.
     5. Disconnect your IoT Device from the wired LAN connection.
@@ -37,7 +37,7 @@ This sample illustrates a technique for remotely joining your Headless IoT Devic
 1.  Ensure your Wi-Fi Router is on and configured to allow a network connection.
 
 ### Step 3:  Laptop Setup
-1. Download and unzip the Windows Universal Samples source from here  [here](https://github.com/Microsoft/Windows-universal-samples).
+1. Download and unzip the Windows Universal Samples source from [here](https://github.com/Microsoft/Windows-universal-samples).
 2. Within the Windows Universal Sample, find the AllJoyn Consumer Experiences solution (\samples\AllJoyn\ConsumerExperiences\cs\AllJoynConsumerExperiences.sln) and open with Visual Studio.  
 **Note:** This sample will be used to onboard your IoT Device, however an alternate AllJoyn Onboarding Consumer may be used if desired.
 3. Build the AllJoyn Consumer Experiences Sample to run on your laptop. (For example, select Release/x64, Release/x86 or Release/Arm as necessary)
@@ -89,3 +89,4 @@ The Soft-AP and AllJoyn Onboarding settings are ignored when a Wi-Fi profile is 
 Soft-AP networks default to "Public" network types.  This means that certain inbound connections will be blocked by the Windows Firewall and consequently the AllJoyn Onboarding Producer contained within the IotOnboarding sample will not be discoverd by an AllJoyn Consumer.  To ensure the AllJoyn Producer is discoverable it may be necessary to configure the Windows Firewall to allow UDP and TCP inbound connections for the specific AllJoyn ports.
 
 When embedding your own version of AllJoyn Onboarding in a commercial product, the firewall can be configured as part of your device's custom provisioning package (see [Adding A Provisioning Package to An Image](https://docs.microsoft.com/en-us/windows-hardware/manufacture/iot/add-a-provisioning-package-to-an-image) and the [firewall configuration](https://docs.microsoft.com/en-us/windows/configuration/wcd/wcd-firewallconfiguration) setting).
+

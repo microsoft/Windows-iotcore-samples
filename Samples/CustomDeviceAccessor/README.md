@@ -35,7 +35,7 @@ Before we can access the COM port, we need to add the `PortName` registry value 
     Reg add "HKLM\SYSTEM\ControlSet001\Enum\ACPI\PNP0501\1\Device Parameters" /v PortName /t REG_SZ /d COM1
     Devcon restart acpi\pnp0501
 
-If you now run `mincomm -list`, you should see ACPI\PNP0501\1 in the list of COM ports. Mincomm is available at [https://github.com/ms-iot/samples/tree/develop/MinComm](https://github.com/ms-iot/samples/tree/develop/MinComm).
+If you now run `mincomm -list`, you should see ACPI\PNP0501\1 in the list of COM ports. Mincomm is available at [here](https://github.com/ms-iot/samples/tree/develop/MinComm).
 
 ## Enabling access to desktop APIs in a C++/CX UWP Application
 
@@ -210,7 +210,6 @@ Every device object in the system has an associated security descriptor. The sec
 </table>
 
 A number of common security descriptor strings are defined in wdmsec.h.
-More SID string constants can be found on [msdn](https://msdn.microsoft.com/en-us/library/windows/desktop/aa379602%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396).
 
 To make a device accessible to UWP applications, you need to grant access to the All Application Packages security principle, which is represented by the SID string "AC".  The following SDDL will grant GENERIC_ALL permissions to SYSTEM, built-in administrators, authenticated users, and appcontainer applications:
 
@@ -220,7 +219,7 @@ If you control the code of the driver you wish to access, you can programaticall
 
 If you do not control the driver code for your device, you can override the SDDL for any device using the registry. If a registry value named "Security" is present in the hardware registry key for a device, the system will use the specified security descriptor instead of the one supplied by the driver. We will override the security descriptor for the COM port with one that grants access to all appcontainer applications.
 
-First, we need to convert the SDDL string to its binary representation. We can do this with [powershell](http://blogs.technet.com/b/heyscriptingguy/archive/2011/08/09/use-powershell-to-convert-sddl-to-binary-format.aspx). Open a powershell prompt and run the following commands:
+First, we need to convert the SDDL string to its binary representation. We can do this with [PowerShell](http://blogs.technet.com/b/heyscriptingguy/archive/2011/08/09/use-powershell-to-convert-sddl-to-binary-format.aspx). Open a PowerShell prompt and run the following commands:
 
 ``` C#
     $a = ([wmiclass]"Win32_SecurityDescriptorHelper").SDDLToBinarySD("D:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GA;;;AU)(A;;GA;;;AC)").BinarySD | % { '{0:X}' -f $_ }
@@ -260,7 +259,7 @@ The security identifier "AC" identifies all application packages, and will grant
 
 Launch the app and launch process explorer. Open the properties dialog box for the process in process explorer and go to the Security tab. There you will see all of the security identifiers associated with the process's token. The SID with the AppContainer flag set is the app-specific SID.
 
-![Process Explorer](../../../Resources/images/DeviceIoControlUwp-AppContainerSid.png)
+![Process Explorer](../../Resources/images/DeviceIoControlUwp-AppContainerSid.png)
 
 You can replace "AC" with this SID in the above SDDL to generate an SDDL that grants access to that specific application only. For example, the following SDDL would grant access only to the application shown above:
 

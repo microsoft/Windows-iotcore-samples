@@ -1,13 +1,3 @@
----
-page_type: sample
-urlFragment: navigation-robot
-languages:
-  - csharp
-products:
-  - windows
-description: Building a navigation robot.
----
-
 # Windows IoT Building Navigation Robot
 
 The Windows IoT Building Navigation Robot is a robot that will navigate a person to a conference room or office in a building.  The robot consists of an iRobot Create 2 with a LIDAR, screen, battery, and a device running Windows 10 IoT Core mounted on top.

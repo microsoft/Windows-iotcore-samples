@@ -27,7 +27,7 @@ Even if you download the sample, code, you'll need to follow the steps in **Comp
 
     ![App Template Location](../../../Resources/images/OpenCV/new_vcpp.PNG)
 
-Note: If this is the first project you create, Visual Studio will likely prompt you to enable <a href='https://msdn.microsoft.com/library/windows/apps/xaml/dn706236.aspx'>developer mode for Windows 10</a>."
+Note: If this is the first project you create, Visual Studio will likely prompt you to enable developer mode for Windows 10.
 
 ## Compile the OpenCV Libraries
 ___

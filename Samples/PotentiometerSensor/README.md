@@ -36,7 +36,7 @@ Below are the pinouts of the MCP3002 and MCP3208 ADCs.
 
 | MCP3002                                                              | MCP3008 or MCP3208                                                              |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| ![MCP3002 Pinout](../../../Resources/images/Potentiometer/MCP3002.PNG) | ![MCP3208 Pinout](../../../Resources/images/Potentiometer/MCP3208.PNG) |
+| ![MCP3002 Pinout](../../Resources/images/Potentiometer/MCP3002.PNG) | ![MCP3208 Pinout](../../Resources/images/Potentiometer/MCP3208.PNG) |
 
 ### Raspberry Pi
 

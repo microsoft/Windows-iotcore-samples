@@ -42,11 +42,7 @@ base of the transistor.
 
 # GPIO OneWire DHT11 reader
 
-Note what follows below is a bit out of date-  the latest version on Github is a 2 wire operation requiring pin4 as input and pin 5 as output. Read the link above to GITHUB Code and the readme 
-https://github.com/Microsoft/Windows-iotcore-samples/blob/develop/Samples/GpioOneWire/README.md
-and look at the NEW Schematic schematic.png which requires an extra MOSFET
-
-
+Note what follows below is a bit out of date-  the latest version on Github is a 2 wire operation requiring pin4 as input and pin 5 as output.
 
 This sample shows how to read from the [DHT11](https://www.adafruit.com/product/386)
 from a Universal Windows Application. The DHT11 is a low cost temperature and
@@ -62,7 +58,7 @@ from the DHT11.
 For a description of the protocol used by the DHT11, see
 [this article](http://embedded-lab.com/blog/?p=4333). The datasheet is [here](http://akizukidenshi.com/download/ds/aosong/DHT11.pdf).
 
-![Screenshot](../../../Resources/images/GpioOneWire/GpioOneWireScreen1.png)
+![Screenshot](../../Resources/images/GpioOneWire/GpioOneWireScreen1.png)
 
 ### Requirements
 
@@ -80,8 +76,8 @@ You will need the following hardware to run this demo:
 
 Connect the components as shown in the following diagram:
 
-![Schematic](../../../Resources/images/GpioOneWire/GpioOneWireSchematic.png)
-![Wiring Diagram](../../../Resources/images/GpioOneWire/GpioOneWireFritz.png)
+![Schematic](../../Resources/images/GpioOneWire/GpioOneWireSchematic.png)
+![Wiring Diagram](../../Resources/images/GpioOneWire/GpioOneWireFritz.png)
 
 ### Running the Demo
 

@@ -6,7 +6,7 @@ This sample requires the [Windows Insider Preview SDK](https://www.microsoft.com
 
 ## System Update Manager Overview
 
-![System Update Flow](https://github.com/paulmon/Windows-iotcore-samples/blob/system-update-manager/Resources/images/SystemUpdateManager/SystemUpdateFlow.PNG)
+![System Update Flow](../../../Resources/images/SystemUpdateManager/SystemUpdateFlow.PNG)
 
 The system update process has the following states:
 

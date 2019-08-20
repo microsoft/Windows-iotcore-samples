@@ -42,7 +42,7 @@ Let's start by wiring up the components on a breadboard. Visit the corresponding
 
 | Breadboard Diagram                                                                        | Schematic                                                                          |
 | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| ![Breadboard connections](../../../Resources/images/PushButton/RPi2_PushButton_bb.png)      | ![Circuit Schematic](../../../Resources/images/PushButton/RPi2_PushButton_schem.png) |
+| ![Breadboard connections](../../Resources/images/PushButton/RPi2_PushButton_bb.png)      | ![Circuit Schematic](../../Resources/images/PushButton/RPi2_PushButton_schem.png) |
 
 <sub>*Images made with [Fritzing](http://fritzing.org/)*</sub>
 
