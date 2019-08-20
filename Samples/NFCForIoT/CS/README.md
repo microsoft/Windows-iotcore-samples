@@ -9,14 +9,13 @@ In order to build and test this sample, you will need the following:
 
   * [Visual Studio 2015 Update 3](http://go.microsoft.com/fwlink/?LinkId=691129).
   * [NXP Explore-NFC Kit](http://www.digikey.com/products/en?mpart=OM5577&v=568).
-  * Download the [Microsoft Windows 10 IoT Core Samples repository](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) from GitHub, then expand it.
   * [BullsEye NFC NTAG216 Sticker](https://dangerousthings.com/shop/bullseye/) or [xNTi NFC Implant Kit](https://dangerousthings.com/shop/xnti/)
 
 
 ## Set up a Raspberry Pi
 
   1. Before powering on your Raspberry Pi, assemble the NXP Explore-NFC kit, and attach to the Rasberry Pi.
-  1. Use the [Getting Started Guide](https://developer.microsoft.com/en-us/windows/iot/GetStarted) to set up a Raspberry Pi with Windows Build 15007 or later. 
+  1. Set up your Raspberry Pi using the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/tutorials/rpi).
 
 ## Build the ACPI Table.
 In order to assocate the NXP Explore-NFC hardware with the driver, resources need to be allocated for it in the ACPI Table. Included in the sample is a file ```pn71x0.asl```, which 
@@ -35,19 +34,19 @@ needs to be compiled in order to apply it to your Raspberry PI.
   1. Copy the ```ACPITABL.dat``` from the explorer window you opened in the previous section, and copy it to the folder in on the network share you opened in the previous step.
   1. On the network share, navigate to ```c:\data```.
   1. From the Explorer Window which contains the ```ACPITabl.dat```, there is also a file ```pn71x0.inf```. Copy this to ```c:\data``` on the network share.
-  1. Use [SSH](/Docs/SSH) or [Powershell](/Docs/PowerShell) to connect to your device. 
+  1. Use [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh) or [Powershell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) to connect to your device. 
   1. Change directory to ```c:\data``` in the connected session.
   1. Run the command ```devcon dp_add pn71x0.inf```.
   1. Run the command ```shutdown -r -t 0``` to restart the Rasberry PI for the hardware changes to take effect.
 
   
 ## Configure the NFC Service to start automatically
-In order to minimize the number of resources used by IoT Core, the NFC Service does not start by default. To make it start automatically, use [SSH](/Docs/SSH) to connect to the device and then
+In order to minimize the number of resources used by IoT Core, the NFC Service does not start by default. To make it start automatically, use [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh) to connect to the device and then
 
   1. Run ```sc config SEMgrSvc start=auto``` to set this service to autostart on boot.
   1. Run ```sc start SEMgrSvc``` to start it for this session.
   
-If you prefer [Powershell](/Docs/PowerShell) to connect to your device, run the following commands in PowerShell.
+If you prefer [Powershell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell) to connect to your device, run the following commands in PowerShell.
 
   1. ```Set-Service SEMgrSvc -StartupType "Automatic"``` to set this service to autostart on boot.
   1. ```Start-Service SEMgrSvc``` to start it for this session. 
