@@ -32,7 +32,7 @@ Below are the pinouts of the MCP3002 and MCP3208 analog-to-digital converters (A
 
 * Raspberry Pi 2 and 3
 
-  <img src="../../../Resources/images/PinMappings/RP2_Pinout.png" height="400">
+ [Raspberry Pi 2 Pinout](../../../Resources/images/PinMappings/RP2_Pinout.png)
 
 ## Parts Connection
 
@@ -74,8 +74,6 @@ But the pin connection with MCP3208 should be as below:
 - MCP3208: DGND - GND on Raspberry Pi 2 or 3
 
 ## Look at the code
-
-You can find the source code for this sample by downloading a zip of all of our samples [here](https://github.com/Microsoft/Windows-iotcore-samples/archive/master.zip) and navigating to the `samples-develop\TempSensor`.  
 
 Let's go through the code. We use a timer in the sample, and each time the 'Tick' event is called,
 we read the sensor data through ADC, and the value will be displayed on the screen.
@@ -187,4 +185,4 @@ Press `F5`
 If you are using Temp sensor, you can try to hold the sensor or apply some heat on it to see how the output change. If you are using Force sensor, you can hold it hard or gentle to see
 how the output change on the screen. You can also switch the sensor to a light sensor to play around with it.
 
-<img src="../../../Resources/images/TempSensor/Deploy.png" height="400">
+[Deploy temperature sensor](../../../Resources/images/TempSensor/Deploy.png)
