@@ -22,11 +22,14 @@ There are two parts to this:
 1. Client - running on an Android or Windows Phone 10 phone, this app will find your IotCore device, connect to it, and allow you to specify the required information to join a WiFi network. 
 1. Server - running on your IotCore device, this app (foreground or background) help the Client connect your IotCore device to a desired WiFi network. 
 
-The client utilizes Xamarin Forms to create a UI app for Android and Windows Phone 10 devices.  
-![Design](General.png)
+The client utilizes Xamarin Forms to create a UI app for Android and Windows Phone 10 devices:
 
-The general communication flow between Client and Server 
-![Flow](Flow.png)
+![Design](../../Resources/images/CompanionApp/General.png)
+
+
+The general communication flow between Client and Server:
+
+![Flow](../../Resources/images/CompanionApp/Flow.png)
 
 ### Usage
 
@@ -52,9 +55,3 @@ The general communication flow between Client and Server
     1. Click the `Get Networks` button
     1. Select the desired network, enter the network's password, and click the `Connect` button
 1. At this point, your IotCore device should be connected to your desired WiFi network. If your device is not showing up, you may need to delete the profiles in "Connectivity -> Network".
-
-## Additional resources
-* [Windows 10 IoT Core home page](https://developer.microsoft.com/en-us/windows/iot/)
-* [Documentation for all samples](https://developer.microsoft.com/en-us/windows/iot/samples)
-
-This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
