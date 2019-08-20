@@ -4,7 +4,7 @@ _Special thanks to Microsoft MVP Jiong Shi for contributing this sample to the c
 
 We'll create a simple app that demonstrates Microsoft Cognitive Services on Windows 10 IoT Core Devices.
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/zh-cn/windows/iot-core/learn-about-hardware/headlessmode).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).
 
 ## Hardware components 
 
@@ -13,7 +13,7 @@ You will need the following components:
 1. Windows 10 IoT Core device (Raspberry Pi, MinnowBoard Max, or DragonBoard).
 2. Network Access.
 3. Mouse connected to your IoT device.
-4. Microsoft LifeCam HD-3000 [this one](https://www.hackster.io/products/buy/28947?s=BAhJIhY4MjUyNSxCYXNlQXJ0aWNsZQY6BkVG%0A).
+4. [Microsoft LifeCam HD-3000](https://www.hackster.io/products/buy/28947?s=BAhJIhY4MjUyNSxCYXNlQXJ0aWNsZQY6BkVG%0A)
 5. Removable storage (Optional).
 
 ## Step 1: Create Vision API Services on Azure Portal
@@ -30,7 +30,7 @@ If you want this app running on RPi or Dragon Board, choose ARM and Remote Machi
 
 ## Step 3: Cognitive Services for Local Resources
 
-In order to test the Cognitive Services for local resources, we may copy some pictures to the Windows 10 IoT Core device. One convenient way to achieve this is using Windows Device Portal. Open your Edge, or Chrome on the Desktop PC, which is connected in the same local network with Windows 10 IoT Core device. Then input the IP address+8080 port in the address bar. Input user name and password (the default user name and password are “administrator” and “p@ssw0rd”). For more information, readers can refer to the official page on https://docs.microsoft.com/zh-cn/windows/iot-core/manage-your-device/deviceportal. Click Apps->File explorer, choose Picture folder.
+In order to test the Cognitive Services for local resources, we may copy some pictures to the Windows 10 IoT Core device. One convenient way to achieve this is using Windows Device Portal. Open your Edge, or Chrome on the Desktop PC, which is connected in the same local network with Windows 10 IoT Core device. Then input the IP address+8080 port in the address bar. Input user name and password (the default user name and password are “administrator” and “p@ssw0rd”). For more information, readers can refer to the official page [here](https://docs.microsoft.com/en-us/windows/iot-core/manage-your-device/deviceportal). Click Apps->File explorer, choose Picture folder.
 Then we can choose local pictures and upload them to the IoT Device.
 After this step, you can see that there are some pictures that you can use for our Cognitive Service App.
 
@@ -67,4 +67,4 @@ Then we can click "Show Preview" to make Preview display on screen. As soon as w
 ## Summary
 In this tutorial, we have designed a UWP Cognitive Services app running on Windows 10 IoT Core device. And then give the demonstrations of Cognitive Services API generation, UWP deployment and test results for local resource/removable resource. Hope this will be useful for those who need Cognitive Services on Windows 10 IoT Core device.
 
-For more information, please refer to the project page: https://www.hackster.io/JiongShi/microsoft-cognitive-services-demo-on-windows-10-iot-core-4d846e.
+For more information, please refer to the project page [here](https://www.hackster.io/JiongShi/microsoft-cognitive-services-demo-on-windows-10-iot-core-4d846e).
