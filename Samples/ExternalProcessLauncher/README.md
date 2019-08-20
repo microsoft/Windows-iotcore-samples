@@ -12,11 +12,11 @@ description: We'll learn how to launch an external process (exe) from a Universa
   
 We'll learn how to launch an external process (exe) from a Universal Windows Platform (UWP) app using `Windows.System.ProcessLauncher` API.  
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).  
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).  
 
 ### Windows IoT Core Fall Update required
 
-The `Windows.System.ProcessLauncher` API is new to Windows IoT Core Fall Update. You can download a Windows 10 IoT Core image with Fall Update from our [downloads page](/Downloads).
+The `Windows.System.ProcessLauncher` API is new to Windows IoT Core Fall Update. You can download a Windows 10 IoT Core image with Fall Update from our [downloads page](https://docs.microsoft.com/en-us/windows/iot-core/downloads).
 
 ### Windows SDK Update required
 
@@ -34,7 +34,7 @@ The code for the ProcessLauncher sample can be found under: <samples root folder
  
 If you're building for Minnowboard Max, select `x86` as the architecture. If you're building for Raspberry Pi 2 or 3 or DragonBoard , select `ARM`.  
 
-Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample](/Samples/HelloWorld) if you need guidance.   
+Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample](https://docs.microsoft.com/en-us/samples/microsoft/windows-iotcore-samples/hello-world/) if you need guidance.   
   
 ### Test your app   
   
@@ -199,7 +199,7 @@ To add an exe to the **allow list**, add to or replace the reg value in the reg 
 
 **Note**, `ProcessLauncher` API launches executables under the current user credentials, or **DefautlAccount**, so apps requiring admin priviliges will fail to run properly.
 
-Go ahead, run the command above on your device, using [SSH](/Docs/SSH){:target="_blank"} or [PowerShell](/Docs/PowerShell){:target="_blank"}. Then, in the sample app (no need to restart) type the command `c:\windows\system32\ipconfig.exe`. You should get an output similar to the one below:
+Go ahead, run the command above on your device, using [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh)or [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell). Then, in the sample app (no need to restart) type the command `c:\windows\system32\ipconfig.exe`. You should get an output similar to the one below:
 
 ![App Started](../../Resources/images/ProcessLauncherSample/ProcessLauncher2.png)
 
@@ -207,14 +207,14 @@ Go ahead, run the command above on your device, using [SSH](/Docs/SSH){:target="
 
 Additionally, to overcome the limitations of using reg commands, the Process Launcher Whitelist Configuration tool can be used to very easily add or remove executables to the ProcessLauncher **allow list**.
 
-The tool is available as part of the *Windows 10 IoT Utilities* on [GitHub](https://github.com/ms-iot/iot-utilities)..
+The tool is available as part of the *Windows 10 IoT Utilities* on [GitHub](https://github.com/ms-iot/iot-utilities).
 
 To use the tool:
 
 * Clone or download a zip of the *Windows 10 IoT Utilities* from [GitHub](https://github.com/ms-iot/iot-utilities)
 * Open and build the solution under *ProcessLauncherWhitelist* 
-* Copy the executable to your device using [FTP](/docs/ftp)
-* Run it on the device using [SSH](/Docs/SSH) or [PowerShell](/Docs/PowerShell)
+* Copy the executable to your device using [FTP](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ftp)
+* Run it on the device using [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh) or [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell)
 
 ![Proess Launcher Configuration ](../../Resources/images/ProcessLauncherSample/ProcessLauncherWhiteListConfigTool.png)
 
