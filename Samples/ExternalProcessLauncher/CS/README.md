@@ -24,7 +24,7 @@ The code for the ProcessLauncher sample can be found under: <samples root folder
  
 If you're building for Minnowboard Max, select `x86` as the architecture. If you're building for Raspberry Pi 2 or 3 or DragonBoard , select `ARM`.  
 
-Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample](/Samples/HelloWorld) if you need guidance.   
+Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample](https://docs.microsoft.com/en-us/samples/microsoft/windows-iotcore-samples/hello-world/) if you need guidance.   
   
 ### Test your app   
   
