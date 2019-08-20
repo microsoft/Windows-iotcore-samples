@@ -62,11 +62,11 @@ The app's slideshow can be likened to a screensaver which displays while the app
 
  When using the on-screen keyboard, you may click characters with your mouse or tap to type if your monitor is touch-enabled.
  
-![Keyboard](../../Resources/images/DigitalSignage/DigitalSign_keyboard2.png")
+![Keyboard](../../Resources/images/DigitalSignage/DigitalSign_keyboard2.png)
  
  4. Click or tap the "Go" button. This navigates the browser to the Microsoft home page
  
- ![Microsoft sign]("../../Resources/images/DigitalSignage/DigitalSign_microsoft.png)
+ ![Microsoft sign](../../Resources/images/DigitalSignage/DigitalSign_microsoft.png)
 
  5. Navigate to other pages in the browser or return to the main screen by tapping or clicking the "Home" icon on the screen
  
