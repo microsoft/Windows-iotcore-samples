@@ -37,8 +37,7 @@ This sample can run on ARM and x86, on both Windows for IoT and desktop.
 
 This solution has three projects:
 
-* **RpcInterface**: Has a IDL file (
-[Interface Definition Language](https://msdn.microsoft.com/en-us/library/windows/desktop/aa367091(v=vs.85).aspx))
+* **RpcInterface**: Has a IDL file ([Interface Definition Language](https://msdn.microsoft.com/en-us/library/windows/desktop/aa367091(v=vs.85).aspx))
 with the definition of the RPC interface (functions and its arguments).
 * **RpcServer**: RPC server. Runs as a NT service and receives RPC calls to return the status, start
 or stop other NT services.

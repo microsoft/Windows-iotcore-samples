@@ -2,11 +2,11 @@
   
 We'll learn how to launch an external process (exe) from a Universal Windows Platform (UWP) app using `Windows.System.ProcessLauncher` API.  
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).  
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).  
 
 ### Windows IoT Core Fall Update required
 
-The `Windows.System.ProcessLauncher` API is new to Windows IoT Core Fall Update. You can download a Windows 10 IoT Core image with Fall Update from our [downloads page](/Downloads).
+The `Windows.System.ProcessLauncher` API is new to Windows IoT Core Fall Update. You can download a Windows 10 IoT Core image with Fall Update from our [downloads page](https://docs.microsoft.com/en-us/windows/iot-core/downloads).
 
 ### Windows SDK Update required
 
@@ -24,19 +24,19 @@ The code for the ProcessLauncher sample can be found under: <samples root folder
  
 If you're building for Minnowboard Max, select `x86` as the architecture. If you're building for Raspberry Pi 2 or 3 or DragonBoard , select `ARM`.  
 
-Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample](/Samples/HelloWorld) if you need guidance.   
+Select **Remote Machine** to point to IoT device and hit F5 to deploy to your device. Go back to the basic 'Hello World' [sample](https://docs.microsoft.com/en-us/samples/microsoft/windows-iotcore-samples/hello-world/) if you need guidance.   
   
 ### Test your app   
   
 The sample app when deployed displays a screen similar to this one: 
 
-![App Started](../../Resources/images/ProcessLauncherSample/ProcessLauncher0.png)
+![App Started](../../../Resources/images/ProcessLauncherSample/ProcessLauncher0.png)
 
 Go ahead, click the **Run Command** button to launch the application specified in the **Command** edit box, SampleConsoleApplication.exe, which is an executable Win32 application built and deployed from the sample app as well.
 
 When run, the SampleConsoleApplication exe, will send output to both the Standard Output and Standard Error boxes. The return error code of the process, 100, should also be shown.
 
-![SampleConsoleApplication Output](../../Resources/images/ProcessLauncherSample/ProcessLauncher1.png)
+![SampleConsoleApplication Output](../../../Resources/images/ProcessLauncherSample/ProcessLauncher1.png)
 
 ## Let's take a look at the code  
  
@@ -50,7 +50,7 @@ Since the IoT extension SDK is not added to projects by default, we'll need to a
 
 To do so, right-click on the References entry under the project, select "Add Reference" then navigate the resulting dialog to `Universal Windows->Extensions->Windows IoT Extensions for the UWP` making sure the right version, 10.0.10586.0 or higher, is selected, then check the box, and click OK.
 
-![Add Extension SDK](../../Resources/images/ProcessLauncherSample/AddIoTExtensionReference.png)
+![Add Extension SDK](../../../Resources/images/ProcessLauncherSample/AddIoTExtensionReference.png)
 
 
 ### Add systemManagement capabiity
@@ -159,19 +159,19 @@ int main(int argc, char **argv)
 }
 ```  
 
-The application has been added to the solution as a *console application*. To create your own console application, please refer to the [Console Application Sample](/Samples/memorystatus).
+The application has been added to the solution as a *console application*. To create your own console application, please refer to the [Console Application Sample](https://docs.microsoft.com/en-us/samples/microsoft/windows-iotcore-samples/memory-status/).
 
 To be able to find and invoke the SampleConsoleApplication exe at runtime, we need to package the output exe with the AppX. We've already added it to the sample application. However, to do the same in your own application, you can follow these steps:
 
 1. Put the output exe in the same folder as the C# sample. Right click on the C++ console app project, select *Properties*, then open the *General* tab
-1. Change the output directory to the be the same as the C# sample (or a subfolder) and click OK ![Console Application Properties](../../Resources/images/ProcessLauncherSample/ConsoleApplicationProperties.png)
+1. Change the output directory to the be the same as the C# sample (or a subfolder) and click OK ![Console Application Properties](../../../Resources/images/ProcessLauncherSample/ConsoleApplicationProperties.png)
 1. Build the console application to create and put the exe in its new location
 1. Add the exe to the UWP projct: Right click on the Project, select *Add -> Existing Item*
 1. Browse to and select the exe just built
 1. After the exe is added to the UWP project, we need to make sure it's added to the AppX package layout, Right click on the exe, select *Properties*
 1. Change *Build Action* to *Content*
-1. Change *Copy to Output Directory* to *Always* ![Exe File Properties](../../Resources/images/ProcessLauncherSample/ExeProperties.png)
-1. Finaly, to ensure the exe is built every time the main app is deployed, we need to change the project dependency, Right click the solution, select *Project Dependencies* and make the UWP project have a dependency on the console app ![Build Dependencies](../../Resources/images/ProcessLauncherSample/BuildDependencies.png)
+1. Change *Copy to Output Directory* to *Always* ![Exe File Properties](../../../Resources/images/ProcessLauncherSample/ExeProperties.png)
+1. Finaly, to ensure the exe is built every time the main app is deployed, we need to change the project dependency, Right click the solution, select *Project Dependencies* and make the UWP project have a dependency on the console app ![Build Dependencies](../../../Resources/images/ProcessLauncherSample/BuildDependencies.png)
 
 Now, everytime the solution is built or deployed, it'll ensure the console application exe is up-to-date and deployed with the rest of the AppX. 
   
@@ -189,9 +189,9 @@ To add an exe to the **allow list**, add to or replace the reg value in the reg 
 
 **Note**, `ProcessLauncher` API launches executables under the current user credentials, or **DefautlAccount**, so apps requiring admin priviliges will fail to run properly.
 
-Go ahead, run the command above on your device, using [SSH](/Docs/SSH){:target="_blank"} or [PowerShell](/Docs/PowerShell){:target="_blank"}. Then, in the sample app (no need to restart) type the command `c:\windows\system32\ipconfig.exe`. You should get an output similar to the one below:
+Go ahead, run the command above on your device, using [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh) or [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell). Then, in the sample app (no need to restart) type the command `c:\windows\system32\ipconfig.exe`. You should get an output similar to the one below:
 
-![App Started](../../Resources/images/ProcessLauncherSample/ProcessLauncher2.png)
+![App Started](../../../Resources/images/ProcessLauncherSample/ProcessLauncher2.png)
 
 ### Using the Process Launcher Whitelist Configuration Tool
 
@@ -201,9 +201,9 @@ The tool is available as part of the *Windows 10 IoT Utilities* on [GitHub](http
 
 To use the tool:
 
-* Clone or download a zip of the *Windows 10 IoT Utilities* from [GitHub](https://github.com/ms-iot/iot-utilities)
-* Open and build the solution under *ProcessLauncherWhitelist* 
-* Copy the executable to your device using [FTP](/docs/ftp)
-* Run it on the device using [SSH](/Docs/SSH) or [PowerShell](/Docs/PowerShell)
+* Clone or download a zip of the *Windows 10 IoT Utilities* from [GitHub](https://github.com/ms-iot/iot-utilities).
+* Open and build the solution under *ProcessLauncherWhitelist*.
+* Copy the executable to your device using [FTP](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ftp).
+* Run it on the device using [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh) or [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell).
 
-![Proess Launcher Configuration ](../../Resources/images/ProcessLauncherSample/ProcessLauncherWhiteListConfigTool.png)
+![Proess Launcher Configuration ](../../../Resources/images/ProcessLauncherSample/ProcessLauncherWhiteListConfigTool.png)
