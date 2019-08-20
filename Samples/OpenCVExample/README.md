@@ -18,13 +18,12 @@ The sample code is available to download, but as an exercise, we will create thi
 
 Even if you download the sample, code, you'll need to follow the steps in **Compile the OpenCV Libraries** and **Add the Libraries to your Project** below.
 
-* Make sure your device is running and set up and you have Visual Studio installed. See our [guide](https://developer.microsoft.com/en-us/windows/iot/GetStarted.htm) if you have not set up your device yet.
-
+* Make sure your device is running and set up and you have Visual Studio installed. 
 * You will need your device's IP address when connecting to it remotely.
 
 * Make sure you have the C++ components for Visual Studio. To check, open the Start Menu, type in **Visual Studio Installer** and hit enter. Once the Visual Studio Installer opens, click **Modify** under your installed version of Visual Studio. Check to make sure you have the below components selected. If not, select them and update your installation.
 
-    ![C++ Components](../../../Resources/images/OpenCV/get_cpp.PNG)
+    ![C++ Components](../../Resources/images/OpenCV/get_cpp.PNG)
 
 1. Start Visual Studio 2017.
 2. Create a new project with **(File \| New Project...)**.
@@ -35,9 +34,9 @@ Even if you download the sample, code, you'll need to follow the steps in **Comp
 
     Note that we call the app OpenCVExample. You can name it something different, but you will have to adjust sample code that references OpenCVExample as well.
 
-    ![App Template Location](../../../Resources/images/OpenCV/new_vcpp.PNG)
+    ![App Template Location](../../Resources/images/OpenCV/new_vcpp.PNG)
 
-Note: If this is the first project you create, Visual Studio will likely prompt you to enable <a href='https://msdn.microsoft.com/library/windows/apps/xaml/dn706236.aspx'>developer mode for Windows 10</a>."
+Note: If this is the first project you create, Visual Studio will likely prompt you to enable developer mode for Windows 10.
 
 ## Compile the OpenCV Libraries
 ___
@@ -49,7 +48,7 @@ ___
 
     Open the Start Menu and enter **Edit the system environment variables** and hit Enter. On the next screen, press **Environment Variables**, then **New**. Create a new variable called **OCV2015_ROOT** with a value of the path you copied, i.e. C:/path/to/opencv/
 
-    ![Add Extension SDK](../../../Resources/images/OpenCV/add_env_var.PNG)
+    ![Add Extension SDK](../../Resources/images/OpenCV/add_env_var.PNG)
 
 3. Build the solution
 
@@ -93,7 +92,7 @@ ___
 
     After adding the files, click on each one in the Solution Explorer and make **Content = "True"**
 
-    ![Make DLLs Runnable Content](../../../Resources/images/OpenCV/content_true.PNG)
+    ![Make DLLs Runnable Content](../../Resources/images/OpenCV/content_true.PNG)
 
 
 2. Modify you General Properties
@@ -108,7 +107,7 @@ ___
 
     For each new DLL you want to add, you need to add the appropriate "include" directory to this field.
 
-    ![Modify Include Directories](../../../Resources/images/OpenCV/add_libs.PNG)
+    ![Modify Include Directories](../../Resources/images/OpenCV/add_libs.PNG)
 
 3. Modify your Linker Properties
 
@@ -120,7 +119,7 @@ ___
 
     * x64: %OCV2015_ROOT%\vs2015\WS\10.0\x64\lib\release;%(AdditionalLibraryDirectories)
 
-    ![Modify Linker Directories](../../../Resources/images/OpenCV/add_libs2.PNG)
+    ![Modify Linker Directories](../../Resources/images/OpenCV/add_libs2.PNG)
 
     Switch the menu to Input (still within Linker) and add the following to the **Additional Dependencies** field:
 
@@ -128,7 +127,7 @@ ___
 
     For each new DLL you want to add, add the appropriate LIB in this field as well.
 
-    ![Modify Linker Dependencies](../../../Resources/images/OpenCV/add_libs3.PNG)
+    ![Modify Linker Dependencies](../../Resources/images/OpenCV/add_libs3.PNG)
 
 ## Set up the User Interface
 ___
@@ -363,11 +362,11 @@ This function loads the classifiers, re-reads the image (the classification does
 
 ### Add in the Resources
 
-![Add Assets, part 1](../../../Resources/images/OpenCV/add_assets.PNG)
+![Add Assets, part 1](../../Resources/images/OpenCV/add_assets.PNG)
 
-Download the [picture](../../../Resources/images/OpenCV/grpPC1.jpg), [face classifier](https://github.com/ms-iot/content/blob/develop/Resources/data_models/opencv/haarcascade_frontalface_alt.xml), and [body classifier](https://github.com/ms-iot/content/blob/develop/Resources/data_models/opencv/haarcascade_fullbody.xml) and add them to your Assets folder within your project.
+Download the [picture](../../Resources/images/OpenCV/grpPC1.jpg), [face classifier](https://github.com/ms-iot/content/blob/develop/Resources/data_models/opencv/haarcascade_frontalface_alt.xml), and [body classifier](https://github.com/ms-iot/content/blob/develop/Resources/data_models/opencv/haarcascade_fullbody.xml) and add them to your Assets folder within your project.
 
-![Add Assets, part 2](../../../Resources/images/OpenCV/add_assets2.PNG)
+![Add Assets, part 2](../../Resources/images/OpenCV/add_assets2.PNG)
 
 ## Optional: Build and test your app locally
 ___
@@ -378,15 +377,15 @@ ___
 
     Press the "Test Image" button to see the test image.
 
-    ![View Test Image](../../../Resources/images/OpenCV/sample_app_1.PNG)
+    ![View Test Image](../../Resources/images/OpenCV/sample_app_1.PNG)
 
     Press the "Canny" button to see the Canny edges on the test image.
 
-    ![View Canny Results](../../../Resources/images/OpenCV/sample_app_2.PNG)
+    ![View Canny Results](../../Resources/images/OpenCV/sample_app_2.PNG)
 
     Press the "Detect" button to see the detected faces and bodies in the image indicated by rectangles.
 
-    ![View Detection Results](../../../Resources/images/OpenCV/sample_app_3.png)
+    ![View Detection Results](../../Resources/images/OpenCV/sample_app_3.png)
 
     Close the app once you're done validating its correct operation.
 
@@ -397,9 +396,9 @@ ___
 
 2. If the dialog does not appear, right click on your project and go to the Properties menu. From there, click on Debugging. Clicking on **Machine Name** and then **Locate** should provide the same dialog to enter the device's IP address.
 
-    ![Add your IP Address](../../../Resources/images/OpenCV/ip_address.PNG)
+    ![Add your IP Address](../../Resources/images/OpenCV/ip_address.PNG)
 
-    ![Connect Remotely](../../../Resources/images/OpenCV/remote_connection.PNG)
+    ![Connect Remotely](../../Resources/images/OpenCV/remote_connection.PNG)
 
     Make sure the device is powered on, then click the "Run" button. The app should run on your device.
 
