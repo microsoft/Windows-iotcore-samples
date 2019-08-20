@@ -28,10 +28,10 @@ There are two parts to this:
 1. Server - running on your IotCore device, this app (foreground or background) help the Client connect your IotCore device to a desired WiFi network. 
 
 The client utilizes Xamarin Forms to create a UI app for Android and Windows Phone 10 devices.  
-![Design](General.png)
+![Design](../../Resources/images/CompanionApp/General.png)
 
 The general communication flow between Client and Server 
-![Flow](Flow.png)
+![Flow](../../Resources/images/CompanionApp/Flow.png)
 
 ### Usage
 
