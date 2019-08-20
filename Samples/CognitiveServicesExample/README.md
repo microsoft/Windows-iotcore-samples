@@ -16,8 +16,6 @@ Create a UWP app that identifies faces in a photo and determine the emotions in 
 ___
 All of the sample code is available to download, but as an exercise, this tutorial will take you through the complete steps to create this app from scratch.
 
-Make sure your device is running and set up and you have Visual Studio installed. See our [get started page](https://developer.microsoft.com/en-us/windows/iot/GetStarted.htm) to set up your device.
-
 You will need your device's IP address when connecting to it remotely.
 
 1.  Start Visual Studio 2017
@@ -29,11 +27,11 @@ You will need your device's IP address when connecting to it remotely.
 
     Note that we call the app CogntiveServicesExample. You can name it something different, but you will have to adjust sample code that references CognitiveServicesExample as well.
 
-    <img src="../../../Resources/images/CognitiveServicesExample/new_project.png">
+    <img src="../../Resources/images/CognitiveServicesExample/new_project.png">
 
     If this is the first project you create, Visual Studio will likely prompt you to enable [developer mode for Windows 10](https://msdn.microsoft.com/library/windows/apps/xaml/dn706236.aspx)
 
-    <img src="../../../Resources/images/CognitiveServicesExample/add_reference.png">
+    <img src="../../Resources/images/CognitiveServicesExample/add_reference.png">
 
 
 ## Add a reference to the Windows IoT extension SDK
@@ -103,7 +101,7 @@ To view the entire UI, change the dropdown in the top left corner from '5\" Phon
 
 In the UI mock up, double click on the "Detect Emotions" button. You will see a "Click="button_Clicked" added into the button in your XAML code. You will also be redirected to the .xaml.cs file with a new function called "button_Clicked()" created for you. This function will handle the Cognitive Services calls after a user presses the button.
 
-<img src="../../../Resources/images/CognitiveServicesExample/event_handler1.png">
+<img src="../../Resources/images/CognitiveServicesExample/event_handler1.png">
 
 ## Get the Emotion API Key
 ___
@@ -113,7 +111,7 @@ ___
 
     You should now see two API keys available for use for 30 days.
     
-    <img src="../../../Resources/images/CognitiveServicesExample/cogserv_signup.png">
+    <img src="../../Resources/images/CognitiveServicesExample/cogserv_signup.png">
 
 2.  Azure Subscription
 
@@ -122,7 +120,7 @@ ___
     After it deploys, click on the **"Show access keys..."** link under the "Essentials" window to see your access keys.
 
 
-    <img src="../../../Resources/images/CognitiveServicesExample/azure_cogserv_create.png">
+    <img src="../../Resources/images/CognitiveServicesExample/azure_cogserv_create.png">
 
 
 ## Add the C# Code
@@ -415,7 +413,7 @@ The fourth method places a rectangle around each face detected in the image. Sin
 
 Download the face rectangle and add it to your Assets folder within your project
 
-<img src="../../../Resources/images/CognitiveServicesExample/add_rectangle.png">
+<img src="../../Resources/images/CognitiveServicesExample/add_rectangle.png">
 
 ## Build and Test your app locally
 ___
@@ -425,7 +423,7 @@ ___
 
 Change the URL for a different image, or just click "Detect Emotion" to run the Emotion Recognizer with the default image. After a few seconds, the results should appear in your app window as expected: the image with rectangles on it on the left and more detailed emotion output for each face on the right.
 
-<img src="../../../Resources/images/CognitiveServicesExample/running_app.png">
+<img src="../../Resources/images/CognitiveServicesExample/running_app.png">
 
 
 In this case, the order is based on depth: **faces closer to the front will be first, and faces farther away will be last in the list.**
@@ -442,7 +440,7 @@ ___
 
 2.  At this point, Visual Studio will present the 'Remote Connections' dialog. Put the IP address or name of your IoT Core device (in this example, we're using 'my-device') and select **Universal (Unencrypted Protocol)** for Authentication Mode. Click **Select**.
 
-    <img src="../../../Resources/images/CognitiveServicesExample/remote_connection.png">
+    <img src="../../Resources/images/CognitiveServicesExample/remote_connection.png">
 
     > Couple of notes:
     >
