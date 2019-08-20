@@ -4,7 +4,7 @@ In this sample, we interface a SPI based [OLED display](http://www.adafruit.com/
 
 *The Up Squared should be used in place of the Minnowboard Max. We are in the process of updating our documentation to reflect this change. 
 
-This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](/Docs/HeadlessMode).
+This is a headed sample.  To better understand what headed mode is and how to configure your device to be headed, follow the instructions [here](https://docs.microsoft.com/en-us/windows/iot-core/learn-about-hardware/headlessmode).
 
 ### Load the project in Visual Studio
 
