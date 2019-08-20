@@ -34,7 +34,7 @@ If you're building for Minnowboard Max, select `x86` in the architecture dropdow
 
 When everything is set up, you should be able to press F5 from Visual Studio.  The Digital Signage app will deploy and start on the Windows IoT device, and you should see the main view page as displayed below:
 
-<img src="../../Resources/images/DigitalSignage/DigitalSignage1.png" height="400">
+![Signage](../../Resources/images/DigitalSignage/DigitalSignage1.png)
 
 ### Slideshow
 
@@ -42,11 +42,11 @@ The app's slideshow can be likened to a screensaver which displays while the app
 
 1. From the Main page, click (or tap, if your monitor is touch-enabled) "Play Slideshow". 
 
-<img src="../../Resources/images/DigitalSignage/DigitalSign_slideshow.png" height="400">
+![Slideshow](../../Resources/images/DigitalSignage/DigitalSign_slideshow.png)
 
 2. Slideshow begins - various content is displayed, including ads and screensaver visuals with audio.
 
-<img src="../../Resources/images/DigitalSignage/DigitalSign_horses.png" height="400">
+![Horses](../../Resources/images/DigitalSignage/DigitalSign_horses.png)
 
 3. End the slideshow by either a) moving your mouse, b) pressing any key or c) tap anywhere on the screen. The main page will return to the screen.
 
@@ -54,7 +54,7 @@ The app's slideshow can be likened to a screensaver which displays while the app
 
 1. From the Main page, click (or tap, if your monitor is touch-enabled) "Internet Explorer". 
 
-<img src="../../Resources/images/DigitalSignage/DigitalSign_web.png" height="400">
+![Web](../../Resources/images/DigitalSignage/DigitalSign_web.png)
 
 2. Tap or click the Address Bar at the top of the page.
 
@@ -62,15 +62,15 @@ The app's slideshow can be likened to a screensaver which displays while the app
 
  When using the on-screen keyboard, you may click characters with your mouse or tap to type if your monitor is touch-enabled.
  
- <img src="../../Resources/images/DigitalSignage/DigitalSign_keyboard2.png" height="400">
+![Keyboard](../../Resources/images/DigitalSignage/DigitalSign_keyboard2.png")
  
  4. Click or tap the "Go" button. This navigates the browser to the Microsoft home page
  
- <img src="../../Resources/images/DigitalSignage/DigitalSign_microsoft.png" height="400">
+ ![Microsoft sign]("../../Resources/images/DigitalSignage/DigitalSign_microsoft.png)
 
  5. Navigate to other pages in the browser or return to the main screen by tapping or clicking the "Home" icon on the screen
  
- <img src="../../Resources/images/DigitalSignage/DigitalSign_home.png" height="400">
+ ![Home for sign](../../Resources/images/DigitalSignage/DigitalSign_home.png)
 
 ## Exploring the Code
 
@@ -196,9 +196,9 @@ In the DisplayNext() method, we traverse through our list of media files obtaine
   
   1. From the Main page, click (or tap, if your monitor is touch-enabled) "Settings". 
 
-<img src="../../Resources/images/DigitalSignage/DigitalSign_settings.png" height="400">
+![Settings](../../Resources/images/DigitalSignage/DigitalSign_settings.png)
 
  2. Using the physical keyboard or touch screen, you may specify a new config file to read from at the location you specify.
 
-<img src="../../Resources/images/DigitalSignage/DigitalSign_settings1.png" height="400">
+![Additional settings](../../Resources/images/DigitalSignage/DigitalSign_settings1.png)
 
