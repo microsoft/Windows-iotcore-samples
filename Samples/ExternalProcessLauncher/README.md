@@ -216,5 +216,5 @@ To use the tool:
 * Copy the executable to your device using [FTP](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ftp).
 * Run it on the device using [SSH](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/ssh) or [PowerShell](https://docs.microsoft.com/en-us/windows/iot-core/connect-your-device/powershell).
 
-![Proess Launcher Configuration ](../../Resources/images/ProcessLauncherSample/ProcessLauncherWhiteListConfigTool.png)
+![Process Launcher Configuration ](../../Resources/images/ProcessLauncherSample/ProcessLauncherWhiteListConfigTool.png)
 
