@@ -84,17 +84,18 @@ First, we get the default GPIO controller and check that it's not null.
 `GpioController.GetDefault()` will return null on platforms that do not contain
 a GPIO controller.
 
-``` C#
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            var gpio = GpioController.GetDefault();
+```csharp
+private void Page_Loaded(object sender, RoutedEventArgs e)
+{
+    var gpio = GpioController.GetDefault();
 
-            // Show an error if there is no GPIO controller
-            if (gpio == null)
-            {
-                GpioStatus.Text = "There is no GPIO controller on this device.";
-                return;
-            }
+    // Show an error if there is no GPIO controller
+    if (gpio == null)
+    {
+        GpioStatus.Text = "There is no GPIO controller on this device.";
+        return;
+    }
+}
 ```
 
 Next, we open the pins we'll be using later in the program. The RGB LED
@@ -105,75 +106,71 @@ located next to each other physically on the header. If we're not running on
 Raspberry Pi, we take the first 3 available pins. There is also logic to skip
 pins connected to onboard functions on known hardware platforms.
 
-``` C#
-            var deviceModel = GetDeviceModel();
-            if (deviceModel == DeviceModel.RaspberryPi2)
+```csharp
+var deviceModel = GetDeviceModel();
+if (deviceModel == DeviceModel.RaspberryPi2)
+{
+    // Use pin numbers compatible with documentation
+    const int RPI2_RED_LED_PIN = 5;
+    const int RPI2_GREEN_LED_PIN = 13;
+    const int RPI2_BLUE_LED_PIN = 6;
+
+    redpin = gpio.OpenPin(RPI2_RED_LED_PIN);
+    greenpin = gpio.OpenPin(RPI2_GREEN_LED_PIN);
+    bluepin = gpio.OpenPin(RPI2_BLUE_LED_PIN);
+}
+else
+{
+    // take the first 3 available GPIO pins
+    var pins = new List<GpioPin>(3);
+    for (int pinNumber = 0; pinNumber < gpio.PinCount; pinNumber++)
+    {
+        // ignore pins used for onboard LEDs
+        switch (deviceModel)
+        {
+            case DeviceModel.DragonBoard410:
+                if (pinNumber == 21 || pinNumber == 120)
+                    continue;
+                break;
+        }
+
+        GpioPin pin;
+        GpioOpenStatus status;
+        if (gpio.TryOpenPin(pinNumber, GpioSharingMode.Exclusive, out pin, out status))
+        {
+            pins.Add(pin);
+            if (pins.Count == 3)
             {
-                // Use pin numbers compatible with documentation
-                const int RPI2_RED_LED_PIN = 5;
-                const int RPI2_GREEN_LED_PIN = 13;
-                const int RPI2_BLUE_LED_PIN = 6;
-
-                redpin = gpio.OpenPin(RPI2_RED_LED_PIN);
-                greenpin = gpio.OpenPin(RPI2_GREEN_LED_PIN);
-                bluepin = gpio.OpenPin(RPI2_BLUE_LED_PIN);
+                break;
             }
-            else
-            {
-                // take the first 3 available GPIO pins
-                var pins = new List<GpioPin>(3);
-                for (int pinNumber = 0; pinNumber < gpio.PinCount; pinNumber++)
-                {
-                    // ignore pins used for onboard LEDs
-                    switch (deviceModel)
-                    {
-                        case DeviceModel.DragonBoard410:
-                            if (pinNumber == 21 || pinNumber == 120)
-                                continue;
-                            break;
-                    }
+        }
+    }
 
-                    GpioPin pin;
-                    GpioOpenStatus status;
-                    if (gpio.TryOpenPin(pinNumber, GpioSharingMode.Exclusive, out pin, out status))
-                    {
-                        pins.Add(pin);
-                        if (pins.Count == 3)
-                        {
-                            break;
-                        }
-                    }
-                }
+    if (pins.Count != 3)
+    {
+        GpioStatus.Text = "Could not find 3 available pins. This sample requires 3 GPIO pins.";
+        return;
+    }
 
-                if (pins.Count != 3)
-                {
-                    GpioStatus.Text = "Could not find 3 available pins. This sample requires 3 GPIO pins.";
-                    return;
-                }
-
-                redpin = pins[0];
-                greenpin = pins[1];
-                bluepin = pins[2];
-            }
+    redpin = pins[0];
+    greenpin = pins[1];
+    bluepin = pins[2];
+}
 ```
 
 Next, we initialize the pins as outputs driven HIGH, which causes the LED
 to be OFF. We also display which pin numbers are in use. If you're
 not using Raspberry Pi, hook up the RGB LED to the pins shown on the display.
 
-``` C#
-            redpin.Write(GpioPinValue.High);
-            redpin.SetDriveMode(GpioPinDriveMode.Output);
-            greenpin.Write(GpioPinValue.High);
-            greenpin.SetDriveMode(GpioPinDriveMode.Output);
-            bluepin.Write(GpioPinValue.High);
-            bluepin.SetDriveMode(GpioPinDriveMode.Output);
+```csharp
+redpin.Write(GpioPinValue.High);
+redpin.SetDriveMode(GpioPinDriveMode.Output);
+greenpin.Write(GpioPinValue.High);
+greenpin.SetDriveMode(GpioPinDriveMode.Output);
+bluepin.Write(GpioPinValue.High);
+bluepin.SetDriveMode(GpioPinDriveMode.Output);
 
-            GpioStatus.Text = string.Format(
-                "Red Pin = {0}, Green Pin = {1}, Blue Pin = {2}",
-                redpin.PinNumber,
-                greenpin.PinNumber,
-                bluepin.PinNumber);
+GpioStatus.Text = $"Red Pin = {redpin.PinNumber}, Green Pin = {greenpin.PinNumber}, Blue Pin = {bluepin.PinNumber}";
 ```
 
 Finally, we start a periodic timer which we will use to rotate through the colors
@@ -182,56 +179,55 @@ on the timer callback. If we did not need to update the UI, it would be better
 to use a `System.Threading.Timer` which runs on a separate thread. The less we
 can do on the UI thread, the more responsive the UI will be.
 
-``` C#
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(500);
-            timer.Tick += Timer_Tick;
-            timer.Start();
-        }
+```csharp
+timer = new DispatcherTimer();
+timer.Interval = TimeSpan.FromMilliseconds(500);
+timer.Tick += Timer_Tick;
+timer.Start();
 ```
 
 In the timer callback, we light up the currently active LED and update the UI.
 
-``` C#
-        private void FlipLED()
-        {
-            Debug.Assert(redpin != null && bluepin != null && greenpin != null);
+```csharp
+private void FlipLED()
+{
+    Debug.Assert(redpin != null && bluepin != null && greenpin != null);
 
-            switch (ledStatus)
-            {
-                case LedStatus.Red:
-                    //turn on red
-                    redpin.Write(GpioPinValue.High);
-                    bluepin.Write(GpioPinValue.Low);
-                    greenpin.Write(GpioPinValue.Low);
+    switch (ledStatus)
+    {
+        case LedStatus.Red:
+            //turn on red
+            redpin.Write(GpioPinValue.High);
+            bluepin.Write(GpioPinValue.Low);
+            greenpin.Write(GpioPinValue.Low);
 
-                    LED.Fill = redBrush;
-                    ledStatus = LedStatus.Green;    // go to next state
-                    break;
-                case LedStatus.Green:
+            LED.Fill = redBrush;
+            ledStatus = LedStatus.Green;    // go to next state
+            break;
+        case LedStatus.Green:
 
-                    //turn on green
-                    redpin.Write(GpioPinValue.Low);
-                    greenpin.Write(GpioPinValue.High);
-                    bluepin.Write(GpioPinValue.Low);
+            //turn on green
+            redpin.Write(GpioPinValue.Low);
+            greenpin.Write(GpioPinValue.High);
+            bluepin.Write(GpioPinValue.Low);
 
-                    LED.Fill = greenBrush;
-                    ledStatus = LedStatus.Blue;     // go to next state
-                    break;
-                case LedStatus.Blue:
-                    //turn on blue
-                    redpin.Write(GpioPinValue.Low);
-                    greenpin.Write(GpioPinValue.Low);
-                    bluepin.Write(GpioPinValue.High);
+            LED.Fill = greenBrush;
+            ledStatus = LedStatus.Blue;     // go to next state
+            break;
+        case LedStatus.Blue:
+            //turn on blue
+            redpin.Write(GpioPinValue.Low);
+            greenpin.Write(GpioPinValue.Low);
+            bluepin.Write(GpioPinValue.High);
 
-                    LED.Fill = blueBrush;
-                    ledStatus = LedStatus.Red;      // go to next state
-                    break;
-            }
-        }
+            LED.Fill = blueBrush;
+            ledStatus = LedStatus.Red;      // go to next state
+            break;
+    }
+}
 
-        private void Timer_Tick(object sender, object e)
-        {
-            FlipLED();
-        }
+private void Timer_Tick(object sender, object e)
+{
+    FlipLED();
+}
 ```
