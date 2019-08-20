@@ -448,7 +448,7 @@ ___
     >
     > 2. You can verify and/or modify these values navigating to the project properties (select 'Properties' in the Solution Explorer) and choose the 'Debug' tab on the left:
     >
-    > <img src="../../../Resources/images/CognitiveServicesExample/cs-debug-project-properties.png">
+    > <img src="../../Resources/images/CognitiveServicesExample/cs-debug-project-properties.png">
 
 3.  Now you're ready to deploy to the remote IoT Core device. Press F5 (or select **Debug \| Start Debugging**) to start debugging our app. You should see the app come up in IoT Core device screen, and you should be able to perform the same functions you did locally. To stop the app, press on the 'Stop Debugging' button (or select Debug \| Stop Debugging).
 
