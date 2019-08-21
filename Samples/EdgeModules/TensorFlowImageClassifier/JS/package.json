@@ -1,0 +1,20 @@
+{
+  "name": "tfimgclsfr",
+  "version": "0.0.1",
+  "description": "Sample for using TensorFlow.js' mobilenet image classifier",
+  "main": "TFImageDemo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mobilenet",
+    "ImageClassifier"
+  ],
+  "author": "Eric Li",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@tensorflow/tfjs": "^1.1.0",
+    "jpeg-js": "^0.3.4",
+    "node-fetch": "^2.3.0"
+  }
+}
