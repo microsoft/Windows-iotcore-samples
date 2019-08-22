@@ -80,7 +80,7 @@ we read the sensor data through ADC, and the value will be displayed on the scre
 
 * Timer Code
 Setup timer in C#:
-``` C#
+```csharp
 public MainPage()
 {
 	// ...
@@ -99,7 +99,7 @@ private void Timer_Tick(object sender, object e)
 ```
 
 * Initialize SPI pin
-``` C#
+```csharp
 private async void InitSPI()
 {
     try
@@ -123,7 +123,7 @@ private async void InitSPI()
 
 * read the sensor data through SPI communication
 
-``` C#
+```csharp
 
 /*Raspberry Pi 2 or 3  Parameters*/
 private const string SPI_CONTROLLER_NAME = "SPI0";  /* For Raspberry Pi 2 or 3, use SPI0                             */
@@ -155,7 +155,7 @@ public void DisplayTextBoxContents()
 
 * Convert sensor bit data to a number
 
-``` C#
+```csharp
 /* This is the conversion for MCP3208 which is a 12 bits output; Uncomment this if you are using MCP3208 */
 // public int convertToInt(byte[] data)
 // {

@@ -116,7 +116,7 @@ A schematic for the circuit is:
 
 When everything is set up, power your device back on, and open up the sample app in Visual Studio. Open the file **MainPage.xaml.cs** and change the following line from **Protocol.NONE** to **Protocol.SPI**:
 
-``` C#
+```csharp
 public sealed partial class MainPage : Page
 {
     /* Important! Change this to either Protocol.I2C or Protocol.SPI based on how your accelerometer is wired   */
@@ -146,7 +146,7 @@ Let's start by digging into the initializations.
 ### Initialize the SPI bus
 To use the accelerometer, we need to initialize the SPI bus first. Here is the C# code.
 
-``` C#
+```csharp
 using Windows.Devices.Enumeration;
 using Windows.Devices.Spi;
 
@@ -195,7 +195,7 @@ Higher G settings provide you with greater range at the expense of reduced resol
 
 2. We write a 0x08 to the power control register, which wakes the device from standby and starts measuring acceleration. Again, the [datasheet](https://www.sparkfun.com/datasheets/Sensors/Accelerometer/ADXL345.pdf){:target="_blank"} contains additional information about the device settings and capabilities.
 
-``` C#
+```csharp
 private async void InitSPIAccel()
 {
     // ...
@@ -229,7 +229,7 @@ private async void InitSPIAccel()
 
 ### Timer code
 After all the initializations are complete, we start a timer to read from the accelerometer periodically. Here is how you set up the timer to trigger every 100mS.
-``` C#
+```csharp
 private async void InitSPIAccel()
 {
     // ...
@@ -262,7 +262,7 @@ private void TimerCallback(object state)
 ### Read data from the accelerometer
 With the SPI bus and accelerometer initialized, we can start reading data from the accelerometer. Our **ReadAccel()** function gets called every 100mS by the timer:
 
-``` C#
+```csharp
 private Acceleration ReadAccel()
 {
     const int ACCEL_RES = 1024;         /* The ADXL345 has 10 bit resolution giving 1024 unique values                     */

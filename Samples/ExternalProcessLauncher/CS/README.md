@@ -81,7 +81,7 @@ The `ProcessLauncher` API providers a number of static method overloads to launc
 
 Here's the part of the sample that launches the new process. After the process is launched, we `await` its return to get the exit code.
 
-``` C#   
+```csharp   
 var result = await ProcessLauncher.RunToCompletionAsync(cmd.Text, args.Text == null ? string.Empty : args.Text, options);
 
 ProcessExitCode.Text += "Process Exit Code: " + result.ExitCode;
@@ -102,7 +102,7 @@ To be able to both read and write data to strams, we create the streams as `Wind
 
 Here's the relavant code from the sample. First, we initialize the stream objects:
 
-``` C#   
+```csharp   
 var options = new ProcessLauncherOptions();
 var standardOutput = new InMemoryRandomAccessStream();
 var standardError = new InMemoryRandomAccessStream();
@@ -112,13 +112,13 @@ options.StandardError = standardError;
 
 Then, we pass the options to the `RunToCompletionAsync()` method:
 
-``` C#   
+```csharp   
 var result = await ProcessLauncher.RunToCompletionAsync(cmd.Text, args.Text == null ? string.Empty : args.Text, options);
 ``` 
 
 Finally, we read the data from the `InMemoryRandomAccessStream` after getting it as an input stream:
 
-``` C#   
+```csharp   
 using (var outStreamRedirect = standardOutput.GetInputStreamAt(0))
 {
     var size = standardOutput.Size;

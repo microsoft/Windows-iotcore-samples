@@ -31,7 +31,7 @@ The user is able to browse for a media file stored on the device by clicking on 
 
 Once a media file is selected, the sample sets the media using this instruction in MainPage.xaml.cs:
 
-``` C#
+```csharp
 	mediaElement.SetSource(stream, Picker_SelectedFile.ContentType);
 ```
 For more information and documentation about the MediaElement object, see [MediaElement Class](https://docs.microsoft.com/en-us/uwp/api/Windows.UI.Xaml.Controls.MediaElement) documentation.

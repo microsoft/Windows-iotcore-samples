@@ -121,7 +121,7 @@ A schematic for the circuit is shown in the diagram below:
 
 Finally, the LED_PIN and BUTTON_PIN variables of the **MainPage.xaml.cs** file of the sample code will need the following modification:
 
-``` C#
+```csharp
 private const int LED_PIN = 13;
 private const int BUTTON_PIN = 36;
 ```
@@ -145,7 +145,7 @@ We'll be using the LED, connected to GPIO6, which is connected in
 active LOW configuration, meaning driving the pin HIGH will turn off the LED
 and driving the pin LOW will turn on the LED.
 
-``` C#
+```csharp
 buttonPin = gpio.OpenPin(BUTTON_PIN);
 ledPin = gpio.OpenPin(LED_PIN);
 ```
@@ -157,7 +157,7 @@ we initially open a pin, so we should always set the pin to a known state
 before changing it to an output. Remember that we connected the other end 
 of the LED to 3.3V, so we need to drive the pin to low to have current flow into the LED.
 
-``` C#
+```csharp
 // Initialize LED to the OFF state by first writing a HIGH value
 // We write HIGH because the LED is wired in a active LOW configuration
 ledPin.Write(GpioPinValue.High); 
@@ -168,7 +168,7 @@ Next, we set up the button pin. For the Raspberry Pi 2 or 3 or the DragonBoard 4
 built-in pull up resistors that we can activate. We use the built-in pull up resistor so that we don't need to supply a resistor externally. 
 The MinnowBoard Max has 10k&#x2126; pull-up resistors that are on by default and not configurable, so we insert a check to make sure this drive mode is supported.
 
-``` C#
+```csharp
 // Check if input pull-up resistors are supported
 if (buttonPin.IsDriveModeSupported(GpioPinDriveMode.InputPullUp))
 	buttonPin.SetDriveMode(GpioPinDriveMode.InputPullUp);
@@ -183,7 +183,7 @@ Buttons are mechanical devices and can make and break contact many times on a
 single button press. We don't want to be overwhelmed with events so we filter
 these out.
 
-``` C#
+```csharp
 // Set a debounce timeout to filter out switch bounce noise from a button press
 buttonPin.DebounceTimeout = TimeSpan.FromMilliseconds(50);
 
@@ -196,7 +196,7 @@ In the button interrupt handler, we look at the edge of the GPIO signal to
 determine whether the button was pressed or released. If the button was
 pressed, we flip the state of the LED.
 
-``` C#
+```csharp
 private void buttonPin_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
 {
 	// toggle the state of the LED every time the button is pressed
@@ -213,7 +213,7 @@ pin, so we invoke an update operation on the UI thread. Capturing the result
 of an async method in a local variable is necessary to suppress a compiler
 warning when we don't want to wait for an asynchronous operation to complete.
 
-``` C#
+```csharp
 // need to invoke UI updates on the UI thread because this event
 // handler gets invoked on a separate thread.
 var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {

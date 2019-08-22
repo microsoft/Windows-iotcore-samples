@@ -74,7 +74,7 @@ First, we get the default GPIO controller and check that it's not null.
 `GpioController.GetDefault()` will return null on platforms that do not contain
 a GPIO controller.
 
-``` C#
+```csharp
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             var gpio = GpioController.GetDefault();
@@ -95,7 +95,7 @@ located next to each other physically on the header. If we're not running on
 Raspberry Pi, we take the first 3 available pins. There is also logic to skip
 pins connected to onboard functions on known hardware platforms.
 
-``` C#
+```csharp
             var deviceModel = GetDeviceModel();
             if (deviceModel == DeviceModel.RaspberryPi2)
             {
@@ -151,7 +151,7 @@ Next, we initialize the pins as outputs driven HIGH, which causes the LED
 to be OFF. We also display which pin numbers are in use. If you're
 not using Raspberry Pi, hook up the RGB LED to the pins shown on the display.
 
-``` C#
+```csharp
             redpin.Write(GpioPinValue.High);
             redpin.SetDriveMode(GpioPinDriveMode.Output);
             greenpin.Write(GpioPinValue.High);
@@ -172,7 +172,7 @@ on the timer callback. If we did not need to update the UI, it would be better
 to use a `System.Threading.Timer` which runs on a separate thread. The less we
 can do on the UI thread, the more responsive the UI will be.
 
-``` C#
+```csharp
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += Timer_Tick;
@@ -182,7 +182,7 @@ can do on the UI thread, the more responsive the UI will be.
 
 In the timer callback, we light up the currently active LED and update the UI.
 
-``` C#
+```csharp
         private void FlipLED()
         {
             Debug.Assert(redpin != null && bluepin != null && greenpin != null);

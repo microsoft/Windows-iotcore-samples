@@ -29,7 +29,7 @@ The code for this sample is pretty simple. We use a timer, and each time the 'Ti
 ## Timer code
 ___
 Here is how you set up the timer in C#:
-``` C#
+```csharp
 using Windows.System.Threading;
 
 BackgroundTaskDeferral _deferral;
@@ -52,7 +52,7 @@ private void Timer_Tick(ThreadPoolTimer timer)
 ___
 To drive the GPIO pin, first we need to initialize it. Here is the C# code (notice how we leverage the new WinRT classes in the Windows.Devices.Gpio namespace):
 
-``` C#
+```csharp
 using Windows.Devices.Gpio;
 
 private void InitGPIO()
@@ -96,13 +96,13 @@ Once we have access to the `GpioOutputPin` instance, it's trivial to change the 
 
 To turn the LED on, simply write the value `GpioPinValue.Low` to the pin:
 
-``` C#
+```csharp
 this.pin.Write(GpioPinValue.Low);
 ```
 
 and of course, write `GpioPinValue.High` to turn the LED off:
 
-``` C#
+```csharp
 this.pin.Write(GpioPinValue.High);
 ```
 
