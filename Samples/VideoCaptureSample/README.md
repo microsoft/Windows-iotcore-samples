@@ -83,7 +83,7 @@ When the MainPage is being initialized, sample enumerates all available Video Ca
 Then it initalizes **MediaCapture** object that can be configured to capture video and/or audio only. In the sample, we use AudioAndVideo capture mode.
 
 
-``` C#
+```csharp
 private async void EnumerateCameras()
 {
     var devices = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(Windows.Devices.Enumeration.DeviceClass.VideoCapture);
@@ -133,7 +133,7 @@ private async void InitMediaCapture()
 
 Once MediaCapture object has been initialized, clicking on `Start Capturing` begins media capture to a file in Videos Library folder for DefaultAccount. Sample also enables preview that is wired to a **CaptureElement** XAML element.
 
-``` C#
+```csharp
 private async Task StartMediaCaptureSession()
 {
     await StopMediaCaptureSession();
@@ -151,7 +151,7 @@ private async Task StartMediaCaptureSession()
 
 To end capturing and preview, clicking on the `End Capture` button stops preview and stops recording to a file. It may take a few seconds to flush all data to the video file before it can be played back.
 
-``` C#
+```csharp
 private async Task StopMediaCaptureSession()
 {
     if (isRecording)
@@ -167,7 +167,7 @@ private async Task StopMediaCaptureSession()
 
 After a file has been recorded, it can be played back by pressing `Play Captured VIdeo` button. This sets up a stream from the file to **MediaElement** XAML control.
 
-``` C#
+```csharp
 private async void playVideo(object sender, RoutedEventArgs e)
 {
     Windows.Storage.StorageFile storageFile = await Windows.Storage.KnownFolders.VideosLibrary.GetFileAsync(fileName);

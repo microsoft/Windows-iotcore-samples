@@ -38,7 +38,7 @@ To add an appservice to our background application first we need to open appxman
 
 Next we'll add a check in the StartupTask::Run method to see if the application is being started as an appservice
 
-```C#
+```csharp
 //Check to determine whether this activation was caused by an incoming app service connection
 var appServiceTrigger = taskInstance.TriggerDetails as AppServiceTriggerDetails;
 if (appServiceTrigger != null)
@@ -59,14 +59,14 @@ if (appServiceTrigger != null)
 
 At the beginning of BlinkyService's StartupTask::Run get the deferral object and set up a Canceled event handler to clean up the deferral on exit.
 
-```C#
+```csharp
 deferral = taskInstance.GetDeferral();
 taskInstance.Canceled += TaskInstance_Canceled;
 ```
 
 When the Canceled event handler is called Complete the deferral for this instance of the app service if one exists.  If the deferral is not completed then the app service process will be killed by the operating system even if other clients still have connections open to the app service.
 
-```C#
+```csharp
 private void TaskInstance_Canceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
 {
     if (deferral != null)
@@ -79,7 +79,7 @@ private void TaskInstance_Canceled(IBackgroundTaskInstance sender, BackgroundTas
 
 Finally we need to handle service requests:
 
-```C#
+```csharp
 private void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
 {
     var messageDeferral = args.GetDeferral();
@@ -122,7 +122,7 @@ private void Connection_RequestReceived(AppServiceConnection sender, AppServiceR
 ___
 When the client starts it opens a connection to the client.  The string assigned to connection.PackageFamilyName uniquely identifies the service we want to connect to.
 
-```C#
+```csharp
 AppServiceConnection connection;
 BackgroundTaskDeferral deferral;
 ThreadPoolTimer timer;
@@ -161,7 +161,7 @@ public async void Run(IBackgroundTaskInstance taskInstance)
 
 If everything connects without an error then the timer callback will toggle the value of the LED each time the timer event handler is called.
 
-```C#
+```csharp
 if (requestedPinValue.Equals("High"))
 {
     requestedPinValue = "Low";

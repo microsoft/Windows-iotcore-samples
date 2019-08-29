@@ -129,7 +129,7 @@ e. Testing Azure Methods Created above
     
     Sample Output:
     
-``` C#
+```csharp
 2018-05-22T21:19:44 No new trace in the past 1 min(s). 
 2018-05-22T21:20:31.240 [Info] Script for function 'AddConfig' changed. Reloading. 
 2018-05-22T21:20:31.459 [Info] Compilation succeeded. 
@@ -170,7 +170,7 @@ g. Getting the KegConfig
 
 Method: AddConfig
 
-``` C#
+```csharp
 #r "Newtonsoft.Json"
 
 using System;
@@ -219,7 +219,7 @@ public class KegConfig
 
 Method: AddUser
 
-``` C#
+```csharp
 #r "Newtonsoft.Json"
 
 using System;
@@ -250,7 +250,7 @@ public class KegUser
 
 Method: GetUser
 
-``` C#
+```csharp
 using System.Net;
 
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log, IEnumerable<dynamic> items)

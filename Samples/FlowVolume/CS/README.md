@@ -65,7 +65,7 @@ By counting the number of pulses and multiplying by a factor, the volume flowing
 
 Here is how you set up the application to use the Flow object in C#:
 
-``` C#
+```csharp
 public MainPage()
 {
     this.InitializeComponent();
