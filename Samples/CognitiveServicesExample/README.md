@@ -130,7 +130,7 @@ ___
 
 Open MainPage.xaml.cs. At the top of the , directly under the "using" statements and before the "namespace CognitiveServicesExample" line, add the following Cognitive Services namespaces.
 
-``` C#
+```csharp
 using Windows.Graphics.Imaging;
 using Microsoft.ProjectOxford.Emotion;
 using Microsoft.ProjectOxford.Emotion.Contract;
@@ -149,7 +149,7 @@ These allow us to use the Cognitive Services APIs in our code, along with some o
 
 Add the following global variables to the MainPage class (as below)
 
-```C#
+```csharp
 public sealed partial class MainPage : Page
 {
   // add these in after the above statement
@@ -165,7 +165,7 @@ The subscriptionKey allows your application to call the Emotion API on Cognitive
 
 Add the following method to the same class:
 
-``` C#
+```csharp
 public sealed partial class MainPage : Page
 {
   //...
@@ -204,7 +204,7 @@ This function instantiates an instance of the Emotion API and attempts to open t
 
 Add the **async** keyword to the button_Clicked method Visual Studio created for you. Then, add the following code to that function:
 
-``` C#
+```csharp
 public sealed partial class MainPage : Page
 {
   //...
@@ -263,7 +263,7 @@ This code reads the string from the text input box on the form and makes sure it
 
 You'll notice that the above code has errors, since we have not added those helper functions yet. Let's add them in:
 
-``` C#
+```csharp
 public sealed partial class MainPage : Page
 {
   //...

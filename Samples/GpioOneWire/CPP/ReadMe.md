@@ -65,7 +65,7 @@ consider bits to be 1s, while we will consider pulses shorter
 than this threshold to be 0s. We convert 110 microseconds to
 QueryPerformanceCounter (QPC) units to be used later.
 
-``` C#
+```csharp
 	HRESULT GpioOneWire::Dht11::Sample (GpioOneWire::Dht11Reading& Reading)
 	{
 		Reading = Dht11Reading();
@@ -86,7 +86,7 @@ is normally pulled high while the device is idle, and we must pull it low
 for 18 milliseconds to request a sample. We latch a low value to the pin
 and set it as an output, driving the GPIO pin low.
 
-``` C#
+```csharp
     // Latch low value onto pin
     this->pin->Write(GpioPinValue::Low);
 
@@ -100,7 +100,7 @@ and set it as an output, driving the GPIO pin low.
 We then revert the pin to an input which causes it to go high, and wait for
 the DHT11 to pull the pin low, then high again.
 
-``` C#
+```csharp
     // Set pin back to input
     this->pin->SetDriveMode(this->inputDriveMode);
 
@@ -129,7 +129,7 @@ After receiving the first rising edge, we catch all of the falling edges
 and measure the time difference between them to determine whether the bit
 is a 0 or 1.
 
-``` C#
+```csharp
     LARGE_INTEGER prevTime = { 0 };
 
     const ULONG sampleTimeoutMillis = 10;
@@ -167,7 +167,7 @@ After all bits have been received, we validate the checksum to make sure the
 received data is valid. The data is returned through the `Reading` reference
 parameter.
 
-``` C#
+```csharp
     if (!Reading.IsValid()) {
         // checksum mismatch
         return HRESULT_FROM_WIN32(ERROR_INVALID_DATA);

@@ -157,7 +157,7 @@ Let's add some content to the MainPage which will be displayed on a screen conne
 
 * Locate the `<Grid>` tag in the XAML section of the designer, and add the following markup:
 
-``` C#
+```csharp
 <Grid Background="Black">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <Ellipse x:Name="Led" Fill="LightGray" Stroke="White" Width="100" Height="100" Margin="10"/>
@@ -182,7 +182,7 @@ Before we add any code to MainPage.xaml.cs, we need to add a reference to the Wi
 
  * Add the following lines at the top of MainPage.xaml.cs
 
-``` C#
+```csharp
 using Windows.Devices.Enumeration;
 using Windows.Devices.I2c;
 ```
@@ -193,7 +193,7 @@ With the references added, let's start adding code. The complete code we impleme
 
 Variables and Constants
 
-``` C#
+```csharp
 // use these constants for controlling how the I2C bus is setup
 private const string I2C_CONTROLLER_NAME = "I2C1"; //specific to RPi2 or RPi3
 private const byte PORT_EXPANDER_I2C_ADDRESS = 0x20; // 7-bit I2C address of the port expander
@@ -251,7 +251,7 @@ The method `InitializeSystem()`
 
 When complete, the variable `i2cPortExpander` will be our handle to the Raspberry Pi 2 or 3 I2C bus.
 
-``` C#
+```csharp
 private async void InitializeSystem()
 {
     byte[] i2CWriteBuffer;
@@ -339,7 +339,7 @@ The method `FlipLED()`
 
  * If the LED is currently on, it sends commands to the port expander to turn the LED off and sets the color of the circle on the display to gray.
 
-``` C#
+```csharp
 private void FlipLED()
 {
     byte bitMask;
@@ -371,7 +371,7 @@ private void FlipLED()
 
 This method updates the text in Textbox displayed to the screen to reflect the status of the switch.
 
-``` C#
+```csharp
 private void CheckButtonStatus()
 {
     byte[] readBuffer = new byte[1];
@@ -407,7 +407,7 @@ Congratulations! You've successfully connected an I2C port expander to your Rasp
 
 ### The complete MainPage.xaml.cs code
 
-``` C#
+```csharp
 using System;
 //using System.Diagnostics;
 using System.Collections.Generic;

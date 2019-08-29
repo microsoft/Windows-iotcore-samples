@@ -221,7 +221,7 @@ If you do not control the driver code for your device, you can override the SDDL
 
 First, we need to convert the SDDL string to its binary representation. We can do this with [PowerShell](http://blogs.technet.com/b/heyscriptingguy/archive/2011/08/09/use-powershell-to-convert-sddl-to-binary-format.aspx). Open a PowerShell prompt and run the following commands:
 
-``` C#
+```csharp
     $a = ([wmiclass]"Win32_SecurityDescriptorHelper").SDDLToBinarySD("D:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GA;;;AU)(A;;GA;;;AC)").BinarySD | % { '{0:X}' -f $_ }
     $a -join ','
 ```

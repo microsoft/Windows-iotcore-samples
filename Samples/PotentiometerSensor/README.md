@@ -161,7 +161,7 @@ The code here performs two main tasks:
 
 Let's start by digging into the initializations. The first thing we initialize is the GPIO LED pin in **InitGPIO()**.
 
-``` C#
+```csharp
 private void InitGpio()
 {
 	var gpio = GpioController.GetDefault();
@@ -188,7 +188,7 @@ private void InitGpio()
 
 Next, we initialize the SPI bus. This allows the RPi2 or RPi3 to communicate with the ADC to read in potentiometer positions.
 
-``` C#
+```csharp
 private async Task InitSPI()
 {
 	try
@@ -221,7 +221,7 @@ private async Task InitSPI()
 
 After the initializations are complete, we create a periodic timer to read data every 100mS.
 
-``` C#
+```csharp
 private async void InitAll()
 {
 	// ...
@@ -235,7 +235,7 @@ private async void InitAll()
 
 This timer calls the **Timer_Tick()** function. Which starts by reading from the ADC:
 
-``` C#
+```csharp
 public void ReadADC()
 {
 	byte[] readBuffer = new byte[3]; /* Buffer to hold read data*/
@@ -273,7 +273,7 @@ public void ReadADC()
 
 Next, we control the LED based on the ADC result
 
-``` C#
+```csharp
 /* Turn on/off the LED depending on the potentiometer position    */
 private void LightLED()
 {

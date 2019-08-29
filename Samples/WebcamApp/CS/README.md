@@ -78,7 +78,7 @@ For accessing the web cam, the microphone, and the default storage folders, you 
 * **initVideo_Click** initializes the device for both audio and video when `Initialize Audio and Video` is clicked.   
 * **initAudioOnly_Click** initializes the device for audio only when `Initialize Audio Only` is clicked.  
  
-``` C#  
+```csharp  
 private async void initVideo_Click(object sender, RoutedEventArgs e)  
 { 
    // ...  
@@ -123,7 +123,7 @@ When the camera is initialized successfully, we start the preview in **initVideo
   
 When the `Take Photo` button is clicked, we capture the image, store it in the default storage, and display it in the XAML canvas element in **takePhoto_Click**  
   
-``` C#  
+```csharp  
 private async void initVideo_Click(object sender, RoutedEventArgs e)  
 {  
     // ...  
@@ -172,7 +172,7 @@ The code below shows how we accomplish this. Once the recording is stopped, we s
   
 **NOTE:** In order to hear the audio, an audio device (ex: earphones) must be connected to the analog audio output on Raspberry Pi2. On MinnowBoard Max, audio output is available via HDMI  
   
-``` C#  
+```csharp  
 private async void recordVideo_Click(object sender, RoutedEventArgs e)  
 {  
     // ...  
@@ -226,7 +226,7 @@ The code below shows how we accomplish this. Once the recording is stopped, we s
   
 **NOTE:** In order to hear the audio, an audio device (ex: earphones) must be connected to the analog audio output on Raspberry Pi2. On MinnowBoard Max, audio output is available via HDMI  
   
-``` C#  
+```csharp  
 private async void recordAudio_Click(object sender, RoutedEventArgs e)  
 {  
     // ...  
@@ -269,7 +269,7 @@ There are two callbacks illustrated in the sample: **MediaCapture.Failed** and *
   
 We assign these in the **initVideo_Click** and **initAudio_Click** functions  
   
-``` C#  
+```csharp  
 private async void initVideo_Click(object sender, RoutedEventArgs e)  
 {  
     // ...  

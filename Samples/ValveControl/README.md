@@ -86,7 +86,7 @@ the flow of liquid through the valve.
 
 Here is how you set up the application to use the Flow object in C#:
 
-``` C#
+```csharp
 public MainPage()
 {
     this.InitializeComponent();

@@ -49,7 +49,7 @@ Now that we have a TextBox and a Button, we can add some code which will be exec
 ```
   
 *MainPage.xaml.cs:*
-``` C#
+```csharp
 private void ClickMe_Click(object sender, RoutedEventArgs e)
 {
     this.HelloMessage.Text = "Hello, Windows 10 IoT Core!";

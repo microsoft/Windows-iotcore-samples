@@ -92,7 +92,7 @@ The first step to access the device is to request access using the static `WiFiA
 
 When access is granted, any of the WiFiAdapter methods can now be used. So, we start by trying to find a WiFi adapter on the current device, using the WiFiAdapter device selector.
 
-``` C#
+```csharp
 
     var access = await WiFiAdapter.RequestAccessAsync();
     if (access != WiFiAccessStatus.Allowed)
@@ -121,7 +121,7 @@ When access is granted, any of the WiFiAdapter methods can now be used. So, we s
 
 Alternatively, `WiFiAdapter.FindAllAdaptersAsync()` can be used to find all WiFi adapters to achieve the same.
 
-``` C#
+```csharp
 // Not part of the sample:
 var result = await WiFiAdapter.FindAllAdaptersAsync();
 if (result.Count >= 1)
@@ -136,7 +136,7 @@ if (result.Count >= 1)
 
 The next step is to scan for available WiFi networks, this can be achieved using the `WiFiAdapter.ScanAsync()` method.
 
-``` C#
+```csharp
 private async void Button_Click(object sender, RoutedEventArgs e)
 {
     try
@@ -154,7 +154,7 @@ private async void Button_Click(object sender, RoutedEventArgs e)
 
 When the scan is complete, the `WiFiAdapter.NetworkReport` property is updated which  can then be used to get and display information to identify each of the WiFi networks found using a read-only collection of `WiFiAvailableNetwork`s. We add each to the result collection, so it can then be mapped to Xaml UI using properties of the `WiFiNetworkDisplay` helper class.
 
-``` C#
+```csharp
 
     private async Task DisplayNetworkReportAsync(WiFiNetworkReport report)
     {
@@ -187,7 +187,7 @@ When the scan is complete, the `WiFiAdapter.NetworkReport` property is updated w
 
 When a WiFi network is selected from the ones displayed, we need to determine if we want to collect the password credential. The WiFi network authentication type is what we need to determine that:
 
-``` C#
+```csharp
     
     private void UpdateNetworkKeyVisibility()
     {
@@ -207,7 +207,7 @@ When a WiFi network is selected from the ones displayed, we need to determine if
 
 To determine if the network supports WPS we can check if the current network supports **WiFiWpsKind.PushButton**.
 
-``` C#
+```csharp
 
     public async Task<bool> IsWpsPushButtonAvailableAsync()
     {
@@ -221,7 +221,7 @@ To determine if the network supports WPS we can check if the current network sup
 
 And finally, to determine if EAP network support is available we can check to see if the authentication type is **Rsna** or **Wpa**.
 
-``` C#
+```csharp
 
     public bool IsEapAvailable
     {
@@ -237,7 +237,7 @@ Finally, to connect to the selected network, an overload of `WiFiAdapter.Connect
 
 The status returned in the async result indicates whether the connection was successful or. Only `WiFiConnectionStatus.Success` indicates success. Other returned values indicates the connection failure reason.
 
-``` C#
+```csharp
     
     Task<WiFiConnectionResult> didConnect = null;
     WiFiConnectionResult result = null;
@@ -317,7 +317,7 @@ The status returned in the async result indicates whether the connection was suc
 
 If you need to disconnect, `WiFiAdapter.Disconnect()` can be used.
 
-``` C#
+```csharp
 
     private void Disconnect_Click(object sender, RoutedEventArgs e)
     {

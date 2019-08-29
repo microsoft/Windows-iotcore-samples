@@ -213,7 +213,7 @@ You can add this by opening the **Package.appxmanifest** file in an XML editor (
 
 This sample app enumerates all serial devices connected to the device and displays the list in the **ListBox** ConnectDevices. The following code connects and configure the selected device ID and creates a **SerialDevice** object. 
 
-``` C#
+```csharp
 private async void comPortInput_Click(object sender, RoutedEventArgs e)
 {
     var selection = ConnectDevices.SelectedItems; // Get selected items from ListBox
@@ -253,7 +253,7 @@ Due to differences in handling concurrent tasks, the implementations of **Listen
 
 * C# allows awaiting **ReadAsync()**. All we do is keep reading the serial port in an infinite loop interrupted only when an exception is thrown (triggered by the cancellation token).
 
-``` C#
+```csharp
 
 private async void Listen()
 {
@@ -352,7 +352,7 @@ Concurrency::task<void> MainPage::ReadAsync(Concurrency::cancellation_token canc
 
 When the bytes are ready to be sent, we write asynchronously to the **OutputStream** of the **SerialDevice** object using the **DataWriter** object.
 
-``` C#
+```csharp
 private async void sendTextButton_Click(object sender, RoutedEventArgs e)
 {	
     // ...
@@ -389,7 +389,7 @@ private async Task WriteAsync()
 
 You can cancel the read operation by using **CancellationToken** on the Task. Initialize the **CancellationToken** object and pass that as an argument to the read task.
 
-``` C#
+```csharp
 
 private async void comPortInput_Click(object sender, RoutedEventArgs e)
 {
@@ -440,7 +440,7 @@ When closing the connection with the device, we cancel all pending I/O operation
 
 In this sample, we proceed to also refresh the list of devices connected.
 
-``` C#
+```csharp
 private void closeDevice_Click(object sender, RoutedEventArgs e)
 {
     try

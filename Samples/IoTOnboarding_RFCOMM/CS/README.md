@@ -34,14 +34,14 @@ The general communication flow between Client and Server
 1. On your Manager Device, go to *Settings* > *About* to get the **Device Name** under *Device Specifications*.
 2. Open the "Client" solution in Visual Studio 2017 on your Dev Machine.
 3. Open **SampleConfiguration.cs**, find the line
-    ```C#
+    ```csharp
     public const string TARGET_NAME = "<DESKTOP_NAME>";
     ```
     and replace `<DESKTOP_NAME>` with **Device Name** of your Manager Device.
 4. If you have only one network adapter on your IoT Device, skip to Step 5. Otherwise:
     1. Open **NetworkManager.cs**, and Search for `//TODO:`.
     2. Edit the the following section to find your targeted network adatper:
-        ```C#
+        ```csharp
         //Get the first WiFi adatper from the list. 
         //TODO: Edit this part if the system has more than one WiFi adatpers.
         m_wiFiAdapter = m_wiFiAdapterList[0];
