@@ -45,13 +45,14 @@
             <ToggleSwitch x:Uid="AutoScalingToggle" IsOn="{x:Bind ViewModel.AppAutoScaling, Mode=TwoWay}" />
         </StackPanel>
 
-        <StackPanel>
+        <!--Throws an exception on ARM64-->
+        <!--<StackPanel>
             <TextBlock x:Uid="ColorPickerTextBlock" Margin="0,0,0,10" />
             <ColorPicker
                 HorizontalAlignment="Left"
                 ColorSpectrumShape="Box"
                 Style="{StaticResource SettingControlStyle}"
                 Color="{x:Bind ViewModel.TileColor, Mode=TwoWay}" />
-        </StackPanel>
+        </StackPanel>-->
     </StackPanel>
 </ctrl:SettingsUserControlBase>

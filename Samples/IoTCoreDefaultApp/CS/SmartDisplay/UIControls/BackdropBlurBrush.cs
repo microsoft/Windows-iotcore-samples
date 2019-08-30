@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 
-#if !_M_ARM64
-using Microsoft.Graphics.Canvas.Effects;
-#endif
+// BUG: _M_ARM64 isn't defined when building ARM64 for some reason, so I'm just commenting everything out.
+//#if !_M_ARM64
+//using Microsoft.Graphics.Canvas.Effects;
+//#endif
 using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
@@ -62,43 +63,47 @@ namespace SmartDisplay.Controls
             // Delay creating composition resources until they're required.
             if (CompositionBrush == null)
             {
-#if !_M_ARM64 
-                var backdrop = Window.Current.Compositor.CreateBackdropBrush();
+                // BUG: _M_ARM64 isn't defined when building ARM64 for some reason, so I'm just commenting everything out.
+                //#if !_M_ARM64 
+                //                var backdrop = Window.Current.Compositor.CreateBackdropBrush();
 
-                // Use a Win2D blur affect applied to a CompositionBackdropBrush.
-                var graphicsEffect = new GaussianBlurEffect
-                {
-                    Name = "Blur",
-                    BlurAmount = (float)BlurAmount,
-                    Source = new CompositionEffectSourceParameter("backdrop")
-                };
+                //                // Use a Win2D blur affect applied to a CompositionBackdropBrush.
+                //                var graphicsEffect = new GaussianBlurEffect
+                //                {
+                //                    Name = "Blur",
+                //                    BlurAmount = (float)BlurAmount,
+                //                    Source = new CompositionEffectSourceParameter("backdrop")
+                //                };
 
-                var colorEffect = new ColorSourceEffect
-                {
-                    Name = "Tint",
-                    Color = TintColor
-                };
+                //                var colorEffect = new ColorSourceEffect
+                //                {
+                //                    Name = "Tint",
+                //                    Color = TintColor
+                //                };
 
-                var blendEffect = new BlendEffect
-                {
-                    Background = graphicsEffect,
-                    Foreground = colorEffect,
-                    Mode = BlendEffectMode.Overlay
-                };
+                //                var blendEffect = new BlendEffect
+                //                {
+                //                    Background = graphicsEffect,
+                //                    Foreground = colorEffect,
+                //                    Mode = BlendEffectMode.Overlay
+                //                };
 
-                var effectFactory = Window.Current.Compositor.CreateEffectFactory(blendEffect, new[]
-                {
-                    "Blur.BlurAmount",
-                    "Tint.Color"
-                });
-                var effectBrush = effectFactory.CreateBrush();
+                //                var effectFactory = Window.Current.Compositor.CreateEffectFactory(blendEffect, new[]
+                //                {
+                //                    "Blur.BlurAmount",
+                //                    "Tint.Color"
+                //                });
+                //                var effectBrush = effectFactory.CreateBrush();
 
-                effectBrush.SetSourceParameter("backdrop", backdrop);
+                //                effectBrush.SetSourceParameter("backdrop", backdrop);
 
-                CompositionBrush = effectBrush;
-#else
+                //                CompositionBrush = effectBrush;
+                //#else
+                //                CompositionBrush = Window.Current.Compositor.CreateColorBrush(Colors.Black);
+                //#endif
+
+
                 CompositionBrush = Window.Current.Compositor.CreateColorBrush(Colors.Black);
-#endif
             }
         }
 
