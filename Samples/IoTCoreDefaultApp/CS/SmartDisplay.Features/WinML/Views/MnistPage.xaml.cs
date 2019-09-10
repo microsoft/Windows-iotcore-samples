@@ -2,6 +2,7 @@
 
 using SmartDisplay.Controls;
 using SmartDisplay.ViewModels;
+using System;
 using Windows.Foundation;
 using Windows.Media;
 using Windows.UI;
@@ -54,7 +55,14 @@ namespace SmartDisplay.Features.WinML.Views
         
         private async void InkPresenter_StrokesCollected(InkPresenter sender, InkStrokesCollectedEventArgs args)
         {
-            InputReady?.Invoke(this, await MnistHelper.GetHandWrittenImageAsync(inkGrid));
+            try
+            {
+                InputReady?.Invoke(this, await MnistHelper.GetHandWrittenImageAsync(inkGrid));
+            }
+            catch (Exception ex)
+            {
+                PageService?.ShowNotification(ex.Message);
+            }
         }
 
         public void Reset()
