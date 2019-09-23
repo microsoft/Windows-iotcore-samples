@@ -45,7 +45,7 @@
             <ToggleSwitch x:Uid="AutoScalingToggle" IsOn="{x:Bind ViewModel.AppAutoScaling, Mode=TwoWay}" />
         </StackPanel>
 
-        <StackPanel>
+        <StackPanel x:Name="ColorPickerPanel" x:Load="{x:Bind ViewModel.LoadColorPicker}">
             <TextBlock x:Uid="ColorPickerTextBlock" Margin="0,0,0,10" />
             <ColorPicker
                 HorizontalAlignment="Left"
