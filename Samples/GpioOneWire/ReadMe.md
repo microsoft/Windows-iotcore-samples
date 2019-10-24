@@ -5,7 +5,7 @@ languages:
   - cpp
 products:
   - windows
-description: This sample shows how to read from the DHT11 from a Universal Windows Application for Windows 10 IoT Core.
+description: "This sample shows how to read from the DHT11 from a Universal Windows Application for Windows 10 IoT Core."
 ---
 
 # GPIO OneWire DHT11/22 reader
