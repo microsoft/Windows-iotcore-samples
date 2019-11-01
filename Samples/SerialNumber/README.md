@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Read the device serial number for a Windows 10 IoT Core device.
 ---
 

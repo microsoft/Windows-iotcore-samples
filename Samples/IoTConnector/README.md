@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Demonstrate device to device communication with Azure IoT Hub for Windows 10 IoT Core.
 ---
 

@@ -5,6 +5,7 @@ languages:
 - xml
 products:
 - windows
+  - windows-iot
 description: sample shell launcher configuration xmls using Assigned Access CSP
 ---
 

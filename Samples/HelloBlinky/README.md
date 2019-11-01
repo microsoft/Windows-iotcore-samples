@@ -6,6 +6,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: A sample that shows how to make an LED attached to a GPIO pin blink on and off for Windows 10 IoT Core.
 ---
 

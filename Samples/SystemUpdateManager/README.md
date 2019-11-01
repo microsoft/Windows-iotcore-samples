@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Use System Update Manager to control system updates with Windows 10 IoT Core.
 ---
 

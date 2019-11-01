@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Control a basic temperature and force sensor for Windows 10 IoT Core.
 ---
 

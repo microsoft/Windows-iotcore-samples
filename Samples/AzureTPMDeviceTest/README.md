@@ -6,6 +6,7 @@ languages:
   - NET
 products:
   - windows
+  - windows-iot
 description: Connect TPM with the Azure IoT Hub with Windows 10 IoT Core.
 ---
 

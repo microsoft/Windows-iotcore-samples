@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Create an app that initializes a web cam, takes pictures, and records video and audio.
 ---
 

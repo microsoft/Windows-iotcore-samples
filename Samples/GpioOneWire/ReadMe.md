@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: "This sample shows how to read from the DHT11 from a Universal Windows Application for Windows 10 IoT Core."
 ---
 

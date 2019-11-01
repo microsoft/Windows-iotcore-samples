@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Write lines of text to an SPI LED display.
 ---
 

@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Building a coffee maker that is controllable with your phone.
 ---
 

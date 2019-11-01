@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: "Working with the GoPiGoXbox sample."
 ---
 

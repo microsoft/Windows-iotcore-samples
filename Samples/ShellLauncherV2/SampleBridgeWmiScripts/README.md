@@ -5,6 +5,7 @@ languages:
 - xml
 products:
 - windows
+  - windows-iot
 description: sample powershell scripts to call bridge WMI Shell Launcher node
 ---
 

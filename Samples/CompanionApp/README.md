@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: This sample is intended to show how to remotely configure an Windows 10 IoT Core device when it is not attached to a network.
 ---
 

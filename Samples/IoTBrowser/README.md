@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Build a simple web browser for Windows 10 IoT Core.
 ---
 

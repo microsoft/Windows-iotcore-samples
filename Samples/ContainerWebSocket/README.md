@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: This sample is designed to work with Windows containers on Windows IoT Core and Windows IoT Enterprise.
 ---
 

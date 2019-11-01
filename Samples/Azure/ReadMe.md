@@ -5,6 +5,7 @@ languages:
  - csharp
 products:
  - windows
+  - windows-iot
 description: Test out different Azure samples.
 ---
 

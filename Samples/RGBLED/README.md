@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: A sample that makes an LED blink red, green, and blue with Windows 10 IoT Core.
 ---
 

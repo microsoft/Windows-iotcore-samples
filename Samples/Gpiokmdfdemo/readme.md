@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: Create a simple GPIO demo.
 ---
 

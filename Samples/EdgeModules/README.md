@@ -5,6 +5,7 @@ languages:
  - csharp
 products:
  - windows
+  - windows-iot
 description: Learn how to leverage sample modules to demonstrate the various features of Azure IoT Edge on Windows.
 ---
 
