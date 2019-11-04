@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Learn how use NFC on Windows 10 IoT Core.
 ---
 

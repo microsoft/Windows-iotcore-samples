@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: In this sample, we will build the OpenCV library for Windows and add it to a UWP C++ app, which will run facial and body recognition on a photo with Windows 10 IoT Core.
 ---
 

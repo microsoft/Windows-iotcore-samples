@@ -6,6 +6,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: An example of building a foreground app and background app within the same APPX file for Windows 10 IoT Core.
 ---
 

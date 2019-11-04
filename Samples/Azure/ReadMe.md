@@ -2,9 +2,10 @@
 page_type: sample
 urlFragment: iot-azure-samples
 languages:
- - csharp
+  - csharp
 products:
- - windows
+  - windows
+  - windows-iot
 description: Test out different Azure samples.
 ---
 

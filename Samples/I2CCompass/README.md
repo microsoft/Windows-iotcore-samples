@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: This sample uses I2C on Windows 10 IoT Core to communicate with an HMC5883L Magnetometer device.
 ---
 
