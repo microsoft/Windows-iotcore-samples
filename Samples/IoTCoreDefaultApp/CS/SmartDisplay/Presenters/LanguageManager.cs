@@ -400,6 +400,54 @@ namespace SmartDisplay.Utils
             return newLang;
         }
 
+        /// <summary>
+        /// Tries to match the language tag to one in the LanguageManager map.  Sometimes
+        /// the tag specifies the script that is being used so the tag doesn't match
+        /// exactly (e.g. zh-CN, zh-Hant-CN, zh-Hans-CN will match to "zh-CN", which is in the mapped list)
+        /// </summary>
+        /// <param name="langTag"></param>
+        /// <returns></returns>
+        public string GetMappedDisplayNameFromLanguageTag(string langTag)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(langTag))
+                {
+                    // Search for exact match first
+                    var kvp = _displayNameToLanguageMap.FirstOrDefault(x => x.Value.Equals(langTag));
+
+                    if (kvp.Key != null)
+                    {
+                        return kvp.Key;
+                    }
+                    // If there's no exact match, try to match the first and last parts of the tag
+                    else
+                    {
+                        var langTagParts = langTag.Split('-');
+                        var mapKvp = _displayNameToLanguageMap.FirstOrDefault(x =>
+                        {
+                            var tagParts = x.Value.Split('-');
+                            if (tagParts.First().Equals(langTagParts.First()) &&
+                                tagParts.Last().Equals(langTagParts.Last()))
+                            {
+                                return true;
+                            }
+
+                            return false;
+                        });
+
+                        return mapKvp.Key;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ServiceUtil.LogService.Write($"Couldn't find match for {langTag} in language map.");
+            }
+
+            return null;
+        }
+
         public static string GetCurrentLanguageDisplayName()
         {
             var langTag = ApplicationLanguages.PrimaryLanguageOverride;

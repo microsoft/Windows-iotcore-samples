@@ -79,22 +79,6 @@ namespace SmartDisplay
             Loaded -= ViewModel.PageLoaded;
         }
 
-        private async Task RefreshAuthAsync()
-        {
-            var aadProvider = App.AuthManager.GetGraphProvider();
-            var msaProvider = App.AuthManager.GetProvider(ProviderNames.MsaProviderKey);
-
-            // Try to get tokens using saved account info
-            bool aadStatus = (aadProvider != null) ? await aadProvider.GetTokenSilentAsync() != null : true;
-            bool msaStatus = await msaProvider.GetTokenSilentAsync() != null;
-
-            ViewModel.SetSignInStatus(msaStatus, aadStatus);
-
-            // Check for changes periodically. 
-            // When change is detected, TokenStatusChanged event is fired
-            App.AuthManager.StartStatusTimer(3600 * 12);
-        }
-
         #endregion
 
         #region IPageService
@@ -322,9 +306,6 @@ namespace SmartDisplay
             base.OnNavigatedTo(e);
 
             ViewModel.SetUpVM();
-
-            // Initialize MSA/AAD
-            var refreshAuthTask = RefreshAuthAsync();
 
             if (e.Parameter is Type pageType)
             {

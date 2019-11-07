@@ -88,9 +88,9 @@ namespace SmartDisplay.Controls
 
                 var effectFactory = Window.Current.Compositor.CreateEffectFactory(blendEffect, new[]
                 {
-                                    "Blur.BlurAmount",
-                                    "Tint.Color"
-                                });
+                    "Blur.BlurAmount",
+                    "Tint.Color"
+                });
                 var effectBrush = effectFactory.CreateBrush();
 
                 effectBrush.SetSourceParameter("backdrop", backdrop);

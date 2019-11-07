@@ -223,6 +223,9 @@
     <Compile Include="Utils\LogUtil.cs" />
     <Compile Include="Utils\PageUtil.cs" />
     <Compile Include="Utils\SettingsProvider.cs" />
+    <Compile Include="Utils\TimeZone\EmptyTimeZoneSettings.cs" />
+    <Compile Include="Utils\TimeZone\ITimeZoneSettings.cs" />
+    <Compile Include="Utils\TimeZone\SystemTimeZoneSettings.cs" />
     <Compile Include="Utils\UI\MultiViewManager.cs" />
     <Compile Include="Utils\UI\ViewLifetimeControl.cs" />
     <Compile Include="Utils\Weather\InternationalWeather.cs" />
@@ -640,9 +643,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\de-DE\Resources.resw">
-      <SubType>Designer</SubType>
-    </PRIResource>
+    <SDKReference Include="WindowsIoT, Version=10.0.17134.0">
+      <Name>Windows IoT Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\de-DE\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\ru-RU\Resources.resw" />

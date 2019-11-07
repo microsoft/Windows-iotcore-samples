@@ -15,7 +15,7 @@ namespace SmartDisplay.Controls
 #else
         public bool LoadColorPicker = true;
 #endif
-        
+
         public Color TileColor
         {
             get { return Settings.TileColor; }
