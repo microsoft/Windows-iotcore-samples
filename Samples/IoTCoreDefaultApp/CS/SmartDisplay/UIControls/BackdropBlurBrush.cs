@@ -62,7 +62,7 @@ namespace SmartDisplay.Controls
             // Delay creating composition resources until they're required.
             if (CompositionBrush == null)
             {
-#if !_M_ARM64 
+#if !_M_ARM64
                 var backdrop = Window.Current.Compositor.CreateBackdropBrush();
 
                 // Use a Win2D blur affect applied to a CompositionBackdropBrush.
