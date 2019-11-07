@@ -40,7 +40,6 @@ namespace SmartDisplay.Identity
         public string _resource;
         private string _clientId;
         private string _userIdKey;
-        private bool _isSignedIn;
 
         public WamProvider(
             string authority,
@@ -125,13 +124,6 @@ namespace SmartDisplay.Identity
                 resource = _resource ?? DefaultResource;
             }
 
-            // MSA doesn't provide an expiration date/time, so we 
-            // need to keep track of "signed out" state
-            if (!_isSignedIn)
-            {
-                return false;
-            }
-
             if (_tokens.TryGetValue(resource, out var tokenInfo))
             {
                 if (tokenInfo.Token == null || tokenInfo.ExpiresOn < DateTime.Now)
@@ -143,13 +135,11 @@ namespace SmartDisplay.Identity
                 return true;
             }
 
-            return false;
+            return Task.Run(() => GetTokenSilentAsync(resource)).Result != null;
         }
 
         public async Task SignOutAsync()
         {
-            _isSignedIn = false;
-
             ClearTokens();
 
             var webAccountId = GetSavedAccountId();
@@ -292,14 +282,12 @@ namespace SmartDisplay.Identity
                             ServiceUtil.LogService.Write($"Resource: {resource}, Token Expiration: {_tokens[resource].ExpiresOn}");
                         }
 
-                        _isSignedIn = true;
                         TokenUpdate?.Invoke(this, new EventArgs());
                         return true;
                     }
                 }
             }
 
-            _isSignedIn = false;
             return false;
         }
 

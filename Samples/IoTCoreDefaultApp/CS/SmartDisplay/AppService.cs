@@ -303,40 +303,16 @@ namespace SmartDisplay
         {
             // Subscribe to BT message events
             BluetoothServerHelper.Instance.MessageReceived += Bluetooth_MessageReceived;
-
-            // Event handler for detecting when token status changes over time
-            App.AuthManager.TokenStatusChanged += AuthManager_TokenStatusChanged;
         }
 
         private void UnsubscribeToEvents()
         {
             BluetoothServerHelper.Instance.MessageReceived -= Bluetooth_MessageReceived;
-            App.AuthManager.TokenStatusChanged -= AuthManager_TokenStatusChanged;
         }
 
         private void Bluetooth_MessageReceived(object sender, BluetoothMessageReceivedArgs args)
         {
             PageService?.ShowNotification(args.Message, 3);
-        }
-
-        private async void AuthManager_TokenStatusChanged(object sender, TokenStatusEventArgs args)
-        {
-            App.LogService.Write($"Provider: {args.ProviderKey}, Old: {args.OldValue}, New: {args.NewValue}");
-
-            var msa = AuthManager.GetProvider(ProviderNames.MsaProviderKey);
-            bool isMsaValid = msa.IsTokenValid();
-
-            LiveUserInfo userInfo = null;
-            if (isMsaValid)
-            {
-                userInfo = await LiveApiUtil.GetUserInfoAsync(await AuthManager.GetProvider(ProviderNames.MsaProviderKey).GetTokenSilentAsync());
-            }
-
-            var aad = AuthManager.GetGraphProvider();
-            bool isAadValid = (aad != null) ? aad.IsTokenValid() : false;
-
-            // Update the UI
-            PageService?.SetSignInStatus(isMsaValid, isAadValid, userInfo?.name);
         }
 
         #endregion

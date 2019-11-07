@@ -302,8 +302,6 @@ namespace SmartDisplay.ViewModels
                 bool isMsaValid = msaProvider.IsTokenValid();
                 bool isAadValid = (aadProvider != null) ? aadProvider.IsTokenValid() : false;
 
-                PageService.SetSignInStatus(isMsaValid, isAadValid);
-
                 await UpdateMsaUiAsync(isMsaValid);
                 await UpdateAadUiAsync(isAadValid);
 
@@ -341,26 +339,33 @@ namespace SmartDisplay.ViewModels
                     var provider = AppService.AuthManager.GetProvider(ProviderNames.MsaProviderKey);
                     var token = await provider.GetTokenSilentAsync();
 
-                    if (token != null)
+                    using (var graphHelper = new GraphHelper(provider))
                     {
-                        InvokeOnUIThread(async () =>
+                        var userInfo = await graphHelper.GetUserAsync();
+                        if (userInfo != null)
                         {
-                            var bitmap = await LiveApiUtil.GetPictureAsync(token);
+                            MsaInfoText = userInfo.DisplayName;
+                            MsaDisplayName = userInfo.DisplayName;
+                        }
+                        else
+                        {
+                            MsaDisplayName = MsaInfoText = string.Empty;
+                        }
+                    }
+
+                    InvokeOnUIThread(async () =>
+                    {
+                        using (var graphHelper = new GraphHelper(provider))
+                        {
+                            var bitmap = await graphHelper.GetPhotoAsync();
                             if (bitmap != null)
                             {
                                 MsaBitmap = bitmap;
                             }
-                        });
-
-                        var userInfo = await LiveApiUtil.GetUserInfoAsync(token);
-                        if (userInfo != null)
-                        {
-                            MsaInfoText = userInfo.name;
-                            MsaDisplayName = userInfo.name;
                         }
+                    });
 
-                        IsMsaInfoPanelVisible = true;
-                    }
+                    IsMsaInfoPanelVisible = true;
                 }
                 else
                 {

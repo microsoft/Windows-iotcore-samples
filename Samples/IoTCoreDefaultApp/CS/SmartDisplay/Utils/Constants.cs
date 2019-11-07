@@ -39,7 +39,7 @@ namespace SmartDisplay
         // Configuration for authenticating MSA
         public const string MsaClientId = "none";
         public const string MsaAuthority = "consumers";
-        public const string MsaScope = "wl.basic";
+        public const string MsaScope = "User.Read";
         public const string MsaProviderId = "https://login.microsoft.com";
         
     }

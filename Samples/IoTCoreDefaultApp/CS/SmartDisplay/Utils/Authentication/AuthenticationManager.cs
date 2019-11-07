@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 
 using SmartDisplay.Contracts;
-using SmartDisplay.Identity;
 using SmartDisplay.Utils;
 using System;
 using System.Collections.Generic;
@@ -21,10 +20,10 @@ namespace SmartDisplay.Identity
             { ProviderNames.MsaProviderKey, new WamProvider(
                                     AuthConstants.MsaAuthority,
                                     AuthConstants.MsaScope,
-                                    null,
+                                    AuthConstants.GraphResource,
                                     AuthConstants.MsaClientId,
                                     ProviderNames.MsaProviderKey,
-                                    dialogTimeoutSeconds: 2 * 60)},
+                                    dialogTimeoutSeconds: 15 * 60)},
         };
 
         private Dictionary<string, bool> _tokenCache = new Dictionary<string, bool>();

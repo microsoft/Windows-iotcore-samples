@@ -5,6 +5,7 @@ using SmartDisplay.Utils;
 using System;
 using System.Collections.ObjectModel;
 using Windows.Foundation.Diagnostics;
+using Windows.Globalization;
 using Windows.System;
 
 namespace SmartDisplay.ViewModels.Settings
@@ -21,7 +22,12 @@ namespace SmartDisplay.ViewModels.Settings
 
         public string CurrentLanguageDisplayName
         {
-            get { return GetStoredProperty<string>() ?? LanguageManager.GetCurrentLanguageDisplayName(); }
+            get
+            {
+                return GetStoredProperty<string>() ?? 
+                    LanguageManager.GetMappedDisplayNameFromLanguageTag(ApplicationLanguages.PrimaryLanguageOverride) ?? 
+                    LanguageManager.GetCurrentLanguageDisplayName();
+            }
             set
             {
                 if (SetStoredProperty(value))
@@ -77,7 +83,7 @@ namespace SmartDisplay.ViewModels.Settings
 
         public string CurrentTimeZoneDisplayName
         {
-            get { return GetStoredProperty<string>() ?? TimeZoneSettings.CurrentTimeZoneDisplayName; }
+            get { return GetStoredProperty<string>() ?? _timeZoneSettings.CurrentTimeZoneDisplayName; }
             set
             {
                 if (SetStoredProperty(value))
@@ -123,12 +129,30 @@ namespace SmartDisplay.ViewModels.Settings
 
         private bool _updateSuccess = false;
         private string _resultsText = string.Empty;
+        private ITimeZoneSettings _timeZoneSettings;
 
         #endregion
 
         public SystemSettingsVM() : base()
         {
             Width = Constants.SettingsWidth;
+
+            try
+            {
+                if (TimeZoneSettings.CanChangeTimeZone)
+                {
+                    _timeZoneSettings = new SystemTimeZoneSettings();
+                }
+            }
+            catch (Exception)
+            {
+                // TimeZoneSettings not available
+            }
+
+            if (_timeZoneSettings == null)
+            {
+                _timeZoneSettings = new EmptyTimeZoneSettings();
+            }
 
             DisplayLanguageNamesCollection = new ObservableCollection<string>();
             InputLanguageNamesCollection = new ObservableCollection<string>();
@@ -161,14 +185,14 @@ namespace SmartDisplay.ViewModels.Settings
             }
 
             // Load timezones
-            foreach (string timeZone in TimeZoneSettings.SupportedTimeZoneDisplayNames)
+            foreach (string timeZone in _timeZoneSettings.SupportedTimeZoneDisplayNames)
             {
                 if (!TimeZoneNamesCollection.Contains(timeZone))
                 {
                     TimeZoneNamesCollection.Add(timeZone);
                 }
             }
-            
+
             // Only enable updating if more than one choice is available
             DisplayLanguageUpdateEnabled = (DisplayLanguageNamesCollection.Count > 1);
             InputLanguageUpdateEnabled = (InputLanguageNamesCollection.Count > 1);
@@ -221,11 +245,11 @@ namespace SmartDisplay.ViewModels.Settings
 
             try
             {
-                if (TimeZoneSettings.CanChangeTimeZone)
+                if (_timeZoneSettings.CanChangeTimeZone)
                 {
-                    TimeZoneSettings.ChangeTimeZoneByDisplayName(timeZoneName);
+                    _timeZoneSettings.ChangeTimeZoneByDisplayName(timeZoneName);
 
-                    if (timeZoneName == TimeZoneSettings.CurrentTimeZoneDisplayName)
+                    if (timeZoneName == _timeZoneSettings.CurrentTimeZoneDisplayName)
                     {
                         _updateSuccess = true;
                         _resultsText = string.Format(TimeZoneUpdateSuccessText, timeZoneName);

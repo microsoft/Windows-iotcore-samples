@@ -2,11 +2,13 @@
 
 using SmartDisplay.Contracts;
 using SmartDisplay.Controls;
+using SmartDisplay.Identity;
 using SmartDisplay.Utils;
 using SmartDisplay.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Core;
@@ -29,6 +31,7 @@ namespace SmartDisplay.ViewModels
 
         private SettingsProvider Settings => SmartDisplay.AppService.GetForCurrentContext().Settings as SettingsProvider;
         private ILogService LogService => AppService.LogService;
+        private IAuthManager AuthManager => AppService.AuthManager;
 
         private SolidColorBrush OpenPaneColor { get; } = Application.Current.Resources["SystemControlBackgroundChromeMediumLowBrush"] as SolidColorBrush;
         private SolidColorBrush ClosedPaneColor { get; } = new SolidColorBrush(Colors.Black);
@@ -382,6 +385,7 @@ namespace SmartDisplay.ViewModels
             }
 
             Settings.SettingsUpdated += Settings_SettingsUpdated;
+            AuthManager.TokenStatusChanged += AuthManager_TokenStatusChanged;
 
             switch (DeviceTypeInformation.Type)
             {
@@ -400,11 +404,14 @@ namespace SmartDisplay.ViewModels
                     };
                     break;
             }
+
+            var unused = RefreshAuthAsync();
         }
 
         public void TearDownVM()
         {
             Settings.SettingsUpdated -= Settings_SettingsUpdated;
+            AuthManager.TokenStatusChanged -= AuthManager_TokenStatusChanged;
         }
 
         private void Settings_SettingsUpdated(object sender, SettingsUpdatedEventArgs args)
@@ -425,6 +432,34 @@ namespace SmartDisplay.ViewModels
                         break;
                 }
             }
+        }
+
+        #region Sign In Status
+
+        public async Task RefreshAuthAsync()
+        {
+            var msa = AuthManager.GetProvider(ProviderNames.MsaProviderKey);
+            bool isMsaValid = msa.IsTokenValid();
+
+            var aad = AuthManager.GetGraphProvider();
+            bool isAadValid = (aad != null) ? aad.IsTokenValid() : false;
+
+            var provider = (isMsaValid) ? msa : aad ?? msa;
+            string name = null;
+
+            using (var graphHelper = new GraphHelper(provider))
+            {
+                var userInfo = await graphHelper.GetUserAsync();
+                name = userInfo?.DisplayName;
+            }
+
+            // Update the UI
+            SetSignInStatus(isMsaValid, isAadValid, name);
+        }
+
+        private async void AuthManager_TokenStatusChanged(object sender, TokenStatusEventArgs args)
+        {
+            await RefreshAuthAsync();
         }
 
         private class SignInStatus
@@ -503,5 +538,7 @@ namespace SmartDisplay.ViewModels
                 }
             });
         }
+
+        #endregion
     }
 }

@@ -143,25 +143,33 @@ namespace SmartDisplay.Controls
 
         private void CountdownTimerTick(ThreadPoolTimer timer)
         {
-            var value = ProgressValue + ProgressSmallChange;
-            ProgressValue = value;
-            if (value >= ProgressMaximum)
+            // Check if the countdown timer got reentered before it could be canceled
+            var lastValue = ProgressValue;
+            if (lastValue < ProgressMaximum)
             {
-                CancelCountdown();
-                NextButtonCommand?.Execute(null);
+                var value = lastValue + ProgressSmallChange;
+                ProgressValue = value;
+
+                // Check if this was the tick that moved us past ProgressMaximum
+                if (value >= ProgressMaximum)
+                {
+                    CancelCountdown();
+                    NextButtonCommand?.Execute(null);
+                }
             }
         }
 
         public void CancelCountdown()
         {
-            IsTimeoutVisible = false;
-            IsCancelButtonVisible = false;
-
+            // Cancel the timer first, then set the UI properties
             _countdownTimer?.Cancel();
             _timer?.Cancel();
 
             _countdownTimer = null;
             _timer = null;
+
+            IsTimeoutVisible = false;
+            IsCancelButtonVisible = false;
         }
     }
 }
