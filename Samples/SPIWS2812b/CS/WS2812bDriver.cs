@@ -16,6 +16,7 @@ namespace IoT.Windows10.ws2812b
 
         public async Task InitializeAsync(int pixels, string spiFriendlyName = "SPI0", int chipSelectLine = 0)
         {
+            //we use 4bits for each byte of ws2812b, so we need 12 bytes to set the 24 bytes of led
             var lenghtBuffer = pixels * 12;
             bufferLedSPI = new byte[lenghtBuffer];
 
@@ -52,6 +53,7 @@ namespace IoT.Windows10.ws2812b
 
         private byte[] Encode(byte ColorByte)
         {
+
             byte[] byteArray = new byte[4];
             int indexBit = 0;
             int indexByte = 3;
