@@ -53,4 +53,6 @@ Here are the schematics:
 
 The WS2812B include intelligent digital port data latch and signal reshaping amplification drive circuit. To set the RGB value there is a time specification that define what is a 1 or 0 value.
 
-![WS2812B_DataTransferTime](../../Resources/images/SPIWS2812b/WS2812B_DataTransferTime.png)
+![WS2812B_DataTransferTime](../../Resources/images/SPIWS2812b/WS2812B_DataTransferTime.PNG)
+
+
