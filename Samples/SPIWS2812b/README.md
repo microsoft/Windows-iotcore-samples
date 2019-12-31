@@ -53,4 +53,115 @@ Here are the schematics:
 
 The WS2812B include intelligent digital port data latch and signal reshaping amplification drive circuit. To set the RGB value there is a time specification that define what is a 1 or 0 value.
 
-![WS2812B_DataTransferTime](../../Resourcees/images/SPIWS2812b/WS2812B_DataTransferTime.png)
+![WS2812B_DataTransferTime](../../Resources/images/SPIWS2812b/WS2812B_DataTransferTime.png)
+
+And the sequence chart that explains how to set each bit of RGB data
+
+![WS2812B_SequenceChart](../../Resources/images/SPIWS2812b/WS2812B_SequenceChart.png)
+
+...and we need 24 of this patterns to set the entire RGB data of the led
+
+![WS2812B_CompositonData](../../Resouces/images/SPIWS2812b/WS2812B_CompositionData.png)
+
+#### Initialize the SPI Bus
+
+```csharp
+public async Task InitializeAsync(int pixels, string spiFriendlyName = "SPI0", int chipSelectLine = 0)
+{
+    //we use 4bits for each byte of ws2812b, so we need 12 bytes to set the 24 bytes of led
+    var lenghtBuffer = pixels * 12;
+    bufferLedSPI = new byte[lenghtBuffer];
+
+    var settings = new SpiConnectionSettings(chipSelectLine);
+    settings.ClockFrequency = 4000000;
+
+    var spi = SpiDevice.GetDeviceSelector(spiFriendlyName);
+    var deviceInformation = await DeviceInformation.FindAllAsync(spi);
+    spiDevice = await SpiDevice.FromIdAsync(deviceInformation[0].Id, settings);
+}
+```
+
+We initialize the SPI with 4MHz. It means that each bit sent will have 0.25us signal width. (1s/40000000) = 0.25us
+
+So using the **Sequence Chart** to send a zero bit we need to send two bits high and two bits low. So we can create the constants of these sequences of bits. 
+
+```csharp
+private const byte ledBitOn = 0b1110;
+private const byte ledBitOff = 0b1100;
+```
+
+TH = 0b1110 = 0.25us + 0.25us + 0.25us + 0s = 0.85us
+TL = 0b1100 = 0.25us + 0.25us + 0s + 0s = 0.5us
+
+```csharp
+private byte[] Encode(byte ColorByte)
+{
+    byte[] byteArray = new byte[4];
+    int indexBit = 0;
+    int indexByte = 3;
+    byte mask = 0x80;
+
+    while(indexBit < 8)
+    {
+        mask = (byte)(0x80 >> indexBit);
+        indexBit++;
+
+        if ((ColorByte & mask) > 0)
+            byteArray[indexByte] = ledBitOn << 4;
+        else
+            byteArray[indexByte] = ledBitOff << 4;
+
+        
+        mask = (byte)(1 >> indexBit);
+        indexBit++;
+
+        if ((ColorByte & mask) > 0)
+            byteArray[indexByte] |= ledBitOn;
+        else
+            byteArray[indexByte] |= ledBitOff;
+
+        indexByte--;
+
+
+    return byteArray;
+}
+```
+
+Each color of RGB is represented by a byte. How we seen, each bit of WS2812B needs 4 bits of the data sent by the SPI, so to send 8 bits of WS2812B we'll use 4 bytes (two bits on each byte).
+
+And finally, we build this bytes for all the colors. 
+
+```csharp
+public bool Write(int pixel, byte red, byte green, byte blue)
+{
+    byte[] Colors = new byte[] { green, red, blue };
+    
+    if (spiDevice != null)
+    {
+        int indexPixel = pixel * 12;
+
+        foreach (byte Color in Colors)
+        { 
+            byte[] EncodedBytes = Encode(Color);
+
+            foreach (byte Data in EncodedBytes)
+            {
+                bufferLedSPI[indexPixel++] = Data;
+            }
+        }
+        return true;
+    }
+
+    return false;
+}
+```
+
+Just write data to SPI
+
+```csharp
+public void RefreshLeds()
+{
+    spiDevice.Write(bufferLedSPI);
+    Thread.Sleep(1);
+}
+```
