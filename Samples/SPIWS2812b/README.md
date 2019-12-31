@@ -91,6 +91,7 @@ private const byte ledBitOff = 0b1100;
 ```
 
 TH = 0b1110 = 0.25us + 0.25us + 0.25us + 0s = 0.85us
+
 TL = 0b1100 = 0.25us + 0.25us + 0s + 0s = 0.5us
 
 ```csharp
