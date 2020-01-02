@@ -130,7 +130,7 @@ private byte[] Encode(byte ColorByte)
 
 Each color of RGB is represented by a byte. How we seen, each bit of WS2812B needs 4 bits of the data sent by the SPI, so to send 8 bits of WS2812B we'll use 4 bytes (two bits on each byte).
 
-And finally, we build this bytes for all the colors. 
+And finally, we build this bytes for all colors. 
 
 ```csharp
 public bool Write(int pixel, byte red, byte green, byte blue)
