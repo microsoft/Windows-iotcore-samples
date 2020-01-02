@@ -53,15 +53,15 @@ Here are the schematics:
 
 The WS2812B include intelligent digital port data latch and signal reshaping amplification drive circuit. To set the RGB value there is a time specification that define what is a 1 or 0 value.
 
-![WS2812B_DataTransferTime](../../Resources/images/SPIWS2812b/WS2812B_DataTransferTime.png)
+![WS2812B_DataTransferTime](../../Resources/images/SPIWS2812b/WS2812B_DataTransferTime.PNG)
 
 And the sequence chart that explains how to set each bit of RGB data
 
-![WS2812B_SequenceChart](../../Resources/images/SPIWS2812b/WS2812B_SequenceChart.png)
+![WS2812B_SequenceChart](../../Resources/images/SPIWS2812b/WS2812B_SequenceChart.PNG)
 
 ...and we need 24 of this patterns to set the entire RGB data of the led
 
-![WS2812B_CompositonData](../../Resouces/images/SPIWS2812b/WS2812B_CompositionData.png)
+![WS2812B_CompositonData](../../Resources/images/SPIWS2812b/WS2812B_CompositionData.PNG)
 
 #### Initialize the SPI Bus
 
