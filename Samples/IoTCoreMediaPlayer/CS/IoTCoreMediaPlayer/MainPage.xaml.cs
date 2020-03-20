@@ -40,6 +40,7 @@ namespace IoTCoreMediaPlayer
             ".pya",
 
             // video
+            ".mkv",
             ".wm",
             ".m4v",
             ".wmv",
