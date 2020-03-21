@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Make an LED blink with the push of a button with Windows 10 IoT Core.
 ---
 

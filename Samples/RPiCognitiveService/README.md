@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: A Microsoft Cognitive Services app designed for Windows 10 IoT Core devices.
 ---
 

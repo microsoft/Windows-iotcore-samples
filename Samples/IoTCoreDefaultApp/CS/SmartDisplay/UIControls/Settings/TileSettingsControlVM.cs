@@ -8,13 +8,6 @@ namespace SmartDisplay.Controls
     public class TileSettingsControlVM : SmartDisplaySettingsBaseViewModel
     {
         private string InvalidNumericalValueErrorText { get; } = Common.GetLocalizedText("InvalidNumericalValueErrorText");
-
-#if _M_ARM64
-        // Color picker throws exception on ARM64
-        public bool LoadColorPicker = false;
-#else
-        public bool LoadColorPicker = true;
-#endif
         
         public Color TileColor
         {

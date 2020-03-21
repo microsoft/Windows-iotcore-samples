@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: A demonstration of how to play music from a Windows 10 IoT Core device.
 ---
 

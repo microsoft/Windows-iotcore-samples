@@ -6,6 +6,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: Create a simple Blinky app service and connect a LED to your Windows IoT Core device.
 ---
 
