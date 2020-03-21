@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 
-#if !_M_ARM64
 using Microsoft.Graphics.Canvas.Effects;
-#endif
 using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
@@ -62,7 +60,6 @@ namespace SmartDisplay.Controls
             // Delay creating composition resources until they're required.
             if (CompositionBrush == null)
             {
-#if !_M_ARM64
                 var backdrop = Window.Current.Compositor.CreateBackdropBrush();
 
                 // Use a Win2D blur affect applied to a CompositionBackdropBrush.
@@ -86,19 +83,16 @@ namespace SmartDisplay.Controls
                     Mode = BlendEffectMode.Overlay
                 };
 
-                var effectFactory = Window.Current.Compositor.CreateEffectFactory(blendEffect, new[]
+                var effectFactory = Window.Current.Compositor.CreateEffectFactory(blendEffect, new[] 
                 {
-                                    "Blur.BlurAmount",
-                                    "Tint.Color"
-                                });
+                    "Blur.BlurAmount",
+                    "Tint.Color"
+                });
                 var effectBrush = effectFactory.CreateBrush();
 
                 effectBrush.SetSourceParameter("backdrop", backdrop);
 
                 CompositionBrush = effectBrush;
-#else
-                CompositionBrush = Window.Current.Compositor.CreateColorBrush(Colors.Black);
-#endif
             }
         }
 
