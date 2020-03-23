@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: Create a console app that monitors memory usage on devices running Windows 10 IoT Core.
 ---
 

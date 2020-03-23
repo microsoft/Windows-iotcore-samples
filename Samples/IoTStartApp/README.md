@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: UWP that lists all installed apps on the IoT Core System using the PackageManager API for Windows 10 IoT Core.
 ---
 

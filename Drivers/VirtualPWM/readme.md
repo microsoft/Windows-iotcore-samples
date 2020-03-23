@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: This is a Windows Universal Driver sample for PWM that implements the PWM DDI.
 ---
 

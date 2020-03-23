@@ -5,14 +5,15 @@ languages:
   - cpp
 products:
   - windows
-description: This sample shows how to read from the DHT11 from a Universal Windows Application for Windows 10 IoT Core.
+  - windows-iot
+description: "This sample shows how to read from the DHT11 from a Universal Windows Application for Windows 10 IoT Core."
 ---
 
 # GPIO OneWire DHT11/22 reader
 
 These are the available versions of this Windows 10 IoT Core sample:
 
-*	[C++](./CPP/ReadMe.md)
+* [C++](./CPP/ReadMe.md)
 
 | Minimum SDK Version | 15063 |
 |---------------------|-------|
@@ -40,7 +41,7 @@ base of the transistor.
 ![Schematic](../../Resources/images/GpioOneWire/schematic.png)
 
 
-# GPIO OneWire DHT11 reader
+## GPIO OneWire DHT11 reader
 
 Note what follows below is a bit out of date-  the latest version on Github is a 2 wire operation requiring pin4 as input and pin 5 as output.
 

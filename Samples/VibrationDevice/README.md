@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: A sample that shows how to use the vibration device on supported hardware.
 ---
 

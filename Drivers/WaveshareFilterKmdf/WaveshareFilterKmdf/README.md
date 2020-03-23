@@ -7,6 +7,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 ---
 
 # Waveshare KMDF Filter Driver

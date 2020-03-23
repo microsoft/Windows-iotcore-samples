@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Create a simple solution to configure your Headless IoT Device (an IoT device without a display) to connect WiFi network through Bluetooth RFCOMM at startup.
 ---
 

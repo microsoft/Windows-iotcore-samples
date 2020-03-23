@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: The current IoT Core Default App, a fully featured sample app for Windows 10 IoT Core.
 ---
 

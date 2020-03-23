@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: A simple shared host service for Windows 10 IoT Core.
 ---
 

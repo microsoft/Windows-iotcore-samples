@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: A sample that shows how to leverage various pieces of open source software to create a "block" development experience on Raspberry Pi for Windows 10 IoT Core.
 ---
 

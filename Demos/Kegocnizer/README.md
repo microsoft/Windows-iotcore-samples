@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Building an IoT beer device that dispenses to authorized users.
 ---
 

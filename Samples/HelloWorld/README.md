@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Create and deploy your first Windows 10 IoT Core app.
 ---
 
