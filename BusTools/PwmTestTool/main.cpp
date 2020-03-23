@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 //
-// pwmtesttool
+// PwmTestTool
 //
 //   Utility to read and write pwm devices from the command line.
 //   Shows how to use C++/CX in console applications.
@@ -40,8 +40,7 @@ void ListPwmControllers ()
 
     std::wcout << L"Finding PwmControllers\n";
 
-    String^ friendlyNameProperty =
-        L"System.Devices.SchematicName";
+    String^ friendlyNameProperty = L"System.Devices.SchematicName";
     auto properties = ref new Vector<String^>();
     properties->Append(friendlyNameProperty);
 
@@ -60,8 +59,7 @@ void ListPwmControllers ()
         String^ friendlyName = L"<null>";
 
         auto prop = di->Properties->Lookup(friendlyNameProperty);
-        if (prop != nullptr)
-        {
+        if (prop != nullptr) {
             friendlyName = prop->ToString();
         }
 
@@ -88,10 +86,12 @@ PwmController^ MakeDevice (_In_opt_ String^ friendlyName)
     String^ aqs;
     String^ id;
 
-    if (friendlyName)
+    if (friendlyName) {
         aqs = PwmController::GetDeviceSelector(friendlyName);
-    else
+    }
+    else {
         aqs = PwmController::GetDeviceSelector();
+    }
 
     auto dis = concurrency::create_task(DeviceInformation::FindAllAsync(aqs)).get();
     if (dis->Size > 0) {
@@ -133,11 +133,11 @@ std::wostream& operator<< (std::wostream& os, PwmPulsePolarity polarity)
 
 PCWSTR Help =
     L"Commands:\n"
-    L" > freq N                           Set controller frequency (Hz)\n"
-    L" > open N                           Open pin N\n"
+    L" > freq <f>                         Set controller frequency (Hz)\n"
+    L" > open <pin>                       Open pin\n"
     L" > start                            start PWM\n"
     L" > stop                             stop PWM\n"
-    L" > dutycycle                        set duty cycle percentage to N\n"
+    L" > dutycycle <percentage>           set duty cycle percentage\n"
     L" > polarity                         toggle polarity\n"
     L" > info                             Display device information\n"
     L" > help                             Display this help message\n"
@@ -154,9 +154,10 @@ void ShowPrompt (PwmController^ device)
         if (!std::getline(std::wcin, line)) {
             return;
         }
-        std::wistringstream linestream(line);
 
+        std::wistringstream linestream(line);
         std::wstring command;
+
         linestream >> command;
         if ((command == L"q") || (command == L"quit")) {
             return;
@@ -178,6 +179,7 @@ void ShowPrompt (PwmController^ device)
 
             if (!(linestream >> freq)) {
                 std::wcout << L"Expecting float.\n";
+                continue;
             }
 
             device->SetDesiredFrequency(freq);
@@ -185,6 +187,7 @@ void ShowPrompt (PwmController^ device)
         else if (command == L"start") {
             if (!pin) {
                 std::wcout << L"No open pin\n";
+                continue;
             }
 
             pin->Start();
@@ -192,11 +195,13 @@ void ShowPrompt (PwmController^ device)
         else if (command == L"stop") {
             if (!pin) {
                 std::wcout << L"No open pin\n";
+                continue;
             }
             else if (!pin->IsStarted) {
                 std::wcout << L"Pin not started\n";
-            }
-            
+                continue;
+            } 
+
             pin->Stop();
         } 
         else if (command == L"dutycycle") {
@@ -204,10 +209,13 @@ void ShowPrompt (PwmController^ device)
 
             if (!(linestream >> duty)) {
                 std::wcout << L"Expecting float.\n";
-            }
-
-            if (!pin) {
+                continue;
+            } else if (!pin) {
                 std::wcout << L"No open pin\n";
+                continue;
+            } else if ((duty < 0.0) || (duty > 100.0)) {
+                std::wcout << "Duty cycle must be between 0 and 100\n";
+                continue;
             }
 
             pin->SetActiveDutyCyclePercentage(duty / 100.0);
@@ -215,6 +223,7 @@ void ShowPrompt (PwmController^ device)
         else if (command == L"polarity") {
             if (!pin) {
                 std::wcout << L"No open pin\n";
+                continue;
             }
 
             if (pin->Polarity == PwmPulsePolarity::ActiveHigh) {
@@ -235,7 +244,7 @@ void ShowPrompt (PwmController^ device)
             if (pin) {
                 std::wcout << L"                 IsStarted: " << pin->IsStarted << L"\n";
                 std::wcout << L"                  Polarity: " << pin->Polarity << L"\n";
-                std::wcout << L" ActiveDutyCyclePercentage: " << pin->GetActiveDutyCyclePercentage() << L"\n";
+                std::wcout << L" ActiveDutyCyclePercentage: " << pin->GetActiveDutyCyclePercentage() * 100.0 << L"\n";
             }
         } else if (command.empty()) {
             // ignore
