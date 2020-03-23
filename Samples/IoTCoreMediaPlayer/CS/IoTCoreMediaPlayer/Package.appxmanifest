@@ -69,6 +69,7 @@
     <uap:Capability Name="musicLibrary" />
     <uap:Capability Name="videosLibrary" />
     <uap:Capability Name="removableStorage" />
+    <!-- Add lowLevelDevices capability for iMX8M VPU decoder support -->
     <iot:Capability Name="lowLevelDevices" />
   </Capabilities>
 </Package>
