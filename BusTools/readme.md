@@ -2,18 +2,19 @@
 page_type: sample
 urlFragment: bustools
 languages:
-  - csharp
+  - cpp
 products:
   - windows
-description: "IoT Bus tools to interact with Gpio, I2c, Spi and UART."
+description: "IoT Bus tools to interact with Gpio, I2c, Pwm, Spi and UART."
 ---
 
 # Windows IoT Bus Tools
 
-This folder contains tools that let you interact with Gpio, I2c, Spi, and UART on the command line. They will run on any edition of Windows, including Windows IoT Core and Windows Enterprise. The tools are:
+This folder contains tools that let you interact with Gpio, I2c, Pwm, Spi, and UART on the command line. They will run on any edition of Windows, including Windows IoT Core and Windows Enterprise. The tools are:
 
 - GpioTestTool
 - I2cTestTool
+- PwmTestTool
 - SpiTestTool
 - MinComm (UART)
 
@@ -27,6 +28,6 @@ This folder contains tools that let you interact with Gpio, I2c, Spi, and UART o
 msbuild /p:Platform=ARM /p:Configuration=Release
 ```
 
-Valid values of Platform are: `ARM, x86, x64`
+Valid values of Platform are: `ARM, ARM64, x86, x64`
 
 Valid values of Configuration are: `Release, Debug`
