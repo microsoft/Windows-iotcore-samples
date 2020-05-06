@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10" IgnorableNamespaces="uap mp iot">
   <Identity Name="IoTCoreMediaPlayer" Publisher="CN=MSFT" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="ff6e5894-2e0f-46fa-98d1-cc08912bd732" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
@@ -69,5 +69,7 @@
     <uap:Capability Name="musicLibrary" />
     <uap:Capability Name="videosLibrary" />
     <uap:Capability Name="removableStorage" />
+    <!-- Add lowLevelDevices capability for iMX8M VPU decoder support -->
+    <iot:Capability Name="lowLevelDevices" />
   </Capabilities>
 </Package>
