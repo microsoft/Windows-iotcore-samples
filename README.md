@@ -2,9 +2,9 @@
   samplefwlink: https://go.microsoft.com/fwlink/?linkid=860459
 --->
 
-# Windows 10 Internet of Things (IoT) Samples
+# Windows 10 IoT Core Samples
 
-This repo contains the samples that demonstrate the usage patterns for Microsoft's Windows 10 IoT. These code samples were created with templates available in Visual Studio, and are designed, but not limited to, run on devices that run Windows 10 IoT Core.
+This repo contains the samples that demonstrate the usage patterns for Microsoft's Windows 10 IoT Core. These code samples were created with templates available in Visual Studio, and are designed, but not limited to, run on devices that run Windows 10 IoT Core.
 
 > **Note:** If you are unfamiliar with Git and GitHub, you can download the entire collection as a 
 > [ZIP file](../../archive/master.zip), but be 
