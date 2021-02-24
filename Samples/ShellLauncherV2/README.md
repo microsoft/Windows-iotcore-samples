@@ -1,6 +1,6 @@
 ---
 page_type: sample
-urlFragment: shelllauncher-v2
+urlFragment: shelllauncherv2
 languages:
   - csharp
 products:
