@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: Build a streaming audio device for Windows 10 IoT Core.
 ---
 

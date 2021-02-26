@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Communicate with an I2C/SPI based temperature and pressure sensor with Windows 10 IoT Core.
 ---
 

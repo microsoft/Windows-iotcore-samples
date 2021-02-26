@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: This sample demonstrates how to use a relatively inexpensive device and a Raspberry Pi to measure the volume of liquid flowing through a hose.
 ---
 

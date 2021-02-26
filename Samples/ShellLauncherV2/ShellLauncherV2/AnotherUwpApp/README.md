@@ -2,9 +2,10 @@
 page_type: sample
 urlFragment: AnotherUwpApp
 languages:
-- csharp
+  - csharp
 products:
-- windows
+  - windows
+  - windows-iot
 description: sample apps demonstrating Shell Launcher V2 on Windows 10 Enterprise from 1903 release
 ---
 

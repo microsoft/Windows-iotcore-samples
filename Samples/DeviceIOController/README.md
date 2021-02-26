@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: Sample for leveraging Device IO Controller.
 ---
 

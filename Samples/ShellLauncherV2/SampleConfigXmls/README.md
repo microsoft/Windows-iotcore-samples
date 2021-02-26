@@ -2,9 +2,10 @@
 page_type: sample
 urlFragment: SampleConfigXmls
 languages:
-- xml
+  - xml
 products:
-- windows
+  - windows
+  - windows-iot
 description: sample shell launcher configuration xmls using Assigned Access CSP
 ---
 

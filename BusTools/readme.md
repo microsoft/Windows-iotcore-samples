@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: "IoT Bus tools to interact with Gpio, I2c, Pwm, Spi and UART."
 ---
 

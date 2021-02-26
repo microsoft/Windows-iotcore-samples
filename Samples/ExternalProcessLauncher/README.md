@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: We'll learn how to launch an external process (exe) from a Universal Windows Platform (UWP) app using the Windows.System.ProcessLauncher API with Windows 10 IoT Core.
 ---
 

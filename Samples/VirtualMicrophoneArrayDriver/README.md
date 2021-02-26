@@ -5,6 +5,7 @@ languages:
   - cpp
 products:
   - windows
+  - windows-iot
 description: An app service to blink an LED and a client app to call it with Windows 10 IoT Core.
 ---
 

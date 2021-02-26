@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Create a simple notepad app service as well as two simple app service clients for Windows 10 IoT Core.
 ---
 

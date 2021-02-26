@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: This sample showcases a Digital Sign UWP running on Windows IoT Core.
 ---
 

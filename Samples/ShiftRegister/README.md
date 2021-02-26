@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Connect an 8-bit serial-in, parallel-out shift register to your device to toggle eight LED's for Windows 10 IoT Core.
 ---
 

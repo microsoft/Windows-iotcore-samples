@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Create a hello cloud sample with Windows 10 IoT Core and Azure.
 ---
 

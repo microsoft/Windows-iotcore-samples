@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: This sample illustrates a technique for remotely joining your Headless Windows 10 IoT Core device (an IoT device without a display) to your home Wi-Fi network.
 ---
 

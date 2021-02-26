@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: Create a simple app with an SPI accelerometer build with Windows 10 IoT Core.
 ---
 

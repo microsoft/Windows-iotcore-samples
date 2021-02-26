@@ -5,6 +5,7 @@ languages:
   - csharp
 products:
   - windows
+  - windows-iot
 description: This sample demonstrates using the HC-SR04 ultrasonic sensor with Window 10 IoT Core.
 ---
 
