@@ -44,7 +44,7 @@ description: Translate your speech to different languages.
 8. Copy a Speech Language Package to your device.  **(Required for Windows 10 IoT Builds 15063 or greater)**
     1. Open a new powershell window on your desktop
     2. From desktop map your device's disk to a local drive:
-        - **net use t: \\speechtranslator\c$ /user:\administrator p@ssw0rd)**
+        - **net use t: \\speechtranslator\c$ /user:\administrator p\@ssw0rd)**
     3. Copy a language package from your desktop to your device.  
         *Note: Language packages are available in this folder:* c:\Program Files (x86)\Windows Kits\10\MSPackages\retail\ **your-processor-type** \fre
         
