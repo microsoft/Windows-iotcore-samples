@@ -18,7 +18,7 @@ description: sample powershell scripts to call bridge WMI Shell Launcher node
 
 To use the scripts,
 1. Save the scripts file to your PC
-2. Download SysInternals tools, run "psexec.exe -i -s powershell.exe" from elevated command prompt
+2. Download SysInternals tools, run "psexec.exe -i -s powershell.exe" from elevated command prompt to launch PowerShell using the `System` account
 3. In the powershell launched by psexec.exe, first import the scripts, notice the . command when importing the ps1 file
 ```
 PS C:\Users\test> . .\ShellLauncherBridgeWmiHelpers.ps1
