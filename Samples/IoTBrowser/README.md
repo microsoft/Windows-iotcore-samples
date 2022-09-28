@@ -9,7 +9,7 @@ products:
 description: Build a simple web browser for Windows 10 IoT Core.
 ---
 
-## IoT Browser Sample
+# IoT Browser Sample
 
 We'll create a simple web browser application for your your Windows 10 IoT Core device.
 
