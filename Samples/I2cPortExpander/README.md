@@ -412,7 +412,7 @@ Let's build, deploy and run the app on our Raspberry Pi 2 or 3.
 
 After several moments, you will see the screen attached to the RPi2 or RPi3 change to show a circle, some text, and a slider. The LED on the breadboard will begin to turn on and off.
 
-![I2C Port Expander Screenshot](../../../Resources/images/I2CPortExpander/I2CPortExpanderScreenShot_300p.png)
+![I2C Port Expander Screenshot](../../Resources/images/I2CPortExpander/I2CPortExpanderScreenShot_300p.png)
 
 Congratulations! You've successfully connected an I2C port expander to your Raspberry Pi 2 or 3.
 
