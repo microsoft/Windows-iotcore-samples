@@ -4,7 +4,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.20.1" />
     <PackageReference Include="Mono.Options.Core" Version="1.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Windows.Devices.DevicesLowLevelContract">
