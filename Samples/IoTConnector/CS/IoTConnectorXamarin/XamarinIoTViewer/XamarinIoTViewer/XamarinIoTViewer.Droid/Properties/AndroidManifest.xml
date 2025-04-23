@@ -3,7 +3,7 @@
 	<uses-sdk android:minSdkVersion="15" android:targetSdkVersion="23" />
 	
 	<application android:label="XamarinIoTViewer">
-		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCoJRjluuhooH_rm6D5kdKIyxbhklkGJZw" />
+		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="YOUR_API_KEY_HERE" />
     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 	</application>
   <uses-permission android:name="android.permission.INTERNET" />
