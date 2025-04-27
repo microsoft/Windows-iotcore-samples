@@ -2,11 +2,10 @@
 page_type: sample
 urlFragment: TPMdevicetest
 languages:
-  - UWP
-  - NET
 products:
   - windows
   - windows-iot
+  - windows-uwp
 description: Connect TPM with the Azure IoT Hub with Windows 10 IoT Core.
 ---
 
