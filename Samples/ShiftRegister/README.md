@@ -394,7 +394,7 @@ Let's build, deploy and run the app on our Raspberry Pi 2 or 3.
 
 After several moments, you will see the screen attached to the RPi2 or RPi3 change to show a slider, some text, and a button. The LEDs will light up and follow the pattern set in 'pinMask'.
 
-![ShiftRegister Screenshot](../../../Resources/images/ShiftRegister/ScreenShotA.png)
+![ShiftRegister Screenshot](../../Resources/images/ShiftRegister/ScreenShotA.png)
 
 Congratulations! You've successfully connected an 8-bit serial-in, parallel-out shift register to your Raspberry Pi 2 or 3.
 
