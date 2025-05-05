@@ -121,7 +121,7 @@ Connect the MCP3208 to the Voltage-Level Translator breakout as follows:
 
 Here is an illustration of what your breadboard might look like with the circuit assembled:
 
-![DragonBoard Potentiometer Breadboard](../../../Resources/images/Potentiometer/breadboard_db410c.png)
+![DragonBoard Potentiometer Breadboard](../../Resources/images/Potentiometer/breadboard_db410c.png)
 
 Finally, the LED_PIN variable of the **MainPage.xaml.cs** file of the sample code will need the following modification:
 
@@ -149,8 +149,8 @@ When you turn the potentiometer knob, you will see the number change on the scre
 When the number is larger than half the ADC resolution (For **MCP3002**, this number is **512**. For **MCP3008** or **MCP3208**, it's **2048**) the LED will turn ON. Otherwise, it turns OFF.
 
 | ----------------------------------------------------------------------------------------- |-| ---------------------------------------------------------------------------------- |
-| ![App Running LED Off](../../../Resources/images/Potentiometer/AppRunning-LEDOff.png)       | | ![App Running LED On](../../../Resources/images/Potentiometer/AppRunning-LEDOn.png)  |
-| ![Breadboard LED Off](../../../Resources/images/Potentiometer/Breadboard-LEDOff.png)        | | ![Breadboard LED On](../../../Resources/images/Potentiometer/Breadboard-LEDOn.png)   |
+| ![App Running LED Off](../../Resources/images/Potentiometer/AppRunning-LEDOff.png)       | | ![App Running LED On](../../Resources/images/Potentiometer/AppRunning-LEDOn.png)  |
+| ![Breadboard LED Off](../../Resources/images/Potentiometer/Breadboard-LEDOff.png)        | | ![Breadboard LED On](../../Resources/images/Potentiometer/Breadboard-LEDOn.png)   |
 
 ## Let's look at the code
 
